@@ -39,6 +39,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        color: Color(0xFFF4F4F4),
         child: Stack(
           children: <Widget>[
             Container(
@@ -46,63 +47,103 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Center(
-                    child: SizedBox(
-                      height: ScreenUtil().setHeight(38.75),
-                    ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(22),
                   ),
                   Container(
-                    height: ScreenUtil().setHeight(77.5),
-                    child: Column(
+                    // padding: EdgeInsets.all(10.0),
+                    margin: EdgeInsets.fromLTRB(25, 11, 26, 20),
+                    width: ScreenUtil().setWidth(360),
+                    height: ScreenUtil().setHeight(40),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    child: Stack(
+                      alignment: Alignment.centerRight,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50.0),
-                          child: Text(
-                            'Favourites',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy Black',
-                              fontSize: ScreenUtil().setSp(35,allowFontScalingSelf: true),
+                        TextField(
+                          decoration: InputDecoration(
+                            // contentPadding: EdgeInsets.all(15.0),
+                            hintText: 'SEARCH GEMSTORY',
+                            hintStyle: TextStyle(
+                              fontFamily: 'Gilroy Medium',
+                              color: Color(0xFF595959),
+                              fontSize: ScreenUtil()
+                                  .setSp(14, allowFontScalingSelf: true),
                             ),
+                            border: InputBorder.none,
                           ),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontSize: ScreenUtil()
+                                  .setSp(16, allowFontScalingSelf: true)),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50.0),
-                          child: Text(
-                            '${favProducts.length} products',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy Black',
-                              fontSize: ScreenUtil().setSp(16,allowFontScalingSelf: true),
-                            ),
+                        Container(
+                          margin: EdgeInsets.only(right: 6.58),
+                          child: SvgPicture.asset(
+                            'assets/icons/notificationIcon.svg',
+                            height: ScreenUtil().setHeight(27),
+                            width: ScreenUtil().setWidth(27),
+                            color: Colors.black,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(15.5),
-                  ),
-                  Container(
-                    width: ScreenUtil().setWidth(411),
-                    height: ScreenUtil().setHeight(643) -
-                        (widget.val ? ScreenUtil().setHeight(60) : 0.0),
-                    padding: EdgeInsets.fromLTRB(20.0, 45.0, 10.0, 0.0),
-                    decoration: BoxDecoration(
-                      // color: Color(0xFFE9FFFF),
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          // Color(0xFF0F2985),
-                          // Colors.blue[400]
-                          kPrimaryLightColor,
-                          Colors.white
-                        ],
-                        stops: [0.4, 1],
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomCenter,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(100.0),
-                      ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(25, 0, 26, 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        ShaderMask(
+                          shaderCallback: (bounds) => LinearGradient(
+                            colors: [
+                              Color(0xFF34B0D9),
+                              Color(0xFF3685CB),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ).createShader(
+                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                          ),
+                          child: Text(
+                            'FAVOURITES',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Gilroy Bold',
+                              fontSize: ScreenUtil()
+                                  .setSp(20, allowFontScalingSelf: true),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 4.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/sortIcon.svg',
+                                width: ScreenUtil().setWidth(24),
+                                height: ScreenUtil().setHeight(24),
+                                color: Colors.black,
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              'assets/icons/optionsIcon.svg',
+                              width: ScreenUtil().setWidth(24),
+                              height: ScreenUtil().setHeight(24),
+                              color: Colors.black,
+                            )
+                          ],
+                        )
+                      ],
                     ),
+                  ),
+                  Expanded(
                     child: favProducts.length >
                             0
                         ? CookiePage(
@@ -127,207 +168,99 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                 ],
               ),
             ),
-            Positioned(
-              right: ScreenUtil().setHeight(32.88),
-              top: ScreenUtil().setHeight(108.5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)),
-                    color: kPrimaryColor,
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Icon(
-                          MyFlutterApp.cog,
-                          size: ScreenUtil().setSp(23,allowFontScalingSelf: true),
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: ScreenUtil().setWidth(10),
-                        ),
-                        Text(
-                          "Options",
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(17,allowFontScalingSelf: true),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AppUI(onButtonTapped: widget.onButtonTapped),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(15),
-                  ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                    color: kPrimaryColor,
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Icon(
-                          MyFlutterApp.params,
-                          size: ScreenUtil().setSp(23,allowFontScalingSelf: true),
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: ScreenUtil().setWidth(10),
-                        ),
-                        Text(
-                          "Sort",
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(17,allowFontScalingSelf: true),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.white.withOpacity(0.8),
-                        barrierColor: Colors.black45,
-                        // isScrollControlled: true,
-                        isDismissible: true,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50.0),
-                          topRight: Radius.circular(50.0),
-                        )),
-                        builder: (BuildContext context) {
-                          return Container(
-                            padding: EdgeInsets.all(5.0),
-                            height: ScreenUtil().setHeight(263.5),
-                    
-                          );
-                        },
-                      );
-                      // final action = CupertinoActionSheet(
-                      //   // actionScrollController:
-                      //   //     ScrollController(keepScrollOffset: true),
-                      //   title: Text(
-                      //     "Filter Options",
-                      //     style: TextStyle(fontSize: 21.0),
-                      //   ),
-                      //   message: Text(
-                      //     "Please Select To apply following filters",
-                      //     style: TextStyle(fontSize: 15.0),
-                      //   ),
-                      //   actions: <Widget>[
-                      //     CupertinoActionSheetAction(
-                      //       child: Text("Diamond Count"),
-                      //       isDefaultAction: true,
-                      //       onPressed: () {
-                      //         Navigator.of(context).pop();
-                      //         Provider.of<Products>(context, listen: false)
-                      //             .filterProducts('Diamond Count');
-                      //       },
-                      //     ),
-                      //     CupertinoActionSheetAction(
-                      //       child: Text("Gold Weight"),
-                      //       isDefaultAction: true,
-                      //       onPressed: () {
-                      //         Navigator.of(context).pop();
-                      //         Provider.of<Products>(context, listen: false)
-                      //             .filterProducts('Diamond Weight');
-                      //       },
-                      //     ),
-                      //     CupertinoActionSheetAction(
-                      //       child: Text("Diamond Weight"),
-                      //       isDefaultAction: true,
-                      //       onPressed: () {
-                      //         Navigator.of(context).pop();
-                      //         Provider.of<Products>(context, listen: false)
-                      //             .filterProducts('Diamond Weight');
-                      //       },
-                      //     ),
-                      //   ],
-                      //   cancelButton: CupertinoActionSheetAction(
-                      //     child: Text("Cancel"),
-                      //     onPressed: () {
-                      //       Navigator.pop(context);
-                      //     },
-                      //   ),
-                      // );
-                      // showCupertinoModalPopup(
-                      //     context: context, builder: (context) => action);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              left: ScreenUtil().setWidth(-50),
-              top: 0.0,
-              child: Container(
-                width: ScreenUtil().setWidth(217.83),
-                height: ScreenUtil().setHeight(201.5),
-                child: Image.network(
-                  'https://api.nakoda.daxy.in/images/products/nosepin6.webp',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
             // Positioned(
-            //   top: size.height * 0.075,
-            //   right: size.width * 0.08,
-            //   child: PopupMenuButton<int>(
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(15.0),
-            //     ),
-            //     elevation: 20.0,
-            //     onSelected: (int value) {
-            //       setState(() {
-            //         print(value);
-            //       });
-            //     },
-            //     child: SvgPicture.asset(
-            //       "assets/icons/group14.svg",
-            //       fit: BoxFit.contain,
-            //       height: size.height * 0.033,
-            //       // width: size.width*0.1,
-            //       // height: 41.0,
-            //       // width: 41.0,
-            //       // color: Colors.amber,
-            //     ),
-            //     itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-            //       PopupMenuItem<int>(
-            //         value: 0,
-            //         child: Container(
-            //           child: Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: <Widget>[
-            //               Text(
-            //                 'High to Low',
-            //                 style: TextStyle(fontFamily: 'Courgette'),
+            //   right: ScreenUtil().setHeight(32.88),
+            //   top: ScreenUtil().setHeight(108.5),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     children: <Widget>[
+            //       RaisedButton(
+            //         shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(18.0)),
+            //         color: kPrimaryColor,
+            //         child: Row(
+            //           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //           children: <Widget>[
+            //             Icon(
+            //               MyFlutterApp.cog,
+            //               size: ScreenUtil().setSp(23,allowFontScalingSelf: true),
+            //               color: Colors.white,
+            //             ),
+            //             SizedBox(
+            //               width: ScreenUtil().setWidth(10),
+            //             ),
+            //             Text(
+            //               "Options",
+            //               style: TextStyle(
+            //                 fontSize: ScreenUtil().setSp(17,allowFontScalingSelf: true),
+            //                 color: Colors.white,
             //               ),
-            //             ],
-            //           ),
+            //             ),
+            //           ],
             //         ),
+            //         onPressed: () {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //               builder: (context) =>
+            //                   AppUI(onButtonTapped: widget.onButtonTapped),
+            //             ),
+            //           );
+            //         },
             //       ),
-            //       PopupMenuItem<int>(
-            //         value: 1,
-            //         child: Text(
-            //           'Low to High',
-            //           style: TextStyle(fontFamily: 'Courgette'),
+            //       SizedBox(
+            //         width: ScreenUtil().setWidth(15),
+            //       ),
+            //       RaisedButton(
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(18.0),
             //         ),
+            //         color: kPrimaryColor,
+            //         child: Row(
+            //           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //           children: <Widget>[
+            //             Icon(
+            //               MyFlutterApp.params,
+            //               size: ScreenUtil().setSp(23,allowFontScalingSelf: true),
+            //               color: Colors.white,
+            //             ),
+            //             SizedBox(
+            //               width: ScreenUtil().setWidth(10),
+            //             ),
+            //             Text(
+            //               "Sort",
+            //               style: TextStyle(
+            //                 fontSize: ScreenUtil().setSp(17,allowFontScalingSelf: true),
+            //                 color: Colors.white,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //         onPressed: () {
+            //           showModalBottomSheet(
+            //             context: context,
+            //             backgroundColor: Colors.white.withOpacity(0.8),
+            //             barrierColor: Colors.black45,
+            //             // isScrollControlled: true,
+            //             isDismissible: true,
+            //             shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.only(
+            //               topLeft: Radius.circular(50.0),
+            //               topRight: Radius.circular(50.0),
+            //             )),
+            //             builder: (BuildContext context) {
+            //               return Container(
+            //                 padding: EdgeInsets.all(5.0),
+            //                 height: ScreenUtil().setHeight(263.5),
+                    
+            //               );
+            //             },
+            //           );
+            //         },
             //       ),
             //     ],
             //   ),
-            // )
+            // ),
           ],
         ),
       ),

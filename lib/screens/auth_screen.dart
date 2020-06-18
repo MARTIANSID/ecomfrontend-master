@@ -433,19 +433,15 @@ class _LoginScreenState extends State<LoginScreen>
       print(_phoneController.text);
       print(_nameController.text);
       print(_passwordController.text);
-     
+
       _forgotPasswordMenu
           ? await Provider.of<Auth>(context, listen: false).resetPassword(
               _phoneController.text,
               _nameController.text,
               _passwordController.text)
-
-          :
-          await Provider.of<Auth>(context, listen: false)
+          : await Provider.of<Auth>(context, listen: false)
               .userLogin(_phoneController.text, _passwordController.text);
-          Provider.of<Auth>(context,listen: false).changeLog();  
-
-      
+      Provider.of<Auth>(context, listen: false).changeLog();
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -465,24 +461,20 @@ class _LoginScreenState extends State<LoginScreen>
       alignment: Alignment.center,
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          colors: [
+            Color(0xFF32FFF3),
+            Color(0xFF3685CB),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            //Color(0xFFD06AA9),
-            Color(0xFF73AEF5),
-            Color(0xFF61A4F1),
-            Color(0xFF478DE0),
-            Color(0xFF398AE5),
-          ],
-          stops: [0.1, 0.4, 0.7, 0.9],
         ),
       ),
       height: double.infinity,
       child: AnimatedContainer(
         padding: EdgeInsets.symmetric(horizontal: 40.0),
         constraints: BoxConstraints(
-          minHeight: _requirePassword ? 316 : 316,
-          maxHeight: _requirePassword ? _showSignup ? 555 : 484 : 316,
+          minHeight: _requirePassword ? 640 : 640,
+          maxHeight: _requirePassword ? _showSignup ? 675 : 650 : 640,
         ),
         duration: Duration(milliseconds: 300),
         child: ListView(
@@ -491,13 +483,22 @@ class _LoginScreenState extends State<LoginScreen>
           children: <Widget>[
             //SizedBox(height: deviceSize.height / 10),
             Text(
-              'Welcome',
+              'Hello,',
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'OpenSans',
                 fontSize: 50.0,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Image.asset(
+              "assets/images/group7.png",
+              fit: BoxFit.contain,
+              height: 150.0,
+              width: 150.0,
             ),
             SizedBox(height: 30.0),
             if (_showSignup) ...[
@@ -558,7 +559,7 @@ final kLabelStyle = TextStyle(
 );
 
 final kBoxDecorationStyle = BoxDecoration(
-  color: Color(0xFF6CA8F1),
+  color: Color(0xFF34A1D4),
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: [
     BoxShadow(

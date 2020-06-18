@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
@@ -22,6 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import '../constant/const.dart';
 import './appui.dart';
+import 'dart:ui' as ui;
 
 class ProductOverViewScreen extends StatefulWidget {
   final ScrollController scrollController;
@@ -148,6 +148,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
               child: CircularProgressIndicator(),
             ))
           : Container(
+              color: Color(0xFFF4F4F4),
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -155,262 +156,433 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Center(
-                          child: SizedBox(
-                            height: ScreenUtil().setHeight(35),
-                          ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(22),
                         ),
                         Container(
-                          height: ScreenUtil().setHeight(80),
-                          child: Column(
+                          // padding: EdgeInsets.all(10.0),
+                          margin: EdgeInsets.fromLTRB(25, 11, 26, 20),
+                          width: ScreenUtil().setWidth(360),
+                          height: ScreenUtil().setHeight(40),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.white,
+                          ),
+                          child: Stack(
+                            alignment: Alignment.centerRight,
                             children: <Widget>[
-                              Text(
-                                'Nose Pin',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy Black',
-                                  fontSize: ScreenUtil()
-                                      .setSp(35, allowFontScalingSelf: true),
+                              TextField(
+                                decoration: InputDecoration(
+                                  // contentPadding: EdgeInsets.all(15.0),
+                                  hintText: 'SEARCH GEMSTORY',
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Gilroy Medium',
+                                    color: Color(0xFF595959),
+                                    fontSize: ScreenUtil()
+                                        .setSp(14, allowFontScalingSelf: true),
+                                  ),
+                                  border: InputBorder.none,
                                 ),
-                              ),
-                              Text(
-                                '52 products',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: 'Gilroy Black',
-                                  fontSize: ScreenUtil()
-                                      .setSp(16, allowFontScalingSelf: true),
-                                ),
+                                    fontFamily: 'Gilroy Regular',
+                                    fontSize: ScreenUtil()
+                                        .setSp(16, allowFontScalingSelf: true)),
                               ),
+                              Container(
+                                margin: EdgeInsets.only(right: 6.0),
+                                child: SvgPicture.asset(
+                                  'assets/icons/notificationIcon.svg',
+                                  height: ScreenUtil().setHeight(27),
+                                  width: ScreenUtil().setWidth(27),
+                                  color: Colors.black,
+                                ),
+                              )
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(20),
-                        ),
-                        Container(
-                          width: ScreenUtil().setWidth(411),
-                          height: ScreenUtil().setHeight(639) -
-                              (widget.val ? ScreenUtil().setHeight(60) : 0.0),
-                          padding: EdgeInsets.fromLTRB(10.0, 40.0, 20.0, 0.0),
-                          decoration: BoxDecoration(
-                            // color: Color(0xFFE9FFFF),
-                            gradient: LinearGradient(
-                              colors: <Color>[
-                                // Color(0xFF0F2985),
-                                // Colors.blue[400]
-                                kPrimaryLightColor,
-                                Colors.white
-                              ],
-                              stops: [0.4, 1],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomCenter,
-                            ),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(100.0),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(25, 0, 26, 15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
+                              // ShaderMask(
+                              // shaderCallback: (bounds) => LinearGradient(
+                              //   colors: [
+                              //     Color(0xFF34B0D9),
+                              //     Color(0xFF3685CB),
+                              //   ],
+                              //   begin: Alignment.topLeft,
+                              //   end: Alignment.bottomRight,
+                              // ).createShader(
+                              //   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                              // ),
+                              //   child: Text(
+                              //     'CART',
+                              //     style: TextStyle(
+                              //       color: Colors.white,
+                              //       fontFamily: 'Gilroy Black',
+                              //       fontSize: ScreenUtil()
+                              //           .setSp(20, allowFontScalingSelf: true),
+                              //     ),
+                              //   ),
+                              // ),
                               Container(
-                                // height: 30.0,
-                                width: ScreenUtil().setWidth(330),
+                                height: ScreenUtil().setHeight(20),
+                                width: ScreenUtil().setWidth(275),
                                 child: TabBar(
                                   controller: _tabController,
                                   indicatorColor: kPrimaryColor,
                                   labelColor: Colors.black,
                                   labelStyle: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Gilroy Black',
                                     fontSize: ScreenUtil()
-                                        .setSp(20, allowFontScalingSelf: true),
+                                        .setSp(16, allowFontScalingSelf: true),
                                   ),
                                   unselectedLabelStyle: TextStyle(
                                     fontFamily: 'Gilroy',
-                                    // fontWeight: FontWeight.bold,
                                     fontSize: ScreenUtil()
-                                        .setSp(18, allowFontScalingSelf: true),
+                                        .setSp(14, allowFontScalingSelf: true),
                                   ),
-                                  // indicatorWeight: 20.0,
+                                  labelPadding:
+                                      EdgeInsets.only(left: 8.0, right: 8.0),
                                   isScrollable: true,
-                                  // labelPadding: EdgeInsets.only(right: size.width / 12),
-                                  unselectedLabelColor: Colors.black,
-                                  indicator: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    color: Colors.white,
-                                  ),
-                                  //indicator: UnderlineTabIndicator(insets:EdgeInsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
+                                  indicator: BoxDecoration(),
                                   tabs: [
                                     Tab(
-                                      child: Text(
-                                        'All',
-                                        style: TextStyle(
-                                          fontFamily: 'Gilroy',
-                                          fontSize: ScreenUtil().setSp(18,
-                                              allowFontScalingSelf: true),
+                                      child: ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            _tabController.index == 0
+                                                ? LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  )
+                                                : LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFA49797),
+                                                      Color(0xFFA49797),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                        child: Text(
+                                          'ALL',
+                                          style: TextStyle(
+                                            // color: Colors.black,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Tab(
-                                      child: Text(
-                                        'Featured',
-                                        style: TextStyle(
-                                          fontFamily: 'Gilroy',
-                                          fontSize: ScreenUtil().setSp(18,
-                                              allowFontScalingSelf: true),
+                                      child: ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            _tabController.index == 1
+                                                ? LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  )
+                                                : LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFA49797),
+                                                      Color(0xFFA49797),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                        child: Text(
+                                          'FEATURED',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Tab(
-                                      child: Text(
-                                        'New',
-                                        style: TextStyle(
-                                          fontFamily: 'Gilroy',
-                                          fontSize: ScreenUtil().setSp(18,
-                                              allowFontScalingSelf: true),
+                                      child: ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            _tabController.index == 2
+                                                ? LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  )
+                                                : LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFA49797),
+                                                      Color(0xFFA49797),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                        child: Text(
+                                          'NEW',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Tab(
-                                      child: Text(
-                                        'Highest Selling',
-                                        style: TextStyle(
-                                          fontFamily: 'Gilroy',
-                                          fontSize: ScreenUtil().setSp(18,
-                                              allowFontScalingSelf: true),
+                                      child: ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            _tabController.index == 3
+                                                ? LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  )
+                                                : LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFA49797),
+                                                      Color(0xFFA49797),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                        child: Text(
+                                          'HIGHEST SELLING',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Tab(
+                                        child: ShaderMask(
+                                      shaderCallback: (bounds) =>
+                                          _tabController.index == 4
+                                              ? LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF34B0D9),
+                                                    Color(0xFF3685CB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                )
+                                              : LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFA49797),
+                                                    Color(0xFFA49797),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                ),
                                       child: Text(
-                                        'Fancy Diamond',
+                                        'FANCY DIAMOND',
                                         style: TextStyle(
-                                          fontFamily: 'Gilroy',
-                                          fontSize: ScreenUtil().setSp(18,
-                                              allowFontScalingSelf: true),
+                                          color: Colors.white,
                                         ),
                                       ),
-                                    ),
+                                    )),
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: ScreenUtil().setHeight(20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 4.0),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/sortIcon.svg',
+                                      width: ScreenUtil().setWidth(24),
+                                      height: ScreenUtil().setHeight(24),
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SvgPicture.asset(
+                                    'assets/icons/optionsIcon.svg',
+                                    width: ScreenUtil().setWidth(24),
+                                    height: ScreenUtil().setHeight(24),
+                                    color: Colors.black,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              CookiePage(
+                                products: Provider.of<Pagination>(context,
+                                        listen: true)
+                                    .allProducts,
+                                scrollController: widget.scrollController,
+                                select: 'all',
+                                color:
+                                    Provider.of<Options>(context, listen: true)
+                                        .color,
+                                diamond:
+                                    Provider.of<Options>(context, listen: true)
+                                        .diamondQuality,
+                                build:
+                                    Provider.of<Options>(context, listen: true)
+                                        .build,
+                                cert:
+                                    Provider.of<Options>(context, listen: true)
+                                        .certificate,
                               ),
-                              Expanded(
-                                // height: 200.0,
-                                child: TabBarView(
-                                  controller: _tabController,
-                                  children: [
-                                    // closeApp('NP104'),
-                                    // closeApp('NP105'),
-                                    // closeApp('NP106'),
-                                    // closeApp('NP107'),
-                                    // closeApp('NP108'),
-                                    CookiePage(
-                                      products: Provider.of<Pagination>(context,
-                                              listen: true)
-                                          .allProducts,
-                                      scrollController: widget.scrollController,
-                                      select: 'all',
-                                      color: Provider.of<Options>(context,
-                                              listen: true)
-                                          .color,
-                                      diamond: Provider.of<Options>(context,
-                                              listen: true)
-                                          .diamondQuality,
-                                      build: Provider.of<Options>(context,
-                                              listen: true)
-                                          .build,
-                                      cert: Provider.of<Options>(context,
-                                              listen: true)
-                                          .certificate,
-                                    ),
-                                    CookiePage(
-                                      products: Provider.of<Pagination>(context,
-                                              listen: true)
-                                          .featuredProducts,
-                                      scrollController: widget.scrollController,
-                                      select: 'featured',
-                                      sort: sort,
-                                      count: count,
-                                      color: Provider.of<Options>(context,
-                                              listen: true)
-                                          .color,
-                                      diamond: Provider.of<Options>(context,
-                                              listen: true)
-                                          .diamondQuality,
-                                      build: Provider.of<Options>(context,
-                                              listen: true)
-                                          .build,
-                                      cert: Provider.of<Options>(context,
-                                              listen: true)
-                                          .certificate,
-                                    ),
-                                    CookiePage(
-                                      products: Provider.of<Pagination>(context,
-                                              listen: true)
-                                          .newProducts,
-                                      scrollController: widget.scrollController,
-                                      select: 'new',
-                                      sort: sort,
-                                      count: count,
-                                      color: Provider.of<Options>(context,
-                                              listen: true)
-                                          .color,
-                                      diamond: Provider.of<Options>(context,
-                                              listen: true)
-                                          .diamondQuality,
-                                      build: Provider.of<Options>(context,
-                                              listen: true)
-                                          .build,
-                                      cert: Provider.of<Options>(context,
-                                              listen: true)
-                                          .certificate,
-                                    ),
-                                    CookiePage(
-                                      products: Provider.of<Pagination>(context,
-                                              listen: true)
-                                          .highestSellingProducts,
-                                      scrollController: widget.scrollController,
-                                      select: 'highestSelling',
-                                      sort: sort,
-                                      count: count,
-                                      color: Provider.of<Options>(context,
-                                              listen: true)
-                                          .color,
-                                      diamond: Provider.of<Options>(context,
-                                              listen: true)
-                                          .diamondQuality,
-                                      build: Provider.of<Options>(context,
-                                              listen: true)
-                                          .build,
-                                      cert: Provider.of<Options>(context,
-                                              listen: true)
-                                          .certificate,
-                                    ),
-                                    CookiePage(
-                                      products: Provider.of<Pagination>(context,
-                                              listen: true)
-                                          .fancyDiamond,
-                                      scrollController: widget.scrollController,
-                                      select: 'fancyDiamond',
-                                      sort: sort,
-                                      count: count,
-                                      color: Provider.of<Options>(context,
-                                              listen: true)
-                                          .color,
-                                      diamond: Provider.of<Options>(context,
-                                              listen: true)
-                                          .diamondQuality,
-                                      build: Provider.of<Options>(context,
-                                              listen: true)
-                                          .build,
-                                      cert: Provider.of<Options>(context,
-                                              listen: true)
-                                          .certificate,
-                                    ),
-                                  ],
-                                ),
+                              CookiePage(
+                                products: Provider.of<Pagination>(context,
+                                        listen: true)
+                                    .featuredProducts,
+                                scrollController: widget.scrollController,
+                                select: 'featured',
+                                sort: sort,
+                                count: count,
+                                color:
+                                    Provider.of<Options>(context, listen: true)
+                                        .color,
+                                diamond:
+                                    Provider.of<Options>(context, listen: true)
+                                        .diamondQuality,
+                                build:
+                                    Provider.of<Options>(context, listen: true)
+                                        .build,
+                                cert:
+                                    Provider.of<Options>(context, listen: true)
+                                        .certificate,
+                              ),
+                              CookiePage(
+                                products: Provider.of<Pagination>(context,
+                                        listen: true)
+                                    .newProducts,
+                                scrollController: widget.scrollController,
+                                select: 'new',
+                                sort: sort,
+                                count: count,
+                                color:
+                                    Provider.of<Options>(context, listen: true)
+                                        .color,
+                                diamond:
+                                    Provider.of<Options>(context, listen: true)
+                                        .diamondQuality,
+                                build:
+                                    Provider.of<Options>(context, listen: true)
+                                        .build,
+                                cert:
+                                    Provider.of<Options>(context, listen: true)
+                                        .certificate,
+                              ),
+                              CookiePage(
+                                products: Provider.of<Pagination>(context,
+                                        listen: true)
+                                    .highestSellingProducts,
+                                scrollController: widget.scrollController,
+                                select: 'highestSelling',
+                                sort: sort,
+                                count: count,
+                                color:
+                                    Provider.of<Options>(context, listen: true)
+                                        .color,
+                                diamond:
+                                    Provider.of<Options>(context, listen: true)
+                                        .diamondQuality,
+                                build:
+                                    Provider.of<Options>(context, listen: true)
+                                        .build,
+                                cert:
+                                    Provider.of<Options>(context, listen: true)
+                                        .certificate,
+                              ),
+                              CookiePage(
+                                products: Provider.of<Pagination>(context,
+                                        listen: true)
+                                    .fancyDiamond,
+                                scrollController: widget.scrollController,
+                                select: 'fancyDiamond',
+                                sort: sort,
+                                count: count,
+                                color:
+                                    Provider.of<Options>(context, listen: true)
+                                        .color,
+                                diamond:
+                                    Provider.of<Options>(context, listen: true)
+                                        .diamondQuality,
+                                build:
+                                    Provider.of<Options>(context, listen: true)
+                                        .build,
+                                cert:
+                                    Provider.of<Options>(context, listen: true)
+                                        .certificate,
                               ),
                             ],
                           ),
@@ -418,575 +590,110 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                       ],
                     ),
                   ),
-                  Positioned(
-                    right: ScreenUtil().setWidth(-61.65),
-                    top: ScreenUtil().setHeight(10),
-                    child: Container(
-                      width: ScreenUtil().setWidth(267.15),
-                      height: ScreenUtil().setHeight(155),
-                      // color: Colors.amber,
-                      child: RotatedBox(
-                        quarterTurns: 1,
-                        child: Image.network(
-                          // width: size.width * 0.55,
-                          // height: size.height * 0.2,
-                          'https://api.nakoda.daxy.in/images/products/nosepin4.webp',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: ScreenUtil().setWidth(37),
-                    top: ScreenUtil().setHeight(110),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          color: kPrimaryColor,
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Icon(
-                                MyFlutterApp.cog,
-                                color: Colors.white,
-                                size: ScreenUtil()
-                                    .setSp(23, allowFontScalingSelf: true),
-                              ),
-                              SizedBox(
-                                width: ScreenUtil().setWidth(10),
-                              ),
-                              Text(
-                                "Options",
-                                style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(17, allowFontScalingSelf: true),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AppUI(
-                                    onButtonTapped: widget.onButtonTapped),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          width: ScreenUtil().setWidth(15),
-                        ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          color: kPrimaryColor,
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Icon(
-                                MyFlutterApp.params,
-                                color: Colors.white,
-                                size: ScreenUtil()
-                                    .setSp(23, allowFontScalingSelf: true),
-                              ),
-                              SizedBox(
-                                width: ScreenUtil().setWidth(10),
-                              ),
-                              Text(
-                                "Sort",
-                                style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(17, allowFontScalingSelf: true),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // onPressed: showPicker,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              backgroundColor: Colors.white.withOpacity(0.8),
-                              barrierColor: Colors.black45,
-                              // isScrollControlled: true,
-                              isDismissible: true,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(50.0),
-                                topRight: Radius.circular(50.0),
-                              )),
-                              builder: (BuildContext context) {
-                                return Container(
-                                  padding: EdgeInsets.all(5.0),
-                                  height: size.height * 0.34,
-                                  child: FilterForProduct(),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        // popUpButton(),
-                      ],
-                    ),
-                  ),
+
                   // Positioned(
-                  //   top: size.height * 0.075,
-                  //   left: size.width * 0.08,
-                  //   child: PopupMenuButton<int>(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //     elevation: 20.0,
-                  //     onSelected: (int value) {
-                  //       setState(() {
-                  //         print(value);
-                  //       });
-                  //     },
-                  //     child: SvgPicture.asset(
-                  //       "assets/icons/group14.svg",
-                  //       fit: BoxFit.contain,
-                  //       height: size.height * 0.033,
-                  //       // width: size.width*0.1,
-                  //       // height: 41.0,
-                  //       // width: 41.0,
-                  //       // color: Colors.amber,
-                  //     ),
-                  //     itemBuilder: (BuildContext context) =>
-                  //         <PopupMenuEntry<int>>[
-                  //       PopupMenuItem<int>(
-                  //         value: 0,
-                  //         child: Container(
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: <Widget>[
-                  //               Text(
-                  //                 'High to Low',
-                  //                 style: TextStyle(fontFamily: 'Courgette'),
+                  //   left: ScreenUtil().setWidth(37),
+                  //   top: ScreenUtil().setHeight(110),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: <Widget>[
+                  //       RaisedButton(
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(18.0),
+                  //         ),
+                  //         color: kPrimaryColor,
+                  //         child: Row(
+                  //           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //           children: <Widget>[
+                  //             Icon(
+                  //               MyFlutterApp.cog,
+                  //               color: Colors.white,
+                  //               size: ScreenUtil()
+                  //                   .setSp(23, allowFontScalingSelf: true),
+                  //             ),
+                  //             SizedBox(
+                  //               width: ScreenUtil().setWidth(10),
+                  //             ),
+                  //             Text(
+                  //               "Options",
+                  //               style: TextStyle(
+                  //                 fontSize: ScreenUtil()
+                  //                     .setSp(17, allowFontScalingSelf: true),
+                  //                 color: Colors.white,
                   //               ),
-                  //             ],
-                  //           ),
+                  //             ),
+                  //           ],
                   //         ),
+                  //         onPressed: () {
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => AppUI(
+                  //                   onButtonTapped: widget.onButtonTapped),
+                  //             ),
+                  //           );
+                  //         },
                   //       ),
-                  //       PopupMenuItem<int>(
-                  //         value: 1,
-                  //         child: Text(
-                  //           'Low to High',
-                  //           style: TextStyle(fontFamily: 'Courgette'),
+                  //       SizedBox(
+                  //         width: ScreenUtil().setWidth(15),
+                  //       ),
+                  //       RaisedButton(
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(18.0),
                   //         ),
+                  //         color: kPrimaryColor,
+                  //         child: Row(
+                  //           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //           children: <Widget>[
+                  //             Icon(
+                  //               MyFlutterApp.params,
+                  //               color: Colors.white,
+                  //               size: ScreenUtil()
+                  //                   .setSp(23, allowFontScalingSelf: true),
+                  //             ),
+                  //             SizedBox(
+                  //               width: ScreenUtil().setWidth(10),
+                  //             ),
+                  //             Text(
+                  //               "Sort",
+                  //               style: TextStyle(
+                  //                 fontSize: ScreenUtil()
+                  //                     .setSp(17, allowFontScalingSelf: true),
+                  //                 color: Colors.white,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         // onPressed: showPicker,
+                  //         onPressed: () {
+                  //           showModalBottomSheet(
+                  //             context: context,
+                  //             backgroundColor: Colors.white.withOpacity(0.8),
+                  //             barrierColor: Colors.black45,
+                  //             // isScrollControlled: true,
+                  //             isDismissible: true,
+                  //             shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.only(
+                  //               topLeft: Radius.circular(50.0),
+                  //               topRight: Radius.circular(50.0),
+                  //             )),
+                  //             builder: (BuildContext context) {
+                  //               return Container(
+                  //                 padding: EdgeInsets.all(5.0),
+                  //                 height: size.height * 0.34,
+                  //                 child: FilterForProduct(),
+                  //               );
+                  //             },
+                  //           );
+                  //         },
                   //       ),
+                  //       // popUpButton(),
                   //     ],
                   //   ),
-                  // )
+                  // ),
                 ],
               ),
             ),
     );
   }
 }
-
-// class ProductOverViewScreen extends StatefulWidget {
-//   @override
-//   _ProductOverViewScreenState createState() => _ProductOverViewScreenState();
-// }
-
-// class _ProductOverViewScreenState extends State<ProductOverViewScreen>
-//     with SingleTickerProviderStateMixin {
-//   TabController _tabController;
-//   Color _a;
-//   Color _b;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _tabController = TabController(length: 5, vsync: this, initialIndex: 1);
-//   }
-
-//   int _i = 0;
-//   void pressed(context) {
-//     showDialog(
-//       context: context,
-//       child: AlertDialog(
-//         title: Text(_i == 0 ? 'Pick Font Color!' : 'Pick BottomBar Color'),
-//         content: SingleChildScrollView(
-//           child: cp.ColorPicker(
-//             pickerColor: Theme.of(context).primaryColor,
-//             onColorChanged: (color) {
-//               _i == 0
-//                   ? _a = color
-//                   : Provider.of<ThemeP>(context, listen: false)
-//                       .themeRefresh(_a, color);
-//             },
-//             showLabel: true,
-//             pickerAreaHeightPercent: 0.8,
-//           ),
-//         ),
-//         actions: <Widget>[
-//           FlatButton(
-//               onPressed: () {
-//                 if (_i == 0) {
-//                   _i++;
-//                   Navigator.of(context).pop();
-//                   pressed(context);
-//                 } else {
-//                   _i = 0;
-//                   Navigator.of(context).pop();
-//                 }
-//               },
-//               child: Text(_i == 0 ? 'Next' : 'Done'))
-//         ],
-//       ),
-//     );
-//   }
-
-//   void filterProducts(context) {
-//     showDialog(
-//       context: context,
-//       builder: (ctx) => SimpleDialog(
-//         title: Text('Filter by:'),
-//         children: <Widget>[
-//           SimpleDialogOption(
-//             child: Text(
-//               'Diamond Count',
-//               style: TextStyle(color: Theme.of(context).primaryColor),
-//             ),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//               Provider.of<Products>(context, listen: false)
-//                   .filterProducts('Diamond Count');
-//             },
-//           ),
-//           Divider(),
-//           SimpleDialogOption(
-//             child: Text(
-//               'Diamond Weight',
-//               style: TextStyle(color: Theme.of(context).primaryColor),
-//             ),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//               Provider.of<Products>(context, listen: false)
-//                   .filterProducts('Diamond Weight');
-//             },
-//           ),
-//           Divider(),
-//           SimpleDialogOption(
-//             child: Text(
-//               'Gold Weight',
-//               style: TextStyle(color: Theme.of(context).primaryColor),
-//             ),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//               Provider.of<Products>(context, listen: false)
-//                   .filterProducts('Gold Weight');
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final _loadedProduct = Provider.of<Products>(context, listen: true);
-//     final device = MediaQuery.of(context);
-//     return _loadedProduct.products.isEmpty
-//         ? FutureBuilder(
-//             future: _loadedProduct.fetchAndSetProducts(context: context),
-//             builder: (_, snap) =>
-//                 snap.connectionState == ConnectionState.waiting
-//                     ? SplashScreen()
-//                     : buildScaffold(device, _loadedProduct,context))
-//         : buildScaffold(device, _loadedProduct,context);
-//   }
-
-//   Scaffold buildScaffold(MediaQueryData device, Products _loadedProduct,context) {
-//     final _MySearchDelegate delegate=_MySearchDelegate([]);
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Colors.white,
-//         elevation: 0.0,
-//         centerTitle: true,
-//         leading: IconButton(
-//           icon: Icon(Icons.color_lens, color: Colors.black),
-//           onPressed:()=> pressed(context),
-//         ),
-//         title: Text('Products',
-//             style: TextStyle(
-//                 fontFamily: 'Gilroy',
-//                 fontSize: 20.0,
-//                 color: Color(0xFF545D68))),
-//         actions: <Widget>[
-//           IconButton(
-//             icon: Icon(Icons.search),
-//             onPressed: () async {
-//               final String selected = await showSearch<String>(
-//                 context: context,
-//                 delegate: delegate,
-//               );
-//               if (selected != null) {
-//                 Scaffold.of(context).showSnackBar(
-//                   SnackBar(
-//                     content: Text('You have selected the word: $selected'),
-//                   ),
-//                 );
-//               }
-//             },
-//           ),
-//           IconButton(
-//             icon: Icon(Icons.filter_list, color: Color(0xFF545D68)),
-//             onPressed:()=> filterProducts(context),
-//           ),
-//         ],
-//       ),
-//       body: ListViewProductOverViewScreen(tabController: _tabController),
-//     );
-//   }
-// }
-
-// class ListViewProductOverViewScreen extends StatelessWidget {
-//   const ListViewProductOverViewScreen({
-//     Key key,
-//     @required TabController tabController,
-//   })  : _tabController = tabController,
-//         super(key: key);
-
-//   final TabController _tabController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final device = MediaQuery.of(context);
-//     final _loadedProduct = Provider.of<Products>(context, listen: false);
-//     return ListView(
-//       children: <Widget>[
-//         SizedBox(height: 8.0),
-//         Row(
-//           children: <Widget>[
-//             SizedBox(width: 10),
-//             Text('Nose Pins',
-//                 style: TextStyle(
-//                     color: Theme.of(context).accentColor,
-//                     fontFamily: 'Varela',
-//                     fontSize: 35.0,
-//                     fontWeight: FontWeight.bold)),
-//           ],
-//         ),
-//         //SizedBox(height: 5.0),
-//         Row(
-//           children: <Widget>[
-//             SizedBox(width: 15),
-//             Expanded(
-//               child: TabBar(
-//                   controller: _tabController,
-//                   indicatorColor: Colors.transparent,
-//                   labelColor: Theme.of(context).primaryColor,
-//                   isScrollable: true,
-//                   labelPadding: EdgeInsets.only(right: device.size.width / 12),
-//                   unselectedLabelColor: Color(0xFFCDCDCD),
-//                   //indicator: UnderlineTabIndicator(insets:EdgeInsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
-//                   tabs: [
-//                     Tab(
-//                       child: Text('All',
-//                           style: TextStyle(
-//                             fontFamily: 'Varela',
-//                             fontSize: 21.0,
-//                           )),
-//                     ),
-//                     Tab(
-//                       child: Text('Featured',
-//                           style: TextStyle(
-//                             fontFamily: 'Varela',
-//                             fontSize: 21.0,
-//                           )),
-//                     ),
-//                     Tab(
-//                       child: Text('New',
-//                           style: TextStyle(
-//                             fontFamily: 'Varela',
-//                             fontSize: 21.0,
-//                           )),
-//                     ),
-//                     Tab(
-//                       child: Text('Highest Selling',
-//                           style: TextStyle(
-//                             fontFamily: 'Varela',
-//                             fontSize: 21.0,
-//                           )),
-//                     ),
-//                     Tab(
-//                       child: Text('Fancy Diamond',
-//                           style: TextStyle(
-//                             fontFamily: 'Varela',
-//                             fontSize: 21.0,
-//                           )),
-//                     ),
-//                   ]),
-//             ),
-//           ],
-//         ),
-//         Container(
-//           height: device.size.height - 238.0,
-//           width: double.infinity,
-//           child: TabBarView(
-//             controller: _tabController,
-//             children: [
-//               CookiePage(
-
-//                 _loadedProduct.products),
-//               CookiePage(
-//                 _loadedProduct.findByCategory('featured'),
-//               ),
-//               CookiePage(
-//                 _loadedProduct.findByCategory('new'),
-//               ),
-//               CookiePage(
-//                 _loadedProduct.findByCategory('highestSelling'),
-//               ),
-//               CookiePage(
-//                 _loadedProduct.findByCategory('fancyDiamond'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// class _MySearchDelegate extends SearchDelegate<String> {
-//   final List<String> _words;
-//   final List<String> _history;
-//   _MySearchDelegate(List<String> words)
-//       : _words = words,
-//         _history = <String>['apple', 'hello', 'world', 'flutter'],
-//         super();
-
-//   @override
-//   Widget buildLeading(BuildContext context) {
-//     return IconButton(
-//       tooltip: 'Back',
-//       icon: AnimatedIcon(
-//         icon: AnimatedIcons.menu_arrow,
-//         progress: transitionAnimation,
-//       ),
-//       onPressed: () {
-//         // SearchDelegate.close() can return vlaues, similar to Navigator.pop().
-//         this.close(context, null);
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget buildResults(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Center(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: <Widget>[
-//             Text('You have selected the word:'),
-//             GestureDetector(
-//               onTap: () {
-//                 // Returns this.query as result to previous screen, c.f.
-//                 // `showSearch()` above.
-//                 this.close(context, this.query);
-//               },
-//               child: Text(
-//                 this.query,
-//                 style: Theme.of(context)
-//                     .textTheme
-//                     .headline4
-//                     .copyWith(fontWeight: FontWeight.bold),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   @override
-//   Widget buildSuggestions(BuildContext context) {
-//     //
-//     final Iterable<String> suggestions = this.query.isEmpty
-//         ? _history
-//         : _words.where((word) => word.startsWith(query));
-
-//     return _SuggestionList(
-//       query: this.query,
-//       suggestions: suggestions.toList(),
-//       onSelected: (String suggestion) {
-//         this.query = suggestion;
-//         this._history.insert(0, suggestion);
-//         showResults(context);
-//       },
-//     );
-//   }
-
-//   // Action buttons at the right of search bar.
-//   @override
-//   List<Widget> buildActions(BuildContext context) {
-//     return <Widget>[
-//       query.isEmpty
-//           ? IconButton(
-//               tooltip: 'Voice Search',
-//               icon: const Icon(Icons.mic),
-//               onPressed: () {
-//                 this.query = 'TODO: implement voice input';
-//               },
-//             )
-//           : IconButton(
-//               tooltip: 'Clear',
-//               icon: const Icon(Icons.clear),
-//               onPressed: () {
-//                 query = '';
-//                 showSuggestions(context);
-//               },
-//             )
-//     ];
-//   }
-// }
-
-// // Suggestions list widget displayed in the search page.
-// class _SuggestionList extends StatelessWidget {
-//   const _SuggestionList({this.suggestions, this.query, this.onSelected});
-
-//   final List<String> suggestions;
-//   final String query;
-//   final ValueChanged<String> onSelected;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final textTheme = Theme.of(context).textTheme.subhead;
-//     return ListView.builder(
-//       itemCount: suggestions.length,
-//       itemBuilder: (BuildContext context, int i) {
-//         final String suggestion = suggestions[i];
-//         return ListTile(
-//           leading: query.isEmpty ? Icon(Icons.history) : Icon(null),
-//           // Highlight the substring that matched the query.
-//           title: RichText(
-//             text: TextSpan(
-//               text: suggestion.substring(0, query.length),
-//               style: textTheme.copyWith(fontWeight: FontWeight.bold),
-//               children: <TextSpan>[
-//                 TextSpan(
-//                   text: suggestion.substring(query.length),
-//                   style: textTheme,
-//                 ),
-//               ],
-//             ),
-//           ),
-//           onTap: () {
-//             onSelected(suggestion);
-//           },
-//         );
-//       },
-//     );
-//   }
-// }

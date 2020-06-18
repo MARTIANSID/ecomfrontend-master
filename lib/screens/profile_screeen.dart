@@ -11,9 +11,13 @@ import 'my_order.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserPage extends StatefulWidget {
+
+  final int pageIndex;
+  final PageController pageController;
   final void Function(int) onButtonTapped;
 
-  const UserPage({Key key, this.onButtonTapped}) : super(key: key);
+  const UserPage({Key key, this.pageIndex, this.pageController, this.onButtonTapped}) : super(key: key);
+
   @override
   _UserPageState createState() => _UserPageState();
 }

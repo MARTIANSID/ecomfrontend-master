@@ -1,6 +1,7 @@
 import 'package:Flutter/components/text_field_container.dart';
 import 'package:Flutter/constant/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
@@ -25,6 +26,10 @@ class RoundedInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,
+        width: 411.42857142857144,
+        height: 774.8571428571429,
+        allowFontScaling: true);
     return TextFieldContainer(
       color: color,
       child: Stack(
@@ -36,7 +41,7 @@ class RoundedInputField extends StatelessWidget {
             cursorColor: kPrimaryColor,
             style: TextStyle(
               fontFamily: 'Gilroy',
-              fontSize: 16.0,
+              fontSize: ScreenUtil().setSp(16,allowFontScalingSelf: true),
             ),
             controller: controller,
             keyboardType: hintText == "Enter Phone Number" ||
@@ -56,10 +61,10 @@ class RoundedInputField extends StatelessWidget {
           proceed
               ? Positioned(
                   right: 0.0,
-                  bottom: MediaQuery.of(context).size.height*0.0065,
+                  bottom: ScreenUtil().setHeight(50.375),
                   child: Container(
-                    height: MediaQuery.of(context).size.height*0.051,
-                    width: MediaQuery.of(context).size.width*0.097,
+                    height: ScreenUtil().setHeight(40),
+                    width: ScreenUtil().setWidth(40),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.cyan,

@@ -23,7 +23,6 @@ class CookiePage extends StatefulWidget {
   final int build;
   final int cert;
 
-
   CookiePage(
       {Key key,
       this.products,
@@ -31,7 +30,11 @@ class CookiePage extends StatefulWidget {
       this.select,
       this.count,
       this.sort,
-      this.c,this.color,this.diamond,this.build,this.cert})
+      this.c,
+      this.color,
+      this.diamond,
+      this.build,
+      this.cert})
       : super(key: key);
 
   @override
@@ -51,12 +54,8 @@ class _CookiePageState extends State<CookiePage> {
   int value;
   String color;
   int colorr;
-  bool isLoadingg=false;
-  
+  bool isLoadingg = false;
 
- 
- 
- 
   Future<void> getMoreProducts() async {
     if (widget.select == 'all')
       await Provider.of<Pagination>(context, listen: false).getProducts(
@@ -101,39 +100,33 @@ class _CookiePageState extends State<CookiePage> {
   }
 
   createList() async {
-    
-      widget.scrollController.addListener(() async {
-        if (widget.scrollController.position.maxScrollExtent ==
-            widget.scrollController.position.pixels) {
-          if (!mounted)
-            setState(() {
-              isLoading = true;
-            });
-          // if (Provider.of<Pagination>(context, listen: false).c) {
-          //    Provider.of<Pagination>(context,listen:false).pageStart();
+    widget.scrollController.addListener(() async {
+      if (widget.scrollController.position.maxScrollExtent ==
+          widget.scrollController.position.pixels) {
+        if (!mounted)
+          setState(() {
+            isLoading = true;
+          });
+        // if (Provider.of<Pagination>(context, listen: false).c) {
+        //    Provider.of<Pagination>(context,listen:false).pageStart();
 
-          // }
+        // }
 
-          Provider.of<Pagination>(context, listen: false)
-              .pageAdd(widget.select);
+        Provider.of<Pagination>(context, listen: false).pageAdd(widget.select);
 
-          await getMoreProducts();
-          if (!mounted)
-            setState(() {
-              isLoading = false;
-            });
-        }
-      });
-    
+        await getMoreProducts();
+        if (!mounted)
+          setState(() {
+            isLoading = false;
+          });
+      }
+    });
   }
 
   void didChangeDependencies() async {
-    if (isInit){
-  
-   
-      if(widget.select!='fav')
-      {
-      createList();
+    if (isInit) {
+      if (widget.select != 'fav') {
+        createList();
       }
       // if (Provider.of<Auth>(context, listen: false).autoLogin) {
       //   if (!mounted) return;
@@ -191,8 +184,7 @@ class _CookiePageState extends State<CookiePage> {
   //   });
   // }
 
-  showPicker({
-      BuildContext context,prodcut,color,cert,diamond,build}) {
+  showPicker({BuildContext context, prodcut, color, cert, diamond, build}) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -208,12 +200,12 @@ class _CookiePageState extends State<CookiePage> {
         return Container(
           padding: EdgeInsets.all(5.0),
           child: AddToCart(
-            product:prodcut ,
+            product: prodcut,
             image: color,
             cert: cert,
             diamond: diamond,
             build: build,
-            updateCart: false,                    
+            updateCart: false,
           ),
         );
       },
@@ -333,79 +325,225 @@ class _CookiePageState extends State<CookiePage> {
         allowFontScaling: true);
     print(size.height);
     print(size.width.toString() + 'DC');
-    return isLoadingg?Center(child:CircularProgressIndicator()):Column(
-      children: <Widget>[
-        Expanded(
-          child: GridView.builder(
-            controller: widget.scrollController,
-            scrollDirection: Axis.vertical,
-            // padding: EdgeInsets.all(10.0),
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.69,
-              crossAxisSpacing: 5.0,
-              mainAxisSpacing: 5.0,
-            ),
-            itemCount: widget.products.length,
-            itemBuilder: (context, i) => Container(
-              width: ScreenUtil().setWidth(143.85),
-              height: ScreenUtil().setHeight(542.5),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductDetail(),
-                    ),
-                  );
-                },
-                onLongPressEnd: (details) {},
-                onLongPressStart: (details) {
-                  dateSelect(context, details.globalPosition.dx,
-                      details.globalPosition.dy, widget.products[i]);
-                },
-                child: Container(
-                  // width: MediaQuery.of(context).size.width * 0.35,
-                  // height: MediaQuery.of(context).size.height * 0.7,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        // color: Colors.amber,
-                        child: Image(
-                          height: ScreenUtil().setHeight(178.25),
-                          width: ScreenUtil().setWidth(164.4),
-                          image: widget.color==0?NetworkImage(widget.products[i].yellow): widget.color==1?NetworkImage(widget.products[i].white): widget.color==2?NetworkImage(widget.products[i].rose):NetworkImage(''),
-                          fit: BoxFit.contain,
-                        ),
+    return isLoadingg
+        ? Center(child: CircularProgressIndicator())
+        : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    GridView.builder(
+                      controller: widget.scrollController,
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(left: 25, right: 26),
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.1,
+                        crossAxisSpacing: 20.0,
+                        mainAxisSpacing: 15.0,
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              widget.products[i].styleNumber,
-                              style: TextStyle(
-                                  fontSize: ScreenUtil()
-                                      .setSp(20, allowFontScalingSelf: true),
-                                  fontFamily: 'Gilroy',
-                                  fontWeight: FontWeight.bold),
+                      itemCount: widget.products.length,
+                      itemBuilder: (context, i) => Stack(
+                        // alignment: Alignment.bottomRight,
+                        children: <Widget>[
+                          Container(
+                            width: ScreenUtil().setWidth(159),
+                            height: ScreenUtil().setHeight(150),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.white,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.black.withOpacity(0.37),
+                                  offset: Offset(2,5),
+                                )
+                              ]
                             ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(28.77),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetail(),
+                                  ),
+                                );
+                              },
+                              onLongPressEnd: (details) {},
+                              onLongPressStart: (details) {
+                                dateSelect(
+                                    context,
+                                    details.globalPosition.dx,
+                                    details.globalPosition.dy,
+                                    widget.products[i]);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 21, right: 4),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          // color: Colors.amber,
+                                          child: Image(
+                                            height: ScreenUtil().setHeight(122),
+                                            width: ScreenUtil().setWidth(117),
+                                            image: widget.color == 0
+                                                ? NetworkImage(
+                                                    widget.products[i].yellow)
+                                                : widget.color == 1
+                                                    ? NetworkImage(widget
+                                                        .products[i].white)
+                                                    : widget.color == 2
+                                                        ? NetworkImage(widget
+                                                            .products[i].rose)
+                                                        : NetworkImage(widget
+                                                            .products[i]
+                                                            .yellow),
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 16.0),
+                                          child: RotatedBox(
+                                            quarterTurns: -1,
+                                            child: Text(
+                                              widget.products[i].styleNumber,
+                                              style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf: true),
+                                                fontFamily: 'Gilroy Regular',
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    "5000 ₹",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(18,
+                                          allowFontScalingSelf: true),
+                                      fontFamily: 'Gilroy Regular',
+                                    ),
+                                  ),
+                                  // Provider.of<Pagination>(context, listen: false)
+                                  //             .isPriced &&
+                                  //         widget.select != 'fav'
+                                  //     ? OutlineButton(
+                                  //         onPressed: () {},
+                                  //         child: Text(
+                                  //           'Request Prices',
+                                  //           style: TextStyle(
+                                  //               color: Colors.black,
+                                  //               fontSize: ScreenUtil().setSp(15,
+                                  //                   allowFontScalingSelf:
+                                  //                       true)),
+                                  //         ),
+                                  //         borderSide: BorderSide(
+                                  //             color: Colors.black, width: 1.0),
+                                  //         shape: RoundedRectangleBorder(
+                                  //             // side: BorderSide(color: kPrimaryColor, width: 1.0),
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(18.0)))
+                                  //     : widget.diamond == 0 && widget.select != 'fav'
+                                  //         ? Text(widget.products[i].vVS_EF)
+                                  //         : widget.diamond == 1 && widget.select != 'fav'
+                                  //             ? Text(widget.products[i].vVS_FG)
+                                  //             : widget.diamond == 2 &&
+                                  //                     widget.select != 'fav'
+                                  //                 ? Text(widget
+                                  //                     .products[i].vVS_VS_FG)
+                                  //                 : widget.diamond == 3 &&
+                                  //                         widget.select != 'fav'
+                                  //                     ? Text(widget
+                                  //                         .products[i].vS_FG)
+                                  //                     : widget.diamond == 4 &&
+                                  //                             widget.select != 'fav'
+                                  //                         ? Text(widget.products[i].sI_HI)
+                                  //                         : Text(''),
+
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  //   // crossAxisAlignment: CrossAxisAlignment.center,
+                                  //   children: <Widget>[
+                                  //     IconButton(
+                                  //       icon: Icon(widget.products[i].isFavourite
+                                  //           ? Icons.favorite
+                                  //           : Icons.favorite_border),
+                                  //       color: kPrimaryColor,
+                                  //       onPressed: () async {
+                                  //         await Provider.of<Products>(context, listen: false)
+                                  //             .toogleFavourite(
+                                  //                 styleNumber: widget.products[i].styleNumber,
+                                  //                 context: context);
+                                  //         setState(() {});
+                                  //       },
+                                  //     ),
+                                  //     IconButton(
+                                  //       icon: Icon(Icons.shopping_cart),
+                                  //       color: kPrimaryColor,
+                                  //       onPressed: () async {
+                                  //         await Provider.of<Cart>(context, listen: false)
+                                  //             .addCart(widget.products[i], context);
+
+                                  //         showFloatingFlushbar(context,
+                                  //             'Product has been added to your favourites"❤"');
+                                  //       },
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 20.0,
+                                  // ),
+                                  // Text(
+                                  //   '\$52.90',
+                                  //   style: TextStyle(
+                                  //     fontSize: 20.0,
+                                  //     fontFamily: 'Gilroy',
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
                             ),
-                            Row(
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               // crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 GestureDetector(
-                                  child: Icon(
-                                    widget.products[i].isFavourite
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: kPrimaryColor,
+                                  child: Container(
+                                    height: ScreenUtil().setHeight(29),
+                                    width: ScreenUtil().setWidth(29),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFF34B0D9),
+                                          Color(0xFF3685CB),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Icon(
+                                      widget.products[i].isFavourite
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: Colors.white,
+                                      size: ScreenUtil().setSp(16,allowFontScalingSelf: true),
+                                    ),
                                   ),
                                   onTap: () async {
                                     await Provider.of<Pagination>(context,
@@ -415,109 +553,61 @@ class _CookiePageState extends State<CookiePage> {
                                                 widget.products[i].styleNumber,
                                             context: context,
                                             select: widget.select);
-                                     setState(() {});
+                                    setState(() {});
                                   },
                                 ),
                                 SizedBox(
-                                  width: ScreenUtil().setWidth(12.33),
+                                  height: ScreenUtil().setHeight(6.0),
                                 ),
                                 GestureDetector(
-                                  child: Icon(Icons.shopping_cart,
-                                      color: kPrimaryColor),
+                                  child: Container(
+                                    height: ScreenUtil().setHeight(29),
+                                    width: ScreenUtil().setWidth(29),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFF34B0D9),
+                                          Color(0xFF3685CB),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Icon(
+                                      Icons.shopping_cart,
+                                      color: Colors.white,
+                                      size: ScreenUtil().setSp(13,allowFontScalingSelf: true),
+                                    ),
+                                  ),
                                   onTap: () async {
                                     showPicker(
-                                      context: context,
-                                      color: widget.color,
-                                      diamond: widget.diamond,
-                                      cert: widget.cert,
-                                      build:widget.build,
-                                      prodcut: widget.products[i]
-
-                                       
-                                   
-                                        );
+                                        context: context,
+                                        color: widget.color,
+                                        diamond: widget.diamond,
+                                        cert: widget.cert,
+                                        build: widget.build,
+                                        prodcut: widget.products[i]);
                                   },
                                 ),
                               ],
                             ),
-                          ]),
-
-                      Provider.of<Pagination>(context, listen: false)
-                          .isPriced && widget.select!='fav'?
-                        OutlineButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Request Prices',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: ScreenUtil()
-                                    .setSp(15, allowFontScalingSelf: true)),
                           ),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.0),
-                          shape: RoundedRectangleBorder(
-                              // side: BorderSide(color: kPrimaryColor, width: 1.0),
-                              borderRadius: BorderRadius.circular(18.0))):
-                        widget.diamond==0 && widget.select!='fav'?Text(widget.products[i].vVS_EF):widget.diamond==1 && widget.select!='fav'?Text(widget.products[i].vVS_FG):widget.diamond==2 && widget.select!='fav'?Text(widget.products[i].vVS_VS_FG):widget.diamond==3 && widget.select!='fav'?Text(widget.products[i].vS_FG):widget.diamond==4 && widget.select!='fav'?Text(widget.products[i].sI_HI):Text(''),
- 
-
-       
-
-
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   // crossAxisAlignment: CrossAxisAlignment.center,
-                      //   children: <Widget>[
-                      //     IconButton(
-                      //       icon: Icon(widget.products[i].isFavourite
-                      //           ? Icons.favorite
-                      //           : Icons.favorite_border),
-                      //       color: kPrimaryColor,
-                      //       onPressed: () async {
-                      //         await Provider.of<Products>(context, listen: false)
-                      //             .toogleFavourite(
-                      //                 styleNumber: widget.products[i].styleNumber,
-                      //                 context: context);
-                      //         setState(() {});
-                      //       },
-                      //     ),
-                      //     IconButton(
-                      //       icon: Icon(Icons.shopping_cart),
-                      //       color: kPrimaryColor,
-                      //       onPressed: () async {
-                      //         await Provider.of<Cart>(context, listen: false)
-                      //             .addCart(widget.products[i], context);
-
-                      //         showFloatingFlushbar(context,
-                      //             'Product has been added to your favourites"❤"');
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
-                      // SizedBox(
-                      //   height: 20.0,
-                      // ),
-                      // Text(
-                      //   '\$52.90',
-                      //   style: TextStyle(
-                      //     fontSize: 20.0,
-                      //     fontFamily: 'Gilroy',
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: ScreenUtil().setHeight(93),
+                    ),
+                  ],
                 ),
-                // ),
               ),
-            ),
-          ),
-        ),
-        if (isLoading)
-          CircularProgressIndicator(
-            backgroundColor: Colors.cyan,
-          )
-      ],
-    );
+              if (isLoading)
+                CircularProgressIndicator(
+                  backgroundColor: Colors.cyan,
+                )
+            ],
+          );
 
     //body: ListView(
     //   children: <Widget>[

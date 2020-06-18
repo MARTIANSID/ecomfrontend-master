@@ -39,7 +39,12 @@ dependencies:
   carousel_slider: ^1.3.0
   flutter_screenutil: ^1.1.0 
   flutter_form_builder: ^3.10.1
-  cached_network_image: ^2.2.0+1 
+  cached_network_image: ^2.2.0+1
+  url_launcher: ^5.4.10
+  liquid_swipe:
+    git:
+      url: git://github.com/iamSahdeep/liquid_swipe_flutter.git
+      ref: 1.5.0VDEV
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -83,9 +88,21 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Gilroy
+    - family: Gilroy Regular
       fonts:
-        - asset: assets/fonts/Gilroy-Regular.ttf
+        - asset: assets/fonts/GILROY-REGULAR.TTF
+    - family: Gilroy Bold
+      fonts:
+        - asset: assets/fonts/GILROY-BOLD.TTF
+    - family: Gilroy Heavy
+      fonts:
+        - asset: assets/fonts/GILROY-HEAVY.TTF
+    - family: Gilroy Light
+      fonts:
+        - asset: assets/fonts/GILROY-LIGHT.TTF
+    - family: Gilroy Medium
+      fonts:
+        - asset: assets/fonts/GILROY-MEDIUM.TTF
     - family: Gilroy Black
       fonts:
         - asset: assets/fonts/Gilroy-Black.ttf

@@ -14,11 +14,8 @@ class PhotoDetailScreen extends StatelessWidget {
         height: double.infinity,
         width: double.infinity,
         color: Colors.black,
-        child: pv.PhotoViewGallery(
-            
-        )));
-                
-              
-    
+        // child: pv.PhotoViewGallery(),
+      ),
+    );
   }
 }
