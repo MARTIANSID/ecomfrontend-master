@@ -937,7 +937,7 @@ class AddToCartTState extends State<AddToCart> {
                       dataSelectConfirmMessage(
                         context,
                         'Alert!',
-                        "Are you sure, You want to add this Nose Pin in Cart?",
+                        "Are you sure, You want to add this Nose Pin in Cart",
                         'Request Prices',
                       ).then((value) async {
                         if (value) {
