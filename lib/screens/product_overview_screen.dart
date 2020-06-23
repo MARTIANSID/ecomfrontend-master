@@ -310,7 +310,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                           height: ScreenUtil().setHeight(22 + 45 + 11 + 20),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(30, 0, 24, 15),
+                          padding: EdgeInsets.fromLTRB(24, 0, 25, 15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -719,10 +719,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                             height: ScreenUtil().setHeight(22),
                           ),
                           Container(
-                            width: ScreenUtil().setHeight(360),
+                            width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                25, 11, 26, searchSelected ? 0 : 20),
+                                24, 11, 25, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -808,12 +808,12 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
+                                        height: ScreenUtil()
+                                            .setHeight(searchSelected ? 0 : 27),
+                                        width: ScreenUtil()
+                                            .setWidth(searchSelected ? 0 : 27),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
-                                          height: ScreenUtil().setHeight(
-                                              searchSelected ? 0 : 27),
-                                          width: ScreenUtil().setWidth(
-                                              searchSelected ? 0 : 27),
                                           color: Colors.black,
                                         ),
                                       )
@@ -828,26 +828,30 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                         width: 0,
                                       ),
                                 searchSelectedDoneButton
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          FocusScopeNode currentFocus =
-                                              FocusScope.of(context);
-                                          currentFocus.unfocus();
-                                          textEditingController.clear();
-                                          setState(() {
-                                            searchValue = "";
-                                            searchSelected = false;
-                                            searchSelectedDoneButton = false;
-                                          });
-                                        },
-                                        child: Text(
-                                          'Done',
-                                          style: TextStyle(
-                                            fontFamily: 'Gilroy Bold',
-                                            color: Colors.black,
-                                            fontSize: ScreenUtil().setSp(18,
-                                                allowFontScalingSelf: true),
-                                            fontWeight: FontWeight.w500,
+                                    ? Container(
+                                        height: ScreenUtil().setHeight(22),
+                                        width: ScreenUtil().setWidth(45),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            FocusScopeNode currentFocus =
+                                                FocusScope.of(context);
+                                            currentFocus.unfocus();
+                                            textEditingController.clear();
+                                            setState(() {
+                                              searchValue = "";
+                                              searchSelected = false;
+                                              searchSelectedDoneButton = false;
+                                            });
+                                          },
+                                          child: Text(
+                                            'Done',
+                                            style: TextStyle(
+                                              fontFamily: 'Gilroy Bold',
+                                              color: Colors.black,
+                                              fontSize: ScreenUtil().setSp(16,
+                                                  allowFontScalingSelf: true),
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
                                       )
@@ -914,8 +918,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                             .center,
                                                     children: <Widget>[
                                                       Container(
-                                                        height: 90.0,
-                                                        width: 90.0,
+                                                        height: ScreenUtil()
+                                                            .setHeight(90),
+                                                        width: ScreenUtil()
+                                                            .setWidth(90),
                                                         // color: Colors.amber,
                                                         child: Image(
                                                           image:
@@ -936,7 +942,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                       //   styleNumber[index],
                                                       //   style: TextStyle(
                                                       //     fontFamily: 'Varela',
-                                                      //     fontSize: 21.0,
+                                                      //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
                                                       //   ),
                                                       // )
                                                       RichText(
@@ -952,7 +958,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 FontWeight.bold,
                                                             fontFamily:
                                                                 'Varela',
-                                                            fontSize: 21.0,
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
                                                           ),
                                                           children: [
                                                             TextSpan(
@@ -963,7 +972,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 // fontWeight: FontWeight.bold,
                                                                 fontFamily:
                                                                     'Varela',
-                                                                fontSize: 21.0,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
                                                               ),
                                                             ),
                                                             TextSpan(
@@ -976,7 +988,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                         .bold,
                                                                 fontFamily:
                                                                     'Varela',
-                                                                fontSize: 21.0,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
                                                               ),
                                                             ),
                                                             TextSpan(
@@ -987,7 +1002,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 // fontWeight: FontWeight.bold,
                                                                 fontFamily:
                                                                     'Varela',
-                                                                fontSize: 21.0,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
                                                               ),
                                                             ),
                                                           ],

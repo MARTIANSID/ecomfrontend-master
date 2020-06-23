@@ -4,12 +4,14 @@ import 'dart:ui';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/products.dart';
+import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/widgets/cookie_page.dart';
 import 'package:Flutter/widgets/filter_widget.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import '../constant/const.dart';
@@ -87,6 +89,32 @@ class _FavouriteScreenState extends State<FavouriteScreen>
     });
   }
 
+  List<dynamic> suggestion;
+  bool isLoadingSearch = false;
+  Future<void> getSearch(query) async {
+    setState(() {
+      isLoadingSearch = true;
+    });
+    await Provider.of<Searchh>(context, listen: false)
+        .getSearch(query: query.toUpperCase(), context: context)
+        .then((value) {
+      setState(() {
+        suggestion = Provider.of<Searchh>(context, listen: false)
+            .searchResult
+            .where((element) =>
+                element.styleNumber.contains(searchValue.toUpperCase()))
+            .toList();
+        isLoadingSearch = false;
+        print('DC SEARCH');
+      });
+    });
+
+    print(suggestion);
+    // setState(() {
+
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     final favProducts = Provider.of<Pagination>(context).favProducts;
@@ -127,10 +155,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
       'NP113',
     ];
     List<String> info = [];
-    final suggestion = styleNumber
-        .where(
-            (element) => element.contains(searchValue.toString().toUpperCase()))
-        .toList();
+    // final suggestion = styleNumber
+    //     .where(
+    //         (element) => element.contains(searchValue.toString().toUpperCase()))
+    //     .toList();
     print('Search Selected' + searchSelected.toString());
     return Scaffold(
       body: Container(
@@ -146,7 +174,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                     height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 26, 20),
+                    padding: EdgeInsets.fromLTRB(25, 0, 26, 0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -225,6 +253,9 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(20),
+                  ),
                   Expanded(
                     child: favProducts.length > 0
                         ? CookiePage(
@@ -282,10 +313,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                       height: ScreenUtil().setHeight(22),
                     ),
                     Container(
-                      width: ScreenUtil().setHeight(360),
+                      width: ScreenUtil().setWidth(360),
                       height: ScreenUtil().setHeight(45),
                       margin: EdgeInsets.fromLTRB(
-                          25, 11, 26, searchSelected ? 0 : 20),
+                          24, 11, 25, searchSelected ? 0 : 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -306,7 +337,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                               children: <Widget>[
                                 TextField(
                                   controller: textEditingController,
-                                  onTap: () {
+                                  onTap: () async {
                                     setState(() {
                                       searchSelected = true;
                                     });
@@ -316,29 +347,39 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                       });
                                     });
                                   },
-                                  onChanged: (value) {
+                                  onChanged: (value) async {
                                     setState(() {
-                                      searchValue = value;
-                                      // info=styleNumber[].split(value);
-                                      // print(styleNumber[1].split(searchValue));
+                                      // isLoadingSearch = true;
+                                      searchValue = value.toUpperCase();
                                     });
+                                    // setState(() {
+
+                                    //   // info=styleNumber[].split(value);
+                                    //   // print(styleNumber[1].split(searchValue));
+                                    // });
+                                    await getSearch(searchValue.toUpperCase());
+                                    // setState(() {
+                                    //   isLoadingSearch = false;
+                                    // });
                                     // getSearchResult(value.toUpperCase());
                                   },
                                   decoration: InputDecoration(
                                     // contentPadding: EdgeInsets.all(15.0),
                                     suffixIcon: searchSelected
                                         ? GestureDetector(
-                                            onTap: () =>
-                                                textEditingController.clear(),
+                                            onTap: () {
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                              });
+                                            },
                                             child: Icon(Icons.clear),
                                           )
                                         : SizedBox(
                                             height: 0.0,
                                             width: 0.0,
                                           ),
-                                    hintText: !searchSelected
-                                        ? ''
-                                        : 'SEARCH GEMSTORY',
+                                    hintText: 'SEARCH GEMSTORY',
                                     hintStyle: TextStyle(
                                       fontFamily: 'Gilroy Medium',
                                       color: Color(0xFF595959),
@@ -347,27 +388,23 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                     ),
                                     border: InputBorder.none,
                                   ),
-                                  textAlign: TextAlign.start,
+                                  textAlign: searchSelected
+                                      ? TextAlign.start
+                                      : TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Gilroy Regular',
                                       fontSize: ScreenUtil().setSp(16,
                                           allowFontScalingSelf: true)),
                                 ),
-                                searchSelected
-                                    ? SizedBox(
-                                        height: 0.0,
-                                        width: 0.0,
-                                      )
-                                    : Center(child: Text('SEARCH GEMSTORY')),
                                 AnimatedContainer(
                                   duration: Duration(milliseconds: 600),
                                   margin: EdgeInsets.only(right: 6.0),
+                                  height: ScreenUtil()
+                                      .setHeight(searchSelected ? 0 : 27),
+                                  width: ScreenUtil()
+                                      .setWidth(searchSelected ? 0 : 27),
                                   child: SvgPicture.asset(
                                     'assets/icons/notificationIcon.svg',
-                                    height: ScreenUtil()
-                                        .setHeight(searchSelected ? 0 : 27),
-                                    width: ScreenUtil()
-                                        .setWidth(searchSelected ? 0 : 27),
                                     color: Colors.black,
                                   ),
                                 )
@@ -382,26 +419,30 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                   width: 0,
                                 ),
                           searchSelectedDoneButton
-                              ? GestureDetector(
-                                  onTap: () {
-                                    FocusScopeNode currentFocus =
-                                        FocusScope.of(context);
-                                    currentFocus.unfocus();
-                                    textEditingController.clear();
-                                    setState(() {
-                                      searchValue = "";
-                                      searchSelected = false;
-                                      searchSelectedDoneButton = false;
-                                    });
-                                  },
-                                  child: Text(
-                                    'Done',
-                                    style: TextStyle(
-                                      fontFamily: 'Gilroy Bold',
-                                      color: Colors.black,
-                                      fontSize: ScreenUtil().setSp(18,
-                                          allowFontScalingSelf: true),
-                                      fontWeight: FontWeight.w500,
+                              ? Container(
+                                  height: ScreenUtil().setHeight(22),
+                                  width: ScreenUtil().setWidth(45),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      currentFocus.unfocus();
+                                      textEditingController.clear();
+                                      setState(() {
+                                        searchValue = "";
+                                        searchSelected = false;
+                                        searchSelectedDoneButton = false;
+                                      });
+                                    },
+                                    child: Text(
+                                      'Done',
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy Bold',
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -426,104 +467,121 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             height: 0.0,
                             width: 0.0,
                           )
-                        : Container(
-                            height: ScreenUtil().setHeight(600.0),
-                            width: ScreenUtil().setHeight(360),
-                            margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              // physics: BouncingScrollPhysics(),
-                              itemCount: suggestion.length,
-                              itemBuilder: (context, index) {
-                                info = suggestion[index].split(searchValue);
-                                print(info);
-                                return suggestion.length > 0
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20.0, right: 20.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              height: 90.0,
-                                              width: 90.0,
-                                              // color: Colors.amber,
-                                              child: Image.asset(
-                                                'assets/images/nosepin12.png',
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                            // Text(
-                                            //   styleNumber[index],
-                                            //   style: TextStyle(
-                                            //     fontFamily: 'Varela',
-                                            //     fontSize: 21.0,
-                                            //   ),
-                                            // )
-                                            RichText(
-                                              text: TextSpan(
-                                                // text: suggestion[index].substring(
-                                                //   suggestion[index].indexOf(
-                                                //       searchValue),
-                                                //   searchValue.length,
-                                                // ),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Varela',
-                                                  fontSize: 21.0,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: info[0],
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      // fontWeight: FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: 21.0,
+                        : isLoadingSearch
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Container(
+                                height: ScreenUtil().setHeight(600.0),
+                                width: ScreenUtil().setHeight(360),
+                                margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: suggestion.length > 0
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: Provider.of<Searchh>(context,
+                                                listen: false)
+                                            .searchResult
+                                            .length,
+                                        itemBuilder: (context, index) {
+                                          info = suggestion[index]
+                                              .styleNumber
+                                              .split(searchValue);
+                                          print(info);
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20.0, right: 20.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: ScreenUtil().setHeight(90),
+                                                  width: ScreenUtil().setWidth(90),
+                                                  // color: Colors.amber,
+                                                  child: Image(
+                                                    image: AdvancedNetworkImage(
+                                                      suggestion[index].image,
+                                                      useDiskCache: true,
+                                                      cacheRule: CacheRule(
+                                                          maxAge:
+                                                              const Duration(
+                                                                  days: 3)),
                                                     ),
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                  TextSpan(
-                                                    text: searchValue,
+                                                ),
+                                                // Text(
+                                                //   styleNumber[index],
+                                                //   style: TextStyle(
+                                                //     fontFamily: 'Varela',
+                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                //   ),
+                                                // )
+                                                RichText(
+                                                  text: TextSpan(
+                                                    // text: suggestion[index].substring(
+                                                    //   suggestion[index].indexOf(
+                                                    //       searchValue),
+                                                    //   searchValue.length,
+                                                    // ),
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontFamily: 'Varela',
-                                                      fontSize: 21.0,
+                                                      fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
                                                     ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text: info[0],
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          // fontWeight: FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: searchValue,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: info[1],
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          // fontWeight: FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  TextSpan(
-                                                    text: info[1],
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      // fontWeight: FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: 21.0,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       )
                                     : Center(
                                         child: Text(
                                           'No Products Found',
                                         ),
-                                      );
-                              },
-                            ),
-                          )
+                                      ),
+                              )
                   ],
                 ),
               ),

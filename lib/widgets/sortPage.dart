@@ -108,7 +108,7 @@ class _SortPageState extends State<SortPage> {
               contentPadding: EdgeInsets.all(18.0),
               children: <Widget>[
                 Container(
-                  height: ScreenUtil().setHeight(270),
+                  height: ScreenUtil().setHeight(275),
                   width: ScreenUtil().setWidth(356),
                   // width: 700.0,
                   child: Column(

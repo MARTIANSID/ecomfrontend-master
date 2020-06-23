@@ -99,7 +99,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                 BorderRadius.circular(15.0)),
                                         children: <Widget>[
                                           Container(
-                                            height: ScreenUtil().setHeight(315),
+                                            height: ScreenUtil().setHeight(342),
                                             width: ScreenUtil().setWidth(400),
                                             padding: EdgeInsets.all(15.0),
                                             child: Column(

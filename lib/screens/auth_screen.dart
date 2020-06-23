@@ -3,6 +3,7 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
@@ -90,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen>
           name,
           style: kLabelStyle,
         ),
-        SizedBox(height: 10.0),
+        SizedBox(height: ScreenUtil().setHeight(10)),
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen>
             keyboardType: inputType,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              fontFamily: 'Gilroy Regular',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen>
           ),
         ),
         SizedBox(
-          height: 20.0,
+          height: ScreenUtil().setHeight(20),
         ),
       ],
     );
@@ -130,19 +131,19 @@ class _LoginScreenState extends State<LoginScreen>
           style: kLabelStyle,
         ),
         SizedBox(
-          height: 10.0,
+          height: ScreenUtil().setHeight(10),
         ),
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: 60.0,
+          height: ScreenUtil().setHeight(60),
           child: TextField(
             keyboardType: TextInputType.text,
             controller: _passwordController,
             obscureText: _showPassword ? false : true,
             style: TextStyle(
               color: Colors.white,
-              fontFamily: 'OpenSans',
+              fontFamily: 'Gilroy Regular',
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -230,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _buildRememberMeCheckbox() {
     return Container(
-      height: 20.0,
+      height: ScreenUtil().setHeight(20),
       child: Row(
         children: <Widget>[
           Theme(
@@ -259,8 +260,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _buildNextBtn() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
+      padding: EdgeInsets.only(top: 20.0),
       width: double.infinity,
+      // height: ScreenUtil().setHeight(75.0),
       child: RaisedButton(
         elevation: 5.0,
         onPressed: next,
@@ -274,17 +276,17 @@ class _LoginScreenState extends State<LoginScreen>
                 child: CircularProgressIndicator(
                   strokeWidth: 3,
                 ),
-                height: 22,
-                width: 22,
+                height: ScreenUtil().setHeight(22),
+                width: ScreenUtil().setWidth(22),
               )
             : Text(
                 _showSignup ? 'SignUp' : _buildForgetButton ? 'Login' : 'Next',
                 style: TextStyle(
                   color: Color(0xFF527DAA),
                   letterSpacing: 1.5,
-                  fontSize: 18.0,
+                  fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans',
+                  fontFamily: 'Gilroy Regular',
                 ),
               ),
       ),
@@ -455,9 +457,11 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     print('PP value of _requirePassword: $_requirePassword');
     print('PP value of _showSigUp: $_showSignup');
+    ScreenUtil.init(context, allowFontScaling: true, height: 775, width: 411);
     return Scaffold(
         body: Container(
       width: double.infinity,
+      // height: ScreenUtil().setHeight(775),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -473,12 +477,20 @@ class _LoginScreenState extends State<LoginScreen>
       child: AnimatedContainer(
         padding: EdgeInsets.symmetric(horizontal: 40.0),
         constraints: BoxConstraints(
-          minHeight: _requirePassword ? 640 : 640,
-          maxHeight: _requirePassword ? _showSignup ? 675 : 650 : 640,
+          minHeight: _requirePassword
+              ? ScreenUtil().setHeight(640)
+              : ScreenUtil().setHeight(640),
+          maxHeight: _requirePassword
+              ? _showSignup
+                  ? ScreenUtil().setHeight(675)
+                  : ScreenUtil().setHeight(675)
+              : ScreenUtil().setHeight(640),
         ),
         duration: Duration(milliseconds: 300),
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          physics: BouncingScrollPhysics(),
           // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             //SizedBox(height: deviceSize.height / 10),
@@ -486,21 +498,21 @@ class _LoginScreenState extends State<LoginScreen>
               'Hello,',
               style: TextStyle(
                 color: Colors.white,
-                fontFamily: 'OpenSans',
-                fontSize: 50.0,
+                fontFamily: 'Gilroy Regular',
+                fontSize: ScreenUtil().setSp(50, allowFontScalingSelf: true),
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
-              height: 20,
+              height: ScreenUtil().setHeight(20),
             ),
             Image.asset(
               "assets/images/group7.png",
               fit: BoxFit.contain,
-              height: 150.0,
-              width: 150.0,
+              height: ScreenUtil().setHeight(150),
+              width: ScreenUtil().setWidth(150),
             ),
-            SizedBox(height: 30.0),
+            SizedBox(height: ScreenUtil().setHeight(30)),
             if (_showSignup) ...[
               SlideTransition(
                 position: _slideAnimation2,
@@ -512,7 +524,7 @@ class _LoginScreenState extends State<LoginScreen>
                     icon: Icons.person),
               ),
               SizedBox(
-                height: 10,
+                height: ScreenUtil().setHeight(10),
               )
             ],
             //if (!_isRegistered)
@@ -549,13 +561,13 @@ class _LoginScreenState extends State<LoginScreen>
 
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
-  fontFamily: 'OpenSans',
+  fontFamily: 'Gilroy Regular',
 );
 
 final kLabelStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
-  fontFamily: 'OpenSans',
+  fontFamily: 'Gilroy Regular',
 );
 
 final kBoxDecorationStyle = BoxDecoration(

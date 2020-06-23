@@ -546,7 +546,7 @@ class _CookiePageState extends State<CookiePage> {
                       physics: BouncingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 1.1,
+                        childAspectRatio: 1.2,
                         crossAxisSpacing: 20.0,
                         mainAxisSpacing: 15.0,
                       ),
@@ -608,34 +608,33 @@ class _CookiePageState extends State<CookiePage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(
+                                  Container(
+                                    width: ScreenUtil().setWidth(138),
+                                    height: ScreenUtil().setHeight(122),
+                                    margin: EdgeInsets.only(
                                         top: widget.select == 'fav' ? 8 : 2,
-                                        left: widget.select == 'fav' ? 8 : 21,
-                                        right: 4),
+                                        left: widget.select == 'fav' ? 8 : 21),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Container(
+                                            // color: Colors.amber,
+                                            height: ScreenUtil().setHeight(
+                                                widget.select == 'fav'
+                                                    ? 135
+                                                    : 122),
+                                            width: ScreenUtil().setWidth(
+                                                widget.select == 'fav'
+                                                    ? 130
+                                                    : 117),
                                             // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
 
                                             // color: Colors.amber,
                                             child: widget.products[i].imageUrl
                                                     .containsKey(colorKey)
                                                 ? Image(
-                                                    height: ScreenUtil()
-                                                        .setHeight(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 135
-                                                                : 122),
-                                                    width: ScreenUtil()
-                                                        .setWidth(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 130
-                                                                : 117),
+                                                    // color: Colors.amber,
                                                     image: AdvancedNetworkImage(
                                                       widget.products[i]
                                                           .imageUrl[colorKey],
@@ -645,21 +644,9 @@ class _CookiePageState extends State<CookiePage> {
                                                               const Duration(
                                                                   days: 3)),
                                                     ),
-                                                    fit: BoxFit.cover,
+                                                    fit: BoxFit.fill,
                                                   )
                                                 : Image(
-                                                    height: ScreenUtil()
-                                                        .setHeight(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 135
-                                                                : 122),
-                                                    width: ScreenUtil()
-                                                        .setWidth(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 130
-                                                                : 117),
                                                     image: AdvancedNetworkImage(
                                                       widget.products[i]
                                                           .imageUrl['yellow'],
@@ -669,25 +656,36 @@ class _CookiePageState extends State<CookiePage> {
                                                               const Duration(
                                                                   days: 3)),
                                                     ),
-                                                    fit: BoxFit.cover,
+                                                    fit: BoxFit.fill,
                                                   )
 
                                             // ),
                                             ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 16.0),
-                                          child: RotatedBox(
-                                            quarterTurns: -1,
-                                            child: Text(
-                                              widget.products[i].styleNumber,
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                                fontFamily: 'Gilroy Regular',
+                                        SizedBox(
+                                          width: ScreenUtil().setWidth(4),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: ScreenUtil().setHeight(16),
+                                            ),
+                                            RotatedBox(
+                                              quarterTurns: -1,
+                                              child: Text(
+                                                widget
+                                                    .products[i].styleNumber,
+                                                style: TextStyle(
+                                                  fontSize: ScreenUtil().setSp(
+                                                      14,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  fontFamily:
+                                                      'Gilroy Regular',
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -880,44 +878,38 @@ class _CookiePageState extends State<CookiePage> {
                                     //         "To see prices you must first request a quotation from Team Gemstory",
                                     //         'Request Prices',
                                     //       )
-                                    //     : 
-                                        showDialog(
-                                            context: context,
-                                            child: AddToCart(
-                                              product: widget.products[i],
-                                              updateCart: false,
-                                              choicesBuild:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .build,
-                                              choiceColor:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .color,
-                                              choiceCertification:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .cert,
-                                              choiceDiamondQuality:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .diamondQuality,
-                                              defValue: _defaultChoiceIndex1,
-                                              defValue1: _defaultChoiceIndex2,
-                                              defValue2: _defaultChoiceIndex3,
-                                              defValue3: _defaultChoiceIndex4,
-                                              valueChangeBuild: _onValueChange,
-                                              valueChangeColor:
-                                                  _onValueChangeColor,
-                                              valueChangeCerti:
-                                                  _onValueChangeCerti,
-                                              valueChangeDQ: _onValueChangeDQ,
-                                            ),
-                                          );
+                                    //     :
+                                    showDialog(
+                                      context: context,
+                                      child: AddToCart(
+                                        product: widget.products[i],
+                                        updateCart: false,
+                                        choicesBuild: Provider.of<Pagination>(
+                                                context,
+                                                listen: false)
+                                            .build,
+                                        choiceColor: Provider.of<Pagination>(
+                                                context,
+                                                listen: false)
+                                            .color,
+                                        choiceCertification:
+                                            Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .cert,
+                                        choiceDiamondQuality:
+                                            Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .diamondQuality,
+                                        defValue: _defaultChoiceIndex1,
+                                        defValue1: _defaultChoiceIndex2,
+                                        defValue2: _defaultChoiceIndex3,
+                                        defValue3: _defaultChoiceIndex4,
+                                        valueChangeBuild: _onValueChange,
+                                        valueChangeColor: _onValueChangeColor,
+                                        valueChangeCerti: _onValueChangeCerti,
+                                        valueChangeDQ: _onValueChangeDQ,
+                                      ),
+                                    );
                                   },
                                 ),
                               ],

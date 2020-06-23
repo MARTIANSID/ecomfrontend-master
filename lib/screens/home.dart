@@ -178,8 +178,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 onButtonTapped: _onTap,
                 val: _visible,
               ),
-              Center(child: Text('Navigate to Whatsapp')),
               CartScreen(),
+              Center(child: Text('Navigate to Whatsapp')),
             ],
           ),
         ),
@@ -389,15 +389,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: _isVisible
-                      ? () async {
-                          if (await canLaunch("https://wa.me/919322244007")) {
-                            await launch("https://wa.me/919322244007");
-                          } else {
-                            throw 'Could not launch https://wa.me/919322244007';
-                          }
-                          // pageController.animateToPage(3,
-                          //     duration: Duration(milliseconds: 500),
-                          //     curve: Curves.ease);
+                      ? () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CartScreen(
+                          //       pageIndex: _previousIndex,
+                          //       pageController: pageController,
+                          //     ),
+                          //   ),
+                          // );
+                          pageController.animateToPage(3,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
                         }
                       : null,
                   child: Container(
@@ -442,7 +446,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                             ),
                       child: SvgPicture.asset(
-                        'assets/icons/whatsappIcon.svg',
+                        'assets/icons/cartIcon.svg',
                         color: Colors.white,
                         height: ScreenUtil().setHeight(25),
                         width: ScreenUtil().setWidth(25),
@@ -452,19 +456,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 GestureDetector(
                   onTap: _isVisible
-                      ? () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => CartScreen(
-                          //       pageIndex: _previousIndex,
-                          //       pageController: pageController,
-                          //     ),
-                          //   ),
-                          // );
-                          pageController.animateToPage(4,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease);
+                      ? () async {
+                          if (await canLaunch("https://wa.me/919322244007")) {
+                            await launch("https://wa.me/919322244007");
+                          } else {
+                            throw 'Could not launch https://wa.me/919322244007';
+                          }
+                          // pageController.animateToPage(3,
+                          //     duration: Duration(milliseconds: 500),
+                          //     curve: Curves.ease);
                         }
                       : null,
                   child: Container(
@@ -509,7 +509,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                             ),
                       child: SvgPicture.asset(
-                        'assets/icons/cartIcon.svg',
+                        'assets/icons/whatsappIcon.svg',
                         color: Colors.white,
                         height: ScreenUtil().setHeight(25),
                         width: ScreenUtil().setWidth(25),

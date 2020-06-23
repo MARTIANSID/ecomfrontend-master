@@ -125,6 +125,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final pages = [
       Container(
         width: ScreenUtil().setWidth(411),
+        height: ScreenUtil().setHeight(775),
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,14 +136,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             //   'assets/images/1.png',
             //   fit: BoxFit.cover,
             // ),
-            Padding(
-              padding: const EdgeInsets.only(top: 260.0, bottom: 30.0),
-              child: Image.asset(
-                "assets/images/group7_gradient.png",
-                fit: BoxFit.contain,
-                height: ScreenUtil().setHeight(131),
-                width: ScreenUtil().setWidth(131),
-              ),
+            SizedBox(
+              height: ScreenUtil().setHeight(260),
+            ),
+            Image.asset(
+              "assets/images/group7_gradient.png",
+              fit: BoxFit.contain,
+              height: ScreenUtil().setHeight(131),
+              width: ScreenUtil().setWidth(131),
+            ),
+            SizedBox(
+              height: ScreenUtil().setHeight(30),
             ),
             Text(
               'GEMSTORY',
@@ -153,8 +157,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 fontWeight: FontWeight.w800,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(110.0),
+            SizedBox(
+              height: ScreenUtil().setHeight(110),
             ),
             Text(
               '"Craft of Perfection"',
@@ -168,6 +172,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
       Container(
         width: ScreenUtil().setWidth(411),
+        height: ScreenUtil().setHeight(775),
         color: Colors.black,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -178,14 +183,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             //   'assets/1.png',
             //   fit: BoxFit.cover,
             // ),
-            Padding(
-              padding: const EdgeInsets.only(top: 260.0, bottom: 30.0),
-              child: Image.asset(
-                "assets/images/group7_gradient.png",
-                fit: BoxFit.contain,
-                height: ScreenUtil().setHeight(131),
-                width: ScreenUtil().setWidth(131),
-              ),
+            SizedBox(
+              height: ScreenUtil().setHeight(260),
+            ),
+            Image.asset(
+              "assets/images/group7_gradient.png",
+              fit: BoxFit.contain,
+              height: ScreenUtil().setHeight(131),
+              width: ScreenUtil().setWidth(131),
+            ),
+            SizedBox(
+              height: ScreenUtil().setHeight(30),
             ),
             Text(
               'GEMSTORY',
@@ -196,8 +204,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 fontWeight: FontWeight.w800,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(110.0),
+            SizedBox(
+              height: ScreenUtil().setHeight(110),
             ),
             Text(
               '"Craft of Perfection"',
@@ -211,6 +219,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
       Container(
         width: ScreenUtil().setWidth(411),
+        height: ScreenUtil().setHeight(775),
         // color: Colors.greenAccent,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -232,14 +241,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             //   'assets/1.png',
             //   fit: BoxFit.cover,
             // ),
-            Padding(
-              padding: const EdgeInsets.only(top: 260.0, bottom: 30.0),
-              child: Image.asset(
-                "assets/images/group7.png",
-                fit: BoxFit.contain,
-                height: ScreenUtil().setHeight(131),
-                width: ScreenUtil().setWidth(131),
-              ),
+            SizedBox(
+              height: ScreenUtil().setHeight(260),
+            ),
+            Image.asset(
+              "assets/images/group7.png",
+              fit: BoxFit.contain,
+              height: ScreenUtil().setHeight(131),
+              width: ScreenUtil().setWidth(131),
+            ),
+            SizedBox(
+              height: ScreenUtil().setHeight(30),
             ),
             Text(
               'GEMSTORY',
@@ -250,8 +262,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 fontWeight: FontWeight.w800,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(110.0),
+            SizedBox(
+              height: ScreenUtil().setHeight(110),
             ),
             Text(
               '"Craft of Perfection"',
@@ -289,8 +301,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               top: ScreenUtil().setHeight(40),
               right: ScreenUtil().setWidth(10),
               // alignment: Alignment.topRight,
-              child: FlatButton(
-                onPressed: () {
+              child: GestureDetector(
+                onTap: () {
                   if (page != 2) {
                     liquidController.animateToPage(
                         page: pages.length - 1, duration: 500);

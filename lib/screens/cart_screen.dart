@@ -524,6 +524,7 @@ import 'dart:ui';
 
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -599,6 +600,32 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
+  List<dynamic> suggestion;
+  bool isLoadingSearch = false;
+  Future<void> getSearch(query) async {
+    setState(() {
+      isLoadingSearch = true;
+    });
+    await Provider.of<Searchh>(context, listen: false)
+        .getSearch(query: query.toUpperCase(), context: context)
+        .then((value) {
+      setState(() {
+        suggestion = Provider.of<Searchh>(context, listen: false)
+            .searchResult
+            .where((element) =>
+                element.styleNumber.contains(searchValue.toUpperCase()))
+            .toList();
+        isLoadingSearch = false;
+        print('DC SEARCH');
+      });
+    });
+
+    print(suggestion);
+    // setState(() {
+
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
@@ -618,10 +645,10 @@ class _CartScreenState extends State<CartScreen> {
       'NP113',
     ];
     List<String> info = [];
-    final suggestion = styleNumber
-        .where(
-            (element) => element.contains(searchValue.toString().toUpperCase()))
-        .toList();
+    // final suggestion = styleNumber
+    //     .where(
+    //         (element) => element.contains(searchValue.toString().toUpperCase()))
+    //     .toList();
     print('Search Selected' + searchSelected.toString());
     return Scaffold(
       body: Container(
@@ -638,7 +665,7 @@ class _CartScreenState extends State<CartScreen> {
                     height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 25, 20),
+                    padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -687,6 +714,9 @@ class _CartScreenState extends State<CartScreen> {
                         )
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(20),
                   ),
                   Expanded(
                     child: Provider.of<Cart>(context, listen: true)
@@ -836,7 +866,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 ),
                                           SizedBox(
                                             width: ScreenUtil().setWidth(2),
-                                          ),      
+                                          ),
                                           Container(
                                             width: ScreenUtil().setWidth(185),
                                             height: ScreenUtil().setHeight(76),
@@ -844,7 +874,8 @@ class _CartScreenState extends State<CartScreen> {
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
                                                   '${product.styleNumber}',
@@ -858,23 +889,24 @@ class _CartScreenState extends State<CartScreen> {
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 6.0,
-                                                          bottom: 4.0),
-                                                  child: Text(
-                                                    '${(Provider.of<Cart>(context, listen: true).cart[index].color).toUpperCase()} ${Provider.of<Cart>(context, listen: true).cart[index].diamond} ${Provider.of<Cart>(context, listen: true).cart[index].cert} ${Provider.of<Cart>(context, listen: true).cart[index].build}',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontFamily:
-                                                          'Gilroy Light',
-                                                      fontSize: ScreenUtil().setSp(
-                                                          12,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                    ),
+                                                SizedBox(
+                                                  height:
+                                                      ScreenUtil().setHeight(6),
+                                                ),
+                                                Text(
+                                                  '${(Provider.of<Cart>(context, listen: true).cart[index].color).toUpperCase()} ${Provider.of<Cart>(context, listen: true).cart[index].diamond} ${Provider.of<Cart>(context, listen: true).cart[index].cert} ${Provider.of<Cart>(context, listen: true).cart[index].build}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'Gilroy Light',
+                                                    fontSize: ScreenUtil().setSp(
+                                                        12,
+                                                        allowFontScalingSelf:
+                                                            true),
                                                   ),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      ScreenUtil().setHeight(4),
                                                 ),
                                                 ShaderMask(
                                                   shaderCallback: (bounds) =>
@@ -980,7 +1012,7 @@ class _CartScreenState extends State<CartScreen> {
                                             padding: EdgeInsets.all(3.0),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                                  MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
@@ -1000,39 +1032,57 @@ class _CartScreenState extends State<CartScreen> {
                                                       });
                                                     }
                                                   },
-                                                  child: Text(
-                                                    '-',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Gilroy',
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          22,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                  child: Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(12),
+                                                    width: ScreenUtil()
+                                                        .setWidth(12),
+                                                    child: Center(
+                                                      child: Text(
+                                                        '-',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Gilroy',
+                                                          color: Colors.black,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(22,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                      ScreenUtil().setWidth(4),
                                                 ),
                                                 Container(
                                                   height: ScreenUtil()
                                                       .setHeight(19),
                                                   width:
-                                                      ScreenUtil().setWidth(11),
-                                                  child: Text(
-                                                    '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          'Gilroy Black',
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          18,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                      ScreenUtil().setWidth(24),
+                                                  child: Center(
+                                                    child: Text(
+                                                      '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Black',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(18,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
                                                     ),
                                                   ),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                      ScreenUtil().setWidth(4),
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
@@ -1042,34 +1092,45 @@ class _CartScreenState extends State<CartScreen> {
                                                           .incQuantity(index);
                                                     });
                                                   },
-                                                  child: ShaderMask(
-                                                    shaderCallback: (bounds) =>
-                                                        LinearGradient(
-                                                      colors: [
-                                                        Color(0xFF34B0D9),
-                                                        Color(0xFF3685CB),
-                                                      ],
-                                                      begin: Alignment.topLeft,
-                                                      end:
-                                                          Alignment.bottomRight,
-                                                    ).createShader(
-                                                      Rect.fromLTWH(
-                                                          0,
-                                                          0,
-                                                          bounds.width,
-                                                          bounds.height),
-                                                    ),
-                                                    child: Text(
-                                                      '+',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Gilroy',
-                                                        color: Colors.white,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(22,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                  child: Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(12),
+                                                    width: ScreenUtil()
+                                                        .setWidth(12),
+                                                    child: Center(
+                                                      child: ShaderMask(
+                                                        shaderCallback:
+                                                            (bounds) =>
+                                                                LinearGradient(
+                                                          colors: [
+                                                            Color(0xFF34B0D9),
+                                                            Color(0xFF3685CB),
+                                                          ],
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                        ).createShader(
+                                                          Rect.fromLTWH(
+                                                              0,
+                                                              0,
+                                                              bounds.width,
+                                                              bounds.height),
+                                                        ),
+                                                        child: Text(
+                                                          '+',
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'Gilroy',
+                                                            color: Colors.white,
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(22,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -1182,10 +1243,10 @@ class _CartScreenState extends State<CartScreen> {
                       height: ScreenUtil().setHeight(22),
                     ),
                     Container(
-                      width: ScreenUtil().setHeight(360),
+                      width: ScreenUtil().setWidth(360),
                       height: ScreenUtil().setHeight(45),
                       margin: EdgeInsets.fromLTRB(
-                          25, 11, 26, searchSelected ? 0 : 20),
+                          24, 11, 25, searchSelected ? 0 : 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1206,7 +1267,7 @@ class _CartScreenState extends State<CartScreen> {
                               children: <Widget>[
                                 TextField(
                                   controller: textEditingController,
-                                  onTap: () {
+                                  onTap: () async {
                                     setState(() {
                                       searchSelected = true;
                                     });
@@ -1216,29 +1277,39 @@ class _CartScreenState extends State<CartScreen> {
                                       });
                                     });
                                   },
-                                  onChanged: (value) {
+                                  onChanged: (value) async {
                                     setState(() {
-                                      searchValue = value;
-                                      // info=styleNumber[].split(value);
-                                      // print(styleNumber[1].split(searchValue));
+                                      // isLoadingSearch = true;
+                                      searchValue = value.toUpperCase();
                                     });
+                                    // setState(() {
+
+                                    //   // info=styleNumber[].split(value);
+                                    //   // print(styleNumber[1].split(searchValue));
+                                    // });
+                                    await getSearch(searchValue.toUpperCase());
+                                    // setState(() {
+                                    //   isLoadingSearch = false;
+                                    // });
                                     // getSearchResult(value.toUpperCase());
                                   },
                                   decoration: InputDecoration(
                                     // contentPadding: EdgeInsets.all(15.0),
                                     suffixIcon: searchSelected
                                         ? GestureDetector(
-                                            onTap: () =>
-                                                textEditingController.clear(),
+                                            onTap: () {
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                              });
+                                            },
                                             child: Icon(Icons.clear),
                                           )
                                         : SizedBox(
                                             height: 0.0,
                                             width: 0.0,
                                           ),
-                                    hintText: !searchSelected
-                                        ? ''
-                                        : 'SEARCH GEMSTORY',
+                                    hintText: 'SEARCH GEMSTORY',
                                     hintStyle: TextStyle(
                                       fontFamily: 'Gilroy Medium',
                                       color: Color(0xFF595959),
@@ -1247,27 +1318,23 @@ class _CartScreenState extends State<CartScreen> {
                                     ),
                                     border: InputBorder.none,
                                   ),
-                                  textAlign: TextAlign.start,
+                                  textAlign: searchSelected
+                                      ? TextAlign.start
+                                      : TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Gilroy Regular',
                                       fontSize: ScreenUtil().setSp(16,
                                           allowFontScalingSelf: true)),
                                 ),
-                                searchSelected
-                                    ? SizedBox(
-                                        height: 0.0,
-                                        width: 0.0,
-                                      )
-                                    : Center(child: Text('SEARCH GEMSTORY')),
                                 AnimatedContainer(
                                   duration: Duration(milliseconds: 600),
                                   margin: EdgeInsets.only(right: 6.0),
+                                  height: ScreenUtil()
+                                      .setHeight(searchSelected ? 0 : 27),
+                                  width: ScreenUtil()
+                                      .setWidth(searchSelected ? 0 : 27),
                                   child: SvgPicture.asset(
                                     'assets/icons/notificationIcon.svg',
-                                    height: ScreenUtil()
-                                        .setHeight(searchSelected ? 0 : 27),
-                                    width: ScreenUtil()
-                                        .setWidth(searchSelected ? 0 : 27),
                                     color: Colors.black,
                                   ),
                                 )
@@ -1282,26 +1349,30 @@ class _CartScreenState extends State<CartScreen> {
                                   width: 0,
                                 ),
                           searchSelectedDoneButton
-                              ? GestureDetector(
-                                  onTap: () {
-                                    FocusScopeNode currentFocus =
-                                        FocusScope.of(context);
-                                    currentFocus.unfocus();
-                                    textEditingController.clear();
-                                    setState(() {
-                                      searchValue = "";
-                                      searchSelected = false;
-                                      searchSelectedDoneButton = false;
-                                    });
-                                  },
-                                  child: Text(
-                                    'Done',
-                                    style: TextStyle(
-                                      fontFamily: 'Gilroy Bold',
-                                      color: Colors.black,
-                                      fontSize: ScreenUtil().setSp(18,
-                                          allowFontScalingSelf: true),
-                                      fontWeight: FontWeight.w500,
+                              ? Container(
+                                  height: ScreenUtil().setHeight(22),
+                                  width: ScreenUtil().setWidth(45),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      currentFocus.unfocus();
+                                      textEditingController.clear();
+                                      setState(() {
+                                        searchValue = "";
+                                        searchSelected = false;
+                                        searchSelectedDoneButton = false;
+                                      });
+                                    },
+                                    child: Text(
+                                      'Done',
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy Bold',
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -1326,104 +1397,135 @@ class _CartScreenState extends State<CartScreen> {
                             height: 0.0,
                             width: 0.0,
                           )
-                        : Container(
-                            height: ScreenUtil().setHeight(600.0),
-                            width: ScreenUtil().setHeight(360),
-                            margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              // physics: BouncingScrollPhysics(),
-                              itemCount: suggestion.length,
-                              itemBuilder: (context, index) {
-                                info = styleNumber[index].split(searchValue);
-                                print(info);
-                                return suggestion.length > 0
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20.0, right: 20.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              height: 90.0,
-                                              width: 90.0,
-                                              // color: Colors.amber,
-                                              child: Image.asset(
-                                                'assets/images/nosepin12.png',
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                            // Text(
-                                            //   styleNumber[index],
-                                            //   style: TextStyle(
-                                            //     fontFamily: 'Varela',
-                                            //     fontSize: 21.0,
-                                            //   ),
-                                            // )
-                                            RichText(
-                                              text: TextSpan(
-                                                // text: suggestion[index].substring(
-                                                //   suggestion[index].indexOf(
-                                                //       searchValue),
-                                                //   searchValue.length,
-                                                // ),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Varela',
-                                                  fontSize: 21.0,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: info[0],
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      // fontWeight: FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: 21.0,
+                        : isLoadingSearch
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Container(
+                                height: ScreenUtil().setHeight(600.0),
+                                width: ScreenUtil().setHeight(360),
+                                margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: suggestion.length > 0
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: Provider.of<Searchh>(context,
+                                                listen: false)
+                                            .searchResult
+                                            .length,
+                                        itemBuilder: (context, index) {
+                                          info = suggestion[index]
+                                              .styleNumber
+                                              .split(searchValue);
+                                          print(info);
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20.0, right: 20.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: ScreenUtil()
+                                                      .setHeight(90),
+                                                  width:
+                                                      ScreenUtil().setWidth(90),
+                                                  // color: Colors.amber,
+                                                  child: Image(
+                                                    image: AdvancedNetworkImage(
+                                                      suggestion[index].image,
+                                                      useDiskCache: true,
+                                                      cacheRule: CacheRule(
+                                                          maxAge:
+                                                              const Duration(
+                                                                  days: 3)),
                                                     ),
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                  TextSpan(
-                                                    text: searchValue,
+                                                ),
+                                                // Text(
+                                                //   styleNumber[index],
+                                                //   style: TextStyle(
+                                                //     fontFamily: 'Varela',
+                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                //   ),
+                                                // )
+                                                RichText(
+                                                  text: TextSpan(
+                                                    // text: suggestion[index].substring(
+                                                    //   suggestion[index].indexOf(
+                                                    //       searchValue),
+                                                    //   searchValue.length,
+                                                    // ),
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontFamily: 'Varela',
-                                                      fontSize: 21.0,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          21,
+                                                          allowFontScalingSelf:
+                                                              true),
                                                     ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text: info[0],
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          // fontWeight: FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(21,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: searchValue,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(21,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: info[1],
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          // fontWeight: FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(21,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  TextSpan(
-                                                    text: info[1],
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      // fontWeight: FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: 21.0,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       )
                                     : Center(
                                         child: Text(
                                           'No Products Found',
                                         ),
-                                      );
-                              },
-                            ),
-                          )
+                                      ),
+                              ),
                   ],
                 ),
               ),

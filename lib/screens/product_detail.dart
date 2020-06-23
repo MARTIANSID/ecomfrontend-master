@@ -1,391 +1,8 @@
-// import 'package:Flutter/constant/const.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-// class ProductDetail extends StatefulWidget {
-//   @override
-//   _ProductDetailState createState() => _ProductDetailState();
-// }
-
-// class _ProductDetailState extends State<ProductDetail> {
-//   int _current = 0;
-//   List imgList = [
-//     'https://images.unsplash.com/photo-1502117859338-fd9daa518a9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-//     'https://images.unsplash.com/photo-1554321586-92083ba0a115?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-//     'https://images.unsplash.com/photo-1536679545597-c2e5e1946495?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-//     'https://images.unsplash.com/photo-1543922596-b3bbaba80649?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-//     'https://images.unsplash.com/photo-1502943693086-33b5b1cfdf2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80'
-//   ];
-//   List<T> map<T>(List list, Function handler) {
-//     List<T> result = [];
-//     for (var i = 0; i < list.length; i++) {
-//       result.add(handler(i, list[i]));
-//     }
-//     return result;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     var size = MediaQuery.of(context).size;
-//     ScreenUtil.init(context,
-//         width: 411.42857142857144,
-//         height: 774.8571428571429,
-//         allowFontScaling: true);
-//     return Scaffold(
-//       body: Container(
-//         color: Colors.grey[100],
-//         child: Stack(
-//           children: <Widget>[
-//             Column(
-//               children: <Widget>[
-//                 Padding(
-//                   padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
-//                   child: Container(
-//                     margin: EdgeInsets.only(
-//                         top: MediaQuery.of(context).padding.top),
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: <Widget>[
-//                         Row(
-//                           children: <Widget>[
-//                             IconButton(
-//                               icon: Icon(Icons.arrow_back_ios),
-//                               onPressed: () {
-//                                 print(MediaQuery.of(context).padding.top);
-//                                 print(size.width);
-//                                 print(size.height);
-//                                 Navigator.of(context).pop();
-//                               },
-//                               color: Colors.grey,
-//                             ),
-//                           ],
-//                         ),
-//                         IconButton(
-//                           icon: Icon(Icons.search),
-//                           iconSize: ScreenUtil().setSp(30,allowFontScalingSelf: true),
-//                           onPressed: () {},
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             Positioned(
-//               top: ScreenUtil().setHeight(77.5),
-//               left: 0.0,
-//               right: 0.0,
-//               child: Container(
-//                 height: ScreenUtil().setHeight(700),
-//                 width: size.width,
-//                 // decoration: BoxDecoration(
-//                 //   gradient: LinearGradient(
-//                 //     colors: <Color>[
-//                 //       // Color(0xFF0F2985),
-//                 //       // Colors.blue[400]
-//                 //       kPrimaryLightColor,
-//                 //       Colors.white
-//                 //     ],
-//                 //     stops: [0.4, 1],
-//                 //     begin: Alignment.topRight,
-//                 //     end: Alignment.bottomCenter,
-//                 //   ),
-//                 // ),
-//                 // color: Colors.amber,
-//                 margin: EdgeInsets.only(top: 25.0),
-//                 // padding: EdgeInsets.all(10.0),
-//                 child: Column(
-//                   children: <Widget>[
-//                     Container(
-//                       height: ScreenUtil().setHeight(155),
-//                       child: CarouselSlider(
-//                         height: ScreenUtil().setHeight(155),
-//                         initialPage: 0,
-//                         enlargeCenterPage: true,
-//                         autoPlay: true,
-//                         reverse: false,
-//                         enableInfiniteScroll: true,
-//                         autoPlayInterval: Duration(seconds: 2),
-//                         autoPlayAnimationDuration: Duration(milliseconds: 2000),
-//                         pauseAutoPlayOnTouch: Duration(seconds: 10),
-//                         scrollDirection: Axis.horizontal,
-//                         onPageChanged: (index) {
-//                           setState(() {
-//                             _current = index;
-//                           });
-//                         },
-//                         items: imgList.map((imgUrl) {
-//                           return Builder(
-//                             builder: (BuildContext context) {
-//                               return Container(
-//                                 width: ScreenUtil().setWidth(411),
-//                                 height: ScreenUtil().setHeight(69.75),
-//                                 margin: EdgeInsets.symmetric(horizontal: 5.0),
-//                                 decoration: BoxDecoration(
-//                                   color: Colors.white,
-//                                 ),
-//                                 child: Image.network(
-//                                   imgUrl,
-//                                   fit: BoxFit.fill,
-//                                 ),
-//                                 // child: PinchZoomImage(
-//                                 //   image: Image.network(
-//                                 //     imgUrl,
-//                                 //     fit: BoxFit.contain,
-//                                 //   ),
-//                                 //   zoomedBackgroundColor:
-//                                 //       Color.fromRGBO(240, 240, 240, 1.0),
-//                                 //   hideStatusBarWhileZooming: true,
-//                                 //   onZoomStart: () {
-//                                 //     print('Zoom started');
-//                                 //   },
-//                                 //   onZoomEnd: () {
-//                                 //     print('Zoom finished');
-//                                 //   },
-//                                 // ),
-//                               );
-//                             },
-//                           );
-//                         }).toList(),
-//                       ),
-//                     ),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: map<Widget>(
-//                         imgList,
-//                         (index, url) {
-//                           return Container(
-//                             width: ScreenUtil().setWidth(10),
-//                             height: ScreenUtil().setHeight(10),
-//                             margin: EdgeInsets.symmetric(
-//                                 vertical: 5.0, horizontal: 2.0),
-//                             decoration: BoxDecoration(
-//                               shape: BoxShape.circle,
-//                               color: _current == index
-//                                   ? Colors.black
-//                                   : Colors.grey,
-//                             ),
-//                           );
-//                         },
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: ScreenUtil().setHeight(10),
-//                     ),
-//                     Container(
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.only(
-//                           topRight: Radius.circular(80.0),
-//                           bottomRight: Radius.circular(80.0),
-//                           bottomLeft: Radius.circular(80.0),
-//                         ),
-//                         // border: Border.all(
-//                         //   color: kPrimaryColor,
-//                         //   width: 2.0,
-//                         // ),
-//                         color: Colors.white,
-//                         // boxShadow: <BoxShadow>[
-//                         //   BoxShadow(
-//                         //     color: Colors.black12,
-//                         //     blurRadius: 10.0,
-//                         //     offset: Offset(0.0, 10.0),
-//                         //   ),
-//                         // ],
-//                         // gradient: LinearGradient(
-//                         //   colors: <Color>[
-//                         //     // Color(0xFF0F2985),
-//                         //     // Colors.blue[400]
-//                         //     kPrimaryColor,
-//                         //     Colors.white
-//                         //   ],
-//                         //   stops: [0.05, 1],
-//                         //   begin: Alignment.topRight,
-//                         //   end: Alignment.bottomCenter,
-//                         // ),
-//                       ),
-//                       padding: EdgeInsets.fromLTRB(20.0, 15.0, 70.0, 0.0),
-//                       width: ScreenUtil().setWidth(411),
-//                       height: ScreenUtil().setHeight(392.5),
-//                       child: SingleChildScrollView(
-//                         scrollDirection: Axis.vertical,
-//                         physics: BouncingScrollPhysics(),
-//                         child: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: <Widget>[
-//                             Row(
-//                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                               children: <Widget>[
-//                                 Text(
-//                                   'NP104',
-//                                   style: TextStyle(
-//                                     color: Colors.black,
-//                                     fontSize: ScreenUtil().setSp(29,allowFontScalingSelf: true),
-//                                     fontFamily: 'Gilroy Black',
-//                                   ),
-//                                 ),
-//                                 Text(
-//                                   '20,000 ₹',
-//                                   style: TextStyle(
-//                                     color: Colors.black,
-//                                     fontSize: ScreenUtil().setSp(29,allowFontScalingSelf: true),
-//                                     fontFamily: 'Gilroy Black',
-//                                   ),
-//                                 )
-//                               ],
-//                             ),
-//                             Padding(
-//                               padding:
-//                                   EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-//                               // height: size.height * 0.01,
-//                               child: Divider(
-//                                 color: Colors.black,
-//                               ),
-//                             ),
-//                             Text(
-//                               'Description: ',
-//                               style: TextStyle(
-//                                 fontFamily: 'Gilroy Black',
-//                                 fontSize: ScreenUtil().setSp(16,allowFontScalingSelf: true),
-//                               ),
-//                             ),
-//                             Padding(
-//                               padding: const EdgeInsets.all(8.0),
-//                               // child: Text(
-//                               //   'Gold Weight'+'2.966'+'grams',
-//                               //   style: TextStyle(
-//                               //     fontSize: 14.0,
-//                               //   ),
-//                               //   textAlign: TextAlign.justify,
-//                               // ),
-//                               child: DataTable(
-//                                 // sortAscending: true,
-//                                 columns: [
-//                                   DataColumn(label: Text('Specifications',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),fontWeight: FontWeight.bold),)),
-//                                   DataColumn(label: Text('Units',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),fontWeight: FontWeight.bold),)),
-//                                 ],
-//                                 rows: [
-//                                   DataRow(cells: [
-//                                     DataCell(Text('Gold Weight',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),),)),
-//                                     DataCell(Text('2.99 grams',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),),)),
-//                                   ]),
-//                                   DataRow(cells: [
-//                                     DataCell(Text('Diamond Weight',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),),)),
-//                                     DataCell(Text('1.23 carat',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),),)),
-//                                   ]),
-//                                   DataRow(cells: [
-//                                     DataCell(Text('Diamond Count',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),),)),
-//                                     DataCell(Text('95 pieces',style: TextStyle(fontFamily: 'Gilroy',fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),),)),
-//                                   ]),
-//                                 ],
-//                               ),
-//                             ),
-//                             SizedBox(
-//                               height: ScreenUtil().setHeight(28.675),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding:
-//                           const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 10.0),
-//                       child: Row(
-//                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                         children: <Widget>[
-//                           RaisedButton(
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(30.0),
-//                             ),
-//                             color: kPrimaryColor,
-//                             onPressed: () {},
-//                             child: Row(
-//                               children: <Widget>[
-//                                 Icon(
-//                                   Icons.favorite,
-//                                   size: ScreenUtil().setSp(25,allowFontScalingSelf: true),
-//                                   color: Colors.white,
-//                                 ),
-//                                 SizedBox(
-//                                   width: ScreenUtil().setWidth(10),
-//                                 ),
-//                                 Text(
-//                                   "Favourites",
-//                                   style: TextStyle(
-//                                     fontFamily: 'Gilroy',
-//                                     fontSize: ScreenUtil().setSp(18,allowFontScalingSelf: true),
-//                                     color: Colors.white,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                           RaisedButton(
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(30.0),
-//                             ),
-//                             color: kPrimaryColor,
-//                             onPressed: () {},
-//                             child: Row(
-//                               children: <Widget>[
-//                                 Icon(
-//                                   Icons.shopping_cart,
-//                                   size: ScreenUtil().setSp(25,allowFontScalingSelf: true),
-//                                   color: Colors.white,
-//                                 ),
-//                                 SizedBox(
-//                                   width: ScreenUtil().setWidth(10),
-//                                 ),
-//                                 Text(
-//                                   "Add to Cart",
-//                                   style: TextStyle(
-//                                     fontFamily: 'Gilroy',
-//                                     fontSize: ScreenUtil().setSp(18,allowFontScalingSelf: true),
-//                                     color: Colors.white,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             Positioned(
-//               right: 0.0,
-//               top: ScreenUtil().setHeight(400),
-//               child: Container(
-//                 width: ScreenUtil().setWidth(49.731),
-//                 height: ScreenUtil().setHeight(310),
-//                 margin: EdgeInsets.only(left: 20.0),
-//                 child: Wrap(
-//                   direction: Axis.vertical,
-//                   children: <Widget>[
-//                     RotatedBox(
-//                       quarterTurns: 1,
-//                       child: Text(
-//                         'Product in Detail',
-//                         style: TextStyle(
-//                           fontFamily: 'Gilroy',
-//                           fontSize: ScreenUtil().setSp(25,allowFontScalingSelf: true),
-//                         ),
-//                       ),
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'dart:async';
+import 'dart:ui';
 
 import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/screens/photo_detail_screen.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
@@ -436,6 +53,39 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool isColourSet = false;
+  bool searchSelected = false;
+
+  String searchValue = "";
+
+  TextEditingController textEditingController = TextEditingController();
+
+  bool searchSelectedDoneButton = false;
+
+  List<dynamic> suggestion;
+  bool isLoadingSearch = false;
+  Future<void> getSearch(query) async {
+    setState(() {
+      isLoadingSearch = true;
+    });
+    await Provider.of<Searchh>(context, listen: false)
+        .getSearch(query: query.toUpperCase(), context: context)
+        .then((value) {
+      setState(() {
+        suggestion = Provider.of<Searchh>(context, listen: false)
+            .searchResult
+            .where((element) =>
+                element.styleNumber.contains(searchValue.toUpperCase()))
+            .toList();
+        isLoadingSearch = false;
+        print('DC SEARCH');
+      });
+    });
+
+    print(suggestion);
+    // setState(() {
+
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -445,6 +95,7 @@ class _ProductDetailState extends State<ProductDetail> {
       width: 411.42857142857144,
       height: 774.8571428571429,
     );
+    List<String> info = [];
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -536,52 +187,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(
-                            height: ScreenUtil().setHeight(22),
-                          ),
-                          Container(
-                            // padding: EdgeInsets.all(10.0),
-                            margin: EdgeInsets.fromLTRB(25, 17, 26, 28),
-                            width: ScreenUtil().setWidth(360),
-                            height: ScreenUtil().setHeight(40),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.white,
-                            ),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                suffixIcon: Container(
-                                  margin: EdgeInsets.all(6.0),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/notificationIcon.svg',
-                                    height: ScreenUtil().setHeight(27),
-                                    width: ScreenUtil().setWidth(27),
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                prefixIcon: IconButton(
-                                  icon: Icon(Icons.arrow_back),
-                                  iconSize: 28,
-                                  color: Colors.black,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                // contentPadding: EdgeInsets.all(15.0),
-                                hintText: 'SEARCH GEMSTORY',
-                                hintStyle: TextStyle(
-                                  fontFamily: 'Gilroy Medium',
-                                  color: Color(0xFF595959),
-                                  fontSize: ScreenUtil()
-                                      .setSp(14, allowFontScalingSelf: true),
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              // textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: ScreenUtil()
-                                      .setSp(14, allowFontScalingSelf: true)),
-                            ),
+                            height: ScreenUtil().setHeight(22+17+28+40),
                           ),
                           widget.product.imageUrl.containsKey(widget.colorKey)
                               ? Hero(
@@ -897,53 +503,57 @@ class _ProductDetailState extends State<ProductDetail> {
                                       GestureDetector(
                                         onTap: () {
                                           Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isPriced
-                                        ? dataSelect(
-                                            context,
-                                            'Important!',
-                                            "To see prices you must first request a quotation from Team Gemstory",
-                                            'Request Prices',
-                                          )
-                                        : showDialog(
-                                            context: context,
-                                            child: AddToCart(
-                                              product: widget.product,
-                                              updateCart: false,
-                                              choicesBuild:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .build,
-                                              choiceColor:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .color,
-                                              choiceCertification:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .cert,
-                                              choiceDiamondQuality:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .diamondQuality,
-                                              defValue: widget.defaultIndex1,
-                                              defValue1: widget.defaultIndex2,
-                                              defValue2: widget.defaultIndex3,
-                                              defValue3: widget.defaultIndex4,
-                                              valueChangeBuild:
-                                                  widget.valueChangeBuild,
-                                              valueChangeColor:
-                                                  widget.valueChangeColor,
-                                              valueChangeCerti:
-                                                  widget.valueChangeCerti,
-                                              valueChangeDQ:
-                                                  widget.valueChangeDQ,
-                                            ),
-                                          );
+                                                      listen: false)
+                                                  .isPriced
+                                              ? dataSelect(
+                                                  context,
+                                                  'Important!',
+                                                  "To see prices you must first request a quotation from Team Gemstory",
+                                                  'Request Prices',
+                                                )
+                                              : showDialog(
+                                                  context: context,
+                                                  child: AddToCart(
+                                                    product: widget.product,
+                                                    updateCart: false,
+                                                    choicesBuild:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .build,
+                                                    choiceColor:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .color,
+                                                    choiceCertification:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .cert,
+                                                    choiceDiamondQuality:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .diamondQuality,
+                                                    defValue:
+                                                        widget.defaultIndex1,
+                                                    defValue1:
+                                                        widget.defaultIndex2,
+                                                    defValue2:
+                                                        widget.defaultIndex3,
+                                                    defValue3:
+                                                        widget.defaultIndex4,
+                                                    valueChangeBuild:
+                                                        widget.valueChangeBuild,
+                                                    valueChangeColor:
+                                                        widget.valueChangeColor,
+                                                    valueChangeCerti:
+                                                        widget.valueChangeCerti,
+                                                    valueChangeDQ:
+                                                        widget.valueChangeDQ,
+                                                  ),
+                                                );
                                         },
                                         child: Container(
                                           width: ScreenUtil().setWidth(270),
@@ -1018,6 +628,307 @@ class _ProductDetailState extends State<ProductDetail> {
                         ],
                       ),
                     )
+                  ],
+                ),
+              ),
+            ),
+            !searchSelected
+                ? SizedBox(
+                    height: 0.0,
+                    width: 0.0,
+                  )
+                : Container(
+                    height: ScreenUtil().setHeight(775),
+                    width: ScreenUtil().setWidth(411),
+                    color: Colors.transparent,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        height: ScreenUtil().setHeight(775),
+                        width: ScreenUtil().setWidth(411),
+                      ),
+                    ),
+                  ),
+            Container(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: searchSelected ? 5 : 0,
+                    sigmaY: searchSelected ? 5 : 0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: ScreenUtil().setHeight(22),
+                    ),
+                    Container(
+                      width: ScreenUtil().setWidth(360),
+                      height: ScreenUtil().setHeight(45),
+                      margin: EdgeInsets.fromLTRB(
+                          25, 17, 26, searchSelected ? 0 : 28),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 600),
+                            curve: Curves.slowMiddle,
+                            padding: EdgeInsets.only(left: 10.0),
+                            width: ScreenUtil()
+                                .setWidth(searchSelected ? 305 : 360),
+                            height: ScreenUtil().setHeight(40),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                            ),
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: <Widget>[
+                                TextField(
+                                  controller: textEditingController,
+                                  onTap: () async {
+                                    setState(() {
+                                      searchSelected = true;
+                                    });
+                                    Timer(Duration(milliseconds: 700), () {
+                                      setState(() {
+                                        searchSelectedDoneButton = true;
+                                      });
+                                    });
+                                  },
+                                  onChanged: (value) async {
+                                    setState(() {
+                                      // isLoadingSearch = true;
+                                      searchValue = value.toUpperCase();
+                                    });
+                                    // setState(() {
+
+                                    //   // info=styleNumber[].split(value);
+                                    //   // print(styleNumber[1].split(searchValue));
+                                    // });
+                                    await getSearch(searchValue.toUpperCase());
+                                    // setState(() {
+                                    //   isLoadingSearch = false;
+                                    // });
+                                    // getSearchResult(value.toUpperCase());
+                                  },
+                                  decoration: InputDecoration(
+                                    // contentPadding: EdgeInsets.all(15.0),
+                                    suffixIcon: searchSelected
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                              });
+                                            },
+                                            child: Icon(Icons.clear),
+                                          )
+                                        : SizedBox(
+                                            height: 0.0,
+                                            width: 0.0,
+                                          ),
+                                    hintText: 'SEARCH GEMSTORY',
+                                    hintStyle: TextStyle(
+                                      fontFamily: 'Gilroy Medium',
+                                      color: Color(0xFF595959),
+                                      fontSize: ScreenUtil().setSp(14,
+                                          allowFontScalingSelf: true),
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                  textAlign: searchSelected
+                                      ? TextAlign.start
+                                      : TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: 'Gilroy Regular',
+                                      fontSize: ScreenUtil().setSp(16,
+                                          allowFontScalingSelf: true)),
+                                ),
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 600),
+                                  margin: EdgeInsets.only(right: 6.0),
+                                  height: ScreenUtil()
+                                      .setHeight(searchSelected ? 0 : 27),
+                                  width: ScreenUtil()
+                                      .setWidth(searchSelected ? 0 : 27),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/notificationIcon.svg',
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          searchSelectedDoneButton
+                              ? SizedBox(
+                                  width: ScreenUtil().setWidth(10),
+                                )
+                              : SizedBox(
+                                  width: 0,
+                                ),
+                          searchSelectedDoneButton
+                              ? Container(
+                                  height: ScreenUtil().setHeight(22),
+                                  width: ScreenUtil().setWidth(45),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      currentFocus.unfocus();
+                                      textEditingController.clear();
+                                      setState(() {
+                                        searchValue = "";
+                                        searchSelected = false;
+                                        searchSelectedDoneButton = false;
+                                      });
+                                    },
+                                    child: Text(
+                                      'Done',
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy Bold',
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(16,
+                                            allowFontScalingSelf: true),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: 0,
+                                ),
+                        ],
+                      ),
+                    ),
+                    !searchSelected
+                        ? SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                        : Divider(
+                            color: Colors.grey[300],
+                            endIndent: 70.0,
+                            indent: 70.0,
+                          ),
+                    searchValue.isEmpty
+                        ? SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                        : isLoadingSearch
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Container(
+                                height: ScreenUtil().setHeight(600.0),
+                                width: ScreenUtil().setHeight(360),
+                                margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: suggestion.length > 0
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: Provider.of<Searchh>(context,
+                                                listen: false)
+                                            .searchResult
+                                            .length,
+                                        itemBuilder: (context, index) {
+                                          info = suggestion[index]
+                                              .styleNumber
+                                              .split(searchValue);
+                                          print(info);
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20.0, right: 20.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: ScreenUtil().setHeight(90),
+                                                  width: ScreenUtil().setWidth(90),
+                                                  // color: Colors.amber,
+                                                  child: Image(
+                                                    image: AdvancedNetworkImage(
+                                                      suggestion[index].image,
+                                                      useDiskCache: true,
+                                                      cacheRule: CacheRule(
+                                                          maxAge:
+                                                              const Duration(
+                                                                  days: 3)),
+                                                    ),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                                // Text(
+                                                //   styleNumber[index],
+                                                //   style: TextStyle(
+                                                //     fontFamily: 'Varela',
+                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                //   ),
+                                                // )
+                                                RichText(
+                                                  text: TextSpan(
+                                                    // text: suggestion[index].substring(
+                                                    //   suggestion[index].indexOf(
+                                                    //       searchValue),
+                                                    //   searchValue.length,
+                                                    // ),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'Varela',
+                                                      fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text: info[0],
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          // fontWeight: FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: searchValue,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: info[1],
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          // fontWeight: FontWeight.bold,
+                                                          fontFamily: 'Varela',
+                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text(
+                                          'No Products Found',
+                                        ),
+                                      ),
+                              )
                   ],
                 ),
               ),
