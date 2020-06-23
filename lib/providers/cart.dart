@@ -5,12 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'auth.dart';
-class ExtraCart{
+
+class ExtraCart {
   String displayImage;
   String styleNumber;
 }
+
 class Cartt {
-  Object product;//styleNumber,imageUrl,
+  Object product; //styleNumber,imageUrl,
+  String id;
   int quantity;
   String cert;
   String color;
@@ -21,18 +24,18 @@ class Cartt {
   int buildValue;
   int certValue;
 
-  Cartt({
-    this.product,
-    this.quantity,
-    this.cert,
-    this.color,
-    this.diamond,
-    this.build,
-    this.buildValue,
-    this.certValue,
-    this.colorValue,
-    this.diamondValue,
-  });
+  Cartt(
+      {this.product,
+      this.quantity,
+      this.cert,
+      this.color,
+      this.diamond,
+      this.build,
+      this.buildValue,
+      this.certValue,
+      this.colorValue,
+      this.diamondValue,
+      this.id});
 }
 
 class Cart with ChangeNotifier {
@@ -63,37 +66,12 @@ class Cart with ChangeNotifier {
             cart[index].diamond == diamond &&
             cart[index].cert == cert) {
           cart[index].quantity = cart[index].quantity + quantity;
-          check=false;
-
+          check = false;
         } else {
-          cart.add(Cartt(
-            product: product,
-            quantity: quantity,
-            cert: cert,
-            color: color,
-            diamond: diamond,
-            build: build,
-            buildValue: buildValue,
-            colorValue: colorValue,
-            certValue: certvalue,
-            diamondValue: diamondValue,
-          ));
-          check=true;
+          check = true;
         }
       } else {
-        cart.add(Cartt(
-          product: product,
-          quantity: quantity,
-          cert: cert,
-          color: color,
-          diamond: diamond,
-          build: build,
-          buildValue: buildValue,
-          colorValue: colorValue,
-          certValue: certvalue,
-          diamondValue: diamondValue,
-        ));
-        check=true;
+        check = true;
       }
     } else {
       index = cart.indexWhere(
@@ -106,73 +84,93 @@ class Cart with ChangeNotifier {
       cart[index].diamondValue = diamondValue;
       cart[index].buildValue = buildValue;
       cart[index].certValue = certvalue;
-       cart[index].quantity=quantity;
-       check=false;
+      cart[index].quantity = quantity;
+      check = false;
 
       notifyListeners();
     }
 
     final url = 'https://alexa.gemstory.in/cart/add';
-if(check)
-{
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization':
-              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: json.encode({
-          "styleNumber": product.styleNumber,
-          "diamondQuality": diamond,
-          "build": build,
-          "certificate": cert,
-          "color": color.toUpperCase(),
-          "quantity": quantity
-        }),
-      );
+    if (check) {
+      try {
+        final response = await http.post(
+          url,
+          headers: {
+            'Authorization':
+                'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: json.encode({
+            "styleNumber": product.styleNumber,
+            "diamondQuality": diamond,
+            "build": build,
+            "certificate": cert,
+            "color": color.toUpperCase(),
+            "quantity": quantity
+          }),
+        );
 
-      final responseData = json.decode(response.body);
-      print(responseData);
-      print(cart);
-      notifyListeners();
-    } catch (error) {
-      print(error);
-      throw error;
+        final responseData = json.decode(response.body);
+
+        responseData['cart']['products'].forEach((i) => {
+              if (i['options']['quantity'] == quantity &&
+                  i['options']['build'] == build &&
+                  i['options']['color'] == color.toUpperCase() &&
+                  i['options']['certificate'] == cert &&
+                  i['options']['diamondQuality'] == diamond &&
+                  i['styleNumber'] == product.styleNumber)
+                {
+                  cart.add(Cartt(
+                    id: i['id'],
+                    product: product,
+                    quantity: quantity,
+                    cert: cert,
+                    color: color,
+                    diamond: diamond,
+                    build: build,
+                    buildValue: buildValue,
+                    colorValue: colorValue,
+                    certValue: certvalue,
+                    diamondValue: diamondValue,
+                  ))
+                }
+            });
+        print(cart[0].id);
+
+        print(response);
+        print(cart);
+        notifyListeners();
+      } catch (error) {
+        print(error);
+        throw error;
+      }
+    } else {
+      try {
+        final response = await http.patch(
+          'https://alexa.gemstory.in/cart',
+          headers: {
+            'Authorization':
+                'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json.encode({
+            "id": cart[index].id,
+            "diamondQuality": diamond,
+            "build": build,
+            "certificate": cert,
+            "color": color.toUpperCase(),
+            "quantity": quantity
+          }),
+        );
+        print(json.decode(response.body));
+      } catch (err) {
+        throw err;
+      }
     }
-}
-else{
-  try{
-    final response=await http.patch(url,headers: {
-        'Authorization':
-              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
-          'Content-Type': 'application/json; charset=UTF-8',
-    },
-        body: json.encode({
-         	"id":"5ef0c21003c6261e1c50f8b2",
-          "diamondQuality": diamond,
-          "build": build,
-          "certificate": cert,
-          "color": color.toUpperCase(),
-          "quantity": quantity
-        }),
-
-    );
-
-  }catch(err){
-    throw err;
-  }
-
-
-
-
-
-}
   }
 
   Future<void> getCart({context}) async {
-    final url = 'https://alexa.gemstory.in/';
+    final url = 'https://alexa.gemstory.in/cart';
 
     try {
       final response = await http.get(
@@ -180,12 +178,14 @@ else{
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
-         
         },
       );
 
       final responseData = json.decode(response.body);
+
+
       print(responseData);
+      
       print(cart);
       notifyListeners();
     } catch (error) {
@@ -194,33 +194,41 @@ else{
     }
   }
 
- void buildChange(value,index){
-   cart[index].buildValue=value;
-   notifyListeners();
 
- } 
- void colorChange(value,index){
-    cart[index].colorValue=value;
-   notifyListeners();
-   
- } 
- void certChange(value,index){
-    cart[index].certValue=value;
-   notifyListeners();
-   
- } 
- void diamondChange(value,index){
-    cart[index].diamondValue=value;
-   notifyListeners();
-   
- } 
- void decQuantity(index){
-   cart[index].quantity=cart[index].quantity-1;
-   notifyListeners();
- }
- void incQuantity(index){
-    cart[index].quantity=cart[index].quantity+1;
-   notifyListeners();
 
- }
+
+
+
+
+
+
+  void buildChange(value, index) {
+    cart[index].buildValue = value;
+    notifyListeners();
+  }
+
+  void colorChange(value, index) {
+    cart[index].colorValue = value;
+    notifyListeners();
+  }
+
+  void certChange(value, index) {
+    cart[index].certValue = value;
+    notifyListeners();
+  }
+
+  void diamondChange(value, index) {
+    cart[index].diamondValue = value;
+    notifyListeners();
+  }
+
+  void decQuantity(index) {
+    cart[index].quantity = cart[index].quantity - 1;
+    notifyListeners();
+  }
+
+  void incQuantity(index) {
+    cart[index].quantity = cart[index].quantity + 1;
+    notifyListeners();
+  }
 }
