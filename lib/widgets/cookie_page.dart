@@ -1,21 +1,15 @@
-import 'dart:wasm';
-
 import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
-import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import '../constant/const.dart';
 import 'package:provider/provider.dart';
 import '../providers/products.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' show ImageFilter;
-
-import 'optionsDialog.dart';
 
 class CookiePage extends StatefulWidget {
   final select;
@@ -61,20 +55,6 @@ class _CookiePageState extends State<CookiePage> {
   String color;
   int colorr;
   bool isLoadingg = false;
-  String colorKey;
-  String priceKey;
-  int buildPrice;
-  int certPrice;
-
-  int _defaultChoiceIndex2;
-
-  int _defaultChoiceIndex1;
-
-  int _defaultChoiceIndex3;
-
-  int _defaultChoiceIndex4;
-
-  bool show = true;
 
   Future<void> getMoreProducts() async {
     if (widget.select == 'all')
@@ -148,25 +128,6 @@ class _CookiePageState extends State<CookiePage> {
       if (widget.select != 'fav') {
         createList();
       }
-      // _defaultChoiceIndex1 =
-      //     Provider.of<Options>(context, listen: false).build == null
-      //         ? 0
-      //         : Provider.of<Options>(context, listen: false).build;
-      // _defaultChoiceIndex2 =
-      //     Provider.of<Options>(context, listen: false).color == null
-      //         ? 0
-      //         : Provider.of<Options>(context, listen: false).color;
-      // _defaultChoiceIndex3 =
-      //     Provider.of<Options>(context, listen: false).certificate == null
-      //         ? 0
-      //         : Provider.of<Options>(context, listen: false).certificate;
-      // _defaultChoiceIndex4 =
-      //     Provider.of<Options>(context, listen: false).diamondQuality == null
-      //         ? 0
-      //         : Provider.of<Options>(context, listen: false).diamondQuality;
-
-      // print(colorKey);
-
       // if (Provider.of<Auth>(context, listen: false).autoLogin) {
       //   if (!mounted) return;
       //   setState(() {
@@ -187,7 +148,7 @@ class _CookiePageState extends State<CookiePage> {
       //   });
       // }
 
-      isInit = false;
+      // isInit = false;
       // if (!mounted) return;
       // setState(() {
       //   isLoading = false;
@@ -251,36 +212,7 @@ class _CookiePageState extends State<CookiePage> {
     );
   }
 
-  void _onValueChange(int value, int index) {
-    // await Provider.of<Options>(context, listen: false).setBuild(build: value);
-    setState(() {
-      _defaultChoiceIndex1 = value;
-      print(value);
-    });
-  }
-
-  void _onValueChangeColor(int value, int index) {
-    // await Provider.of<Options>(context, listen: false).setColor(color: value);
-    setState(() {
-      _defaultChoiceIndex2 = value;
-    });
-  }
-
-  void _onValueChangeCerti(int value, int index) {
-    // await Provider.of<Options>(context, listen: false).setCert(cert: value);
-    setState(() {
-      _defaultChoiceIndex3 = value;
-    });
-  }
-
-  void _onValueChangeDQ(int value, int index) {
-    // await Provider.of<Options>(context, listen: false).setDiamond(diamond: value);
-    setState(() {
-      _defaultChoiceIndex4 = value;
-    });
-  }
-
-  void dateSelect(context, product, dataShow) {
+  void dateSelect(context, dX, dY, product) {
     var alertDialog = AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -357,173 +289,36 @@ class _CookiePageState extends State<CookiePage> {
         ),
       ),
     );
-    if (show) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          // return Stack(
-          //   children: <Widget>[
-          //     Positioned(
-          //       top: dY,
-          //       left: dX,
-          //       right: dX,
-          //       child: BackdropFilter(
-          //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          //         child: alertDialog,
-          //       ),
-          //     ),
-          //   ],
-          // );
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: alertDialog,
-          );
-        },
-      );
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return Stack(
+        //   children: <Widget>[
+        //     Positioned(
+        //       top: dY,
+        //       left: dX,
+        //       right: dX,
+        //       child: BackdropFilter(
+        //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        //         child: alertDialog,
+        //       ),
+        //     ),
+        //   ],
+        // );
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: alertDialog,
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    void dateSelect(context, product) {
-      var alertDialog = AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        backgroundColor: Colors.black.withOpacity(0.3),
-        elevation: 100.0,
-        content: Container(
-          height: ScreenUtil().setHeight(315),
-          // width: ScreenUtil().setHeight(411),
-          // width: 700.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  product.styleNumber,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Gilroy Black',
-                    fontSize:
-                        ScreenUtil().setSp(25, allowFontScalingSelf: true),
-                  ),
-                ),
-              ),
-              DataTable(
-                columns: [
-                  DataColumn(
-                      label: Text(
-                    'Specifications',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Units',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
-                ],
-                rows: [
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Gold Weight',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(
-                      product.goldWeight.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Diamond Weight',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(
-                      product.diamondWeight.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Diamond Count',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(
-                      product.diamondCount.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ]),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-      if (show) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // return Stack(
-            //   children: <Widget>[
-            //     Positioned(
-            //       top: dY,
-            //       left: dX,
-            //       right: dX,
-            //       child: BackdropFilter(
-            //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            //         child: alertDialog,
-            //       ),
-            //     ),
-            //   ],
-            // );
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: alertDialog,
-            );
-          },
-        );
-      }
-    }
-
     // final scaff = Scaffold.of(context);
     // final Color themeColor = Theme.of(context).primaryColor;
     // print('PP No of Products: ${widget.products.length}');
     var size = MediaQuery.of(context).size;
-    _defaultChoiceIndex1 =
-        Provider.of<Options>(context, listen: false).build == null
-            ? 0
-            : Provider.of<Options>(context, listen: false).build;
-    _defaultChoiceIndex2 =
-        Provider.of<Options>(context, listen: false).color == null
-            ? 0
-            : Provider.of<Options>(context, listen: false).color;
-    _defaultChoiceIndex3 =
-        Provider.of<Options>(context, listen: false).certificate == null
-            ? 0
-            : Provider.of<Options>(context, listen: false).certificate;
-    _defaultChoiceIndex4 =
-        Provider.of<Options>(context, listen: false).diamondQuality == null
-            ? 0
-            : Provider.of<Options>(context, listen: false).diamondQuality;
-
-    colorKey =
-        (Provider.of<Pagination>(context, listen: false).color[widget.color])
-            .toLowerCase();
-    // setState(() {
-    if (widget.select != 'fav') {
-      priceKey = (Provider.of<Pagination>(context, listen: false)
-          .diamondQuality[widget.diamond]);
-
-      buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
-          Provider.of<Pagination>(context, listen: false).build[widget.build]];
-      certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
-          Provider.of<Pagination>(context, listen: false).cert[widget.cert]];
-    }
-
     ScreenUtil.init(context,
         width: 411.42857142857144,
         height: 774.8571428571429,
@@ -533,13 +328,13 @@ class _CookiePageState extends State<CookiePage> {
     return isLoadingg
         ? Center(child: CircularProgressIndicator())
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 child: ListView(
-                  controller: widget.scrollController,
                   children: <Widget>[
                     GridView.builder(
+                      controller: widget.scrollController,
                       scrollDirection: Axis.vertical,
                       padding: EdgeInsets.only(left: 25, right: 26),
                       shrinkWrap: true,
@@ -558,122 +353,62 @@ class _CookiePageState extends State<CookiePage> {
                             width: ScreenUtil().setWidth(159),
                             height: ScreenUtil().setHeight(150),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colors.white,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.37),
-                                    offset: Offset(2, 5),
-                                  )
-                                ]),
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.white,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.black.withOpacity(0.37),
+                                  offset: Offset(2,5),
+                                )
+                              ]
+                            ),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ProductDetail(
-                                      colorKey: colorKey,
-                                      diamondKey: priceKey,
-                                      certPrice: certPrice,
-                                      product: widget.products[i],
-                                      defaultIndex1: _defaultChoiceIndex1,
-                                      defaultIndex2: _defaultChoiceIndex2,
-                                      defaultIndex3: _defaultChoiceIndex3,
-                                      defaultIndex4: _defaultChoiceIndex4,
-                                      valueChangeBuild: _onValueChange,
-                                      valueChangeColor: _onValueChangeColor,
-                                      valueChangeCerti: _onValueChangeCerti,
-                                      valueChangeDQ: _onValueChangeDQ,
-                                      select: widget.select,
-                                    ),
+                                    builder: (context) => ProductDetail(),
                                   ),
                                 );
                               },
-                              onLongPressEnd: (details) {
-                                dateSelect(
-                                  context,
-                                  widget.products[i],
-                                );
-                                setState(() {
-                                  show = false;
-                                });
-                              },
+                              onLongPressEnd: (details) {},
                               onLongPressStart: (details) {
                                 dateSelect(
-                                  context,
-                                  widget.products[i],
-                                );
+                                    context,
+                                    details.globalPosition.dx,
+                                    details.globalPosition.dy,
+                                    widget.products[i]);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                        top: widget.select == 'fav' ? 8 : 2,
-                                        left: widget.select == 'fav' ? 8 : 21,
-                                        right: 4),
+                                    padding:
+                                        EdgeInsets.only(left: 21, right: 4),
                                     child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Container(
-                                            // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
-
-                                            // color: Colors.amber,
-                                            child: widget.products[i].imageUrl
-                                                    .containsKey(colorKey)
-                                                ? Image(
-                                                    height: ScreenUtil()
-                                                        .setHeight(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 135
-                                                                : 122),
-                                                    width: ScreenUtil()
-                                                        .setWidth(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 130
-                                                                : 117),
-                                                    image: AdvancedNetworkImage(
-                                                      widget.products[i]
-                                                          .imageUrl[colorKey],
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Image(
-                                                    height: ScreenUtil()
-                                                        .setHeight(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 135
-                                                                : 122),
-                                                    width: ScreenUtil()
-                                                        .setWidth(
-                                                            widget.select ==
-                                                                    'fav'
-                                                                ? 130
-                                                                : 117),
-                                                    image: AdvancedNetworkImage(
-                                                      widget.products[i]
-                                                          .imageUrl['yellow'],
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.cover,
-                                                  )
-
-                                            // ),
-                                            ),
+                                          // color: Colors.amber,
+                                          child: Image(
+                                            height: ScreenUtil().setHeight(122),
+                                            width: ScreenUtil().setWidth(117),
+                                            image: widget.color == 0
+                                                ? NetworkImage(
+                                                    widget.products[i].yellow)
+                                                : widget.color == 1
+                                                    ? NetworkImage(widget
+                                                        .products[i].white)
+                                                    : widget.color == 2
+                                                        ? NetworkImage(widget
+                                                            .products[i].rose)
+                                                        : NetworkImage(widget
+                                                            .products[i]
+                                                            .yellow),
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 16.0),
@@ -692,73 +427,50 @@ class _CookiePageState extends State<CookiePage> {
                                       ],
                                     ),
                                   ),
-                                  // Text(
-                                  //   "5000 ₹",
-                                  //   style: TextStyle(
-                                  //     fontSize: ScreenUtil().setSp(18,
-                                  //         allowFontScalingSelf: true),
-                                  //     fontFamily: 'Gilroy Regular',
-                                  //   ),
-                                  // ),
-                                  Provider.of<Pagination>(context,
-                                                  listen: false)
+                                  Text(
+                                    "5000 ₹",
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(18,
+                                          allowFontScalingSelf: true),
+                                      fontFamily: 'Gilroy Regular',
+                                    ),
+                                  ),
+                                  Provider.of<Pagination>(context, listen: false)
                                               .isPriced &&
                                           widget.select != 'fav'
-                                      ? Container(
-                                          height: ScreenUtil().setHeight(20),
-                                          width: ScreenUtil().setWidth(110),
-                                          child: Center(
-                                            child: OutlineButton(
-                                              onPressed: () {
-                                                dataSelect(
-                                                  context,
-                                                  'Important!',
-                                                  "To see prices you must first request a quotation from Team Gemstory",
-                                                  'Request Prices',
-                                                );
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  'Request Prices',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Gilroy Medium',
-                                                    fontSize: ScreenUtil().setSp(
-                                                        11,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                  ),
-                                                ),
-                                              ),
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 1.0),
-                                              shape: RoundedRectangleBorder(
-                                                // side: BorderSide(color: kPrimaryColor, width: 1.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(18.0),
-                                              ),
-                                            ),
+                                      ? OutlineButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            'Request Prices',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: ScreenUtil().setSp(15,
+                                                    allowFontScalingSelf:
+                                                        true)),
                                           ),
-                                        )
-                                      : widget.products[i].prices
-                                              .containsKey(priceKey)
-                                          ? Text(
-                                              '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(18,
-                                                    allowFontScalingSelf: true),
-                                                fontFamily: 'Gilroy Regular',
-                                              ),
-                                            )
-                                          : Text(
-                                              'no price',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(18,
-                                                    allowFontScalingSelf: true),
-                                                fontFamily: 'Gilroy Regular',
-                                              ),
-                                            ),
+                                          borderSide: BorderSide(
+                                              color: Colors.black, width: 1.0),
+                                          shape: RoundedRectangleBorder(
+                                              // side: BorderSide(color: kPrimaryColor, width: 1.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0)))
+                                  //     : widget.diamond == 0 && widget.select != 'fav'
+                                  //         ? Text(widget.products[i].vVS_EF)
+                                  //         : widget.diamond == 1 && widget.select != 'fav'
+                                  //             ? Text(widget.products[i].vVS_FG)
+                                  //             : widget.diamond == 2 &&
+                                  //                     widget.select != 'fav'
+                                  //                 ? Text(widget
+                                  //                     .products[i].vVS_VS_FG)
+                                  //                 : widget.diamond == 3 &&
+                                  //                         widget.select != 'fav'
+                                  //                     ? Text(widget
+                                  //                         .products[i].vS_FG)
+                                  //                     : widget.diamond == 4 &&
+                                  //                             widget.select != 'fav'
+                                  //                         ? Text(widget.products[i].sI_HI)
+                                  //                         : Text(''),
+
                                   // Row(
                                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   //   // crossAxisAlignment: CrossAxisAlignment.center,
@@ -799,7 +511,7 @@ class _CookiePageState extends State<CookiePage> {
                                   //     fontFamily: 'Gilroy',
                                   //   ),
                                   // ),
-                                ],
+                                :Text('')],
                               ),
                             ),
                           ),
@@ -830,8 +542,7 @@ class _CookiePageState extends State<CookiePage> {
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       color: Colors.white,
-                                      size: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
+                                      size: ScreenUtil().setSp(16,allowFontScalingSelf: true),
                                     ),
                                   ),
                                   onTap: () async {
@@ -842,7 +553,7 @@ class _CookiePageState extends State<CookiePage> {
                                                 widget.products[i].styleNumber,
                                             context: context,
                                             select: widget.select);
-                                    if (!mounted) setState(() {});
+                                    setState(() {});
                                   },
                                 ),
                                 SizedBox(
@@ -866,58 +577,17 @@ class _CookiePageState extends State<CookiePage> {
                                     child: Icon(
                                       Icons.shopping_cart,
                                       color: Colors.white,
-                                      size: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
+                                      size: ScreenUtil().setSp(13,allowFontScalingSelf: true),
                                     ),
                                   ),
-                                  onTap: () {
-                                    // Provider.of<Pagination>(context,
-                                    //             listen: false)
-                                    //         .isPriced
-                                    //     ? dataSelect(
-                                    //         context,
-                                    //         'Important!',
-                                    //         "To see prices you must first request a quotation from Team Gemstory",
-                                    //         'Request Prices',
-                                    //       )
-                                    //     : 
-                                        showDialog(
-                                            context: context,
-                                            child: AddToCart(
-                                              product: widget.products[i],
-                                              updateCart: false,
-                                              choicesBuild:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .build,
-                                              choiceColor:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .color,
-                                              choiceCertification:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .cert,
-                                              choiceDiamondQuality:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .diamondQuality,
-                                              defValue: _defaultChoiceIndex1,
-                                              defValue1: _defaultChoiceIndex2,
-                                              defValue2: _defaultChoiceIndex3,
-                                              defValue3: _defaultChoiceIndex4,
-                                              valueChangeBuild: _onValueChange,
-                                              valueChangeColor:
-                                                  _onValueChangeColor,
-                                              valueChangeCerti:
-                                                  _onValueChangeCerti,
-                                              valueChangeDQ: _onValueChangeDQ,
-                                            ),
-                                          );
+                                  onTap: () async {
+                                    showPicker(
+                                        context: context,
+                                        color: widget.color,
+                                        diamond: widget.diamond,
+                                        cert: widget.cert,
+                                        build: widget.build,
+                                        prodcut: widget.products[i]);
                                   },
                                 ),
                               ],
