@@ -7,11 +7,12 @@ class Options with ChangeNotifier {
   int color;
   int diamondQuality;
 
+  
 
   setBuild({build}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('build', build);
-    build=build;
+    this.build=build;
     notifyListeners();
     
   }
@@ -20,7 +21,7 @@ class Options with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setInt('certificate', cert);
-    certificate=cert;
+    this.certificate=cert;
     notifyListeners();
   }
 
@@ -28,7 +29,7 @@ setColor({color}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setInt('color', color);
-     color=color;
+    this.color=color;
     notifyListeners();
   }
 
@@ -37,7 +38,7 @@ setColor({color}) async {
    
 
     prefs.setInt('diamondQuality', diamond);
-     diamondQuality=diamond;
+     this.diamondQuality=diamond;
      notifyListeners();
   }
 
@@ -51,6 +52,7 @@ setColor({color}) async {
     diamondQuality = prefs.getInt('diamondQuality');
     notifyListeners();
   }
+
 
   
 

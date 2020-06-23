@@ -41,6 +41,10 @@ dependencies:
   flutter_form_builder: ^3.10.1
   cached_network_image: ^2.2.0+1
   url_launcher: ^5.4.10
+  dropdown_search: ^0.4.3
+  flutter_advanced_networkimage: ^0.7.0
+  intl: ^0.16.1
+  smooth_star_rating: ^1.1.1
   liquid_swipe:
     git:
       url: git://github.com/iamSahdeep/liquid_swipe_flutter.git
@@ -88,6 +92,21 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: Roboto Regular
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+    - family: Roboto Bold
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+    - family: Roboto Light
+      fonts:
+        - asset: assets/fonts/Roboto-Light.ttf
+    - family: Roboto Medium
+      fonts:
+        - asset: assets/fonts/Roboto-Medium.ttf
+    - family: Roboto Black
+      fonts:
+        - asset: assets/fonts/Roboto-Black.ttf
     - family: Gilroy Regular
       fonts:
         - asset: assets/fonts/GILROY-REGULAR.TTF

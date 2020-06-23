@@ -3,6 +3,7 @@ import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
+import 'package:Flutter/providers/testimony.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Searchh()),
         ChangeNotifierProvider.value(value: Pagination()),
         ChangeNotifierProvider.value(value: Options()),
+        ChangeNotifierProvider.value(value: Testimony()),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(

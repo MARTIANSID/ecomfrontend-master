@@ -17,7 +17,7 @@ class Searchh with ChangeNotifier {
   List<dynamic> searchResult;
 
   Future<void> getSearch({String query, context}) async {
-    final url = 'https://api.nakoda.daxy.in/product/search?query=${query}';
+    final url = 'https://alexa.gemstory.in/product/search?query=${query}';
     try {
       final response = await http.get(
         url,

@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './http_exception.dart';
 
 class Auth with ChangeNotifier {
-  static const uurl = 'https://api.nakoda.daxy.in/';
+  static const uurl = 'https://alexa.gemstory.in/';
 
   Future<bool> checkIfRegistered(String number) async {
     final response = await http.get('${uurl}user/isregistered/$number');
@@ -20,23 +20,24 @@ class Auth with ChangeNotifier {
     print('PP checkIfRegistered response: $responsebody');
     return responsebody['registered'];
   }
-  bool isLogin=false;
+
+  bool isLogin = false;
   String _token;
   DateTime _expiryDate;
   String _number;
   Timer _authTimer;
-  bool autoLogin=false;
-
+  bool autoLogin = false;
 
   bool get isAuth {
     return token != null;
   }
 
-  void changeLog(){
-    isLogin=!isLogin;
+  void changeLog() {
+    isLogin = !isLogin;
   }
-  void changeAuto(){
-    autoLogin=!autoLogin;
+
+  void changeAuto() {
+    autoLogin = !autoLogin;
   }
 
   String get token {
@@ -141,7 +142,7 @@ class Auth with ChangeNotifier {
 
     _expiryDate = expiryDate;
 
-    autoLogin=true;
+    autoLogin = true;
 
     _autoLogout();
     notifyListeners();
@@ -155,12 +156,12 @@ class Auth with ChangeNotifier {
     if (_authTimer != null) {
       _authTimer.cancel();
       _authTimer = null;
-      notifyListeners();
     }
 
     final prefs = await SharedPreferences.getInstance();
     // prefs.remove('userData');
     prefs.clear();
+    notifyListeners();
   }
 
   void _autoLogout() {
@@ -168,9 +169,9 @@ class Auth with ChangeNotifier {
       _authTimer.cancel();
     }
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
+
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
 
     notifyListeners();
   }
-
 }

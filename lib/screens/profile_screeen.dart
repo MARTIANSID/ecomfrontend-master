@@ -1,5 +1,9 @@
+import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/accountinfo.dart';
+import 'package:Flutter/screens/appui.dart';
 import 'package:Flutter/screens/testimony_page.dart';
+import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -24,26 +28,19 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage>
     with SingleTickerProviderStateMixin {
-  int getColorHexFromStr(String colorStr) {
-    colorStr = "FF" + colorStr;
-    colorStr = colorStr.replaceAll("#", "");
-    int val = 0;
-    int len = colorStr.length;
-    for (int i = 0; i < len; i++) {
-      int hexDigit = colorStr.codeUnitAt(i);
-      if (hexDigit >= 48 && hexDigit <= 57) {
-        val += (hexDigit - 48) * (1 << (4 * (len - 1 - i)));
-      } else if (hexDigit >= 65 && hexDigit <= 70) {
-        // A..F
-        val += (hexDigit - 55) * (1 << (4 * (len - 1 - i)));
-      } else if (hexDigit >= 97 && hexDigit <= 102) {
-        // a..f
-        val += (hexDigit - 87) * (1 << (4 * (len - 1 - i)));
-      } else {
-        throw new FormatException("An error occurred when converting a color");
-      }
-    }
-    return val;
+  bool isLoading=false;
+
+ @override
+ void initState() {
+    // TODO: implement initState
+    super.initState();
+    new Future.delayed(Duration(seconds: 0),()async{setState(() {
+      isLoading=true;
+    }); await Provider.of<UserInfo>(context,listen:false).getuser(context);setState(() {
+      isLoading=false;
+    });});
+   
+    
   }
 
   @override
@@ -56,7 +53,7 @@ class _UserPageState extends State<UserPage>
       allowFontScaling: true,
     );
     return Scaffold(
-      body: ListView(
+      body:isLoading?Center(child: CircularProgressIndicator(),): ListView(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           physics: BouncingScrollPhysics(),
@@ -121,7 +118,7 @@ class _UserPageState extends State<UserPage>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Yash Karade',
+                                 Provider.of<UserInfo>(context,listen: false).fullname,
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontSize: ScreenUtil()
@@ -130,7 +127,7 @@ class _UserPageState extends State<UserPage>
                                   ),
                                 ),
                                 Text(
-                                  'Firm_Name',
+                                   Provider.of<UserInfo>(context,listen: false).firm,
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontSize: ScreenUtil()
@@ -303,7 +300,7 @@ class _UserPageState extends State<UserPage>
                             cardDetails(
                               'Nose Pins I like',
                               // 'assets/images/trucks.png',
-                              '8',
+                              Provider.of<Pagination>(context,listen: true).favProducts.length.toString(),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
                                     15.0, 15.0, 20.0, 0.0),
@@ -323,7 +320,7 @@ class _UserPageState extends State<UserPage>
                             cardDetails(
                               'Today\'s Gold Price',
                               // 'assets/images/returnbox.png',
-                              '0',
+                              Provider.of<Pagination>(context,listen: false).goldPrice.toString(),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
                                     15.0, 15.0, 20.0, 0.0),
@@ -376,6 +373,7 @@ class _UserPageState extends State<UserPage>
                       ),
                       text: "Logout",
                       tap: () {
+                        Navigator.of(context).pop();
                         Provider.of<Auth>(context,listen:false).logout();
                         // Navigator.push(
                         //   context,

@@ -63,7 +63,7 @@ class Product {
 class Products with ChangeNotifier {
   bool isVerified;
   bool isPriced;
-  static const uurl = 'https://api.nakoda.daxy.in/';
+  static const uurl = 'https://alexa.gemstory.in/';
   List<dynamic> _products = []; //
 
   List<dynamic> get products {
