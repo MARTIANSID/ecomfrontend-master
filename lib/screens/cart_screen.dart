@@ -519,14 +519,19 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CartScreen extends StatefulWidget {
   final int pageIndex;
   final PageController pageController;
+  final ScrollController controller;
+  final Function listen;
+  // final ScrollController scrollController;
+  
 
-  const CartScreen({Key key, this.pageIndex, this.pageController})
+  const CartScreen({Key key, this.pageIndex, this.pageController,this.controller,this.listen})
       : super(key: key);
 
   @override
@@ -534,12 +539,58 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  static final _containerHeight = 100.0;
+
+
+
+  // You don't need to change any of these variables
+  var _fromTop = -_containerHeight;
+  var _controller = ScrollController();
+  var _allowReverse = true, _allowForward = true;
+  var _prevOffset = 0.0;
+  var _prevForwardOffset = -_containerHeight;
+  var _prevReverseOffset = 0.0;
   int valueOf = 0;
 
-  @override
+@override
   void initState() {
     super.initState();
+  _controller.addListener(_listener);
   }
+void _listener() {
+    double offset = _controller.offset;
+    var direction = _controller.position.userScrollDirection;
+
+     if (direction == ScrollDirection.forward) {
+        _allowForward = true;
+      if (_allowReverse) {
+        _allowReverse = false;
+        _prevOffset = offset;
+        _prevForwardOffset = _fromTop;
+      }
+     
+      if (_fromTop < -_containerHeight) _fromTop = -_containerHeight;
+    }
+
+      var difference = offset - _prevOffset;
+      _fromTop = _prevReverseOffset + difference;
+      
+    if (direction == ScrollDirection.reverse) {
+       _allowReverse = true;
+      if (_allowForward) {
+        _allowForward = false;
+        _prevOffset = offset;
+        _prevReverseOffset = _fromTop;
+      }
+
+    
+
+    
+      if (_fromTop > 0) _fromTop = 0;
+    } 
+   widget.listen(_fromTop); // for simplicity I'm calling setState here, you can put bool values to only call setState when there is a genuine change in _fromTop
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -656,6 +707,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   Expanded(
                     child: ListView.builder(
+                    controller: _controller,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),

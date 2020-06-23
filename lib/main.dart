@@ -63,8 +63,10 @@ class MyApp extends StatelessWidget {
                     builder: (ctx, authResultSnapshot) =>
                         authResultSnapshot.connectionState ==
                                 ConnectionState.waiting
-                            ? SplashScreen()
-                            : authResultSnapshot.data ? Home() : LoginScreen(),
+                            ? SplashScreen():
+                            // : authResultSnapshot.data ? 
+                            Home()
+                            //  : LoginScreen(),
                   ),
             "first": (context) => OnboardingScreen(),
           },

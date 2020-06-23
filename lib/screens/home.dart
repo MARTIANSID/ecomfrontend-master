@@ -17,8 +17,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // final controller = ScrollController();
-  ScrollController _scrollController;
+ static var  _containerHeight =45.0;
+
+  // You don't need to change any of these variables
+  var _fromTop = _containerHeight-100.0;
+  var _controller = ScrollController();
+  var _allowReverse = true, _allowForward = true;
+  var _prevOffset = 0.0;
+  var _prevForwardOffset = -_containerHeight;
+  var _prevReverseOffset = 0.0;
+  
   bool _visible = true;
+ 
 
   void _onTap(int a) {
     setState(() {
@@ -26,10 +36,10 @@ class _HomeState extends State<Home> {
     });
   }
 
-  int _currentIndex = 2;
+  int _currentIndex = 4;
   int _previousIndex = 0;
   PageController pageController = PageController(
-    initialPage: 2,
+    initialPage: 4,
     keepPage: false,
   );
   void pageChanged(int index) {
@@ -39,32 +49,79 @@ class _HomeState extends State<Home> {
     });
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _scrollController = ScrollController();
+  //    _controller.addListener(_listener);
+  //   // _scrollController.addListener(() {
+  //   //   if (_scrollController.position.userScrollDirection ==
+  //   //       ScrollDirection.idle) {
+  //   //     setState(() => _visible = true);
+  //   //   }
+  //   //   if (_scrollController.position.userScrollDirection ==
+  //   //       ScrollDirection.reverse) {
+  //   //     setState(() => {
+  //   //           _visible = false,
+  //   //         });
+  //   //     // _key.currentState.reverse();
+  //   //   }
+  //   //   if (_scrollController.position.userScrollDirection ==
+  //   //       ScrollDirection.forward) {
+  //   //     setState(() => {
+  //   //           _visible = true,
+  //   //         });
+  //   //     // _key.currentState.forward();
+  //   //   }
+  //   //   // print(_visible);
+  //   // });
+  // }
+
+
+  
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.idle) {
-        setState(() => _visible = true);
-      }
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        setState(() => {
-              _visible = false,
-            });
-        // _key.currentState.reverse();
-      }
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.forward) {
-        setState(() => {
-              _visible = true,
-            });
-        // _key.currentState.forward();
-      }
-      // print(_visible);
-    });
+    _controller.addListener(_listener);
   }
+
+  // entire logic is inside this listener for ListView
+  void _listener() {
+    double offset = _controller.offset;
+    var direction = _controller.position.userScrollDirection;
+
+    if (direction == ScrollDirection.reverse) {
+      _allowForward = true;
+      if (_allowReverse) {
+        _allowReverse = false;
+        _prevOffset = offset;
+        _prevForwardOffset = _fromTop;
+      }
+
+      var difference = offset - _prevOffset;
+      _fromTop = _prevForwardOffset + difference;
+      if (_fromTop > 0) _fromTop = 0;
+    } else if (direction == ScrollDirection.forward) {
+      _allowReverse = true;
+      if (_allowForward) {
+        _allowForward = false;
+        _prevOffset = offset;
+        _prevReverseOffset = _fromTop;
+      }
+
+      var difference = offset - _prevOffset;
+      _fromTop = _prevReverseOffset + difference;
+      if (_fromTop < -_containerHeight) _fromTop = -_containerHeight;
+    }
+    setState(() {}); // for simplicity I'm calling setState here, you can put bool values to only call setState when there is a genuine change in _fromTop
+  }
+
+void listen(height){
+  setState(() {
+    _fromTop=height;
+    
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -155,23 +212,28 @@ class _HomeState extends State<Home> {
                 onButtonTapped: _onTap,
               ),
               FavouriteScreen(
-                scrollController: _scrollController,
+                scrollController: _controller,
                 onButtonTapped: _onTap,
                 val: _visible,
               ),
               ProductOverViewScreen(
-                scrollController: _scrollController,
+                scrollController:_controller,
                 onButtonTapped: _onTap,
                 val: _visible,
               ),
               Center(child: Text('Navigate to Whatsapp')),
-              CartScreen(),
+              CartScreen(controller:_controller,listen: listen,),
             ],
           ),
         ),
-        Container(
+       Positioned(
+         bottom: _fromTop,
+        //  left: 0,
+        //  right: 0,
+         
+         child: Container(
           width: ScreenUtil().setWidth(244),
-          height: ScreenUtil().setHeight(45),
+          height:ScreenUtil().setHeight(_containerHeight),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(50.0),
@@ -367,10 +429,8 @@ class _HomeState extends State<Home> {
               ),
               GestureDetector(
                 onTap: () async {
-                  if (await canLaunch(
-                      "https://wa.me/919322244007")) {
-                    await launch(
-                        "https://wa.me/919322244007");
+                  if (await canLaunch("https://wa.me/919322244007")) {
+                    await launch("https://wa.me/919322244007");
                   } else {
                     throw 'Could not launch https://wa.me/919322244007';
                   }
@@ -499,7 +559,7 @@ class _HomeState extends State<Home> {
         // Scaffold(
         //  body: _children[_currentIndex],
         // ),
-      ],
+        ) ],
     );
   }
 }

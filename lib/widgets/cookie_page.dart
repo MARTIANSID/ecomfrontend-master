@@ -435,25 +435,25 @@ class _CookiePageState extends State<CookiePage> {
                                       fontFamily: 'Gilroy Regular',
                                     ),
                                   ),
-                                  // Provider.of<Pagination>(context, listen: false)
-                                  //             .isPriced &&
-                                  //         widget.select != 'fav'
-                                  //     ? OutlineButton(
-                                  //         onPressed: () {},
-                                  //         child: Text(
-                                  //           'Request Prices',
-                                  //           style: TextStyle(
-                                  //               color: Colors.black,
-                                  //               fontSize: ScreenUtil().setSp(15,
-                                  //                   allowFontScalingSelf:
-                                  //                       true)),
-                                  //         ),
-                                  //         borderSide: BorderSide(
-                                  //             color: Colors.black, width: 1.0),
-                                  //         shape: RoundedRectangleBorder(
-                                  //             // side: BorderSide(color: kPrimaryColor, width: 1.0),
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(18.0)))
+                                  Provider.of<Pagination>(context, listen: false)
+                                              .isPriced &&
+                                          widget.select != 'fav'
+                                      ? OutlineButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            'Request Prices',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: ScreenUtil().setSp(15,
+                                                    allowFontScalingSelf:
+                                                        true)),
+                                          ),
+                                          borderSide: BorderSide(
+                                              color: Colors.black, width: 1.0),
+                                          shape: RoundedRectangleBorder(
+                                              // side: BorderSide(color: kPrimaryColor, width: 1.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0)))
                                   //     : widget.diamond == 0 && widget.select != 'fav'
                                   //         ? Text(widget.products[i].vVS_EF)
                                   //         : widget.diamond == 1 && widget.select != 'fav'
@@ -511,7 +511,7 @@ class _CookiePageState extends State<CookiePage> {
                                   //     fontFamily: 'Gilroy',
                                   //   ),
                                   // ),
-                                ],
+                                :Text('')],
                               ),
                             ),
                           ),
