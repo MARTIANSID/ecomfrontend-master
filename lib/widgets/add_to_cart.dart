@@ -151,7 +151,7 @@ class AddToCartTState extends State<AddToCart> {
         elevation: 0.0,
         contentPadding: EdgeInsets.all(14.0),
         children: <Widget>[
-          // height: ScreenUtil().setHeight(595),
+          // height: ScreenUtil().setHeight(590),
           //   width: ScreenUtil().setWidth(400),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,8 +364,8 @@ class AddToCartTState extends State<AddToCart> {
                 height: ScreenUtil().setHeight(16),
               ),
               Wrap(
-                spacing: 7.0,
-                runSpacing: 5.0,
+                spacing: 5.0,
+                runSpacing: 4.0,
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: List<Widget>.generate(widget.choicesBuild.length,
@@ -381,7 +381,7 @@ class AddToCartTState extends State<AddToCart> {
                     child: Container(
                       // margin: EdgeInsets.only(right: 6.0),
                       height: ScreenUtil().setHeight(30),
-                      width: ScreenUtil().setWidth(95),
+                      width: ScreenUtil().setWidth(90),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         // border: Border.all(
@@ -472,8 +472,8 @@ class AddToCartTState extends State<AddToCart> {
                 height: ScreenUtil().setHeight(16),
               ),
               Wrap(
-                spacing: 7.0,
-                runSpacing: 5.0,
+                spacing: 5.0,
+                runSpacing: 4.0,
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: List<Widget>.generate(widget.choiceColor.length,
@@ -489,7 +489,7 @@ class AddToCartTState extends State<AddToCart> {
                     child: Container(
                       // margin: EdgeInsets.only(right: 6.0),
                       height: ScreenUtil().setHeight(30),
-                      width: ScreenUtil().setWidth(95),
+                      width: ScreenUtil().setWidth(90),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         // border: Border.all(
@@ -580,8 +580,8 @@ class AddToCartTState extends State<AddToCart> {
                 height: ScreenUtil().setHeight(16),
               ),
               Wrap(
-                spacing: 7.0,
-                runSpacing: 5.0,
+                spacing: 5.0,
+                runSpacing: 4.0,
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: List<Widget>.generate(
@@ -597,7 +597,7 @@ class AddToCartTState extends State<AddToCart> {
                     child: Container(
                       // margin: EdgeInsets.only(right: 6.0),
                       height: ScreenUtil().setHeight(30),
-                      width: ScreenUtil().setWidth(95),
+                      width: ScreenUtil().setWidth(90),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         // border: Border.all(
@@ -688,8 +688,8 @@ class AddToCartTState extends State<AddToCart> {
                 height: ScreenUtil().setHeight(16),
               ),
               Wrap(
-                spacing: 7.0,
-                runSpacing: 5.0,
+                spacing: 5.0,
+                runSpacing: 4.0,
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: List<Widget>.generate(
@@ -704,7 +704,7 @@ class AddToCartTState extends State<AddToCart> {
                     child: Container(
                       // margin: EdgeInsets.only(right: 6.0),
                       height: ScreenUtil().setHeight(30),
-                      width: ScreenUtil().setWidth(95),
+                      width: ScreenUtil().setWidth(90),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         // border: Border.all(

@@ -156,110 +156,112 @@ class _SortPageState extends State<SortPage> {
                       //     // this._tabController.animateTo(value);
                       //   },
                       // ),
-                      Wrap(
-                        // spacing: 9.0,
-                        // runSpacing: 5.0,
-                        alignment: WrapAlignment.start,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        children: List<Widget>.generate(sortChoices.length,
-                            (int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedTab = index;
-                              });
-                              // widget.valueChangeDQ(index);
-                            },
-                            child: Container(
-                              // margin: EdgeInsets.only(right: 6.0),
-                              height: ScreenUtil().setHeight(45),
-                              width: ScreenUtil().setWidth(98),
-                              decoration: BoxDecoration(
-                                borderRadius: index == 0
-                                    ? BorderRadius.only(
-                                        bottomLeft: Radius.circular(5.0),
-                                        topLeft: Radius.circular(5.0),
-                                      )
-                                    : index == 1
-                                        ? BorderRadius.circular(0.0)
-                                        : BorderRadius.only(
-                                            bottomRight: Radius.circular(5.0),
-                                            topRight: Radius.circular(5.0),
-                                          ),
-                                // borderRadius: BorderRadius.circular(20),
-                                // border: Border.all(
-                                //   color: Colors.black,
-                                //   width: 1.0,
-                                // ),
-                                gradient: _selectedTab != index
-                                    ? LinearGradient(
-                                        colors: [
-                                          Color(0xFFB8B8B8),
-                                          Color(0xFFB8B8B8),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      )
-                                    : LinearGradient(
-                                        colors: [
-                                          Color(0xFF34B0D9),
-                                          Color(0xFF3685CB),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
+                      Center(
+                        child: Wrap(
+                          // spacing: 9.0,
+                          // runSpacing: 5.0,
+                          // alignment: WrapAlignment.start,
+                          // crossAxisAlignment: WrapCrossAlignment.start,
+                          children: List<Widget>.generate(sortChoices.length,
+                              (int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedTab = index;
+                                });
+                                // widget.valueChangeDQ(index);
+                              },
+                              child: Container(
+                                // margin: EdgeInsets.only(right: 6.0),
+                                height: ScreenUtil().setHeight(45),
+                                width: ScreenUtil().setWidth(90),
+                                decoration: BoxDecoration(
+                                  borderRadius: index == 0
+                                      ? BorderRadius.only(
+                                          bottomLeft: Radius.circular(5.0),
+                                          topLeft: Radius.circular(5.0),
+                                        )
+                                      : index == 1
+                                          ? BorderRadius.circular(0.0)
+                                          : BorderRadius.only(
+                                              bottomRight: Radius.circular(5.0),
+                                              topRight: Radius.circular(5.0),
+                                            ),
+                                  // borderRadius: BorderRadius.circular(20),
+                                  // border: Border.all(
+                                  //   color: Colors.black,
+                                  //   width: 1.0,
+                                  // ),
+                                  gradient: _selectedTab != index
+                                      ? LinearGradient(
+                                          colors: [
+                                            Color(0xFFB8B8B8),
+                                            Color(0xFFB8B8B8),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        )
+                                      : LinearGradient(
+                                          colors: [
+                                            Color(0xFF34B0D9),
+                                            Color(0xFF3685CB),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        // borderRadius: BorderRadius.circular(20),
+                                        borderRadius: index == 0
+                                            ? BorderRadius.only(
+                                                bottomLeft: Radius.circular(5.0),
+                                                topLeft: Radius.circular(5.0),
+                                              )
+                                            : index == 1
+                                                ? BorderRadius.circular(0.0)
+                                                : BorderRadius.only(
+                                                    bottomRight:
+                                                        Radius.circular(5.0),
+                                                    topRight:
+                                                        Radius.circular(5.0),
+                                                  ),
+                                        gradient: _selectedTab == index
+                                            ? LinearGradient(
+                                                colors: [
+                                                  Color(0xFF34B0D9),
+                                                  Color(0xFF3685CB),
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              )
+                                            : LinearGradient(
+                                                colors: [
+                                                  Colors.white,
+                                                  Colors.white,
+                                                ],
+                                              )),
+                                    child: Center(
+                                      child: Text(
+                                        sortChoices[index],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: _selectedTab == index
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontFamily: _selectedTab == index
+                                                ? 'Gilroy Medium'
+                                                : 'Gilroy Light',fontSize: ScreenUtil().setSp(14,allowFontScalingSelf: true)),
                                       ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      // borderRadius: BorderRadius.circular(20),
-                                      borderRadius: index == 0
-                                          ? BorderRadius.only(
-                                              bottomLeft: Radius.circular(5.0),
-                                              topLeft: Radius.circular(5.0),
-                                            )
-                                          : index == 1
-                                              ? BorderRadius.circular(0.0)
-                                              : BorderRadius.only(
-                                                  bottomRight:
-                                                      Radius.circular(5.0),
-                                                  topRight:
-                                                      Radius.circular(5.0),
-                                                ),
-                                      gradient: _selectedTab == index
-                                          ? LinearGradient(
-                                              colors: [
-                                                Color(0xFF34B0D9),
-                                                Color(0xFF3685CB),
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            )
-                                          : LinearGradient(
-                                              colors: [
-                                                Colors.white,
-                                                Colors.white,
-                                              ],
-                                            )),
-                                  child: Center(
-                                    child: Text(
-                                      sortChoices[index],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: _selectedTab == index
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontFamily: _selectedTab == index
-                                              ? 'Gilroy Medium'
-                                              : 'Gilroy Light'),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          }),
+                        ),
                       ),
                       SizedBox(
                         height: ScreenUtil().setHeight(50),

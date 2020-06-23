@@ -513,6 +513,7 @@ class _CookiePageState extends State<CookiePage> {
     colorKey =
         (Provider.of<Pagination>(context, listen: false).color[widget.color])
             .toLowerCase();
+            print(colorKey);
     // setState(() {
     if (widget.select != 'fav') {
       priceKey = (Provider.of<Pagination>(context, listen: false)
@@ -546,8 +547,9 @@ class _CookiePageState extends State<CookiePage> {
                       physics: BouncingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 1.2,
-                        crossAxisSpacing: 20.0,
+                        childAspectRatio: ScreenUtil().setWidth(411) /
+                            (ScreenUtil().setHeight(775) / 1.9799),
+                        crossAxisSpacing: 10.0,
                         mainAxisSpacing: 15.0,
                       ),
                       itemCount: widget.products.length,
@@ -613,7 +615,7 @@ class _CookiePageState extends State<CookiePage> {
                                     height: ScreenUtil().setHeight(122),
                                     margin: EdgeInsets.only(
                                         top: widget.select == 'fav' ? 8 : 2,
-                                        left: widget.select == 'fav' ? 8 : 21),
+                                        left: widget.select == 'fav' ? 8 : 19),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -664,28 +666,33 @@ class _CookiePageState extends State<CookiePage> {
                                         SizedBox(
                                           width: ScreenUtil().setWidth(4),
                                         ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              height: ScreenUtil().setHeight(16),
-                                            ),
-                                            RotatedBox(
-                                              quarterTurns: -1,
-                                              child: Text(
-                                                widget
-                                                    .products[i].styleNumber,
-                                                style: TextStyle(
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                  fontFamily:
-                                                      'Gilroy Regular',
+                                        Container(
+                                          width: ScreenUtil().setWidth(14),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(16),
+                                              ),
+                                              RotatedBox(
+                                                quarterTurns: -1,
+                                                child: Text(
+                                                  widget
+                                                      .products[i].styleNumber,
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        14,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontFamily:
+                                                        'Gilroy Regular',
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -702,39 +709,37 @@ class _CookiePageState extends State<CookiePage> {
                                                   listen: false)
                                               .isPriced &&
                                           widget.select != 'fav'
-                                      ? Container(
-                                          height: ScreenUtil().setHeight(20),
-                                          width: ScreenUtil().setWidth(110),
-                                          child: Center(
-                                            child: OutlineButton(
-                                              onPressed: () {
-                                                dataSelect(
-                                                  context,
-                                                  'Important!',
-                                                  "To see prices you must first request a quotation from Team Gemstory",
-                                                  'Request Prices',
-                                                );
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  'Request Prices',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Gilroy Medium',
-                                                    fontSize: ScreenUtil().setSp(
-                                                        11,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                  ),
-                                                ),
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            dataSelect(
+                                              context,
+                                              'Important!',
+                                              "To see prices you must first request a quotation from Team Gemstory",
+                                              'Request Prices',
+                                            );
+                                          },
+                                          child: Container(
+                                            height: ScreenUtil().setHeight(20),
+                                            width: ScreenUtil().setWidth(110),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.black,
+                                                width: 1.0,
                                               ),
-                                              borderSide: BorderSide(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                'Request Prices',
+                                                style: TextStyle(
                                                   color: Colors.black,
-                                                  width: 1.0),
-                                              shape: RoundedRectangleBorder(
-                                                // side: BorderSide(color: kPrimaryColor, width: 1.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(18.0),
+                                                  fontFamily: 'Gilroy Medium',
+                                                  fontSize: ScreenUtil().setSp(
+                                                      11,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                ),
                                               ),
                                             ),
                                           ),

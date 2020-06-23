@@ -101,8 +101,8 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   height: ScreenUtil().setHeight(16),
                 ),
                 Wrap(
-                  spacing: 9.0,
-                  runSpacing: 5.0,
+                  spacing: 5.0,
+                  runSpacing: 4.0,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: List<Widget>.generate(widget.choicesBuild.length,
@@ -117,7 +117,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
                         height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(95),
+                        width: ScreenUtil().setWidth(90),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           // border: Border.all(
@@ -208,8 +208,8 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   height: ScreenUtil().setHeight(16),
                 ),
                 Wrap(
-                  spacing: 9.0,
-                  runSpacing: 5.0,
+                  spacing: 5.0,
+                  runSpacing: 4.0,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: List<Widget>.generate(widget.choiceColor.length,
@@ -224,7 +224,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
                         height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(95),
+                        width: ScreenUtil().setWidth(90),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           // border: Border.all(
@@ -315,8 +315,8 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   height: ScreenUtil().setHeight(16),
                 ),
                 Wrap(
-                  spacing: 9.0,
-                  runSpacing: 5.0,
+                  spacing: 5.0,
+                  runSpacing: 4.0,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: List<Widget>.generate(
@@ -331,7 +331,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
                         height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(95),
+                        width: ScreenUtil().setWidth(90),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           // border: Border.all(
@@ -422,8 +422,8 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   height: ScreenUtil().setHeight(16),
                 ),
                 Wrap(
-                  spacing: 9.0,
-                  runSpacing: 5.0,
+                  spacing: 5.0,
+                  runSpacing: 4.0,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: List<Widget>.generate(
@@ -438,7 +438,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
                         height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(95),
+                        width: ScreenUtil().setWidth(90),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           // border: Border.all(
