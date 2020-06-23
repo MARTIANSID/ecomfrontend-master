@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   // final controller = ScrollController();
   ScrollController _scrollController;
   bool _visible = true;
@@ -28,10 +28,15 @@ class _HomeState extends State<Home> {
 
   int _currentIndex = 2;
   int _previousIndex = 0;
+
+  ScrollController _hideButtonController;
+  var _isVisible;
+
   PageController pageController = PageController(
     initialPage: 2,
     keepPage: false,
   );
+
   void pageChanged(int index) {
     setState(() {
       _previousIndex = _currentIndex;
@@ -39,30 +44,37 @@ class _HomeState extends State<Home> {
     });
   }
 
+  AnimationController controller;
+  Animation<double> heightAnimation;
+
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.idle) {
-        setState(() => _visible = true);
-      }
-      if (_scrollController.position.userScrollDirection ==
+    _isVisible = true;
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 350));
+    heightAnimation = Tween(begin: 45.0, end: 0.0)
+        .animate(CurvedAnimation(curve: Curves.easeInOut, parent: controller));
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.reverse) {
-        setState(() => {
-              _visible = false,
-            });
-        // _key.currentState.reverse();
+        if (_isVisible)
+          setState(() {
+            _isVisible = false;
+            print("**** $_isVisible up");
+            controller.forward();
+          });
       }
-      if (_scrollController.position.userScrollDirection ==
+      if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.forward) {
-        setState(() => {
-              _visible = true,
-            });
-        // _key.currentState.forward();
+        if (!_isVisible)
+          setState(() {
+            _isVisible = true;
+            print("**** $_isVisible down");
+            controller.reverse();
+          });
       }
-      // print(_visible);
     });
   }
 
@@ -142,6 +154,8 @@ class _HomeState extends State<Home> {
       alignment: Alignment.bottomCenter,
       children: <Widget>[
         Scaffold(
+          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomPadding: false,
           // body: _children[_currentIndex],
           body: PageView(
             controller: pageController,
@@ -155,12 +169,12 @@ class _HomeState extends State<Home> {
                 onButtonTapped: _onTap,
               ),
               FavouriteScreen(
-                scrollController: _scrollController,
+                scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
                 val: _visible,
               ),
               ProductOverViewScreen(
-                scrollController: _scrollController,
+                scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
                 val: _visible,
               ),
@@ -169,331 +183,342 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        Container(
-          width: ScreenUtil().setWidth(244),
-          height: ScreenUtil().setHeight(45),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(50.0),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  blurRadius: 10,
-                  color: Colors.black.withOpacity(0.25),
-                  offset: Offset(0, 4),
-                )
-              ]),
-          margin: const EdgeInsets.only(bottom: 16.0),
-          // padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserPage(
-                        pageIndex: _previousIndex,
-                        pageController: pageController,
+        FadeTransition(
+          opacity: heightAnimation,
+          child: Container(
+            width: ScreenUtil().setWidth(244),
+            height: ScreenUtil().setHeight(45),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.25),
+                    offset: Offset(0, 4),
+                  )
+                ]),
+            margin: const EdgeInsets.only(bottom: 16.0),
+            // padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: _isVisible
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserPage(
+                                pageIndex: _previousIndex,
+                                pageController: pageController,
+                              ),
+                            ),
+                          );
+                          // pageController.animateToPage(0,
+                          //     duration: Duration(milliseconds: 500),
+                          //     curve: Curves.ease);
+                        }
+                      : null,
+                  child: Container(
+                    height: ScreenUtil().setHeight(39),
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: _currentIndex == 0
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ),
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => _currentIndex != 0
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            ),
+                      child: SvgPicture.asset(
+                        'assets/icons/personIcon.svg',
+                        color: Colors.white,
+                        height: ScreenUtil().setHeight(25),
+                        width: ScreenUtil().setWidth(25),
                       ),
                     ),
-                  );
-                  // pageController.animateToPage(0,
-                  //     duration: Duration(milliseconds: 500),
-                  //     curve: Curves.ease);
-                },
-                child: Container(
-                  height: ScreenUtil().setHeight(39),
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: _currentIndex == 0
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ),
                   ),
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => _currentIndex != 0
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                    child: SvgPicture.asset(
-                      'assets/icons/personIcon.svg',
-                      color: Colors.white,
-                      height: ScreenUtil().setHeight(25),
-                      width: ScreenUtil().setWidth(25),
+                ),
+                GestureDetector(
+                  onTap: _isVisible
+                      ? () {
+                          pageController.animateToPage(1,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
+                        }
+                      : null,
+                  child: Container(
+                    height: ScreenUtil().setHeight(39),
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: _currentIndex == 1
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ),
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => _currentIndex != 1
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            ),
+                      child: SvgPicture.asset(
+                        'assets/icons/heartIcon.svg',
+                        color: Colors.white,
+                        height: ScreenUtil().setHeight(25),
+                        width: ScreenUtil().setWidth(25),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  pageController.animateToPage(1,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.ease);
-                },
-                child: Container(
-                  height: ScreenUtil().setHeight(39),
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: _currentIndex == 1
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ),
-                  ),
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => _currentIndex != 1
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                    child: SvgPicture.asset(
-                      'assets/icons/heartIcon.svg',
-                      color: Colors.white,
-                      height: ScreenUtil().setHeight(25),
-                      width: ScreenUtil().setWidth(25),
+                GestureDetector(
+                  onTap: _isVisible
+                      ? () {
+                          pageController.animateToPage(2,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
+                        }
+                      : null,
+                  child: Container(
+                    height: ScreenUtil().setHeight(39),
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: _currentIndex == 2
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ),
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => _currentIndex != 2
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            ),
+                      child: SvgPicture.asset(
+                        'assets/icons/homeIcon.svg',
+                        color: Colors.white,
+                        height: ScreenUtil().setHeight(25),
+                        width: ScreenUtil().setWidth(25),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  pageController.animateToPage(2,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.ease);
-                },
-                child: Container(
-                  height: ScreenUtil().setHeight(39),
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: _currentIndex == 2
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ),
-                  ),
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => _currentIndex != 2
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                    child: SvgPicture.asset(
-                      'assets/icons/homeIcon.svg',
-                      color: Colors.white,
-                      height: ScreenUtil().setHeight(25),
-                      width: ScreenUtil().setWidth(25),
+                GestureDetector(
+                  onTap: _isVisible
+                      ? () async {
+                          if (await canLaunch("https://wa.me/919322244007")) {
+                            await launch("https://wa.me/919322244007");
+                          } else {
+                            throw 'Could not launch https://wa.me/919322244007';
+                          }
+                          // pageController.animateToPage(3,
+                          //     duration: Duration(milliseconds: 500),
+                          //     curve: Curves.ease);
+                        }
+                      : null,
+                  child: Container(
+                    height: ScreenUtil().setHeight(39),
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: _currentIndex == 3
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ),
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => _currentIndex != 3
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            ),
+                      child: SvgPicture.asset(
+                        'assets/icons/whatsappIcon.svg',
+                        color: Colors.white,
+                        height: ScreenUtil().setHeight(25),
+                        width: ScreenUtil().setWidth(25),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  if (await canLaunch(
-                      "https://wa.me/919322244007")) {
-                    await launch(
-                        "https://wa.me/919322244007");
-                  } else {
-                    throw 'Could not launch https://wa.me/919322244007';
-                  }
-                  // pageController.animateToPage(3,
-                  //     duration: Duration(milliseconds: 500),
-                  //     curve: Curves.ease);
-                },
-                child: Container(
-                  height: ScreenUtil().setHeight(39),
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: _currentIndex == 3
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ),
-                  ),
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => _currentIndex != 3
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                    child: SvgPicture.asset(
-                      'assets/icons/whatsappIcon.svg',
-                      color: Colors.white,
-                      height: ScreenUtil().setHeight(25),
-                      width: ScreenUtil().setWidth(25),
+                GestureDetector(
+                  onTap: _isVisible
+                      ? () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => CartScreen(
+                          //       pageIndex: _previousIndex,
+                          //       pageController: pageController,
+                          //     ),
+                          //   ),
+                          // );
+                          pageController.animateToPage(4,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
+                        }
+                      : null,
+                  child: Container(
+                    height: ScreenUtil().setHeight(39),
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: _currentIndex == 4
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ),
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => _currentIndex != 4
+                          ? LinearGradient(
+                              colors: [
+                                Color(0xFF34B0D9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Colors.white,
+                              ],
+                            ).createShader(
+                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                            ),
+                      child: SvgPicture.asset(
+                        'assets/icons/cartIcon.svg',
+                        color: Colors.white,
+                        height: ScreenUtil().setHeight(25),
+                        width: ScreenUtil().setWidth(25),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CartScreen(
-                  //       pageIndex: _previousIndex,
-                  //       pageController: pageController,
-                  //     ),
-                  //   ),
-                  // );
-                  pageController.animateToPage(4,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.ease);
-                },
-                child: Container(
-                  height: ScreenUtil().setHeight(39),
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: _currentIndex == 4
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ),
-                  ),
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => _currentIndex != 4
-                        ? LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          )
-                        : LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                            ],
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                    child: SvgPicture.asset(
-                      'assets/icons/cartIcon.svg',
-                      color: Colors.white,
-                      height: ScreenUtil().setHeight(25),
-                      width: ScreenUtil().setWidth(25),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         // Scaffold(

@@ -5,91 +5,116 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'auth.dart';
-
+class ExtraCart{
+  String displayImage;
+  String styleNumber;
+}
 class Cartt {
-  Object product;
+  Object product;//styleNumber,imageUrl,
   int quantity;
-  int cert;
-  int color;
-  int diamond;
-  int build;
-  Cartt(
-      {this.product,
-      this.quantity,
-      this.cert,
-      this.color,
-      this.diamond,
-      this.build});
+  String cert;
+  String color;
+  String diamond;
+  String build;
+  int colorValue;
+  int diamondValue;
+  int buildValue;
+  int certValue;
+
+  Cartt({
+    this.product,
+    this.quantity,
+    this.cert,
+    this.color,
+    this.diamond,
+    this.build,
+    this.buildValue,
+    this.certValue,
+    this.colorValue,
+    this.diamondValue,
+  });
 }
 
 class Cart with ChangeNotifier {
   List<dynamic> cart = [];
+  bool check;
 
   Future<void> addCart(
-      {context, product, color, cert, diamond, build, quantity}) async {
+      {context,
+      product,
+      color,
+      cert,
+      diamond,
+      build,
+      quantity,
+      colorValue,
+      buildValue,
+      diamondValue,
+      certvalue,
+      update}) async {
     int index;
-    String buildd;
-    String colorr;
-    String diamondd;
-    String certt;
-    index = cart.indexWhere(
-        (element) => element.product.styleNumber == product.styleNumber);
+    if (!update) {
+      index = cart.indexWhere(
+          (element) => element.product.styleNumber == product.styleNumber);
 
-    if (index >= 0) {
-      cart[index].quantity = cart[index].quantity + quantity;
-    } else {
-      cart.add(Cartt(
+      if (index >= 0) {
+        if (cart[index].color == color &&
+            cart[index].build == build &&
+            cart[index].diamond == diamond &&
+            cart[index].cert == cert) {
+          cart[index].quantity = cart[index].quantity + quantity;
+          check=false;
+
+        } else {
+          cart.add(Cartt(
+            product: product,
+            quantity: quantity,
+            cert: cert,
+            color: color,
+            diamond: diamond,
+            build: build,
+            buildValue: buildValue,
+            colorValue: colorValue,
+            certValue: certvalue,
+            diamondValue: diamondValue,
+          ));
+          check=true;
+        }
+      } else {
+        cart.add(Cartt(
           product: product,
           quantity: quantity,
           cert: cert,
           color: color,
           diamond: diamond,
-          build: build));
+          build: build,
+          buildValue: buildValue,
+          colorValue: colorValue,
+          certValue: certvalue,
+          diamondValue: diamondValue,
+        ));
+        check=true;
+      }
+    } else {
+      index = cart.indexWhere(
+          (element) => element.product.styleNumber == product.styleNumber);
+      cart[index].build = build;
+      cart[index].color = color;
+      cart[index].diamond = diamond;
+      cart[index].cert = cert;
+      cart[index].colorValue = colorValue;
+      cart[index].diamondValue = diamondValue;
+      cart[index].buildValue = buildValue;
+      cart[index].certValue = certvalue;
+       cart[index].quantity=quantity;
+       check=false;
+
+      notifyListeners();
     }
 
-    if (color == 0) {
-      colorr = 'YELLOW';
-    }
-    if (color == 1) {
-      colorr = 'WHITE';
-    }
-    if (color == 2) {
-      colorr = 'ROSE';
-    }
-
-    if (build == 0) {
-      buildd = 'TAAR';
-    }
-    if (build == 1) {
-      buildd = 'SCREW';
-    }
-    if (cert == 0) {
-      certt = 'IGI';
-    }
-    if (cert == 1) {
-      certt = 'WHITE';
-    }
-    if (cert == 2) {
-      certt = 'NONE';
-    }
-    if (diamond == 0) {
-      certt = 'vVS_EF';
-    }
-    if (diamond == 1) {
-      certt = 'vVS_FG';
-    }
-    if (diamond == 2) {
-      certt = 'vVS_VS_FG';
-    }
-    if (diamond == 3) {
-      certt = 'vS_FG';
-    }
-    if (diamond == 4) {
-      certt = 'sI_HI';
-    }
-
-    final url = 'https://api.nakoda.daxy.in/cart/add';
-
+    final url = 'https://alexa.gemstory.in/cart/add';
+if(check)
+{
     try {
       final response = await http.post(
         url,
@@ -100,10 +125,10 @@ class Cart with ChangeNotifier {
         },
         body: json.encode({
           "styleNumber": product.styleNumber,
-          "diamondQuality": certt,
-          "build": buildd,
-          "certificate": certt,
-          "color": colorr,
+          "diamondQuality": diamond,
+          "build": build,
+          "certificate": cert,
+          "color": color.toUpperCase(),
           "quantity": quantity
         }),
       );
@@ -116,10 +141,38 @@ class Cart with ChangeNotifier {
       print(error);
       throw error;
     }
+}
+else{
+  try{
+    final response=await http.patch(url,headers: {
+        'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+          'Content-Type': 'application/json; charset=UTF-8',
+    },
+        body: json.encode({
+         	"id":"5ef0c21003c6261e1c50f8b2",
+          "diamondQuality": diamond,
+          "build": build,
+          "certificate": cert,
+          "color": color.toUpperCase(),
+          "quantity": quantity
+        }),
+
+    );
+
+  }catch(err){
+    throw err;
+  }
+
+
+
+
+
+}
   }
 
   Future<void> getCart({context}) async {
-    final url = 'https://api.nakoda.daxy.in/cart/add';
+    final url = 'https://alexa.gemstory.in/';
 
     try {
       final response = await http.get(
@@ -127,7 +180,7 @@ class Cart with ChangeNotifier {
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
-          'Content-Type': 'application/json; charset=UTF-8'
+         
         },
       );
 
@@ -140,4 +193,34 @@ class Cart with ChangeNotifier {
       throw error;
     }
   }
+
+ void buildChange(value,index){
+   cart[index].buildValue=value;
+   notifyListeners();
+
+ } 
+ void colorChange(value,index){
+    cart[index].colorValue=value;
+   notifyListeners();
+   
+ } 
+ void certChange(value,index){
+    cart[index].certValue=value;
+   notifyListeners();
+   
+ } 
+ void diamondChange(value,index){
+    cart[index].diamondValue=value;
+   notifyListeners();
+   
+ } 
+ void decQuantity(index){
+   cart[index].quantity=cart[index].quantity-1;
+   notifyListeners();
+ }
+ void incQuantity(index){
+    cart[index].quantity=cart[index].quantity+1;
+   notifyListeners();
+
+ }
 }

@@ -29,19 +29,21 @@ class User {
 class UserInfo with ChangeNotifier {
   bool verified;
   bool priced;
-  String role;
-  String street;
-  String city;
-  String state;
-  String fullname;
-  String gst;
-  int number;
-  String firm;
-  String pincode;
+  var role;
+  var street;
+  var city;
+  var state;
+  var fullname;
+  var gst;
+  var number;
+  var firm;
+  var pincode;
+
+  final uurl="https://alexa.gemstory.in/";
 
   Future<dynamic> getuser(context) async {
     try {
-      final response = await http.get('https://api.nakoda.daxy.in/user/details',
+      final response = await http.get(uurl+'/user/details',
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token
@@ -71,7 +73,7 @@ class UserInfo with ChangeNotifier {
       {context, fullname, gst, firm, city, street, pincode, state}) async {
     try {
       final response = await http.patch(
-        'https://api.nakoda.daxy.in/user',
+        uurl+'/user',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
