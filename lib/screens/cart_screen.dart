@@ -638,7 +638,7 @@ class _CartScreenState extends State<CartScreen> {
                     height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 26, 20),
+                    padding: EdgeInsets.fromLTRB(24, 0, 25, 20),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -776,7 +776,7 @@ class _CartScreenState extends State<CartScreen> {
                                       height: ScreenUtil().setHeight(94),
                                       width: ScreenUtil().setWidth(411),
                                       margin: EdgeInsets.fromLTRB(
-                                          25.0, 0.0, 26.0, 5.0),
+                                          24.0, 0.0, 25.0, 5.0),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: Colors.white,
@@ -787,6 +787,9 @@ class _CartScreenState extends State<CartScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(10),
+                                          ),
                                           // Image.asset(
                                           //   'assets/images/nosepin12.png',
                                           //   height: ScreenUtil().setHeight(76),
@@ -800,9 +803,9 @@ class _CartScreenState extends State<CartScreen> {
                                                       .color)
                                               ? Image(
                                                   height: ScreenUtil()
-                                                      .setHeight(76),
+                                                      .setHeight(79),
                                                   width:
-                                                      ScreenUtil().setWidth(79),
+                                                      ScreenUtil().setWidth(76),
                                                   image: AdvancedNetworkImage(
                                                     product.imageUrl[
                                                         Provider.of<Cart>(
@@ -815,13 +818,13 @@ class _CartScreenState extends State<CartScreen> {
                                                         maxAge: const Duration(
                                                             days: 3)),
                                                   ),
-                                                  fit: BoxFit.cover,
+                                                  fit: BoxFit.fill,
                                                 )
                                               : Image(
                                                   height: ScreenUtil()
-                                                      .setHeight(76),
+                                                      .setHeight(79),
                                                   width:
-                                                      ScreenUtil().setWidth(79),
+                                                      ScreenUtil().setWidth(76),
                                                   image: AdvancedNetworkImage(
                                                     product.imageUrl['yellow'],
                                                     useDiskCache: true,
@@ -829,14 +832,19 @@ class _CartScreenState extends State<CartScreen> {
                                                         maxAge: const Duration(
                                                             days: 3)),
                                                   ),
-                                                  fit: BoxFit.cover,
+                                                  fit: BoxFit.fill,
                                                 ),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(2),
+                                          ),      
                                           Container(
-                                            width: ScreenUtil().setWidth(170),
+                                            width: ScreenUtil().setWidth(185),
                                             height: ScreenUtil().setHeight(76),
+                                            // color: Colors.amber,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
                                                   '${product.styleNumber}',
@@ -865,8 +873,6 @@ class _CartScreenState extends State<CartScreen> {
                                                           12,
                                                           allowFontScalingSelf:
                                                               true),
-                                                      fontWeight:
-                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
@@ -966,7 +972,7 @@ class _CartScreenState extends State<CartScreen> {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: ScreenUtil().setWidth(20),
+                                            width: ScreenUtil().setWidth(2),
                                           ),
                                           Container(
                                             width: ScreenUtil().setWidth(77),

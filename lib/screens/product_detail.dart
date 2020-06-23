@@ -388,6 +388,7 @@
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/photo_detail_screen.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -558,12 +559,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                   ),
                                 ),
                                 prefixIcon: IconButton(
-                                    icon: Icon(Icons.arrow_back),
-                                    iconSize: 28,
-                                    color: Colors.black,
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    }),
+                                  icon: Icon(Icons.arrow_back),
+                                  iconSize: 28,
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
                                 // contentPadding: EdgeInsets.all(15.0),
                                 hintText: 'SEARCH GEMSTORY',
                                 hintStyle: TextStyle(
@@ -583,8 +585,8 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           widget.product.imageUrl.containsKey(widget.colorKey)
                               ? Hero(
-                                tag: 'tag1',
-                                child: Image(
+                                  tag: 'tag1',
+                                  child: Image(
                                     height: ScreenUtil().setHeight(290),
                                     width: ScreenUtil().setWidth(290),
                                     image: AdvancedNetworkImage(
@@ -595,10 +597,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                     ),
                                     fit: BoxFit.cover,
                                   ),
-                              )
+                                )
                               : Hero(
-                                tag: 'tag1',
-                                child: Image(
+                                  tag: 'tag1',
+                                  child: Image(
                                     height: ScreenUtil().setHeight(290),
                                     width: ScreenUtil().setWidth(290),
                                     image: AdvancedNetworkImage(
@@ -609,7 +611,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     ),
                                     fit: BoxFit.cover,
                                   ),
-                              ),
+                                ),
                         ],
                       ),
                     ),
@@ -894,7 +896,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                     children: <Widget>[
                                       GestureDetector(
                                         onTap: () {
-                                          showDialog(
+                                          Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .isPriced
+                                        ? dataSelect(
+                                            context,
+                                            'Important!',
+                                            "To see prices you must first request a quotation from Team Gemstory",
+                                            'Request Prices',
+                                          )
+                                        : showDialog(
                                             context: context,
                                             child: AddToCart(
                                               product: widget.product,

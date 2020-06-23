@@ -652,7 +652,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                     .length -
                                                 1
                                         ? SizedBox(
-                                            height: ScreenUtil().setHeight(20),
+                                            height: ScreenUtil().setHeight(40),
                                           )
                                         : SizedBox(
                                             height: 0.0,

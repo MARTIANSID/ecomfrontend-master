@@ -34,10 +34,10 @@ class AddToCart extends StatefulWidget {
   final choiceColor;
   final choiceCertification;
   final choiceDiamondQuality;
-  final void Function(int,int) valueChangeBuild;
-  final void Function(int,int) valueChangeColor;
-  final void Function(int,int) valueChangeCerti;
-  final void Function(int,int) valueChangeDQ;
+  final void Function(int, int) valueChangeBuild;
+  final void Function(int, int) valueChangeColor;
+  final void Function(int, int) valueChangeCerti;
+  final void Function(int, int) valueChangeDQ;
 
   const AddToCart(
       {Key key,
@@ -79,7 +79,11 @@ class AddToCartTState extends State<AddToCart> {
   String priceKey;
   int buildPrice;
   int certPrice;
-  bool flag=true;
+  bool flag = true;
+
+  bool isLoading=false;
+
+  bool value2=false;
 
   @override
   void initState() {
@@ -131,10 +135,12 @@ class AddToCartTState extends State<AddToCart> {
     // _defaultChoiceIndex1 = widget.defValue1;
     // _defaultChoiceIndex2 = widget.defValue2;
     // _defaultChoiceIndex3 = widget.defValue3;
-if(widget.updateCart && flag){
-    valueOfQuantity=Provider.of<Cart>(context,listen: false).cart[widget.productIndexInCart].quantity;
-    flag=false;
-  }
+    if (widget.updateCart && flag) {
+      valueOfQuantity = Provider.of<Cart>(context, listen: false)
+          .cart[widget.productIndexInCart]
+          .quantity;
+      flag = false;
+    }
     colorKey = (Provider.of<Pagination>(context, listen: false)
             .color[_defaultChoiceIndex1])
         .toLowerCase();
@@ -146,7 +152,7 @@ if(widget.updateCart && flag){
         Provider.of<Pagination>(context, listen: false)
             .cert[_defaultChoiceIndex2]];
 
-    return BackdropFilter(
+    return isLoading? Center(child:CircularProgressIndicator()):BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
       child: SimpleDialog(
         shape: RoundedRectangleBorder(
@@ -517,7 +523,8 @@ if(widget.updateCart && flag){
                         setState(() {
                           _defaultChoiceIndex = index;
                         });
-                        widget.valueChangeBuild(index,widget.productIndexInCart);
+                        widget.valueChangeBuild(
+                            index, widget.productIndexInCart);
                       },
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
@@ -624,7 +631,8 @@ if(widget.updateCart && flag){
                         setState(() {
                           _defaultChoiceIndex1 = index;
                         });
-                        widget.valueChangeColor(index,widget.productIndexInCart);
+                        widget.valueChangeColor(
+                            index, widget.productIndexInCart);
                       },
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
@@ -731,7 +739,8 @@ if(widget.updateCart && flag){
                         setState(() {
                           _defaultChoiceIndex2 = index;
                         });
-                        widget.valueChangeCerti(index,widget.productIndexInCart);
+                        widget.valueChangeCerti(
+                            index, widget.productIndexInCart);
                       },
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
@@ -838,7 +847,7 @@ if(widget.updateCart && flag){
                         setState(() {
                           _defaultChoiceIndex3 = index;
                         });
-                        widget.valueChangeDQ(index,widget.productIndexInCart);
+                        widget.valueChangeDQ(index, widget.productIndexInCart);
                       },
                       child: Container(
                         // margin: EdgeInsets.only(right: 6.0),
@@ -925,35 +934,62 @@ if(widget.updateCart && flag){
                 Center(
                   child: GestureDetector(
                     onTap: () async {
-                      await Provider.of<Cart>(context, listen: false).addCart(
-                        context: context,
-                        product: widget.product,
-                        color: colorKey,
+                      dataSelectConfirmMessage(
+                        context,
+                        'Alert!',
+                        "Are you sure, You want to add this Nose Pin in Cart?",
+                        'Request Prices',
+                      ).then((value) async {
+                        if (value) {
+                          value2=value;
 
-                        cert: Provider.of<Pagination>(context, listen: false)
-                            .cert[_defaultChoiceIndex2],
-                        diamond: priceKey,
-                        build: Provider.of<Pagination>(context, listen: false)
-                            .build[_defaultChoiceIndex],
-                        quantity: valueOfQuantity,
-                        colorValue: _defaultChoiceIndex1,
-                        buildValue: _defaultChoiceIndex,
-                        diamondValue: _defaultChoiceIndex3,
-                        certvalue: _defaultChoiceIndex2,
-                        update: widget.updateCart ? true : false,
-                      );
-                      Navigator.of(context).pop();
-                      widget.updateCart
-                          ? showFloatingFlushbar(
-                              context,
-                              'Your Cart data has been successfully Updated',
-                              widget.product.styleNumber,
-                            )
-                          : showFloatingFlushbar(
-                              context,
-                              'Product has been added to your Cart"🛒"',
-                              widget.product.styleNumber,
-                            );
+                          Navigator.of(this.context).pop();
+                            setState(() {
+                            isLoading=true;
+                          });
+                        
+                          await Provider.of<Cart>(context, listen: false)
+                              .addCart(
+                            context: context,
+                            product: widget.product,
+                            color: colorKey,
+                            cert:
+                                Provider.of<Pagination>(context, listen: false)
+                                    .cert[_defaultChoiceIndex2],
+                            diamond: priceKey,
+                            build:
+                                Provider.of<Pagination>(context, listen: false)
+                                    .build[_defaultChoiceIndex],
+                            quantity: valueOfQuantity,
+                            colorValue: _defaultChoiceIndex1,
+                            buildValue: _defaultChoiceIndex,
+                            diamondValue: _defaultChoiceIndex3,
+                            certvalue: _defaultChoiceIndex2,
+                            update: widget.updateCart ? true : false,
+                          );
+                          
+                          
+                        }
+                        if(mounted)
+                        setState(() {
+                          isLoading=false;
+                          
+                        });
+                        if(value2){
+                        widget.updateCart
+                              ? showFloatingFlushbar(
+                                  context,
+                                  'Your Cart data has been successfully Updated',
+                                  widget.product.styleNumber,
+                                )
+                              : showFloatingFlushbar(
+                                  context,
+                                  'Product has been added to your Cart"🛒"',
+                                  widget.product.styleNumber,
+                                );
+                        }
+                      });
+                      // print(val);
                     },
                     child: Container(
                       width: ScreenUtil().setWidth(180),

@@ -309,7 +309,6 @@ class _SortPageState extends State<SortPage> {
                             GestureDetector(
                               onTap: () async {
                                 await sortIt(_selectedTab, _check);
-
                                 Navigator.of(context).pop();
                               },
                               child: Container(

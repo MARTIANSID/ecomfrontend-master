@@ -5,6 +5,7 @@ import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -699,25 +700,65 @@ class _CookiePageState extends State<CookiePage> {
                                   //     fontFamily: 'Gilroy Regular',
                                   //   ),
                                   // ),
-                                  if (widget.select != 'fav')
-                                    widget.products[i].prices
-                                            .containsKey(priceKey)
-                                        ? Text(
-                                            '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
-                                            style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(18,
-                                                  allowFontScalingSelf: true),
-                                              fontFamily: 'Gilroy Regular',
-                                            ),
-                                          )
-                                        : Text(
-                                            'no price',
-                                            style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(18,
-                                                  allowFontScalingSelf: true),
-                                              fontFamily: 'Gilroy Regular',
+                                  Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isPriced &&
+                                          widget.select != 'fav'
+                                      ? Container(
+                                          height: ScreenUtil().setHeight(20),
+                                          width: ScreenUtil().setWidth(110),
+                                          child: Center(
+                                            child: OutlineButton(
+                                              onPressed: () {
+                                                dataSelect(
+                                                  context,
+                                                  'Important!',
+                                                  "To see prices you must first request a quotation from Team Gemstory",
+                                                  'Request Prices',
+                                                );
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  'Request Prices',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'Gilroy Medium',
+                                                    fontSize: ScreenUtil().setSp(
+                                                        11,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                  ),
+                                                ),
+                                              ),
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 1.0),
+                                              shape: RoundedRectangleBorder(
+                                                // side: BorderSide(color: kPrimaryColor, width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                              ),
                                             ),
                                           ),
+                                        )
+                                      : widget.products[i].prices
+                                              .containsKey(priceKey)
+                                          ? Text(
+                                              '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
+                                              style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(18,
+                                                    allowFontScalingSelf: true),
+                                                fontFamily: 'Gilroy Regular',
+                                              ),
+                                            )
+                                          : Text(
+                                              'no price',
+                                              style: TextStyle(
+                                                fontSize: ScreenUtil().setSp(18,
+                                                    allowFontScalingSelf: true),
+                                                fontFamily: 'Gilroy Regular',
+                                              ),
+                                            ),
                                   // Row(
                                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   //   // crossAxisAlignment: CrossAxisAlignment.center,
@@ -830,37 +871,53 @@ class _CookiePageState extends State<CookiePage> {
                                     ),
                                   ),
                                   onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      child: AddToCart(
-                                        product: widget.products[i],
-                                        updateCart: false,
-                                        choicesBuild: Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .build,
-                                        choiceColor: Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .color,
-                                        choiceCertification:
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .cert,
-                                        choiceDiamondQuality:
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .diamondQuality,
-                                        defValue: _defaultChoiceIndex1,
-                                        defValue1: _defaultChoiceIndex2,
-                                        defValue2: _defaultChoiceIndex3,
-                                        defValue3: _defaultChoiceIndex4,
-                                        valueChangeBuild: _onValueChange,
-                                        valueChangeColor: _onValueChangeColor,
-                                        valueChangeCerti: _onValueChangeCerti,
-                                        valueChangeDQ: _onValueChangeDQ,
-                                      ),
-                                    );
+                                    // Provider.of<Pagination>(context,
+                                    //             listen: false)
+                                    //         .isPriced
+                                    //     ? dataSelect(
+                                    //         context,
+                                    //         'Important!',
+                                    //         "To see prices you must first request a quotation from Team Gemstory",
+                                    //         'Request Prices',
+                                    //       )
+                                    //     : 
+                                        showDialog(
+                                            context: context,
+                                            child: AddToCart(
+                                              product: widget.products[i],
+                                              updateCart: false,
+                                              choicesBuild:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .build,
+                                              choiceColor:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .color,
+                                              choiceCertification:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .cert,
+                                              choiceDiamondQuality:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .diamondQuality,
+                                              defValue: _defaultChoiceIndex1,
+                                              defValue1: _defaultChoiceIndex2,
+                                              defValue2: _defaultChoiceIndex3,
+                                              defValue3: _defaultChoiceIndex4,
+                                              valueChangeBuild: _onValueChange,
+                                              valueChangeColor:
+                                                  _onValueChangeColor,
+                                              valueChangeCerti:
+                                                  _onValueChangeCerti,
+                                              valueChangeDQ: _onValueChangeDQ,
+                                            ),
+                                          );
                                   },
                                 ),
                               ],

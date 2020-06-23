@@ -9,6 +9,7 @@ import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:Flutter/widgets/filter_widget.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,24 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   @override
   void initState() {
     _tabController = TabController(length: 5, vsync: this, initialIndex: 1);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        dataSelect(
+          context,
+          'Important!',
+          "To get complete access of the app, you need to first verify yourself!",
+          'Complete SignUp',
+        );
+      }
+      // if (_tabController.indexIsChanging) {
+      //   dataSelect(
+      //     context,
+      //     'Important!',
+      //     "To get complete access of the app, you need to first verify yourself!",
+      //     'Complete SignUp',
+      //   );
+      // }
+    });
     // _loadedProduct = Provider.of<Products>(context, listen: true);
 
     // new Future.delayed(Duration.zero, () async {
@@ -92,21 +111,22 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   }
 
   Future<void> getProduct() async {
-  var futures = <Future>[Provider.of<Pagination>(context, listen: false)
-        .getProducts(page: 1, addition: false, select: 'all', context: context),
-     Provider.of<Pagination>(context, listen: false).getProducts(
-        page: 1, addition: false, select: 'featured', context: context),
-     Provider.of<Pagination>(context, listen: false)
-        .getProducts(page: 1, addition: false, select: 'new', context: context),
-     Provider.of<Pagination>(context, listen: false).getProducts(
-        page: 1, addition: false, select: 'highestSelling', context: context),
-     Provider.of<Pagination>(context, listen: false).getProducts(
-        addition: false, page: 1, context: context, select: 'fancyDiamond'),
-     Provider.of<Pagination>(context, listen: false).getFav(context),
-     Provider.of<Options>(context, listen: false).getStringValuesSF()];
-  
-  await Future.wait(futures);
-   
+    var futures = <Future>[
+      Provider.of<Pagination>(context, listen: false).getProducts(
+          page: 1, addition: false, select: 'all', context: context),
+      Provider.of<Pagination>(context, listen: false).getProducts(
+          page: 1, addition: false, select: 'featured', context: context),
+      Provider.of<Pagination>(context, listen: false).getProducts(
+          page: 1, addition: false, select: 'new', context: context),
+      Provider.of<Pagination>(context, listen: false).getProducts(
+          page: 1, addition: false, select: 'highestSelling', context: context),
+      Provider.of<Pagination>(context, listen: false).getProducts(
+          addition: false, page: 1, context: context, select: 'fancyDiamond'),
+      Provider.of<Pagination>(context, listen: false).getFav(context),
+      Provider.of<Options>(context, listen: false).getStringValuesSF()
+    ];
+
+    await Future.wait(futures);
 
     //  await Provider.of<Pagination>(context, listen: false).getProducts(
     //       page: 1, addition: false, select: 'fancyDiamond', context: context);
@@ -201,20 +221,26 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   List<dynamic> suggestion;
   bool isLoadingSearch = false;
   Future<void> getSearch(query) async {
-    // setState(() {
-    //   isLoadingSearch = true;
-    // });
+    setState(() {
+      isLoadingSearch = true;
+    });
     await Provider.of<Searchh>(context, listen: false)
-        .getSearch(query: query.toUpperCase(), context: context);
-    suggestion = Provider.of<Searchh>(context, listen: false)
-        .searchResult
-        .where((element) =>
-            element.styleNumber.contains(searchValue.toString().toUpperCase()))
-        .toList();
+        .getSearch(query: query.toUpperCase(), context: context)
+        .then((value) {
+      setState(() {
+        suggestion = Provider.of<Searchh>(context, listen: false)
+            .searchResult
+            .where((element) =>
+                element.styleNumber.contains(searchValue.toUpperCase()))
+            .toList();
+        isLoadingSearch = false;
+        print('DC SEARCH');
+      });
+    });
 
     print(suggestion);
     // setState(() {
-    //   isLoadingSearch = false;
+
     // });
   }
 
@@ -284,7 +310,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                           height: ScreenUtil().setHeight(22 + 45 + 11 + 20),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(25, 0, 26, 15),
+                          padding: EdgeInsets.fromLTRB(30, 0, 24, 15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,17 +344,18 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   indicatorColor: kPrimaryColor,
                                   labelColor: Colors.black,
                                   labelStyle: TextStyle(
-                                    fontFamily: 'Gilroy Black',
+                                    fontFamily: 'Gilroy Bold',
                                     fontSize: ScreenUtil()
                                         .setSp(16, allowFontScalingSelf: true),
                                   ),
                                   unselectedLabelStyle: TextStyle(
-                                    fontFamily: 'Gilroy',
+                                    fontFamily: 'Gilroy Regular',
                                     fontSize: ScreenUtil()
                                         .setSp(14, allowFontScalingSelf: true),
                                   ),
+                                  // indicatorPadding: EdgeInsets.only(left: 8.0, right: 8.0),
                                   labelPadding:
-                                      EdgeInsets.only(left: 8.0, right: 8.0),
+                                      EdgeInsets.only(left: 5.0, right: 5.0),
                                   isScrollable: true,
                                   indicator: BoxDecoration(),
                                   tabs: [
@@ -544,7 +571,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       showDialog(
                                         context: context,
                                         child: SortPage(
-                                          scrollController: widget.scrollController,
+                                          scrollController:
+                                              widget.scrollController,
                                         ),
                                       );
                                     },
@@ -728,34 +756,39 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                         },
                                         onChanged: (value) async {
                                           setState(() {
-                                            isLoadingSearch=true;
-                                          });
-                                          await getSearch(value.toUpperCase());
-                                          setState(() {
+                                            // isLoadingSearch = true;
                                             searchValue = value.toUpperCase();
-                                            isLoadingSearch=false;
-                                            // info=styleNumber[].split(value);
-                                            // print(styleNumber[1].split(searchValue));
                                           });
+                                          // setState(() {
 
+                                          //   // info=styleNumber[].split(value);
+                                          //   // print(styleNumber[1].split(searchValue));
+                                          // });
+                                          await getSearch(
+                                              searchValue.toUpperCase());
+                                          // setState(() {
+                                          //   isLoadingSearch = false;
+                                          // });
                                           // getSearchResult(value.toUpperCase());
                                         },
                                         decoration: InputDecoration(
                                           // contentPadding: EdgeInsets.all(15.0),
                                           suffixIcon: searchSelected
                                               ? GestureDetector(
-                                                  onTap: () =>
-                                                      textEditingController
-                                                          .clear(),
+                                                  onTap: () {
+                                                    textEditingController
+                                                        .clear();
+                                                    setState(() {
+                                                      searchValue = "";
+                                                    });
+                                                  },
                                                   child: Icon(Icons.clear),
                                                 )
                                               : SizedBox(
                                                   height: 0.0,
                                                   width: 0.0,
                                                 ),
-                                          hintText: !searchSelected
-                                              ? ''
-                                              : 'SEARCH GEMSTORY',
+                                          hintText: 'SEARCH GEMSTORY',
                                           hintStyle: TextStyle(
                                             fontFamily: 'Gilroy Medium',
                                             color: Color(0xFF595959),
@@ -764,19 +797,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           ),
                                           border: InputBorder.none,
                                         ),
-                                        textAlign: TextAlign.start,
+                                        textAlign: searchSelected
+                                            ? TextAlign.start
+                                            : TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: 'Gilroy Regular',
                                             fontSize: ScreenUtil().setSp(16,
                                                 allowFontScalingSelf: true)),
                                       ),
-                                      searchSelected
-                                          ? SizedBox(
-                                              height: 0.0,
-                                              width: 0.0,
-                                            )
-                                          : Center(
-                                              child: Text('SEARCH GEMSTORY')),
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
