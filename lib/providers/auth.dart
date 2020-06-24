@@ -66,8 +66,8 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> resetPassword(String number, String otp, String password) async {
-    final response = await http.patch('${uurl}user/resetpassword/$number',
-        body: {"code": "$otp", "password": "$password"});
+    final response = await http.patch('${uurl}user/resetpassword/',
+        body: {"code": "$otp", "password": "$password","number":number});
     final responseBody = json.decode(response.body);
     print('PP resetPassword body details message:$responseBody');
     if (responseBody['error'] == true)

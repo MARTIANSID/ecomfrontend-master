@@ -445,11 +445,9 @@ class _LoginScreenState extends State<LoginScreen>
               .userLogin(_phoneController.text, _passwordController.text);
       Provider.of<Auth>(context, listen: false).changeLog();
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => Home(),
-        ),
-      );
+      setState(() {
+        _showSignup = false;
+      });
     }
   }
 

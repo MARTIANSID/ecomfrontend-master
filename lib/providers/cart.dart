@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/appui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,7 @@ class ExtraCart {
 }
 
 class Cartt {
-  Object product; //styleNumber,imageUrl,
+  Object product; //styleNumber,imageUrl,prices
   String id;
   int quantity;
   String cert;
@@ -41,6 +42,7 @@ class Cartt {
 class Cart with ChangeNotifier {
   List<dynamic> cart = [];
   bool check;
+  var url = 'https://alexa.gemstory.in/cart';
 
   Future<void> addCart(
       {context,
@@ -66,7 +68,7 @@ class Cart with ChangeNotifier {
             cart[index].diamond == diamond &&
             cart[index].cert == cert) {
           cart[index].quantity = cart[index].quantity + quantity;
-          check = false;
+          check = true;
         } else {
           check = true;
         }
@@ -90,7 +92,6 @@ class Cart with ChangeNotifier {
       notifyListeners();
     }
 
-    final url = 'https://alexa.gemstory.in/cart/add';
     if (check) {
       try {
         final response = await http.post(
@@ -111,30 +112,60 @@ class Cart with ChangeNotifier {
         );
 
         final responseData = json.decode(response.body);
-
-        responseData['cart']['products'].forEach((i) => {
-              if (i['options']['quantity'] == quantity &&
-                  i['options']['build'] == build &&
-                  i['options']['color'] == color.toUpperCase() &&
-                  i['options']['certificate'] == cert &&
-                  i['options']['diamondQuality'] == diamond &&
-                  i['styleNumber'] == product.styleNumber)
-                {
-                  cart.add(Cartt(
+         cart = responseData['cart']['products']
+          .map((i) => 
+                Cartt(
+                    build: i['options']['build'],
+                    color: i['options']['color'].toLowerCase(),
+                    diamond: i['options']['diamondQuality'],
+                    cert: i['options']['certificate'],
                     id: i['id'],
-                    product: product,
-                    quantity: quantity,
-                    cert: cert,
-                    color: color,
-                    diamond: diamond,
-                    build: build,
-                    buildValue: buildValue,
-                    colorValue: colorValue,
-                    certValue: certvalue,
-                    diamondValue: diamondValue,
-                  ))
-                }
-            });
+                    quantity:i['options']['quantity'],
+                    buildValue: Provider.of<Pagination>(context, listen: false)
+                        .build
+                        .indexOf(i['options']['build']),
+                    certValue: Provider.of<Pagination>(context, listen: false)
+                        .cert
+                        .indexOf(i['options']['certificate']),
+                    colorValue: Provider.of<Pagination>(context, listen: false)
+                        .color
+                        .indexOf(i['options']['color']),
+                    diamondValue:
+                        Provider.of<Pagination>(context, listen: false)
+                            .diamondQuality
+                            .indexOf(i['options']['diamondQuality']),
+                    product: Product(
+                        imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                        prices: Map<dynamic, dynamic>.from(i['prices']),
+                        styleNumber: i["styleNumber"]))
+              )
+          .toList();
+
+
+
+        // responseData['cart']['products'].forEach((i) => {
+        //       if (i['options']['quantity'] == quantity &&
+        //           i['options']['build'] == build &&
+        //           i['options']['color'] == color.toUpperCase() &&
+        //           i['options']['certificate'] == cert &&
+        //           i['options']['diamondQuality'] == diamond &&
+        //           i['styleNumber'] == product.styleNumber)
+        //         {
+        //           cart.add(Cartt(
+        //             id: i['id'],
+        //             product: product,
+        //             quantity: quantity,
+        //             cert: cert,
+        //             color: color,
+        //             diamond: diamond,
+        //             build: build,
+        //             buildValue: buildValue,
+        //             colorValue: colorValue,
+        //             certValue: certvalue,
+        //             diamondValue: diamondValue,
+        //           ))
+        //         }
+        //     });
         print(cart[0].id);
 
         print(response);
@@ -142,12 +173,12 @@ class Cart with ChangeNotifier {
         notifyListeners();
       } catch (error) {
         print(error);
-        throw error;
+        print(error);
       }
     } else {
       try {
         final response = await http.patch(
-          'https://alexa.gemstory.in/cart',
+          this.url,
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -184,8 +215,38 @@ class Cart with ChangeNotifier {
       final responseData = json.decode(response.body);
 
 
-      print(responseData);
       
+      cart = responseData['cart']['products']
+          .map((i) => 
+                Cartt(
+                    build: i['options']['build'],
+                    color: i['options']['color'].toLowerCase(),
+                    diamond: i['options']['diamondQuality'],
+                    cert: i['options']['certificate'],
+                    id: i['id'],
+                    quantity:i['options']['quantity'],
+                    buildValue: Provider.of<Pagination>(context, listen: false)
+                        .build
+                        .indexOf(i['options']['build']),
+                    certValue: Provider.of<Pagination>(context, listen: false)
+                        .cert
+                        .indexOf(i['options']['certificate']),
+                    colorValue: Provider.of<Pagination>(context, listen: false)
+                        .color
+                        .indexOf(i['options']['color']),
+                    diamondValue:
+                        Provider.of<Pagination>(context, listen: false)
+                            .diamondQuality
+                            .indexOf(i['options']['diamondQuality']),
+                    product: Product(
+                        imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                        prices: Map<dynamic, dynamic>.from(i['prices']),
+                        styleNumber: i["styleNumber"]))
+              )
+          .toList();
+
+      print(responseData);
+
       print(cart);
       notifyListeners();
     } catch (error) {
@@ -193,14 +254,58 @@ class Cart with ChangeNotifier {
       throw error;
     }
   }
+ Future<void> deleteCart({String id,context})async{
+   try {
+        final response = await http.patch(
+          this.url,
+          headers: {
+            'Authorization':
+                'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json.encode({
+            "id": id,
+           "quantity":0
+          }),
+        );
+      
+     final responseData=   json.decode(response.body);
 
+        cart = responseData['cart']['products']
+          .map((i) => 
+                Cartt(
+                    build: i['options']['build'],
+                    color: i['options']['color'].toLowerCase(),
+                    diamond: i['options']['diamondQuality'],
+                    cert: i['options']['certificate'],
+                    id: i['id'],
+                    quantity:i['options']['quantity'],
+                    buildValue: Provider.of<Pagination>(context, listen: false)
+                        .build
+                        .indexOf(i['options']['build']),
+                    certValue: Provider.of<Pagination>(context, listen: false)
+                        .cert
+                        .indexOf(i['options']['certificate']),
+                    colorValue: Provider.of<Pagination>(context, listen: false)
+                        .color
+                        .indexOf(i['options']['color']),
+                    diamondValue:
+                        Provider.of<Pagination>(context, listen: false)
+                            .diamondQuality
+                            .indexOf(i['options']['diamondQuality']),
+                    product: Product(
+                        imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                        prices: Map<dynamic, dynamic>.from(i['prices']),
+                        styleNumber: i["styleNumber"]))
+              )
+          .toList();
 
+      notifyListeners();
+      } catch (err) {
+ throw err;
+      }
 
-
-
-
-
-
+ } 
 
   void buildChange(value, index) {
     cart[index].buildValue = value;
@@ -232,3 +337,37 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 }
+
+// {
+//     "error": false,
+//     "user": {
+//         "number": 12345,
+//         "role": "USER"
+//     },
+//     "cart": {
+//         "totalQuantity": 5,
+//         "totalPrice": 605248,
+//         "products": [
+//             {
+//                 "id": "5ef32b351248b40991785704",
+//                 "isFavourite": false,
+//                 "styleNumber": "GS11123",
+//                 "displayImage": "https://staticimg.titan.co.in/Mia/Catalog/552818OWDAAA22_3.jpg?pView=pdp",
+//                 "diamondWeight": 1.9,
+//                 "diamondCount": 186,
+//                 "designDimensions": "10x40 mm",
+//                 "goldWeight": 3.903,
+//                 "price": 121050,
+//                 "prices":[],
+//                 images:[],
+//                 "options": {
+//                     "quantity": 5,
+//                     "build": "SCREW",
+//                     "color": "ROSE",
+//                     "certificate": "IGI",
+//                     "diamondQuality": "VVS_EF"
+//                 }
+//             }
+//         ]
+//     }
+// }
