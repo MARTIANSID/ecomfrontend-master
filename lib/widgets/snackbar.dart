@@ -45,7 +45,7 @@ void showFloatingFlushbar(BuildContext context, text, productName) {
         onPressed: () {},
       ),
     ),
-  )..show(context);
+  );
 }
 
 void dataSelect(context, titleText, contentText, buttonText) {

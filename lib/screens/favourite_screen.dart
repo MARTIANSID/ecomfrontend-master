@@ -316,7 +316,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                       width: ScreenUtil().setWidth(360),
                       height: ScreenUtil().setHeight(45),
                       margin: EdgeInsets.fromLTRB(
-                          24, 11, 25, searchSelected ? 0 : 20),
+                          24, 11, 21, searchSelected ? 0 : 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -335,66 +335,76 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             child: Stack(
                               alignment: Alignment.centerRight,
                               children: <Widget>[
-                                TextField(
-                                  controller: textEditingController,
-                                  onTap: () async {
-                                    setState(() {
-                                      searchSelected = true;
-                                    });
-                                    Timer(Duration(milliseconds: 700), () {
-                                      setState(() {
-                                        searchSelectedDoneButton = true;
-                                      });
-                                    });
-                                  },
-                                  onChanged: (value) async {
-                                    setState(() {
-                                      // isLoadingSearch = true;
-                                      searchValue = value.toUpperCase();
-                                    });
-                                    // setState(() {
+                                Positioned(
+                                  top: 0.0,
+                                  left: 0.0,
+                                  child: Container(
+                                    width: ScreenUtil()
+                                        .setWidth(searchSelected ? 305 : 360),
+                                    height: ScreenUtil().setHeight(40),
+                                    child: TextField(
+                                      controller: textEditingController,
+                                      onTap: () async {
+                                        setState(() {
+                                          searchSelected = true;
+                                        });
+                                        Timer(Duration(milliseconds: 700), () {
+                                          setState(() {
+                                            searchSelectedDoneButton = true;
+                                          });
+                                        });
+                                      },
+                                      onChanged: (value) async {
+                                        setState(() {
+                                          // isLoadingSearch = true;
+                                          searchValue = value.toUpperCase();
+                                        });
+                                        // setState(() {
 
-                                    //   // info=styleNumber[].split(value);
-                                    //   // print(styleNumber[1].split(searchValue));
-                                    // });
-                                    await getSearch(searchValue.toUpperCase());
-                                    // setState(() {
-                                    //   isLoadingSearch = false;
-                                    // });
-                                    // getSearchResult(value.toUpperCase());
-                                  },
-                                  decoration: InputDecoration(
-                                    // contentPadding: EdgeInsets.all(15.0),
-                                    suffixIcon: searchSelected
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              textEditingController.clear();
-                                              setState(() {
-                                                searchValue = "";
-                                              });
-                                            },
-                                            child: Icon(Icons.clear),
-                                          )
-                                        : SizedBox(
-                                            height: 0.0,
-                                            width: 0.0,
-                                          ),
-                                    hintText: 'SEARCH GEMSTORY',
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Gilroy Medium',
-                                      color: Color(0xFF595959),
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
+                                        //   // info=styleNumber[].split(value);
+                                        //   // print(styleNumber[1].split(searchValue));
+                                        // });
+                                        await getSearch(
+                                            searchValue.toUpperCase());
+                                        // setState(() {
+                                        //   isLoadingSearch = false;
+                                        // });
+                                        // getSearchResult(value.toUpperCase());
+                                      },
+                                      decoration: InputDecoration(
+                                        // contentPadding: EdgeInsets.all(15.0),
+                                        suffixIcon: searchSelected
+                                            ? GestureDetector(
+                                                onTap: () {
+                                                  textEditingController.clear();
+                                                  setState(() {
+                                                    searchValue = "";
+                                                  });
+                                                },
+                                                child: Icon(Icons.clear),
+                                              )
+                                            : SizedBox(
+                                                height: 0.0,
+                                                width: 0.0,
+                                              ),
+                                        hintText: 'SEARCH GEMSTORY',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Gilroy Medium',
+                                          color: Color(0xFF595959),
+                                          fontSize: ScreenUtil().setSp(14,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                        border: InputBorder.none,
+                                      ),
+                                      textAlign: searchSelected
+                                          ? TextAlign.start
+                                          : TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: 'Gilroy Regular',
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true)),
                                     ),
-                                    border: InputBorder.none,
                                   ),
-                                  textAlign: searchSelected
-                                      ? TextAlign.start
-                                      : TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'Gilroy Regular',
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true)),
                                 ),
                                 AnimatedContainer(
                                   duration: Duration(milliseconds: 600),
@@ -503,8 +513,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Container(
-                                                  height: ScreenUtil().setHeight(90),
-                                                  width: ScreenUtil().setWidth(90),
+                                                  height: ScreenUtil()
+                                                      .setHeight(90),
+                                                  width:
+                                                      ScreenUtil().setWidth(90),
                                                   // color: Colors.amber,
                                                   child: Image(
                                                     image: AdvancedNetworkImage(
@@ -537,7 +549,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontFamily: 'Varela',
-                                                      fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                      fontSize: ScreenUtil().setSp(
+                                                          21,
+                                                          allowFontScalingSelf:
+                                                              true),
                                                     ),
                                                     children: [
                                                       TextSpan(
@@ -546,7 +561,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                           color: Colors.grey,
                                                           // fontWeight: FontWeight.bold,
                                                           fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(21,
+                                                                  allowFontScalingSelf:
+                                                                      true),
                                                         ),
                                                       ),
                                                       TextSpan(
@@ -556,7 +574,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(21,
+                                                                  allowFontScalingSelf:
+                                                                      true),
                                                         ),
                                                       ),
                                                       TextSpan(
@@ -565,7 +586,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                           color: Colors.grey,
                                                           // fontWeight: FontWeight.bold,
                                                           fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(21,
+                                                                  allowFontScalingSelf:
+                                                                      true),
                                                         ),
                                                       ),
                                                     ],

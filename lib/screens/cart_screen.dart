@@ -562,9 +562,21 @@ class _CartScreenState extends State<CartScreen> {
 
   bool searchSelectedDoneButton = false;
 
+  bool isCartLoading = false;
+
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () async {
+      setState(() {
+        isCartLoading = true;
+      });
+
+      await Provider.of<Cart>(context, listen: false).getCart(context: context);
+      setState(() {
+        isCartLoading = false;
+      });
+    });
     flag = true;
   }
 
@@ -651,400 +663,616 @@ class _CartScreenState extends State<CartScreen> {
     //     .toList();
     print('Search Selected' + searchSelected.toString());
     return Scaffold(
-      body: Container(
-        color: Color(0xFFF4F4F4),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: ScreenUtil().setHeight(775),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
+      body: isCartLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              color: Color(0xFFF4F4F4),
+              child: Stack(
                 children: <Widget>[
-                  SizedBox(
-                    height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
-                    child: Row(
+                  Container(
+                    height: ScreenUtil().setHeight(775),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              ShaderMask(
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9),
+                                    Color(0xFF3685CB),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                      0, 0, bounds.width, bounds.height),
+                                ),
+                                child: Text(
+                                  'CART',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Gilroy Bold',
+                                    fontSize: ScreenUtil()
+                                        .setSp(20, allowFontScalingSelf: true),
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 4.0),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/sortIcon.svg',
+                                      width: ScreenUtil().setWidth(24),
+                                      height: ScreenUtil().setHeight(24),
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SvgPicture.asset(
+                                    'assets/icons/optionsIcon.svg',
+                                    width: ScreenUtil().setWidth(24),
+                                    height: ScreenUtil().setHeight(24),
+                                    color: Colors.black,
+                                  )
+                                ],
+                              )
                             ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                          child: Text(
-                            'CART',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Gilroy Bold',
-                              fontSize: ScreenUtil()
-                                  .setSp(20, allowFontScalingSelf: true),
-                            ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 4.0),
-                              child: SvgPicture.asset(
-                                'assets/icons/sortIcon.svg',
-                                width: ScreenUtil().setWidth(24),
-                                height: ScreenUtil().setHeight(24),
-                                color: Colors.black,
-                              ),
-                            ),
-                            SvgPicture.asset(
-                              'assets/icons/optionsIcon.svg',
-                              width: ScreenUtil().setWidth(24),
-                              height: ScreenUtil().setHeight(24),
-                              color: Colors.black,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(20),
-                  ),
-                  Expanded(
-                    child: Provider.of<Cart>(context, listen: true)
-                                .cart
-                                .length >
-                            0
-                        ? ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: Provider.of<Cart>(context, listen: true)
-                                .cart
-                                .length,
-                            itemBuilder: (context, index) {
-                              final product =
-                                  Provider.of<Cart>(context, listen: true)
-                                      .cart[index]
-                                      .product;
+                        SizedBox(
+                          height: ScreenUtil().setHeight(20),
+                        ),
+                        Expanded(
+                          child: Provider.of<Cart>(context, listen: true)
+                                      .cart
+                                      .length >
+                                  0
+                              ? ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount:
+                                      Provider.of<Cart>(context, listen: true)
+                                          .cart
+                                          .length,
+                                  itemBuilder: (context, index) {
+                                    final product =
+                                        Provider.of<Cart>(context, listen: true)
+                                            .cart[index]
+                                            .product;
 
-                              // _defaultChoiceIndex1 =
-                              //     Provider.of<Cart>(context, listen: true)
-                              //         .cart[index]
-                              //         .buildValue;
-                              // _defaultChoiceIndex2 =
-                              //     Provider.of<Cart>(context, listen: true)
-                              //         .cart[index]
-                              //         .colorValue;
-                              // _defaultChoiceIndex3 =
-                              //     Provider.of<Cart>(context, listen: true)
-                              //         .cart[index]
-                              //         .certValue;
-                              // _defaultChoiceIndex4 =
-                              //     Provider.of<Cart>(context, listen: true)
-                              //         .cart[index]
-                              //         .diamondValue;
+                                    // _defaultChoiceIndex1 =
+                                    //     Provider.of<Cart>(context, listen: true)
+                                    //         .cart[index]
+                                    //         .buildValue;
+                                    // _defaultChoiceIndex2 =
+                                    //     Provider.of<Cart>(context, listen: true)
+                                    //         .cart[index]
+                                    //         .colorValue;
+                                    // _defaultChoiceIndex3 =
+                                    //     Provider.of<Cart>(context, listen: true)
+                                    //         .cart[index]
+                                    //         .certValue;
+                                    // _defaultChoiceIndex4 =
+                                    //     Provider.of<Cart>(context, listen: true)
+                                    //         .cart[index]
+                                    //         .diamondValue;
 
-                              return Column(
-                                children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        child: AddToCart(
-                                          product: product,
-                                          productIndexInCart: index,
-                                          updateCart: true,
-                                          choicesBuild: Provider.of<Pagination>(
-                                                  context,
-                                                  listen: false)
-                                              .build,
-                                          choiceColor: Provider.of<Pagination>(
-                                                  context,
-                                                  listen: false)
-                                              .color,
-                                          choiceCertification:
-                                              Provider.of<Pagination>(context,
-                                                      listen: false)
-                                                  .cert,
-                                          choiceDiamondQuality:
-                                              Provider.of<Pagination>(context,
-                                                      listen: false)
-                                                  .diamondQuality,
-                                          defValue: Provider.of<Cart>(context,
-                                                  listen: false)
-                                              .cart[index]
-                                              .buildValue,
-                                          defValue1: Provider.of<Cart>(context,
-                                                  listen: false)
-                                              .cart[index]
-                                              .colorValue,
-                                          defValue2: Provider.of<Cart>(context,
-                                                  listen: false)
-                                              .cart[index]
-                                              .certValue,
-                                          defValue3: Provider.of<Cart>(context,
-                                                  listen: false)
-                                              .cart[index]
-                                              .diamondValue,
-                                          valueChangeBuild: _onValueChange,
-                                          valueChangeColor: _onValueChangeColor,
-                                          valueChangeCerti: _onValueChangeCerti,
-                                          valueChangeDQ: _onValueChangeDQ,
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      height: ScreenUtil().setHeight(94),
-                                      width: ScreenUtil().setWidth(411),
-                                      margin: EdgeInsets.fromLTRB(
-                                          24.0, 0.0, 25.0, 5.0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                    return Dismissible(
+                                      onDismissed:
+                                          (DismissDirection direction) async {
+                                        await Provider.of<Cart>(context,
+                                                listen: false)
+                                            .deleteCart(
+                                                id: Provider.of<Cart>(context,
+                                                        listen: false)
+                                                    .cart[index]
+                                                    .id,
+                                                context: context);
+                                        setState(() {});
+                                      },
+                                      background: Container(
+                                          width: double.infinity,
+                                          color: Colors.red.withOpacity(0.8)),
+                                      key: UniqueKey(),
+                                      child: Column(
                                         children: <Widget>[
-                                          SizedBox(
-                                            width: ScreenUtil().setWidth(10),
-                                          ),
-                                          // Image.asset(
-                                          //   'assets/images/nosepin12.png',
-                                          //   height: ScreenUtil().setHeight(76),
-                                          //   width: ScreenUtil().setWidth(79),
-                                          //   fit: BoxFit.fill,
-                                          // ),
-                                          product.imageUrl.containsKey(
-                                                  Provider.of<Cart>(context,
-                                                          listen: true)
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                child: AddToCart(
+                                                  product: product,
+                                                  productIndexInCart: index,
+                                                  updateCart: true,
+                                                  choicesBuild:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .build,
+                                                  choiceColor:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .color,
+                                                  choiceCertification:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .cert,
+                                                  choiceDiamondQuality:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .diamondQuality,
+                                                  defValue: Provider.of<Cart>(
+                                                          context,
+                                                          listen: false)
                                                       .cart[index]
-                                                      .color)
-                                              ? Image(
-                                                  height: ScreenUtil()
-                                                      .setHeight(79),
-                                                  width:
-                                                      ScreenUtil().setWidth(76),
-                                                  image: AdvancedNetworkImage(
-                                                    product.imageUrl[
-                                                        Provider.of<Cart>(
-                                                                context,
-                                                                listen: true)
-                                                            .cart[index]
-                                                            .color],
-                                                    useDiskCache: true,
-                                                    cacheRule: CacheRule(
-                                                        maxAge: const Duration(
-                                                            days: 3)),
-                                                  ),
-                                                  fit: BoxFit.fill,
-                                                )
-                                              : Image(
-                                                  height: ScreenUtil()
-                                                      .setHeight(79),
-                                                  width:
-                                                      ScreenUtil().setWidth(76),
-                                                  image: AdvancedNetworkImage(
-                                                    product.imageUrl['yellow'],
-                                                    useDiskCache: true,
-                                                    cacheRule: CacheRule(
-                                                        maxAge: const Duration(
-                                                            days: 3)),
-                                                  ),
-                                                  fit: BoxFit.fill,
+                                                      .buildValue,
+                                                  defValue1: Provider.of<Cart>(
+                                                          context,
+                                                          listen: false)
+                                                      .cart[index]
+                                                      .colorValue,
+                                                  defValue2: Provider.of<Cart>(
+                                                          context,
+                                                          listen: false)
+                                                      .cart[index]
+                                                      .certValue,
+                                                  defValue3: Provider.of<Cart>(
+                                                          context,
+                                                          listen: false)
+                                                      .cart[index]
+                                                      .diamondValue,
+                                                  valueChangeBuild:
+                                                      _onValueChange,
+                                                  valueChangeColor:
+                                                      _onValueChangeColor,
+                                                  valueChangeCerti:
+                                                      _onValueChangeCerti,
+                                                  valueChangeDQ:
+                                                      _onValueChangeDQ,
                                                 ),
-                                          SizedBox(
-                                            width: ScreenUtil().setWidth(2),
-                                          ),
-                                          Container(
-                                            width: ScreenUtil().setWidth(185),
-                                            height: ScreenUtil().setHeight(76),
-                                            // color: Colors.amber,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  '${product.styleNumber}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Gilroy Bold',
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontWeight: FontWeight.w500,
+                                              );
+                                            },
+                                            child: Container(
+                                              height:
+                                                  ScreenUtil().setHeight(94),
+                                              width: ScreenUtil().setWidth(411),
+                                              margin: EdgeInsets.fromLTRB(
+                                                  24.0, 0.0, 25.0, 5.0),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    width: ScreenUtil()
+                                                        .setWidth(10),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      ScreenUtil().setHeight(6),
-                                                ),
-                                                Text(
-                                                  '${(Provider.of<Cart>(context, listen: true).cart[index].color).toUpperCase()} ${Provider.of<Cart>(context, listen: true).cart[index].diamond} ${Provider.of<Cart>(context, listen: true).cart[index].cert} ${Provider.of<Cart>(context, listen: true).cart[index].build}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontFamily: 'Gilroy Light',
-                                                    fontSize: ScreenUtil().setSp(
-                                                        12,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height:
-                                                      ScreenUtil().setHeight(4),
-                                                ),
-                                                ShaderMask(
-                                                  shaderCallback: (bounds) =>
-                                                      LinearGradient(
-                                                    colors: [
-                                                      Color(0xFF34B0D9),
-                                                      Color(0xFF3685CB),
-                                                    ],
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                  ).createShader(
-                                                    Rect.fromLTWH(
-                                                        0,
-                                                        0,
-                                                        bounds.width,
-                                                        bounds.height),
-                                                  ),
-                                                  // child: Text(
-                                                  //   '5000 ₹',
-                                                  //   style: TextStyle(
-                                                  //     fontFamily: 'Gilroy Bold',
-                                                  //     color: Colors.white,
-                                                  //     fontSize: ScreenUtil().setSp(18,
-                                                  //         allowFontScalingSelf: true),
-                                                  //     fontWeight: FontWeight.w500,
-                                                  //   ),
+                                                  // Image.asset(
+                                                  //   'assets/images/nosepin12.png',
+                                                  //   height: ScreenUtil().setHeight(76),
+                                                  //   width: ScreenUtil().setWidth(79),
+                                                  //   fit: BoxFit.fill,
                                                   // ),
-                                                  child: product.prices
-                                                          .containsKey(
-                                                              Provider.of<Cart>(
-                                                                      context,
-                                                                      listen:
-                                                                          true)
-                                                                  .cart[index]
-                                                                  .diamond)
-                                                      ? RichText(
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text:
-                                                                    '${int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]}',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      18,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                  fontFamily:
-                                                                      'Gilroy Bold',
-                                                                ),
-                                                              ),
-                                                              TextSpan(
-                                                                text: ' ₹',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      18,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                  fontFamily:
-                                                                      'Roboto Medium',
-                                                                ),
-                                                              ),
-                                                            ],
+                                                  product.imageUrl.containsKey(
+                                                          Provider.of<Cart>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .cart[index]
+                                                              .color)
+                                                      ? Image(
+                                                          height: ScreenUtil()
+                                                              .setHeight(79),
+                                                          width: ScreenUtil()
+                                                              .setWidth(76),
+                                                          image:
+                                                              AdvancedNetworkImage(
+                                                            product.imageUrl[
+                                                                Provider.of<Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            true)
+                                                                    .cart[index]
+                                                                    .color],
+                                                            useDiskCache: true,
+                                                            cacheRule: CacheRule(
+                                                                maxAge:
+                                                                    const Duration(
+                                                                        days:
+                                                                            3)),
                                                           ),
-                                                          // '${int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]}',
-                                                          // style: TextStyle(
-                                                          //   color: Colors.white,
-                                                          //   fontSize: ScreenUtil()
-                                                          //       .setSp(18,
-                                                          //           allowFontScalingSelf:
-                                                          //               true),
-                                                          //   fontFamily:
-                                                          //       'Gilroy Bold',
-                                                          // ),
+                                                          fit: BoxFit.fill,
                                                         )
-                                                      : Text(
-                                                          'no price',
+                                                      : Image(
+                                                          height: ScreenUtil()
+                                                              .setHeight(79),
+                                                          width: ScreenUtil()
+                                                              .setWidth(76),
+                                                          image:
+                                                              AdvancedNetworkImage(
+                                                            product.imageUrl[
+                                                                'yellow'],
+                                                            useDiskCache: true,
+                                                            cacheRule: CacheRule(
+                                                                maxAge:
+                                                                    const Duration(
+                                                                        days:
+                                                                            3)),
+                                                          ),
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                  SizedBox(
+                                                    width: ScreenUtil()
+                                                        .setWidth(2),
+                                                  ),
+                                                  Container(
+                                                    width: ScreenUtil()
+                                                        .setWidth(185),
+                                                    height: ScreenUtil()
+                                                        .setHeight(76),
+                                                    // color: Colors.amber,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          '${product.styleNumber}',
                                                           style: TextStyle(
-                                                            color: Colors.white,
+                                                            color: Colors.black,
+                                                            fontFamily:
+                                                                'Gilroy Bold',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(18,
                                                                     allowFontScalingSelf:
                                                                         true),
-                                                            fontFamily:
-                                                                'Gilroy Bold',
+                                                            fontWeight:
+                                                                FontWeight.w500,
                                                           ),
                                                         ),
-                                                ),
-                                              ],
+                                                        SizedBox(
+                                                          height: ScreenUtil()
+                                                              .setHeight(6),
+                                                        ),
+                                                        Text(
+                                                          '${(Provider.of<Cart>(context, listen: true).cart[index].color).toUpperCase()} ${Provider.of<Cart>(context, listen: true).cart[index].diamond} ${Provider.of<Cart>(context, listen: true).cart[index].cert} ${Provider.of<Cart>(context, listen: true).cart[index].build}',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontFamily:
+                                                                'Gilroy Light',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(12,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: ScreenUtil()
+                                                              .setHeight(4),
+                                                        ),
+                                                        ShaderMask(
+                                                          shaderCallback:
+                                                              (bounds) =>
+                                                                  LinearGradient(
+                                                            colors: [
+                                                              Color(0xFF34B0D9),
+                                                              Color(0xFF3685CB),
+                                                            ],
+                                                            begin: Alignment
+                                                                .topLeft,
+                                                            end: Alignment
+                                                                .bottomRight,
+                                                          ).createShader(
+                                                            Rect.fromLTWH(
+                                                                0,
+                                                                0,
+                                                                bounds.width,
+                                                                bounds.height),
+                                                          ),
+                                                          // child: Text(
+                                                          //   '5000 ₹',
+                                                          //   style: TextStyle(
+                                                          //     fontFamily: 'Gilroy Bold',
+                                                          //     color: Colors.white,
+                                                          //     fontSize: ScreenUtil().setSp(18,
+                                                          //         allowFontScalingSelf: true),
+                                                          //     fontWeight: FontWeight.w500,
+                                                          //   ),
+                                                          // ),
+                                                          child: product.prices
+                                                                  .containsKey(Provider.of<
+                                                                              Cart>(
+                                                                          context,
+                                                                          listen:
+                                                                              true)
+                                                                      .cart[
+                                                                          index]
+                                                                      .diamond)
+                                                              ? RichText(
+                                                                  text:
+                                                                      TextSpan(
+                                                                    children: [
+                                                                      TextSpan(
+                                                                        text:
+                                                                            '${int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]}',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              18,
+                                                                              allowFontScalingSelf: true),
+                                                                          fontFamily:
+                                                                              'Gilroy Bold',
+                                                                        ),
+                                                                      ),
+                                                                      TextSpan(
+                                                                        text:
+                                                                            ' ₹',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              18,
+                                                                              allowFontScalingSelf: true),
+                                                                          fontFamily:
+                                                                              'Roboto Medium',
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  // '${int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]}',
+                                                                  // style: TextStyle(
+                                                                  //   color: Colors.white,
+                                                                  //   fontSize: ScreenUtil()
+                                                                  //       .setSp(18,
+                                                                  //           allowFontScalingSelf:
+                                                                  //               true),
+                                                                  //   fontFamily:
+                                                                  //       'Gilroy Bold',
+                                                                  // ),
+                                                                )
+                                                              : Text(
+                                                                  'no price',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        18,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontFamily:
+                                                                        'Gilroy Bold',
+                                                                  ),
+                                                                ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: ScreenUtil()
+                                                        .setWidth(2),
+                                                  ),
+                                                  Container(
+                                                    width: ScreenUtil()
+                                                        .setWidth(77),
+                                                    height: ScreenUtil()
+                                                        .setHeight(38),
+                                                    padding:
+                                                        EdgeInsets.all(3.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            if (Provider.of<Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cart[index]
+                                                                    .quantity >
+                                                                1) {
+                                                              setState(() {
+                                                                Provider.of<Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .decQuantity(
+                                                                        index);
+                                                              });
+                                                            }
+                                                          },
+                                                          child: Container(
+                                                            height: ScreenUtil()
+                                                                .setHeight(12),
+                                                            width: ScreenUtil()
+                                                                .setWidth(12),
+                                                            child: Center(
+                                                              child: Text(
+                                                                '-',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'Gilroy',
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      22,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: ScreenUtil()
+                                                              .setWidth(4),
+                                                        ),
+                                                        Container(
+                                                          height: ScreenUtil()
+                                                              .setHeight(19),
+                                                          width: ScreenUtil()
+                                                              .setWidth(24),
+                                                          child: Center(
+                                                            child: Text(
+                                                              '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Gilroy Black',
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(18,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: ScreenUtil()
+                                                              .setWidth(4),
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              Provider.of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .incQuantity(
+                                                                      index);
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: ScreenUtil()
+                                                                .setHeight(12),
+                                                            width: ScreenUtil()
+                                                                .setWidth(12),
+                                                            child: Center(
+                                                              child: ShaderMask(
+                                                                shaderCallback:
+                                                                    (bounds) =>
+                                                                        LinearGradient(
+                                                                  colors: [
+                                                                    Color(
+                                                                        0xFF34B0D9),
+                                                                    Color(
+                                                                        0xFF3685CB),
+                                                                  ],
+                                                                  begin: Alignment
+                                                                      .topLeft,
+                                                                  end: Alignment
+                                                                      .bottomRight,
+                                                                ).createShader(
+                                                                  Rect.fromLTWH(
+                                                                      0,
+                                                                      0,
+                                                                      bounds
+                                                                          .width,
+                                                                      bounds
+                                                                          .height),
+                                                                ),
+                                                                child: Text(
+                                                                  '+',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Gilroy',
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        22,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'assets/images/cartButtonShape.png'),
+                                                        fit: BoxFit.contain,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: ScreenUtil().setWidth(2),
-                                          ),
-                                          Container(
-                                            width: ScreenUtil().setWidth(77),
-                                            height: ScreenUtil().setHeight(38),
-                                            padding: EdgeInsets.all(3.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    if (Provider.of<Cart>(
-                                                                context,
-                                                                listen: false)
-                                                            .cart[index]
-                                                            .quantity >
-                                                        1) {
-                                                      setState(() {
-                                                        Provider.of<Cart>(
-                                                                context,
-                                                                listen: false)
-                                                            .decQuantity(index);
-                                                      });
-                                                    }
-                                                  },
+                                          index == 19
+                                              ? SizedBox(
+                                                  height: ScreenUtil()
+                                                      .setHeight(30),
+                                                )
+                                              : SizedBox(
+                                                  height: 0,
+                                                ),
+                                          index == 19
+                                              ? GestureDetector(
+                                                  onTap: () {},
                                                   child: Container(
-                                                    height: ScreenUtil()
-                                                        .setHeight(12),
                                                     width: ScreenUtil()
-                                                        .setWidth(12),
+                                                        .setWidth(250),
+                                                    height: ScreenUtil()
+                                                        .setWidth(43),
+                                                    // padding: EdgeInsets.all(20.0),
                                                     child: Center(
                                                       child: Text(
-                                                        '-',
+                                                        'Checkout  50000 ₹',
                                                         style: TextStyle(
-                                                          fontFamily: 'Gilroy',
-                                                          color: Colors.black,
+                                                          fontFamily:
+                                                              'Gilroy Bold',
+                                                          color: Colors.white,
                                                           fontSize: ScreenUtil()
-                                                              .setSp(22,
+                                                              .setSp(18,
                                                                   allowFontScalingSelf:
                                                                       true),
                                                           fontWeight:
@@ -1052,487 +1280,393 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                       ),
                                                     ),
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'assets/images/vector17.png'),
+                                                      fit: BoxFit.contain,
+                                                    )),
                                                   ),
+                                                )
+                                              : SizedBox(
+                                                  height: 0,
                                                 ),
-                                                SizedBox(
-                                                  width:
-                                                      ScreenUtil().setWidth(4),
-                                                ),
-                                                Container(
+                                          index == 19
+                                              ? SizedBox(
                                                   height: ScreenUtil()
-                                                      .setHeight(19),
-                                                  width:
-                                                      ScreenUtil().setWidth(24),
-                                                  child: Center(
-                                                    child: Text(
-                                                      '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            'Gilroy Black',
-                                                        color: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(18,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ),
+                                                      .setHeight(93),
+                                                )
+                                              : SizedBox(
+                                                  height: 0,
                                                 ),
-                                                SizedBox(
-                                                  width:
-                                                      ScreenUtil().setWidth(4),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      Provider.of<Cart>(context,
-                                                              listen: false)
-                                                          .incQuantity(index);
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    height: ScreenUtil()
-                                                        .setHeight(12),
-                                                    width: ScreenUtil()
-                                                        .setWidth(12),
-                                                    child: Center(
-                                                      child: ShaderMask(
-                                                        shaderCallback:
-                                                            (bounds) =>
-                                                                LinearGradient(
-                                                          colors: [
-                                                            Color(0xFF34B0D9),
-                                                            Color(0xFF3685CB),
-                                                          ],
-                                                          begin:
-                                                              Alignment.topLeft,
-                                                          end: Alignment
-                                                              .bottomRight,
-                                                        ).createShader(
-                                                          Rect.fromLTWH(
-                                                              0,
-                                                              0,
-                                                              bounds.width,
-                                                              bounds.height),
-                                                        ),
-                                                        child: Text(
-                                                          '+',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Gilroy',
-                                                            color: Colors.white,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(22,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/cartButtonShape.png'),
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ),
                                         ],
                                       ),
-                                    ),
+                                    );
+                                  },
+                                )
+                              : Center(
+                                  child: Text(
+                                    "Unfortunately, I'm empty you can fill me up!",
+                                    style: TextStyle(
+                                        fontFamily: 'Gilory',
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(12,
+                                            allowFontScalingSelf: true),
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  index == 19
-                                      ? SizedBox(
-                                          height: ScreenUtil().setHeight(30),
-                                        )
-                                      : SizedBox(
-                                          height: 0,
-                                        ),
-                                  index == 19
-                                      ? GestureDetector(
-                                          onTap: () {},
-                                          child: Container(
-                                            width: ScreenUtil().setWidth(250),
-                                            height: ScreenUtil().setWidth(43),
-                                            // padding: EdgeInsets.all(20.0),
-                                            child: Center(
-                                              child: Text(
-                                                'Checkout  50000 ₹',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Bold',
-                                                  color: Colors.white,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      18,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/vector17.png'),
-                                              fit: BoxFit.contain,
-                                            )),
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          height: 0,
-                                        ),
-                                  index == 19
-                                      ? SizedBox(
-                                          height: ScreenUtil().setHeight(93),
-                                        )
-                                      : SizedBox(
-                                          height: 0,
-                                        ),
-                                ],
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Text(
-                              "Unfortunately, I'm empty you can fill me up!",
-                              style: TextStyle(
-                                  fontFamily: 'Gilory',
-                                  color: Colors.black,
-                                  fontSize: ScreenUtil()
-                                      .setSp(12, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  !searchSelected
+                      ? SizedBox(
+                          height: 0.0,
+                          width: 0.0,
+                        )
+                      : Container(
+                          height: ScreenUtil().setHeight(775),
+                          width: ScreenUtil().setWidth(411),
+                          color: Colors.transparent,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              height: ScreenUtil().setHeight(775),
+                              width: ScreenUtil().setWidth(411),
                             ),
                           ),
+                        ),
+                  Container(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                          sigmaX: searchSelected ? 5 : 0,
+                          sigmaY: searchSelected ? 5 : 0),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: ScreenUtil().setHeight(22),
+                          ),
+                          Container(
+                            width: ScreenUtil().setWidth(360),
+                            height: ScreenUtil().setHeight(45),
+                            margin: EdgeInsets.fromLTRB(
+                                24, 11, 21, searchSelected ? 0 : 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 600),
+                                  curve: Curves.slowMiddle,
+                                  padding: EdgeInsets.only(left: 10.0),
+                                  width: ScreenUtil()
+                                      .setWidth(searchSelected ? 305 : 360),
+                                  height: ScreenUtil().setHeight(40),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                  ),
+                                  child: Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: <Widget>[
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        width: ScreenUtil().setWidth(
+                                            searchSelected ? 305 : 360),
+                                        height: ScreenUtil().setHeight(40),
+                                        child: TextField(
+                                          controller: textEditingController,
+                                          onTap: () async {
+                                            setState(() {
+                                              searchSelected = true;
+                                            });
+                                            Timer(Duration(milliseconds: 700),
+                                                () {
+                                              setState(() {
+                                                searchSelectedDoneButton =
+                                                    true;
+                                              });
+                                            });
+                                          },
+                                          onChanged: (value) async {
+                                            setState(() {
+                                              // isLoadingSearch = true;
+                                              searchValue =
+                                                  value.toUpperCase();
+                                            });
+                                            // setState(() {
+
+                                            //   // info=styleNumber[].split(value);
+                                            //   // print(styleNumber[1].split(searchValue));
+                                            // });
+                                            await getSearch(
+                                                searchValue.toUpperCase());
+                                            // setState(() {
+                                            //   isLoadingSearch = false;
+                                            // });
+                                            // getSearchResult(value.toUpperCase());
+                                          },
+                                          decoration: InputDecoration(
+                                            // contentPadding: EdgeInsets.all(15.0),
+                                            suffixIcon: searchSelected
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      textEditingController
+                                                          .clear();
+                                                      setState(() {
+                                                        searchValue = "";
+                                                      });
+                                                    },
+                                                    child: Icon(Icons.clear),
+                                                  )
+                                                : SizedBox(
+                                                    height: 0.0,
+                                                    width: 0.0,
+                                                  ),
+                                            hintText: 'SEARCH GEMSTORY',
+                                            hintStyle: TextStyle(
+                                              fontFamily: 'Gilroy Medium',
+                                              color: Color(0xFF595959),
+                                              fontSize: ScreenUtil().setSp(14,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            border: InputBorder.none,
+                                          ),
+                                          textAlign: searchSelected
+                                              ? TextAlign.start
+                                              : TextAlign.center,
+                                          style: TextStyle(
+                                              fontFamily: 'Gilroy Regular',
+                                              fontSize: ScreenUtil().setSp(16,
+                                                  allowFontScalingSelf:
+                                                      true)),
+                                        ),
+                                      ),
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        margin: EdgeInsets.only(right: 6.0),
+                                        height: ScreenUtil()
+                                            .setHeight(searchSelected ? 0 : 27),
+                                        width: ScreenUtil()
+                                            .setWidth(searchSelected ? 0 : 27),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/notificationIcon.svg',
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                searchSelectedDoneButton
+                                    ? SizedBox(
+                                        width: ScreenUtil().setWidth(10),
+                                      )
+                                    : SizedBox(
+                                        width: 0,
+                                      ),
+                                searchSelectedDoneButton
+                                    ? Container(
+                                        height: ScreenUtil().setHeight(22),
+                                        width: ScreenUtil().setWidth(45),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            FocusScopeNode currentFocus =
+                                                FocusScope.of(context);
+                                            currentFocus.unfocus();
+                                            textEditingController.clear();
+                                            setState(() {
+                                              searchValue = "";
+                                              searchSelected = false;
+                                              searchSelectedDoneButton = false;
+                                            });
+                                          },
+                                          child: Text(
+                                            'Done',
+                                            style: TextStyle(
+                                              fontFamily: 'Gilroy Bold',
+                                              color: Colors.black,
+                                              fontSize: ScreenUtil().setSp(16,
+                                                  allowFontScalingSelf: true),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        width: 0,
+                                      ),
+                              ],
+                            ),
+                          ),
+                          !searchSelected
+                              ? SizedBox(
+                                  height: 0.0,
+                                  width: 0.0,
+                                )
+                              : Divider(
+                                  color: Colors.grey[300],
+                                  endIndent: 70.0,
+                                  indent: 70.0,
+                                ),
+                          searchValue.isEmpty
+                              ? SizedBox(
+                                  height: 0.0,
+                                  width: 0.0,
+                                )
+                              : isLoadingSearch
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Container(
+                                      height: ScreenUtil().setHeight(600.0),
+                                      width: ScreenUtil().setHeight(360),
+                                      margin:
+                                          EdgeInsets.fromLTRB(25, 0, 26, 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      child: suggestion.length > 0
+                                          ? ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.vertical,
+                                              physics: BouncingScrollPhysics(),
+                                              itemCount: Provider.of<Searchh>(
+                                                      context,
+                                                      listen: false)
+                                                  .searchResult
+                                                  .length,
+                                              itemBuilder: (context, index) {
+                                                info = suggestion[index]
+                                                    .styleNumber
+                                                    .split(searchValue);
+                                                print(info);
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 20.0,
+                                                          right: 20.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: ScreenUtil()
+                                                            .setHeight(90),
+                                                        width: ScreenUtil()
+                                                            .setWidth(90),
+                                                        // color: Colors.amber,
+                                                        child: Image(
+                                                          image:
+                                                              AdvancedNetworkImage(
+                                                            suggestion[index]
+                                                                .image,
+                                                            useDiskCache: true,
+                                                            cacheRule: CacheRule(
+                                                                maxAge:
+                                                                    const Duration(
+                                                                        days:
+                                                                            3)),
+                                                          ),
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
+                                                      // Text(
+                                                      //   styleNumber[index],
+                                                      //   style: TextStyle(
+                                                      //     fontFamily: 'Varela',
+                                                      //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                      //   ),
+                                                      // )
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          // text: suggestion[index].substring(
+                                                          //   suggestion[index].indexOf(
+                                                          //       searchValue),
+                                                          //   searchValue.length,
+                                                          // ),
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                          children: [
+                                                            TextSpan(
+                                                              text: info[0],
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                // fontWeight: FontWeight.bold,
+                                                                fontFamily:
+                                                                    'Varela',
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text: searchValue,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Varela',
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text: info[1],
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                // fontWeight: FontWeight.bold,
+                                                                fontFamily:
+                                                                    'Varela',
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                'No Products Found',
+                                              ),
+                                            ),
+                                    )
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            !searchSelected
-                ? SizedBox(
-                    height: 0.0,
-                    width: 0.0,
-                  )
-                : Container(
-                    height: ScreenUtil().setHeight(775),
-                    width: ScreenUtil().setWidth(411),
-                    color: Colors.transparent,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: ScreenUtil().setHeight(775),
-                        width: ScreenUtil().setWidth(411),
-                      ),
-                    ),
-                  ),
-            Container(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                    sigmaX: searchSelected ? 5 : 0,
-                    sigmaY: searchSelected ? 5 : 0),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: ScreenUtil().setHeight(22),
-                    ),
-                    Container(
-                      width: ScreenUtil().setWidth(360),
-                      height: ScreenUtil().setHeight(45),
-                      margin: EdgeInsets.fromLTRB(
-                          24, 11, 25, searchSelected ? 0 : 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 600),
-                            curve: Curves.slowMiddle,
-                            padding: EdgeInsets.only(left: 10.0),
-                            width: ScreenUtil()
-                                .setWidth(searchSelected ? 305 : 360),
-                            height: ScreenUtil().setHeight(40),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.white,
-                            ),
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: <Widget>[
-                                TextField(
-                                  controller: textEditingController,
-                                  onTap: () async {
-                                    setState(() {
-                                      searchSelected = true;
-                                    });
-                                    Timer(Duration(milliseconds: 700), () {
-                                      setState(() {
-                                        searchSelectedDoneButton = true;
-                                      });
-                                    });
-                                  },
-                                  onChanged: (value) async {
-                                    setState(() {
-                                      // isLoadingSearch = true;
-                                      searchValue = value.toUpperCase();
-                                    });
-                                    // setState(() {
-
-                                    //   // info=styleNumber[].split(value);
-                                    //   // print(styleNumber[1].split(searchValue));
-                                    // });
-                                    await getSearch(searchValue.toUpperCase());
-                                    // setState(() {
-                                    //   isLoadingSearch = false;
-                                    // });
-                                    // getSearchResult(value.toUpperCase());
-                                  },
-                                  decoration: InputDecoration(
-                                    // contentPadding: EdgeInsets.all(15.0),
-                                    suffixIcon: searchSelected
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              textEditingController.clear();
-                                              setState(() {
-                                                searchValue = "";
-                                              });
-                                            },
-                                            child: Icon(Icons.clear),
-                                          )
-                                        : SizedBox(
-                                            height: 0.0,
-                                            width: 0.0,
-                                          ),
-                                    hintText: 'SEARCH GEMSTORY',
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Gilroy Medium',
-                                      color: Color(0xFF595959),
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                  textAlign: searchSelected
-                                      ? TextAlign.start
-                                      : TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'Gilroy Regular',
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true)),
-                                ),
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 600),
-                                  margin: EdgeInsets.only(right: 6.0),
-                                  height: ScreenUtil()
-                                      .setHeight(searchSelected ? 0 : 27),
-                                  width: ScreenUtil()
-                                      .setWidth(searchSelected ? 0 : 27),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/notificationIcon.svg',
-                                    color: Colors.black,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          searchSelectedDoneButton
-                              ? SizedBox(
-                                  width: ScreenUtil().setWidth(10),
-                                )
-                              : SizedBox(
-                                  width: 0,
-                                ),
-                          searchSelectedDoneButton
-                              ? Container(
-                                  height: ScreenUtil().setHeight(22),
-                                  width: ScreenUtil().setWidth(45),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      FocusScopeNode currentFocus =
-                                          FocusScope.of(context);
-                                      currentFocus.unfocus();
-                                      textEditingController.clear();
-                                      setState(() {
-                                        searchValue = "";
-                                        searchSelected = false;
-                                        searchSelectedDoneButton = false;
-                                      });
-                                    },
-                                    child: Text(
-                                      'Done',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy Bold',
-                                        color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(16,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : SizedBox(
-                                  width: 0,
-                                ),
-                        ],
-                      ),
-                    ),
-                    !searchSelected
-                        ? SizedBox(
-                            height: 0.0,
-                            width: 0.0,
-                          )
-                        : Divider(
-                            color: Colors.grey[300],
-                            endIndent: 70.0,
-                            indent: 70.0,
-                          ),
-                    searchValue.isEmpty
-                        ? SizedBox(
-                            height: 0.0,
-                            width: 0.0,
-                          )
-                        : isLoadingSearch
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Container(
-                                height: ScreenUtil().setHeight(600.0),
-                                width: ScreenUtil().setHeight(360),
-                                margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: suggestion.length > 0
-                                    ? ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        physics: BouncingScrollPhysics(),
-                                        itemCount: Provider.of<Searchh>(context,
-                                                listen: false)
-                                            .searchResult
-                                            .length,
-                                        itemBuilder: (context, index) {
-                                          info = suggestion[index]
-                                              .styleNumber
-                                              .split(searchValue);
-                                          print(info);
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20.0, right: 20.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: ScreenUtil()
-                                                      .setHeight(90),
-                                                  width:
-                                                      ScreenUtil().setWidth(90),
-                                                  // color: Colors.amber,
-                                                  child: Image(
-                                                    image: AdvancedNetworkImage(
-                                                      suggestion[index].image,
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                                // Text(
-                                                //   styleNumber[index],
-                                                //   style: TextStyle(
-                                                //     fontFamily: 'Varela',
-                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
-                                                //   ),
-                                                // )
-                                                RichText(
-                                                  text: TextSpan(
-                                                    // text: suggestion[index].substring(
-                                                    //   suggestion[index].indexOf(
-                                                    //       searchValue),
-                                                    //   searchValue.length,
-                                                    // ),
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: ScreenUtil().setSp(
-                                                          21,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                    ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: info[0],
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: searchValue,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: info[1],
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : Center(
-                                        child: Text(
-                                          'No Products Found',
-                                        ),
-                                      ),
-                              ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
