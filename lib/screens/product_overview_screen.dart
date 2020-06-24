@@ -308,13 +308,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
                           height: ScreenUtil().setHeight(22 + 45 + 11 + 20),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(24, 0, 25, 15),
+                        Container(
+                          width: ScreenUtil().setWidth(357),
+                          margin: EdgeInsets.fromLTRB(24, 0, 0, 15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -566,6 +567,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   ],
                                 ),
                               ),
+                              // SizedBox(
+                              //   width: ScreenUtil().setWidth(30),
+                              // ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -726,7 +730,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                             width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                24, 11, 21, searchSelected ? 0 : 20),
+                                24, 11, 0, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
