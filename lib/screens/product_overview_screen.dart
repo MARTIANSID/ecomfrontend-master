@@ -6,6 +6,7 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/theme.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:Flutter/widgets/filter_widget.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
@@ -308,13 +309,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
                           height: ScreenUtil().setHeight(22 + 45 + 11 + 20),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(24, 0, 25, 15),
+                        Container(
+                          width: ScreenUtil().setWidth(357),
+                          margin: EdgeInsets.fromLTRB(24, 0, 0, 15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -566,6 +568,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   ],
                                 ),
                               ),
+                              // SizedBox(
+                              //   width: ScreenUtil().setWidth(30),
+                              // ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -726,7 +731,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                             width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                24, 11, 21, searchSelected ? 0 : 20),
+                                24, 11, 0, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -921,113 +926,181 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                     .styleNumber
                                                     .split(searchValue);
                                                 print(info);
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20.0,
-                                                          right: 20.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      Container(
-                                                        height: ScreenUtil()
-                                                            .setHeight(90),
-                                                        width: ScreenUtil()
-                                                            .setWidth(90),
-                                                        // color: Colors.amber,
-                                                        child: Image(
-                                                          image:
-                                                              AdvancedNetworkImage(
-                                                            suggestion[index]
-                                                                .image,
-                                                            useDiskCache: true,
-                                                            cacheRule: CacheRule(
-                                                                maxAge:
-                                                                    const Duration(
-                                                                        days:
-                                                                            3)),
-                                                          ),
-                                                          fit: BoxFit.fill,
+                                                return GestureDetector(
+                                                  onTap: () async {
+                                                    await Provider.of<
+                                                                Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .getProductDetail(
+                                                            context: context,
+                                                            styleNumber:
+                                                                suggestion[
+                                                                        index]
+                                                                    .styleNumber);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetail(
+                                                          colorKey: 'yellow',
+                                                          diamondKey: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen: false)
+                                                                  .diamondQuality[
+                                                              _defaultChoiceIndex4],
+                                                          certPrice: Provider
+                                                                  .of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                              .certPrices[Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .cert[_defaultChoiceIndex3]],
+                                                          product: Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .productDetailsForSearch[0],
+                                                          defaultIndex1:
+                                                              _defaultChoiceIndex1,
+                                                          defaultIndex2:
+                                                              _defaultChoiceIndex2,
+                                                          defaultIndex3:
+                                                              _defaultChoiceIndex3,
+                                                          defaultIndex4:
+                                                              _defaultChoiceIndex4,
+                                                          valueChangeBuild:
+                                                              _onValueChange,
+                                                          valueChangeColor:
+                                                              _onValueChangeColor,
+                                                          valueChangeCerti:
+                                                              _onValueChangeCerti,
+                                                          valueChangeDQ:
+                                                              _onValueChangeDQ,
                                                         ),
                                                       ),
-                                                      // Text(
-                                                      //   styleNumber[index],
-                                                      //   style: TextStyle(
-                                                      //     fontFamily: 'Varela',
-                                                      //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
-                                                      //   ),
-                                                      // )
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          // text: suggestion[index].substring(
-                                                          //   suggestion[index].indexOf(
-                                                          //       searchValue),
-                                                          //   searchValue.length,
-                                                          // ),
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Varela',
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(21,
-                                                                    allowFontScalingSelf:
-                                                                        true),
+                                                    );
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20.0,
+                                                            right: 20.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        Container(
+                                                          height: ScreenUtil()
+                                                              .setHeight(90),
+                                                          width: ScreenUtil()
+                                                              .setWidth(90),
+                                                          // color: Colors.amber,
+                                                          child: Image(
+                                                            image:
+                                                                AdvancedNetworkImage(
+                                                              suggestion[index]
+                                                                  .image,
+                                                              useDiskCache:
+                                                                  true,
+                                                              cacheRule: CacheRule(
+                                                                  maxAge:
+                                                                      const Duration(
+                                                                          days:
+                                                                              3)),
+                                                            ),
+                                                            fit: BoxFit.fill,
                                                           ),
-                                                          children: [
-                                                            TextSpan(
-                                                              text: info[0],
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                // fontWeight: FontWeight.bold,
-                                                                fontFamily:
-                                                                    'Varela',
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(21,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                              text: searchValue,
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Varela',
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(21,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                              text: info[1],
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                // fontWeight: FontWeight.bold,
-                                                                fontFamily:
-                                                                    'Varela',
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(21,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                              ),
-                                                            ),
-                                                          ],
                                                         ),
-                                                      )
-                                                    ],
+                                                        // Text(
+                                                        //   styleNumber[index],
+                                                        //   style: TextStyle(
+                                                        //     fontFamily: 'Varela',
+                                                        //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                        //   ),
+                                                        // )
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            // text: suggestion[index].substring(
+                                                            //   suggestion[index].indexOf(
+                                                            //       searchValue),
+                                                            //   searchValue.length,
+                                                            // ),
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Varela',
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(21,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                            ),
+                                                            children: [
+                                                              TextSpan(
+                                                                text: info[0],
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  // fontWeight: FontWeight.bold,
+                                                                  fontFamily:
+                                                                      'Varela',
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      21,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    searchValue,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontFamily:
+                                                                      'Varela',
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      21,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: info[1],
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  // fontWeight: FontWeight.bold,
+                                                                  fontFamily:
+                                                                      'Varela',
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      21,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 );
                                               },

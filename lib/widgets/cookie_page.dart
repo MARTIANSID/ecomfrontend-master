@@ -513,7 +513,7 @@ class _CookiePageState extends State<CookiePage> {
     colorKey =
         (Provider.of<Pagination>(context, listen: false).color[widget.color])
             .toLowerCase();
-            print(colorKey);
+    print(colorKey);
     // setState(() {
     if (widget.select != 'fav') {
       priceKey = (Provider.of<Pagination>(context, listen: false)
@@ -611,8 +611,10 @@ class _CookiePageState extends State<CookiePage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
-                                    width: ScreenUtil().setWidth(138),
-                                    height: ScreenUtil().setHeight(122),
+                                    width: ScreenUtil().setWidth(
+                                        widget.select == 'fav' ? 151 : 138),
+                                    height: ScreenUtil().setHeight(
+                                        widget.select == 'fav' ? 135 : 122),
                                     margin: EdgeInsets.only(
                                         top: widget.select == 'fav' ? 8 : 2,
                                         left: widget.select == 'fav' ? 8 : 19),
@@ -705,63 +707,77 @@ class _CookiePageState extends State<CookiePage> {
                                   //     fontFamily: 'Gilroy Regular',
                                   //   ),
                                   // ),
-                                  Provider.of<Pagination>(context,
+                                  widget.select != 'fav'
+                                      ? Provider.of<Pagination>(context,
                                                   listen: false)
-                                              .isPriced &&
-                                          widget.select != 'fav'
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            dataSelect(
-                                              context,
-                                              'Important!',
-                                              "To see prices you must first request a quotation from Team Gemstory",
-                                              'Request Prices',
-                                            );
-                                          },
-                                          child: Container(
-                                            height: ScreenUtil().setHeight(20),
-                                            width: ScreenUtil().setWidth(110),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.black,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                'Request Prices',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: 'Gilroy Medium',
-                                                  fontSize: ScreenUtil().setSp(
-                                                      11,
-                                                      allowFontScalingSelf:
-                                                          true),
+                                              .isPriced
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                dataSelect(
+                                                  context,
+                                                  'Important!',
+                                                  "To see prices you must first request a quotation from Team Gemstory",
+                                                  'Request Prices',
+                                                );
+                                              },
+                                              child: Container(
+                                                height:
+                                                    ScreenUtil().setHeight(20),
+                                                width:
+                                                    ScreenUtil().setWidth(110),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.black,
+                                                    width: 1.0,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    'Request Prices',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily:
+                                                          'Gilroy Medium',
+                                                      fontSize: ScreenUtil().setSp(
+                                                          11,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        )
-                                      : widget.products[i].prices
-                                              .containsKey(priceKey)
-                                          ? Text(
-                                              '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(18,
-                                                    allowFontScalingSelf: true),
-                                                fontFamily: 'Gilroy Regular',
-                                              ),
                                             )
-                                          : Text(
-                                              'no price',
-                                              style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(18,
-                                                    allowFontScalingSelf: true),
-                                                fontFamily: 'Gilroy Regular',
-                                              ),
-                                            ),
+                                          : widget.products[i].prices
+                                                  .containsKey(priceKey)
+                                              ? Text(
+                                                  '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        18,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontFamily:
+                                                        'Gilroy Regular',
+                                                  ),
+                                                )
+                                              : Text(
+                                                  'no price',
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        18,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontFamily:
+                                                        'Gilroy Regular',
+                                                  ),
+                                                )
+                                      : SizedBox(
+                                          height: 0.0,
+                                          width: 0.0,
+                                        ),
                                   // Row(
                                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   //   // crossAxisAlignment: CrossAxisAlignment.center,

@@ -70,6 +70,7 @@ class Pagination with ChangeNotifier {
   List<dynamic> diamondQuality;
   Map<dynamic, dynamic> buildPrices;
   Map<dynamic, dynamic> certPrices;
+  List<dynamic> productDetailsForSearch;
   int comm;
   var goldPrice;
 
@@ -127,7 +128,7 @@ class Pagination with ChangeNotifier {
       build = extractedData["productOptions"]["build"];
       color = extractedData["productOptions"]["color"];
       cert = extractedData["productOptions"]["certification"];
-      goldPrice=extractedData['prices']['goldToday'];
+      goldPrice = extractedData['prices']['goldToday'];
 
       diamondQuality = extractedData["productOptions"]["diamondQuality"];
       buildPrices =
@@ -429,12 +430,36 @@ class Pagination with ChangeNotifier {
       print('PP in toogleFavourite error block error: $error');
     }
   }
-}
 
-// GET /product/paginated?select=all&sortby=goldWeight&sort=-1&page=1&quant=20 200 191.342 ms - 13844
-// GET /product/paginated?select=featured&sortby=goldWeight&sort=-1&page=1&quant=20 200 196.762 ms - 13845
-// GET /product/paginated?select=new&sortby=goldWeight&sort=-1&page=1&quant=20 200 197.474 ms - 13829
-// GET /product/paginated?select=all&sortby=styleNumber&sort=1&page=3&quant=20 200 192.176 ms - 13851
-// GET /product/paginated?select=highestSelling&sortby=goldWeight&sort=-1&page=1&quant=20 200 194.268 ms - 13838
-// GET /product/paginated?select=fancyDiamond&sortby=goldWeight&sort=-1&page=1&quant=20 200 195.826 ms - 13836
-// GET /product/paginated?select=all&sortby=styleNumber&sort=1&page=2&quant=20 200 193.401 ms - 13847
+  Future<void> getProductDetail({context, styleNumber}) async {
+    try {
+      final response = await http
+          .get('https://' + uurl +'/product/single?styleNumber=$styleNumber', headers: {
+        'Authorization':
+            'Bearer ' + Provider.of<Auth>(context, listen: false).token
+      }, 
+     
+      );
+      final responseData = json.decode(response.body);
+      var prices = Map<dynamic, dynamic>.from(responseData['prices']);
+
+      List<dynamic> loadedProducts = responseData['products']
+          .map(
+            (prod) => Product(
+                designDetails: Map<String, bool>.from(prod['designDetails']),
+                styleNumber: prod['styleNumber'],
+                diamondWeight: prod['diamondWeight'],
+                goldWeight: prod['goldWeight'],
+                diamondCount: prod['diamondCount'],
+                isFavourite: prod['isFavourite'],
+                imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                prices: prices,
+                designDimensions: prod['designDimensions']),
+          )
+          .toList();
+      productDetailsForSearch = loadedProducts;
+    } catch (err) {
+      throw err;
+    }
+  }
+}
