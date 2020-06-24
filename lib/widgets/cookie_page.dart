@@ -28,6 +28,7 @@ class CookiePage extends StatefulWidget {
   final int diamond;
   final int build;
   final int cert;
+  final GlobalKey globalKey;
 
   CookiePage(
       {Key key,
@@ -37,6 +38,7 @@ class CookiePage extends StatefulWidget {
       this.count,
       this.sort,
       this.c,
+      this.globalKey,
       this.color,
       this.diamond,
       this.build,
@@ -901,8 +903,9 @@ class _CookiePageState extends State<CookiePage> {
                                     //       )
                                     //     :
                                     showDialog(
-                                      context: context,
+                                      context: widget.globalKey.currentContext,
                                       child: AddToCart(
+                                        globalKey: widget.globalKey,
                                         product: widget.products[i],
                                         updateCart: false,
                                         choicesBuild: Provider.of<Pagination>(

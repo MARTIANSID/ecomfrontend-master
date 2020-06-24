@@ -45,7 +45,7 @@ void showFloatingFlushbar(BuildContext context, text, productName) {
         onPressed: () {},
       ),
     ),
-  );
+  )..show(context);
 }
 
 void dataSelect(context, titleText, contentText, buttonText) {
@@ -171,7 +171,7 @@ Future<bool> dataSelectConfirmMessage(
             onPressed: () {
               Navigator.pop(context, false);
               // Navigator.of(context).pop();
-              // value1 = false;
+              value1 = false;
               return false;
             },
             child: Text("No",
@@ -181,7 +181,7 @@ Future<bool> dataSelectConfirmMessage(
           FlatButton(
             onPressed: () {
               Navigator.pop(context, true);
-              // value1 = true;
+              value1 = true;
               return true;
             },
             child: Text("Yes",

@@ -65,6 +65,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   var _choices2;
   var _choices3;
 
+  GlobalKey scaffoldKey = GlobalKey();
+
   @override
   void initState() {
     _tabController = TabController(length: 5, vsync: this, initialIndex: 1);
@@ -297,6 +299,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
+      key: scaffoldKey,
       body: isLoading
           ? Center(
               child: Center(
@@ -632,6 +635,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                             controller: _tabController,
                             children: [
                               CookiePage(
+                                globalKey: scaffoldKey,
                                 products: Provider.of<Pagination>(context,
                                         listen: true)
                                     .allProducts,
@@ -643,6 +647,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 diamond: _defaultChoiceIndex4,
                               ),
                               CookiePage(
+                                globalKey: scaffoldKey,
                                 products: Provider.of<Pagination>(context,
                                         listen: true)
                                     .featuredProducts,
@@ -656,6 +661,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 diamond: _defaultChoiceIndex4,
                               ),
                               CookiePage(
+                                globalKey: scaffoldKey,
                                 products: Provider.of<Pagination>(context,
                                         listen: true)
                                     .newProducts,
@@ -669,6 +675,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 diamond: _defaultChoiceIndex4,
                               ),
                               CookiePage(
+                                globalKey: scaffoldKey,
                                 products: Provider.of<Pagination>(context,
                                         listen: true)
                                     .highestSellingProducts,
@@ -682,6 +689,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 diamond: _defaultChoiceIndex4,
                               ),
                               CookiePage(
+                                globalKey: scaffoldKey,
                                 products: Provider.of<Pagination>(context,
                                         listen: true)
                                     .fancyDiamond,

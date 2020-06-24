@@ -4,6 +4,7 @@ import 'package:Flutter/screens/accountinfo.dart';
 import 'package:Flutter/screens/appui.dart';
 import 'package:Flutter/screens/testimony_page.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,8 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage>
     with SingleTickerProviderStateMixin {
+
+      bool value2;
   bool isLoading=false;
 
  @override
@@ -372,9 +375,25 @@ class _UserPageState extends State<UserPage>
                         ),
                       ),
                       text: "Logout",
-                      tap: () {
-                        Navigator.of(context).pop();
+                      tap: () async {
+                        await dataSelectConfirmMessage(
+                           context,
+                            'Alert!',
+                            "Are you sure, You want to logout",
+                            'Request Prices',
+                          ).then((value) async {
+                            if (value) {
+                              value2 = value;
+                              if(value2){
+
+                                  
                         Provider.of<Auth>(context,listen:false).logout();
+                           Navigator.of(context).pop();
+                              }
+                            }
+                          });
+
+                 
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(

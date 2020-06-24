@@ -300,7 +300,7 @@ class Cart with ChangeNotifier {
               )
           .toList();
 
-      notifyListeners();
+          notifyListeners();
       } catch (err) {
  throw err;
       }

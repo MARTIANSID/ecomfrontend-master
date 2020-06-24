@@ -433,12 +433,12 @@ class Pagination with ChangeNotifier {
 
   Future<void> getProductDetail({context, styleNumber}) async {
     try {
-      final response = await http
-          .get('https://' + uurl +'/product/single?styleNumber=$styleNumber', headers: {
-        'Authorization':
-            'Bearer ' + Provider.of<Auth>(context, listen: false).token
-      }, 
-     
+      final response = await http.get(
+        'https://' + uurl + '/product/single?styleNumber=$styleNumber',
+        headers: {
+          'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token
+        },
       );
       final responseData = json.decode(response.body);
       var prices = Map<dynamic, dynamic>.from(responseData['prices']);

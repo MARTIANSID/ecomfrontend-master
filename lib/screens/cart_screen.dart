@@ -526,6 +526,7 @@ import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/screenutil.dart';
@@ -563,6 +564,8 @@ class _CartScreenState extends State<CartScreen> {
   bool searchSelectedDoneButton = false;
 
   bool isCartLoading = false;
+
+  bool value2 = false;
 
   @override
   void initState() {
@@ -772,6 +775,18 @@ class _CartScreenState extends State<CartScreen> {
                                     //         .diamondValue;
 
                                     return Dismissible(
+                                      direction: DismissDirection.startToEnd,
+                                      confirmDismiss:
+                                          (DismissDirection direction) async {
+                                        return await dataSelectConfirmMessage(
+                                          context,
+                                          'Alert!',
+                                          "Are you sure, You want to remove the item form the cart",
+                                          'Request Prices',
+                                        ).then((value) async {
+                                          return value2 = value;
+                                        });
+                                      },
                                       onDismissed:
                                           (DismissDirection direction) async {
                                         await Provider.of<Cart>(context,
@@ -782,7 +797,9 @@ class _CartScreenState extends State<CartScreen> {
                                                     .cart[index]
                                                     .id,
                                                 context: context);
-                                        setState(() {});
+                                                setState(() {
+                                                  
+                                                });
                                       },
                                       background: Container(
                                           width: double.infinity,
@@ -1384,16 +1401,14 @@ class _CartScreenState extends State<CartScreen> {
                                             Timer(Duration(milliseconds: 700),
                                                 () {
                                               setState(() {
-                                                searchSelectedDoneButton =
-                                                    true;
+                                                searchSelectedDoneButton = true;
                                               });
                                             });
                                           },
                                           onChanged: (value) async {
                                             setState(() {
                                               // isLoadingSearch = true;
-                                              searchValue =
-                                                  value.toUpperCase();
+                                              searchValue = value.toUpperCase();
                                             });
                                             // setState(() {
 
@@ -1439,8 +1454,7 @@ class _CartScreenState extends State<CartScreen> {
                                           style: TextStyle(
                                               fontFamily: 'Gilroy Regular',
                                               fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf:
-                                                      true)),
+                                                  allowFontScalingSelf: true)),
                                         ),
                                       ),
                                       AnimatedContainer(
