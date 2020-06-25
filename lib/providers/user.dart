@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'auth.dart';
+import 'http_exception.dart';
 
 class User {
   String verified;
@@ -49,6 +50,9 @@ class UserInfo with ChangeNotifier {
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token
           });
       final responseData = json.decode(response.body);
+        if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
       print(responseData);
 
       street = responseData['user']['additionalDetails']['address']['street'];
@@ -86,13 +90,51 @@ class UserInfo with ChangeNotifier {
           "city": city,
           "street": street,
           "pincode": pincode,
-          "state": state
+          "state": state,
         }),
       );
       final responseData = json.decode(response.body);
+        if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
+      return responseData;
+      
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<dynamic> completeSignUp(
+      {context, fullname, gst, firm, city, street, pincode, state, reference, email}) async {
+    try {
+      final response = await http.post(
+        uurl+'/user/completesignup',
+        headers: {
+          'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+          "Content-Type": "application/json"
+        },
+        body: json.encode({
+          "fullName": fullname,
+          "gst": gst,
+          "firm": firm,
+          "city": city,
+          "street": street,
+          "pincode": pincode,
+          "state": state,
+          "reference": reference,
+          "email": email,
+        }),
+      );
+      final responseData = json.decode(response.body);
+        if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
+
       return responseData;
     } catch (err) {
       throw err;
     }
   }
+
 }

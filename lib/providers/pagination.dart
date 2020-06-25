@@ -124,17 +124,23 @@ class Pagination with ChangeNotifier {
       );
 
       final extractedData = json.decode(response.body);
+        if(extractedData['error'] != false) {
+        throw HttpException(extractedData['details']['message']);
+      }
 
       build = extractedData["productOptions"]["build"];
       color = extractedData["productOptions"]["color"];
       cert = extractedData["productOptions"]["certification"];
       goldPrice = extractedData['prices']['goldToday'];
+      isVerified=extractedData['user']['verified'];
 
       diamondQuality = extractedData["productOptions"]["diamondQuality"];
       buildPrices =
           Map<dynamic, dynamic>.from(extractedData['prices']['labour']);
       certPrices =
           Map<dynamic, dynamic>.from(extractedData['prices']['certification']);
+        
+          certPrices.putIfAbsent('NONE', () => 0);
       comm = extractedData['prices']['comission'];
 
       if (addition) {
@@ -223,8 +229,10 @@ class Pagination with ChangeNotifier {
             )
             .toList();
 
+
         isVerified = extractedData['user']['verified'];
         isPriced = extractedData['user']['priced'];
+        
 
         if (select == 'all') {
           allProducts = [];
@@ -285,6 +293,10 @@ class Pagination with ChangeNotifier {
       List<dynamic> loadedProducts;
 
       final extractedData = json.decode(response.body);
+        if(extractedData['error'] != false) {
+        throw HttpException(extractedData['details']['message']);
+      }
+
       if (extractedData['favourites'] == null) {
         loadedProducts = [];
       } else {
@@ -397,7 +409,36 @@ class Pagination with ChangeNotifier {
       });
       final responseBody = json.decode(response.body) as Map<String, dynamic>;
       if (responseBody['error'] == true)
+      {
+         if (select == 'all') {
+        allProducts[index].isFavourite = !allProducts[index].isFavourite;
+        favProducts.remove(allProducts[index]);
+        notifyListeners();
+      }
+      if (select == 'new') {
+        newProducts[index].isFavourite = !newProducts[index].isFavourite;
+        favProducts.remove(newProducts[index]);
+        notifyListeners();
+      }
+      if (select == 'featured') {
+        featuredProducts[index].isFavourite =
+            !featuredProducts[index].isFavourite;
+        favProducts.remove(featuredProducts[index]);
+        notifyListeners();
+      }
+      if (select == 'fancyDiamond') {
+        fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+        favProducts.remove(fancyDiamond[index]);
+        notifyListeners();
+      }
+      if (select == 'highestSelling') {
+        highestSellingProducts[index].isFavourite =
+            !highestSellingProducts[index].isFavourite;
+        favProducts.remove(highestSellingProducts[index]);
+        notifyListeners();
+      }
         throw HttpException(responseBody['details']['message']);
+      }
     } catch (error) {
       if (select == 'all') {
         allProducts[index].isFavourite = !allProducts[index].isFavourite;
@@ -434,13 +475,16 @@ class Pagination with ChangeNotifier {
   Future<void> getProductDetail({context, styleNumber}) async {
     try {
       final response = await http.get(
-        'https://' + uurl + '/product/single?styleNumber=$styleNumber',
+        'https://' + uurl + '/product/single?styleNumber='+styleNumber,
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token
         },
       );
       final responseData = json.decode(response.body);
+        if(responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
       var prices = Map<dynamic, dynamic>.from(responseData['prices']);
 
       List<dynamic> loadedProducts = responseData['products']

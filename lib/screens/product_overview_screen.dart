@@ -48,6 +48,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   bool searchSelected = false;
   bool searchSelectedDoneButton = false;
 
+
+
   var _choices;
   var _choices1;
   var _choices2;
@@ -59,7 +61,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   void initState() {
     _tabController = TabController(length: 5, vsync: this, initialIndex: 1);
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
+      print(Provider.of<Pagination>(context,listen: false).isVerified);
+
+     
+
+      if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
+        //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
+        
+      _tabController.animateTo(1);
         dataSelect(
           context,
           'Important!',
@@ -187,7 +196,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     });
   }
 
-  void _onValueChangeColor(int value) async {
+  void _onValueChangeColor(int value) async {                     
     await Provider.of<Options>(context, listen: false).setColor(color: value);
     setState(() {
       _defaultChoiceIndex2 = value;
@@ -337,6 +346,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 height: ScreenUtil().setHeight(20),
                                 width: ScreenUtil().setWidth(275),
                                 child: TabBar(
+                                  
+
                                   controller: _tabController,
                                   indicatorColor: kPrimaryColor,
                                   labelColor: Colors.black,
@@ -620,6 +631,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                         ),
                         Expanded(
                           child: TabBarView(
+                            physics: Provider.of<Pagination>(context,listen:false).isVerified?ClampingScrollPhysics():NeverScrollableScrollPhysics(),
                             controller: _tabController,
                             children: [
                               CookiePage(

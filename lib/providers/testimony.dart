@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth.dart';
+import 'http_exception.dart';
 class TestimonyClass{
   var rating;
   var totalTestimony;
@@ -33,6 +34,9 @@ class Testimony with ChangeNotifier{
         },
       );
       final responseData = json.decode(response.body);
+        if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
       userTestimony= TestimonyClass(rating:responseData['overallRating'],
     totalTestimony:responseData['totalTestimonies'],
      testimonies :responseData['Testimonies']);
@@ -58,6 +62,10 @@ class Testimony with ChangeNotifier{
           "comment":comment.toString(),
         }
       );
+      final responseData=json.decode(response.body);
+        if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
 
       
       notifyListeners();

@@ -829,7 +829,7 @@ class AddToCartTState extends State<AddToCart> {
                           await dataSelectConfirmMessage(
                             widget.globalKey.currentContext,
                             'Alert!',
-                            "Are you sure, You want to add this Nose Pin in Cart?",
+                            "Are you sure, You want to update the Cart?",
                             'Request Prices',
                           ).then((value) async {
                             if (value) {
@@ -838,6 +838,9 @@ class AddToCartTState extends State<AddToCart> {
                           });
                           print(value2);
                           if (value2) {
+                            setState(() {
+                              isLoading=true;
+                            });
                             await Provider.of<Cart>(context, listen: false)
                                 .addCart(
                               context: context,
@@ -857,6 +860,9 @@ class AddToCartTState extends State<AddToCart> {
                               certvalue: _defaultChoiceIndex2,
                               update: widget.updateCart ? true : false,
                             );
+                            setState(() {
+                              isLoading=false;
+                            });
                             Navigator.of(context).pop();
                             widget.updateCart
                                 ? showFloatingFlushbar(

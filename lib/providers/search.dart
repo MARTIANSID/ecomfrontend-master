@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth.dart';
+import 'http_exception.dart';
 
 class SearchProduct {
   String image;
@@ -25,6 +26,10 @@ class Searchh with ChangeNotifier {
         },
       );
       final responseData = json.decode(response.body);
+        if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
+
       List<dynamic> products = responseData['products']
           .map((i) =>
               SearchProduct(image: i['image'], styleNumber: i['styleNumber']))

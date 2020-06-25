@@ -726,6 +726,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             .valueChangeCerti,
                                                         valueChangeDQ: widget
                                                             .valueChangeDQ,
+                                                            
                                                       ),
                                                     );
                                             },

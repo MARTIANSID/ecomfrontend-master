@@ -41,6 +41,8 @@ class Cartt {
 class Cart with ChangeNotifier {
   List<dynamic> cart = [];
   bool check;
+  int totalPrice;
+  int totalQuantity;
   var url = 'https://alexa.gemstory.in/cart';
 
   Future<void> addCart(
@@ -111,36 +113,33 @@ class Cart with ChangeNotifier {
         );
 
         final responseData = json.decode(response.body);
-         cart = responseData['cart']['products']
-          .map((i) => 
-                Cartt(
-                    build: i['options']['build'],
-                    color: i['options']['color'].toLowerCase(),
-                    diamond: i['options']['diamondQuality'],
-                    cert: i['options']['certificate'],
-                    id: i['id'],
-                    quantity:i['options']['quantity'],
-                    buildValue: Provider.of<Pagination>(context, listen: false)
-                        .build
-                        .indexOf(i['options']['build']),
-                    certValue: Provider.of<Pagination>(context, listen: false)
-                        .cert
-                        .indexOf(i['options']['certificate']),
-                    colorValue: Provider.of<Pagination>(context, listen: false)
-                        .color
-                        .indexOf(i['options']['color']),
-                    diamondValue:
-                        Provider.of<Pagination>(context, listen: false)
-                            .diamondQuality
-                            .indexOf(i['options']['diamondQuality']),
-                    product: Product(
-                        imageUrl: Map<dynamic, dynamic>.from(i['images']),
-                        prices: Map<dynamic, dynamic>.from(i['prices']),
-                        styleNumber: i["styleNumber"]))
-              )
-          .toList();
+        totalPrice=responseData['cart']['totalPrice'];
 
-
+        cart = responseData['cart']['products']
+            .map((i) => Cartt(
+                build: i['options']['build'],
+                color: i['options']['color'].toLowerCase(),
+                diamond: i['options']['diamondQuality'],
+                cert: i['options']['certificate'],
+                id: i['id'],
+                quantity: i['options']['quantity'],
+                buildValue: Provider.of<Pagination>(context, listen: false)
+                    .build
+                    .indexOf(i['options']['build']),
+                certValue: Provider.of<Pagination>(context, listen: false)
+                    .cert
+                    .indexOf(i['options']['certificate']),
+                colorValue: Provider.of<Pagination>(context, listen: false)
+                    .color
+                    .indexOf(i['options']['color']),
+                diamondValue: Provider.of<Pagination>(context, listen: false)
+                    .diamondQuality
+                    .indexOf(i['options']['diamondQuality']),
+                product: Product(
+                    imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                    prices: Map<dynamic, dynamic>.from(i['prices']),
+                    styleNumber: i["styleNumber"])))
+            .toList();
 
         // responseData['cart']['products'].forEach((i) => {
         //       if (i['options']['quantity'] == quantity &&
@@ -192,7 +191,34 @@ class Cart with ChangeNotifier {
             "quantity": quantity
           }),
         );
-        print(json.decode(response.body));
+        final responseData = json.decode(response.body);
+         totalPrice=responseData['cart']['totalPrice'];
+        cart = responseData['cart']['products']
+            .map((i) => Cartt(
+                build: i['options']['build'],
+                color: i['options']['color'].toLowerCase(),
+                diamond: i['options']['diamondQuality'],
+                cert: i['options']['certificate'],
+                id: i['id'],
+                quantity: i['options']['quantity'],
+                buildValue: Provider.of<Pagination>(context, listen: false)
+                    .build
+                    .indexOf(i['options']['build']),
+                certValue: Provider.of<Pagination>(context, listen: false)
+                    .cert
+                    .indexOf(i['options']['certificate']),
+                colorValue: Provider.of<Pagination>(context, listen: false)
+                    .color
+                    .indexOf(i['options']['color']),
+                diamondValue: Provider.of<Pagination>(context, listen: false)
+                    .diamondQuality
+                    .indexOf(i['options']['diamondQuality']),
+                product: Product(
+                    imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                    prices: Map<dynamic, dynamic>.from(i['prices']),
+                    styleNumber: i["styleNumber"])))
+            .toList();
+            notifyListeners();
       } catch (err) {
         throw err;
       }
@@ -212,36 +238,32 @@ class Cart with ChangeNotifier {
       );
 
       final responseData = json.decode(response.body);
+       totalPrice=responseData['cart']['totalPrice'];
 
-
-      
       cart = responseData['cart']['products']
-          .map((i) => 
-                Cartt(
-                    build: i['options']['build'],
-                    color: i['options']['color'].toLowerCase(),
-                    diamond: i['options']['diamondQuality'],
-                    cert: i['options']['certificate'],
-                    id: i['id'],
-                    quantity:i['options']['quantity'],
-                    buildValue: Provider.of<Pagination>(context, listen: false)
-                        .build
-                        .indexOf(i['options']['build']),
-                    certValue: Provider.of<Pagination>(context, listen: false)
-                        .cert
-                        .indexOf(i['options']['certificate']),
-                    colorValue: Provider.of<Pagination>(context, listen: false)
-                        .color
-                        .indexOf(i['options']['color']),
-                    diamondValue:
-                        Provider.of<Pagination>(context, listen: false)
-                            .diamondQuality
-                            .indexOf(i['options']['diamondQuality']),
-                    product: Product(
-                        imageUrl: Map<dynamic, dynamic>.from(i['images']),
-                        prices: Map<dynamic, dynamic>.from(i['prices']),
-                        styleNumber: i["styleNumber"]))
-              )
+          .map((i) => Cartt(
+              build: i['options']['build'],
+              color: i['options']['color'].toLowerCase(),
+              diamond: i['options']['diamondQuality'],
+              cert: i['options']['certificate'],
+              id: i['id'],
+              quantity: i['options']['quantity'],
+              buildValue: Provider.of<Pagination>(context, listen: false)
+                  .build
+                  .indexOf(i['options']['build']),
+              certValue: Provider.of<Pagination>(context, listen: false)
+                  .cert
+                  .indexOf(i['options']['certificate']),
+              colorValue: Provider.of<Pagination>(context, listen: false)
+                  .color
+                  .indexOf(i['options']['color']),
+              diamondValue: Provider.of<Pagination>(context, listen: false)
+                  .diamondQuality
+                  .indexOf(i['options']['diamondQuality']),
+              product: Product(
+                  imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                  prices: Map<dynamic, dynamic>.from(i['prices']),
+                  styleNumber: i["styleNumber"])))
           .toList();
 
       print(responseData);
@@ -253,58 +275,54 @@ class Cart with ChangeNotifier {
       throw error;
     }
   }
- Future<void> deleteCart({String id,context})async{
-   try {
-        final response = await http.patch(
-          this.url,
-          headers: {
-            'Authorization':
-                'Bearer ' + Provider.of<Auth>(context, listen: false).token,
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: json.encode({
-            "id": id,
-           "quantity":0
-          }),
-        );
-      
-     final responseData=   json.decode(response.body);
 
-        cart = responseData['cart']['products']
-          .map((i) => 
-                Cartt(
-                    build: i['options']['build'],
-                    color: i['options']['color'].toLowerCase(),
-                    diamond: i['options']['diamondQuality'],
-                    cert: i['options']['certificate'],
-                    id: i['id'],
-                    quantity:i['options']['quantity'],
-                    buildValue: Provider.of<Pagination>(context, listen: false)
-                        .build
-                        .indexOf(i['options']['build']),
-                    certValue: Provider.of<Pagination>(context, listen: false)
-                        .cert
-                        .indexOf(i['options']['certificate']),
-                    colorValue: Provider.of<Pagination>(context, listen: false)
-                        .color
-                        .indexOf(i['options']['color']),
-                    diamondValue:
-                        Provider.of<Pagination>(context, listen: false)
-                            .diamondQuality
-                            .indexOf(i['options']['diamondQuality']),
-                    product: Product(
-                        imageUrl: Map<dynamic, dynamic>.from(i['images']),
-                        prices: Map<dynamic, dynamic>.from(i['prices']),
-                        styleNumber: i["styleNumber"]))
-              )
+  Future<void> deleteCart({String id, context}) async {
+    try {
+      final response = await http.patch(
+        this.url,
+        headers: {
+          'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({"id": id, "quantity": 0}),
+      );
+
+      final responseData = json.decode(response.body);
+       totalPrice=responseData['cart']['totalPrice'];
+
+      cart = responseData['cart']['products']
+
+          .map((i) => Cartt(
+              build: i['options']['build'],
+              color: i['options']['color'].toLowerCase(),
+              diamond: i['options']['diamondQuality'],
+              cert: i['options']['certificate'],
+              id: i['id'],
+              quantity: i['options']['quantity'],
+              buildValue: Provider.of<Pagination>(context, listen: false)
+                  .build
+                  .indexOf(i['options']['build']),
+              certValue: Provider.of<Pagination>(context, listen: false)
+                  .cert
+                  .indexOf(i['options']['certificate']),
+              colorValue: Provider.of<Pagination>(context, listen: false)
+                  .color
+                  .indexOf(i['options']['color']),
+              diamondValue: Provider.of<Pagination>(context, listen: false)
+                  .diamondQuality
+                  .indexOf(i['options']['diamondQuality']),
+              product: Product(
+                  imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                  prices: Map<dynamic, dynamic>.from(i['prices']),
+                  styleNumber: i["styleNumber"])))
           .toList();
 
-          notifyListeners();
-      } catch (err) {
- throw err;
-      }
-
- } 
+      notifyListeners();
+    } catch (err) {
+      throw err;
+    }
+  }
 
   void buildChange(value, index) {
     cart[index].buildValue = value;
@@ -326,13 +344,42 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void decQuantity(index) {
-    cart[index].quantity = cart[index].quantity - 1;
+  Future<void> decQuantity({ index,context, product, color, cert, diamond, build,
+      quantity, colorValue, buildValue, diamondValue, certvalue, update}) async {
+    await Provider.of<Cart>(context,listen: false).addCart(
+        context: context,
+        color: color,
+        cert: cert,
+        colorValue: colorValue,
+        certvalue: certvalue,
+        build: build,
+        buildValue: buildValue,
+        update: true,
+        diamond: diamond,
+        diamondValue: diamondValue,
+        product: product,
+        quantity: cart[index].quantity-1);
+
     notifyListeners();
   }
 
-  void incQuantity(index) {
-    cart[index].quantity = cart[index].quantity + 1;
+  Future<void> incQuantity({index, context, product, color, cert, diamond, build,
+      quantity, colorValue, buildValue, diamondValue, certvalue, update}) async {
+    await Provider.of<Cart>(context,listen: false).addCart(
+        context: context,
+        color: color,
+        cert: cert,
+        colorValue: colorValue,
+        certvalue: certvalue,
+        build: build,
+        buildValue: buildValue,
+        quantity: cart[index].quantity+1,
+        update: true,
+        diamond: diamond,
+        diamondValue: diamondValue,
+        product: product,
+        );
+
     notifyListeners();
   }
 }
