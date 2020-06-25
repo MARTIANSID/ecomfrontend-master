@@ -69,7 +69,6 @@ class _OptColorState extends State<OptColor> {
           .getStringValuesSF();
     }
 
-    var size = MediaQuery.of(context).size;
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : Column(

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 void showFloatingFlushbar(BuildContext context, text, productName) {
   Flushbar(
     borderRadius: 8,
@@ -125,10 +124,11 @@ Future<bool> dataSelectConfirmMessage(
     context, titleText, contentText, buttonText) async {
   bool value1;
   // var alertDialog =
-  value1=await showDialog(
+  value1 = await showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -145,26 +145,17 @@ Future<bool> dataSelectConfirmMessage(
           ),
           textAlign: TextAlign.center,
         ),
-        content: Container(
-          height: ScreenUtil().setHeight(150.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                contentText,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Gilroy',
-                  fontSize: ScreenUtil().setSp(
-                    16,
-                    allowFontScalingSelf: true,
-                  ),
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+        content: Text(
+          contentText,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Gilroy',
+            fontSize: ScreenUtil().setSp(
+              16,
+              allowFontScalingSelf: true,
+            ),
           ),
+          textAlign: TextAlign.center,
         ),
         actions: <Widget>[
           FlatButton(
@@ -176,7 +167,12 @@ Future<bool> dataSelectConfirmMessage(
             },
             child: Text("No",
                 style: TextStyle(
-                    color: Colors.black, fontFamily: 'Gilroy Medium')),
+                    fontSize: ScreenUtil().setSp(
+                      16,
+                      allowFontScalingSelf: true,
+                    ),
+                    color: Colors.black,
+                    fontFamily: 'Gilroy Medium')),
           ),
           FlatButton(
             onPressed: () {
@@ -186,11 +182,15 @@ Future<bool> dataSelectConfirmMessage(
             },
             child: Text("Yes",
                 style: TextStyle(
-                    color: Colors.black, fontFamily: 'Gilroy Medium')),
+                    fontSize: ScreenUtil().setSp(
+                      16,
+                      allowFontScalingSelf: true,
+                    ),
+                    color: Colors.black,
+                    fontFamily: 'Gilroy Medium')),
           )
         ],
       );
-     
     },
   );
   return value1;

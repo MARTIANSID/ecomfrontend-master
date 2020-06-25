@@ -47,7 +47,6 @@ class _Opt1State extends State<Opt1> {
       ),
     };
 
-    var size = MediaQuery.of(context).size;
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : Column(

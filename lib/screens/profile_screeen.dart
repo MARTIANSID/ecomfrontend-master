@@ -1,9 +1,7 @@
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/accountinfo.dart';
-import 'package:Flutter/screens/appui.dart';
 import 'package:Flutter/screens/testimony_page.dart';
-import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -35,7 +33,6 @@ class _UserPageState extends State<UserPage>
 
  @override
  void initState() {
-    // TODO: implement initState
     super.initState();
     new Future.delayed(Duration(seconds: 0),()async{setState(() {
       isLoading=true;
@@ -48,7 +45,6 @@ class _UserPageState extends State<UserPage>
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     ScreenUtil.init(
       context,
       width: 411.42857142857144,
@@ -411,7 +407,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Widget cardDetails(String title, String valueCount, Widget iconWidget) {
-    var size = MediaQuery.of(context).size;
     return Material(
       elevation: 4.0,
       borderRadius: BorderRadius.circular(7.0),
@@ -472,7 +467,6 @@ class ListWidgetUserDetails extends StatefulWidget {
 class _ListWidgetUserDetailsState extends State<ListWidgetUserDetails> {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Container(
       // margin: EdgeInsets.all(4.0),
       decoration: BoxDecoration(

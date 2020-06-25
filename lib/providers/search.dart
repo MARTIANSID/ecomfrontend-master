@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:Flutter/providers/products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +15,7 @@ class Searchh with ChangeNotifier {
   List<dynamic> searchResult;
 
   Future<void> getSearch({String query, context}) async {
-    final url = 'https://alexa.gemstory.in/product/search?query=${query}';
+    final url = 'https://alexa.gemstory.in/product/search?query=$query';
     try {
       final response = await http.get(
         url,

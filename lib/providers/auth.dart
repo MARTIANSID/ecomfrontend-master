@@ -1,12 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
-
-import 'package:Flutter/providers/pagination.dart';
-import 'package:Flutter/providers/products.dart';
-import 'package:Flutter/providers/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './http_exception.dart';

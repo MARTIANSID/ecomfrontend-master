@@ -647,18 +647,6 @@ class _CartScreenState extends State<CartScreen> {
         width: 411.42857142857144,
         height: 774.8571428571429,
         allowFontScaling: true);
-    List<String> styleNumber = [
-      'NP104',
-      'NP105',
-      'NP106',
-      'NP107',
-      'NP108',
-      'NP109',
-      'NP110',
-      'NP111',
-      'NP112',
-      'NP113',
-    ];
     List<String> info = [];
     // final suggestion = styleNumber
     //     .where(
@@ -781,7 +769,7 @@ class _CartScreenState extends State<CartScreen> {
                                         return await dataSelectConfirmMessage(
                                           context,
                                           'Alert!',
-                                          "Are you sure, You want to remove the item form the cart",
+                                          "Are you sure, You want to remove the item form the cart?",
                                           'Request Prices',
                                         ).then((value) async {
                                           return value2 = value;
@@ -797,13 +785,33 @@ class _CartScreenState extends State<CartScreen> {
                                                     .cart[index]
                                                     .id,
                                                 context: context);
-                                                setState(() {
-                                                  
-                                                });
+                                        setState(() {});
                                       },
                                       background: Container(
-                                          width: double.infinity,
-                                          color: Colors.red.withOpacity(0.8)),
+                                        color: Colors.red,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(Icons.delete,
+                                                  color: Colors.white),
+                                              SizedBox(
+                                                width:
+                                                    ScreenUtil().setWidth(5),
+                                              ),
+                                              Text(
+                                                'Remove from Cart',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Regular',
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                       key: UniqueKey(),
                                       child: Column(
                                         children: <Widget>[
@@ -869,9 +877,9 @@ class _CartScreenState extends State<CartScreen> {
                                             child: Container(
                                               height:
                                                   ScreenUtil().setHeight(94),
-                                              width: ScreenUtil().setWidth(411),
+                                              width: ScreenUtil().setWidth(390),
                                               margin: EdgeInsets.fromLTRB(
-                                                  24.0, 0.0, 25.0, 5.0),
+                                                  11.0, 0.0, 0.0, 5.0),
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -885,7 +893,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 children: <Widget>[
                                                   SizedBox(
                                                     width: ScreenUtil()
-                                                        .setWidth(10),
+                                                        .setWidth(4),
                                                   ),
                                                   // Image.asset(
                                                   //   'assets/images/nosepin12.png',
@@ -946,7 +954,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                   Container(
                                                     width: ScreenUtil()
-                                                        .setWidth(185),
+                                                        .setWidth(192),
                                                     height: ScreenUtil()
                                                         .setHeight(76),
                                                     // color: Colors.amber,
@@ -956,7 +964,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               .start,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .start,
+                                                              .center,
                                                       children: <Widget>[
                                                         Text(
                                                           '${product.styleNumber}',
@@ -1095,19 +1103,17 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                   SizedBox(
                                                     width: ScreenUtil()
-                                                        .setWidth(2),
+                                                        .setWidth(7),
                                                   ),
                                                   Container(
                                                     width: ScreenUtil()
-                                                        .setWidth(77),
+                                                        .setWidth(93),
                                                     height: ScreenUtil()
-                                                        .setHeight(38),
-                                                    padding:
-                                                        EdgeInsets.all(3.0),
+                                                        .setHeight(80),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .center,
+                                                              .spaceEvenly,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .center,
@@ -1131,51 +1137,35 @@ class _CartScreenState extends State<CartScreen> {
                                                               });
                                                             }
                                                           },
-                                                          child: Container(
-                                                            height: ScreenUtil()
-                                                                .setHeight(12),
-                                                            width: ScreenUtil()
-                                                                .setWidth(12),
-                                                            child: Center(
-                                                              child: Text(
-                                                                '-',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Gilroy',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      22,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                              ),
+                                                          child: ShaderMask(
+                                                            shaderCallback:
+                                                                (bounds) =>
+                                                                    LinearGradient(
+                                                              colors: [
+                                                                Colors.black,
+                                                                Colors.black,
+                                                              ],
+                                                              begin: Alignment
+                                                                  .topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
+                                                            ).createShader(
+                                                              Rect.fromLTWH(
+                                                                  0,
+                                                                  0,
+                                                                  bounds.width,
+                                                                  bounds
+                                                                      .height),
                                                             ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(4),
-                                                        ),
-                                                        Container(
-                                                          height: ScreenUtil()
-                                                              .setHeight(19),
-                                                          width: ScreenUtil()
-                                                              .setWidth(24),
-                                                          child: Center(
                                                             child: Text(
-                                                              '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                              '-',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Gilroy Black',
+                                                                    'Gilroy Bold',
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: ScreenUtil()
-                                                                    .setSp(18,
+                                                                    .setSp(25,
                                                                         allowFontScalingSelf:
                                                                             true),
                                                                 fontWeight:
@@ -1185,10 +1175,51 @@ class _CartScreenState extends State<CartScreen> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(4),
+                                                        // SizedBox(
+                                                        //   width: ScreenUtil()
+                                                        //       .setWidth(4),
+                                                        // ),
+                                                        ShaderMask(
+                                                          shaderCallback:
+                                                              (bounds) =>
+                                                                  LinearGradient(
+                                                            colors: [
+                                                              Colors.black,
+                                                              Colors.black,
+                                                            ],
+                                                            begin: Alignment
+                                                                .topLeft,
+                                                            end: Alignment
+                                                                .bottomRight,
+                                                          ).createShader(
+                                                            Rect.fromLTWH(
+                                                                0,
+                                                                0,
+                                                                bounds.width,
+                                                                bounds.height),
+                                                          ),
+                                                          child: Text(
+                                                            // '888',
+                                                            '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Gilroy Black',
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(20,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
                                                         ),
+                                                        // SizedBox(
+                                                        //   width: ScreenUtil()
+                                                        //       .setWidth(4),
+                                                        // ),
                                                         GestureDetector(
                                                           onTap: () {
                                                             setState(() {
@@ -1200,52 +1231,42 @@ class _CartScreenState extends State<CartScreen> {
                                                                       index);
                                                             });
                                                           },
-                                                          child: Container(
-                                                            height: ScreenUtil()
-                                                                .setHeight(12),
-                                                            width: ScreenUtil()
-                                                                .setWidth(12),
-                                                            child: Center(
-                                                              child: ShaderMask(
-                                                                shaderCallback:
-                                                                    (bounds) =>
-                                                                        LinearGradient(
-                                                                  colors: [
-                                                                    Color(
-                                                                        0xFF34B0D9),
-                                                                    Color(
-                                                                        0xFF3685CB),
-                                                                  ],
-                                                                  begin: Alignment
-                                                                      .topLeft,
-                                                                  end: Alignment
-                                                                      .bottomRight,
-                                                                ).createShader(
-                                                                  Rect.fromLTWH(
-                                                                      0,
-                                                                      0,
-                                                                      bounds
-                                                                          .width,
-                                                                      bounds
-                                                                          .height),
-                                                                ),
-                                                                child: Text(
-                                                                  '+',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        'Gilroy',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        22,
+                                                          child: ShaderMask(
+                                                            shaderCallback:
+                                                                (bounds) =>
+                                                                    LinearGradient(
+                                                              colors: [
+                                                                Color(
+                                                                    0xFF34B0D9),
+                                                                Color(
+                                                                    0xFF3685CB),
+                                                              ],
+                                                              begin: Alignment
+                                                                  .topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
+                                                            ).createShader(
+                                                              Rect.fromLTWH(
+                                                                  0,
+                                                                  0,
+                                                                  bounds.width,
+                                                                  bounds
+                                                                      .height),
+                                                            ),
+                                                            child: Text(
+                                                              '+',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Gilroy Bold',
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(25,
                                                                         allowFontScalingSelf:
                                                                             true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                ),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
                                                               ),
                                                             ),
                                                           ),
@@ -1327,7 +1348,7 @@ class _CartScreenState extends State<CartScreen> {
                                     style: TextStyle(
                                         fontFamily: 'Gilory',
                                         color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(12,
+                                        fontSize: ScreenUtil().setSp(17,
                                             allowFontScalingSelf: true),
                                         fontWeight: FontWeight.bold),
                                     textAlign: TextAlign.center,
@@ -1682,67 +1703,5 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
     );
-  }
-
-  TextSpan searchMatch(String match) {
-    var refinedMatch = match.toLowerCase();
-    var refinedSearch = searchValue.toLowerCase();
-    if (refinedMatch.contains(refinedSearch)) {
-      if (refinedMatch.substring(0, refinedSearch.length) == refinedSearch) {
-        return TextSpan(
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Varela',
-            fontSize: 21.0,
-          ),
-          text: match.substring(0, refinedSearch.length),
-          children: [
-            searchMatch(
-              match.substring(
-                refinedSearch.length,
-              ),
-            ),
-          ],
-        );
-      } else if (refinedMatch.length == refinedSearch.length) {
-        return TextSpan(
-          text: match,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Varela',
-            fontSize: 21.0,
-          ),
-        );
-      } else {
-        return TextSpan(
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Varela',
-            fontSize: 21.0,
-          ),
-          text: match.substring(
-            0,
-            refinedMatch.indexOf(refinedSearch),
-          ),
-          children: [
-            searchMatch(
-              match.substring(
-                refinedMatch.indexOf(refinedSearch),
-              ),
-            ),
-          ],
-        );
-      }
-    }
-    // return TextSpan(
-    //   text: match.substring(0, refinedMatch.indexOf(refinedSearch)),
-    //   style: negRes,
-    //   children: [
-    //     searchMatch(match.substring(refinedMatch.indexOf(refinedSearch)))
-    //   ],
-    // );
   }
 }

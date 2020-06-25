@@ -7,7 +7,6 @@ import 'package:Flutter/providers/testimony.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,7 @@ int initScreen3;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  initScreen3 = await prefs.getInt("initScreen3");
+  initScreen3 = prefs.getInt("initScreen3");
   await prefs.setInt("initScreen3", 1);
   // print('initScreen3 ${initScreen3}');
   runApp(MyApp());

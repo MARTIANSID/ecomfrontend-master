@@ -3,10 +3,9 @@ import 'dart:ui';
 
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
-import 'package:Flutter/providers/products.dart';
 import 'package:Flutter/providers/search.dart';
+import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/cookie_page.dart';
-import 'package:Flutter/widgets/filter_widget.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,10 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
-import '../constant/const.dart';
-import '../constant/const.dart';
-import '../constant/const.dart';
-import 'appui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FavouriteScreen extends StatefulWidget {
@@ -34,7 +29,6 @@ class FavouriteScreen extends StatefulWidget {
 
 class _FavouriteScreenState extends State<FavouriteScreen>
     with TickerProviderStateMixin {
-  TabController _tabController;
   int _defaultChoiceIndex1;
   int _defaultChoiceIndex2;
   int _defaultChoiceIndex3;
@@ -52,9 +46,10 @@ class _FavouriteScreenState extends State<FavouriteScreen>
 
   bool searchSelectedDoneButton = false;
 
+  GlobalKey globalKey=GlobalKey();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -142,18 +137,6 @@ class _FavouriteScreenState extends State<FavouriteScreen>
         width: 411.42857142857144,
         height: 774.8571428571429,
         allowFontScaling: true);
-    List<String> styleNumber = [
-      'NP104',
-      'NP105',
-      'NP106',
-      'NP107',
-      'NP108',
-      'NP109',
-      'NP110',
-      'NP111',
-      'NP112',
-      'NP113',
-    ];
     List<String> info = [];
     // final suggestion = styleNumber
     //     .where(
@@ -161,6 +144,9 @@ class _FavouriteScreenState extends State<FavouriteScreen>
     //     .toList();
     print('Search Selected' + searchSelected.toString());
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
+      key: globalKey,
       body: Container(
         color: Color(0xFFF4F4F4),
         child: Stack(
@@ -268,6 +254,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             build: _defaultChoiceIndex1,
                             cert: _defaultChoiceIndex3,
                             diamond: _defaultChoiceIndex4,
+                            globalKey: globalKey,
                           )
                         : Center(
                             child: Text(
@@ -503,99 +490,162 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                               .styleNumber
                                               .split(searchValue);
                                           print(info);
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20.0, right: 20.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: ScreenUtil()
-                                                      .setHeight(90),
-                                                  width:
-                                                      ScreenUtil().setWidth(90),
-                                                  // color: Colors.amber,
-                                                  child: Image(
-                                                    image: AdvancedNetworkImage(
-                                                      suggestion[index].image,
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.fill,
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              await Provider.of<Pagination>(
+                                                      context,
+                                                      listen: false)
+                                                  .getProductDetail(
+                                                      context: context,
+                                                      styleNumber:
+                                                          suggestion[index]
+                                                              .styleNumber);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetail(
+                                                    colorKey: 'yellow',
+                                                    select: 'all',
+                                                    diamondKey: Provider.of<
+                                                                    Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .diamondQuality[
+                                                        _defaultChoiceIndex4],
+                                                    certPrice: Provider.of<
+                                                                Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .certPrices[Provider.of<
+                                                                    Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .cert[
+                                                        _defaultChoiceIndex3]],
+                                                    product: Provider.of<
+                                                                Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .productDetailsForSearch[0],
+                                                    defaultIndex1:
+                                                        _defaultChoiceIndex1,
+                                                    defaultIndex2:
+                                                        _defaultChoiceIndex2,
+                                                    defaultIndex3:
+                                                        _defaultChoiceIndex3,
+                                                    defaultIndex4:
+                                                        _defaultChoiceIndex4,
+                                                    valueChangeBuild:
+                                                        _onValueChange,
+                                                    valueChangeColor:
+                                                        _onValueChangeColor,
+                                                    valueChangeCerti:
+                                                        _onValueChangeCerti,
+                                                    valueChangeDQ:
+                                                        _onValueChangeDQ,
                                                   ),
                                                 ),
-                                                // Text(
-                                                //   styleNumber[index],
-                                                //   style: TextStyle(
-                                                //     fontFamily: 'Varela',
-                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
-                                                //   ),
-                                                // )
-                                                RichText(
-                                                  text: TextSpan(
-                                                    // text: suggestion[index].substring(
-                                                    //   suggestion[index].indexOf(
-                                                    //       searchValue),
-                                                    //   searchValue.length,
-                                                    // ),
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: ScreenUtil().setSp(
-                                                          21,
-                                                          allowFontScalingSelf:
-                                                              true),
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0, right: 20.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(90),
+                                                    width: ScreenUtil()
+                                                        .setWidth(90),
+                                                    // color: Colors.amber,
+                                                    child: Image(
+                                                      image:
+                                                          AdvancedNetworkImage(
+                                                        suggestion[index].image,
+                                                        useDiskCache: true,
+                                                        cacheRule: CacheRule(
+                                                            maxAge:
+                                                                const Duration(
+                                                                    days: 3)),
+                                                      ),
+                                                      fit: BoxFit.fill,
                                                     ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: info[0],
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: searchValue,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: info[1],
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                    ],
                                                   ),
-                                                )
-                                              ],
+                                                  // Text(
+                                                  //   styleNumber[index],
+                                                  //   style: TextStyle(
+                                                  //     fontFamily: 'Varela',
+                                                  //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                  //   ),
+                                                  // )
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      // text: suggestion[index].substring(
+                                                      //   suggestion[index].indexOf(
+                                                      //       searchValue),
+                                                      //   searchValue.length,
+                                                      // ),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Varela',
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(21,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: info[0],
+                                                          style: TextStyle(
+                                                            color: Colors.grey,
+                                                            // fontWeight: FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: searchValue,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: info[1],
+                                                          style: TextStyle(
+                                                            color: Colors.grey,
+                                                            // fontWeight: FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           );
                                         },

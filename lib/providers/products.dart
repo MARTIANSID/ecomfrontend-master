@@ -1,13 +1,7 @@
-import 'package:provider/provider.dart';
-
-import 'package:Flutter/providers/http_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
-import 'auth.dart';
 
 class Product {
   // final String id;
@@ -25,11 +19,11 @@ class Product {
   Map<String, bool> designDetails;
 
   bool isFavourite;
-  String vVS_EF;
-  String vVS_FG;
-  String vVS_VS_FG;
-  String vS_FG;
-  String sI_HI;
+  // String vVS_EF;
+  // String vVS_FG;
+  // String vVS_VS_FG;
+  // String vS_FG;
+  // String sI_HI;
   String main;
   String white;
   String yellow;
@@ -48,11 +42,11 @@ class Product {
       this.goldWeight,
       this.diamondCount,
       this.isFavourite = false,
-      this.sI_HI,
-      this.vS_FG,
-      this.vVS_EF,
-      this.vVS_FG,
-      this.vVS_VS_FG,
+      // this.sI_HI,
+      // this.vS_FG,
+      // this.vVS_EF,
+      // this.vVS_FG,
+      // this.vVS_VS_FG,
       this.designDetails,
       this.white,
       this.main,
@@ -129,11 +123,11 @@ class Products with ChangeNotifier {
               white: prod['images']['white'],
               yellow: prod['images']['yellow'],
               rose: prod['images']['rose'],
-              vVS_EF: prod['prices']['VVS_EF'],
-              vVS_FG: prod['prices']['VVS_FG'],
-              vVS_VS_FG: prod['prices']['VVS_VS_FG'],
-              vS_FG: prod['prices']['VS_FG'],
-              sI_HI: prod['prices']['SI_HI'],
+              // vVS_EF: prod['prices']['VVS_EF'],
+              // vVS_FG: prod['prices']['VVS_FG'],
+              // vVS_VS_FG: prod['prices']['VVS_VS_FG'],
+              // vS_FG: prod['prices']['VS_FG'],
+              // sI_HI: prod['prices']['SI_HI'],
             ),
           )
           .toList();

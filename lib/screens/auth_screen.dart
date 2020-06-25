@@ -444,12 +444,9 @@ class _LoginScreenState extends State<LoginScreen>
           : await Provider.of<Auth>(context, listen: false)
               .userLogin(_phoneController.text, _passwordController.text);
       Provider.of<Auth>(context, listen: false).changeLog();
-    setState(() {
-        _showSignup=false;
-
-    });
-    
-      
+      setState(() {
+        _showSignup = false;
+      });
     }
   }
 

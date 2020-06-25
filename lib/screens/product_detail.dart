@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:Flutter/providers/pagination.dart';
@@ -63,6 +64,9 @@ class _ProductDetailState extends State<ProductDetail> {
 
   List<dynamic> suggestion;
   bool isLoadingSearch = false;
+  GlobalKey globalKey = GlobalKey();
+
+  int page = 0;
   Future<void> getSearch(query) async {
     setState(() {
       isLoadingSearch = true;
@@ -87,6 +91,29 @@ class _ProductDetailState extends State<ProductDetail> {
     // });
   }
 
+  Widget _buildDot(int index) {
+    double selectedness = Curves.easeOut.transform(
+      max(
+        0.0,
+        1.0 - ((page ?? 0) - index).abs(),
+      ),
+    );
+    double zoom = 1.0 + (2.0 - 1.0) * selectedness;
+    return new Container(
+      width: ScreenUtil().setWidth(20),
+      child: new Center(
+        child: new Material(
+          color: !isColourSet ? Colors.white : Colors.black,
+          type: MaterialType.circle,
+          child: new Container(
+            width: 5.0 * zoom,
+            height: 5.0 * zoom,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -97,6 +124,9 @@ class _ProductDetailState extends State<ProductDetail> {
     );
     List<String> info = [];
     return Scaffold(
+      key: globalKey,
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: Colors.white,
         child: Stack(
@@ -191,34 +221,99 @@ class _ProductDetailState extends State<ProductDetail> {
                             height: ScreenUtil().setHeight(22 + 17 + 28 + 40),
                           ),
                           widget.product.imageUrl.containsKey(widget.colorKey)
-                              ? Hero(
-                                  tag: 'tag1',
-                                  child: Image(
-                                    height: ScreenUtil().setHeight(290),
-                                    width: ScreenUtil().setWidth(290),
-                                    image: AdvancedNetworkImage(
-                                      widget.product.imageUrl[widget.colorKey],
-                                      useDiskCache: true,
-                                      cacheRule: CacheRule(
-                                          maxAge: const Duration(days: 3)),
-                                    ),
-                                    fit: BoxFit.cover,
+                              ? Container(
+                                  height: ScreenUtil().setHeight(290),
+                                  width: ScreenUtil().setWidth(290),
+                                  child: PageView.builder(
+                                    // allowImplicitScrolling: true,
+                                    onPageChanged: (value) {
+                                      setState(() {
+                                        page = value;
+                                      });
+                                    },
+                                    itemCount: Provider.of<Pagination>(context,
+                                            listen: false)
+                                        .color
+                                        .length,
+                                    itemBuilder: (context, index) {
+                                      return Hero(
+                                        tag: 'tag1',
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PhotoDetailScreen(
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .color[index]
+                                                            .toLowerCase(),
+                                                        widget.product),
+                                              ),
+                                            );
+                                          },
+                                          child: Image(
+                                            height: ScreenUtil().setHeight(290),
+                                            width: ScreenUtil().setWidth(290),
+                                            image: AdvancedNetworkImage(
+                                              widget.product.imageUrl[
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .color[index]
+                                                      .toLowerCase()],
+                                              useDiskCache: true,
+                                              cacheRule: CacheRule(
+                                                  maxAge:
+                                                      const Duration(days: 3)),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 )
                               : Hero(
                                   tag: 'tag1',
-                                  child: Image(
-                                    height: ScreenUtil().setHeight(290),
-                                    width: ScreenUtil().setWidth(290),
-                                    image: AdvancedNetworkImage(
-                                      widget.product.imageUrl['yellow'],
-                                      useDiskCache: true,
-                                      cacheRule: CacheRule(
-                                          maxAge: const Duration(days: 3)),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PhotoDetailScreen(widget.colorKey,
+                                                  widget.product),
+                                        ),
+                                      );
+                                    },
+                                    child: Image(
+                                      height: ScreenUtil().setHeight(290),
+                                      width: ScreenUtil().setWidth(290),
+                                      image: AdvancedNetworkImage(
+                                        widget.product.imageUrl['yellow'],
+                                        useDiskCache: true,
+                                        cacheRule: CacheRule(
+                                            maxAge: const Duration(days: 3)),
+                                      ),
+                                      fit: BoxFit.cover,
                                     ),
-                                    fit: BoxFit.cover,
                                   ),
                                 ),
+                          SizedBox(
+                            height: ScreenUtil().setHeight(10),
+                          ),
+                          Container(
+                            height: ScreenUtil().setHeight(20),
+                            width: ScreenUtil().setWidth(100),
+                            // padding: EdgeInsets.all(20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List<Widget>.generate(3, _buildDot),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -249,7 +344,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
                                         '${widget.product.styleNumber}',
@@ -261,11 +357,12 @@ class _ProductDetailState extends State<ProductDetail> {
                                         ),
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: <Widget>[
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.only(right: 6.0),
+                                            padding: const EdgeInsets.only(
+                                                right: 6.0),
                                             child: GestureDetector(
                                               onTap: () {
                                                 setState(() {
@@ -275,7 +372,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                               child: Container(
                                                 height:
                                                     ScreenUtil().setHeight(20),
-                                                width: ScreenUtil().setWidth(20),
+                                                width:
+                                                    ScreenUtil().setWidth(20),
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   gradient: isColourSet
@@ -293,24 +391,25 @@ class _ProductDetailState extends State<ProductDetail> {
                                                         ),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(isColourSet ? 2.0 : 1.0),
+                                                  padding: EdgeInsets.all(
+                                                      isColourSet ? 2.0 : 1.0),
                                                   child: Container(
                                                     // height: ScreenUtil()
                                                     //     .setHeight(16),
                                                     // width:
                                                     //     ScreenUtil().setWidth(16),
                                                     decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Color(0xFFEAF2FA)
-                                                      // gradient: LinearGradient(
-                                                      //   colors: [
-                                                      //     Color(0xFF34BDDD)
-                                                      //         .withOpacity(0.1),
-                                                      //     Color(0xFF367DC8)
-                                                      //         .withOpacity(0.1),
-                                                      //   ],
-                                                      // ),
-                                                    ),
+                                                        shape: BoxShape.circle,
+                                                        color: Color(0xFFEAF2FA)
+                                                        // gradient: LinearGradient(
+                                                        //   colors: [
+                                                        //     Color(0xFF34BDDD)
+                                                        //         .withOpacity(0.1),
+                                                        //     Color(0xFF367DC8)
+                                                        //         .withOpacity(0.1),
+                                                        //   ],
+                                                        // ),
+                                                        ),
                                                   ),
                                                 ),
                                               ),
@@ -323,7 +422,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                               });
                                             },
                                             child: Container(
-                                              height: ScreenUtil().setHeight(20),
+                                              height:
+                                                  ScreenUtil().setHeight(20),
                                               width: ScreenUtil().setWidth(20),
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
@@ -342,7 +442,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       ),
                                               ),
                                               child: Padding(
-                                                padding: EdgeInsets.all(!isColourSet ? 2.0 : 1.0),
+                                                padding: EdgeInsets.all(
+                                                    !isColourSet ? 2.0 : 1.0),
                                                 child: Container(
                                                   // height:
                                                   //     ScreenUtil().setHeight(16),
@@ -389,10 +490,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                       Rect.fromLTWH(
                                           0, 0, bounds.width, bounds.height),
                                     ),
-                                    child: widget.product.prices
-                                            .containsKey(widget.diamondKey)
+                                    // child: widget.product.prices.containsKey(
+                                    //             widget.diamondKey) &&
+                                    child: Provider.of<Pagination>(context,
+                                                        listen: false)
+                                                    .isPriced ==
+                                                true &&
+                                            widget.select != 'fav'
                                         ? Text(
-                                            '${int.parse(widget.product.prices[widget.diamondKey]) + widget.certPrice} ₹',
+                                          '50000',
+                                            // '${int.parse(widget.product.prices[widget.diamondKey]) + widget.certPrice} ₹',
                                             style: TextStyle(
                                               fontFamily: 'Gilroy Medium',
                                               color: Colors.white,
@@ -431,7 +538,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.0),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.0),
                                             child: Text(
                                               'Gold Weight'.toUpperCase(),
                                               style: TextStyle(
@@ -443,7 +551,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.0),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.0),
                                             child: Text(
                                               'Diamond Weight'.toUpperCase(),
                                               style: TextStyle(
@@ -455,7 +564,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.0),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.0),
                                             child: Text(
                                               'Diamond Count'.toUpperCase(),
                                               style: TextStyle(
@@ -486,7 +596,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.0),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.0),
                                             child: Text(
                                               '${widget.product.goldWeight}' +
                                                   ' gms',
@@ -499,7 +610,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.0),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.0),
                                             child: Text(
                                               '${widget.product.diamondWeight}' +
                                                   ' ct',
@@ -512,7 +624,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5.0),
+                                            margin:
+                                                EdgeInsets.only(bottom: 5.0),
                                             child: Text(
                                               '${widget.product.diamondCount}' +
                                                   ' pieces',
@@ -547,7 +660,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                   height: ScreenUtil().setHeight(94),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       SizedBox(
                                         width: ScreenUtil().setWidth(17),
@@ -558,7 +672,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         children: <Widget>[
                                           GestureDetector(
                                             onTap: () {
-                                              Provider.of<Pagination>(context,
+                                              !Provider.of<Pagination>(context,
                                                           listen: false)
                                                       .isPriced
                                                   ? dataSelect(
@@ -570,44 +684,48 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   : showDialog(
                                                       context: context,
                                                       child: AddToCart(
+                                                        globalKey: globalKey,
                                                         product: widget.product,
                                                         updateCart: false,
-                                                        choicesBuild:
-                                                            Provider.of<Pagination>(
+                                                        choicesBuild: Provider.of<
+                                                                    Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .build,
+                                                        choiceColor: Provider
+                                                                .of<Pagination>(
                                                                     context,
-                                                                    listen: false)
-                                                                .build,
-                                                        choiceColor:
-                                                            Provider.of<Pagination>(
-                                                                    context,
-                                                                    listen: false)
-                                                                .color,
+                                                                    listen:
+                                                                        false)
+                                                            .color,
                                                         choiceCertification:
                                                             Provider.of<Pagination>(
                                                                     context,
-                                                                    listen: false)
+                                                                    listen:
+                                                                        false)
                                                                 .cert,
                                                         choiceDiamondQuality:
                                                             Provider.of<Pagination>(
                                                                     context,
-                                                                    listen: false)
+                                                                    listen:
+                                                                        false)
                                                                 .diamondQuality,
-                                                        defValue:
-                                                            widget.defaultIndex1,
-                                                        defValue1:
-                                                            widget.defaultIndex2,
-                                                        defValue2:
-                                                            widget.defaultIndex3,
-                                                        defValue3:
-                                                            widget.defaultIndex4,
-                                                        valueChangeBuild:
-                                                            widget.valueChangeBuild,
-                                                        valueChangeColor:
-                                                            widget.valueChangeColor,
-                                                        valueChangeCerti:
-                                                            widget.valueChangeCerti,
-                                                        valueChangeDQ:
-                                                            widget.valueChangeDQ,
+                                                        defValue: widget
+                                                            .defaultIndex1,
+                                                        defValue1: widget
+                                                            .defaultIndex2,
+                                                        defValue2: widget
+                                                            .defaultIndex3,
+                                                        defValue3: widget
+                                                            .defaultIndex4,
+                                                        valueChangeBuild: widget
+                                                            .valueChangeBuild,
+                                                        valueChangeColor: widget
+                                                            .valueChangeColor,
+                                                        valueChangeCerti: widget
+                                                            .valueChangeCerti,
+                                                        valueChangeDQ: widget
+                                                            .valueChangeDQ,
                                                       ),
                                                     );
                                             },
@@ -621,8 +739,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   style: TextStyle(
                                                     fontFamily: 'Gilroy Bold',
                                                     color: Colors.white,
-                                                    fontSize: ScreenUtil().setSp(18,
-                                                        allowFontScalingSelf: true),
+                                                    fontSize: ScreenUtil().setSp(
+                                                        18,
+                                                        allowFontScalingSelf:
+                                                            true),
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
@@ -645,8 +765,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                               text: TextSpan(
                                                 style: TextStyle(
                                                   fontFamily: 'Gilroy Medium',
-                                                  fontSize: ScreenUtil().setSp(12,
-                                                      allowFontScalingSelf: true),
+                                                  fontSize: ScreenUtil().setSp(
+                                                      12,
+                                                      allowFontScalingSelf:
+                                                          true),
                                                   color: Color(0xFF8C8888),
                                                 ),
                                                 children: [
@@ -668,8 +790,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                                               }
                                                             },
                                                       style: TextStyle(
-                                                        decoration: TextDecoration
-                                                            .underline,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline,
                                                       )),
                                                 ],
                                               ),
@@ -688,6 +811,63 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                     )
                   ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: ScreenUtil().setHeight(92 + 22),
+              right: ScreenUtil().setWidth(26),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PhotoDetailScreen(widget.colorKey, widget.product),
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/icons/zoomIcon.svg',
+                  width: ScreenUtil().setWidth(29),
+                  height: ScreenUtil().setHeight(29),
+                  color: isColourSet ? Color(0xFFB8B8B8) : Colors.white,
+                ),
+              ),
+            ),
+            Positioned(
+              top: ScreenUtil().setHeight(383),
+              right: ScreenUtil().setWidth(26),
+              child: Container(
+                height: ScreenUtil().setHeight(43),
+                width: ScreenUtil().setWidth(43),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF34B0D9),
+                      Color(0xFF3685CB),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                child: GestureDetector(
+                  onTap: () async {
+                    await Provider.of<Pagination>(context, listen: false)
+                        .toogleFavourite(
+                            styleNumber: widget.product.styleNumber,
+                            context: context,
+                            select: widget.select);
+                    setState(() {});
+                  },
+                  child: Icon(
+                    widget.product.isFavourite
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    size: 30.0,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -715,6 +895,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     sigmaX: searchSelected ? 5 : 0,
                     sigmaY: searchSelected ? 5 : 0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
                       height: ScreenUtil().setHeight(22),
@@ -817,10 +998,11 @@ class _ProductDetailState extends State<ProductDetail> {
                                   top: 9.0,
                                   left: 0.0,
                                   child: GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       Navigator.of(context).pop();
                                     },
                                     child: AnimatedContainer(
+                                      margin: EdgeInsets.only(left: 10.0),
                                       duration: Duration(milliseconds: 600),
                                       // margin: EdgeInsets.only(right: 6.0),
                                       height: ScreenUtil()
@@ -876,7 +1058,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                       'Done',
                                       style: TextStyle(
                                         fontFamily: 'Gilroy Bold',
-                                        color: Colors.black,
+                                        color: searchSelected
+                                            ? Colors.white
+                                            : Colors.black,
                                         fontSize: ScreenUtil().setSp(16,
                                             allowFontScalingSelf: true),
                                         fontWeight: FontWeight.w500,
@@ -931,99 +1115,180 @@ class _ProductDetailState extends State<ProductDetail> {
                                               .styleNumber
                                               .split(searchValue);
                                           print(info);
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20.0, right: 20.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: ScreenUtil()
-                                                      .setHeight(90),
-                                                  width:
-                                                      ScreenUtil().setWidth(90),
-                                                  // color: Colors.amber,
-                                                  child: Image(
-                                                    image: AdvancedNetworkImage(
-                                                      suggestion[index].image,
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.fill,
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              await Provider.of<Pagination>(
+                                                      context,
+                                                      listen: false)
+                                                  .getProductDetail(
+                                                      context: context,
+                                                      styleNumber:
+                                                          suggestion[index]
+                                                              .styleNumber);
+                                              print(Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .diamondQuality[
+                                                          widget.defaultIndex4]
+                                                      .toString() +
+                                                  "DC");
+                                              print(Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .certPrices[Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .cert[
+                                                          widget.defaultIndex3]]
+                                                      .toString() +
+                                                  "DC");
+                                              print(widget.defaultIndex1
+                                                      .toString() +
+                                                  "DC");
+                                              print(widget.defaultIndex2
+                                                      .toString() +
+                                                  "DC");
+                                              print(widget.defaultIndex3
+                                                      .toString() +
+                                                  "DC");
+                                              print(widget.defaultIndex4
+                                                      .toString() +
+                                                  "DC");
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetail(
+                                                    select: 'all',
+                                                    colorKey: 'yellow',
+                                                    diamondKey: Provider.of<
+                                                                    Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .diamondQuality[
+                                                        widget.defaultIndex4],
+                                                    certPrice: Provider.of<
+                                                                Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .certPrices[Provider.of<
+                                                                    Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .cert[
+                                                        widget.defaultIndex3]],
+                                                    product: Provider.of<
+                                                                Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .productDetailsForSearch[0],
+                                                    defaultIndex1:
+                                                        widget.defaultIndex1,
+                                                    defaultIndex2:
+                                                        widget.defaultIndex2,
+                                                    defaultIndex3:
+                                                        widget.defaultIndex3,
+                                                    defaultIndex4:
+                                                        widget.defaultIndex4,
+                                                    valueChangeBuild:
+                                                        widget.valueChangeBuild,
+                                                    valueChangeColor:
+                                                        widget.valueChangeColor,
+                                                    valueChangeCerti:
+                                                        widget.valueChangeCerti,
+                                                    valueChangeDQ:
+                                                        widget.valueChangeDQ,
                                                   ),
                                                 ),
-                                                // Text(
-                                                //   styleNumber[index],
-                                                //   style: TextStyle(
-                                                //     fontFamily: 'Varela',
-                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
-                                                //   ),
-                                                // )
-                                                RichText(
-                                                  text: TextSpan(
-                                                    // text: suggestion[index].substring(
-                                                    //   suggestion[index].indexOf(
-                                                    //       searchValue),
-                                                    //   searchValue.length,
-                                                    // ),
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Varela',
-                                                      fontSize: ScreenUtil().setSp(
-                                                          21,
-                                                          allowFontScalingSelf:
-                                                              true),
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0, right: 20.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(90),
+                                                    width: ScreenUtil()
+                                                        .setWidth(90),
+                                                    // color: Colors.amber,
+                                                    child: Image(
+                                                      image:
+                                                          AdvancedNetworkImage(
+                                                        suggestion[index].image,
+                                                        useDiskCache: true,
+                                                        cacheRule: CacheRule(
+                                                            maxAge:
+                                                                const Duration(
+                                                                    days: 3)),
+                                                      ),
+                                                      fit: BoxFit.fill,
                                                     ),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: info[0],
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: searchValue,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: info[1],
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          // fontWeight: FontWeight.bold,
-                                                          fontFamily: 'Varela',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(21,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
-                                                    ],
                                                   ),
-                                                )
-                                              ],
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Varela',
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(21,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: info[0],
+                                                          style: TextStyle(
+                                                            color: Colors.grey,
+                                                            // fontWeight: FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: searchValue,
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: info[1],
+                                                          style: TextStyle(
+                                                            color: Colors.grey,
+                                                            // fontWeight: FontWeight.bold,
+                                                            fontFamily:
+                                                                'Varela',
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(21,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           );
                                         },
@@ -1038,63 +1303,6 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
               ),
             ),
-            Positioned(
-              top: ScreenUtil().setHeight(92 + 22),
-              right: ScreenUtil().setWidth(26),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PhotoDetailScreen(widget.colorKey, widget.product),
-                    ),
-                  );
-                },
-                child: SvgPicture.asset(
-                  'assets/icons/zoomIcon.svg',
-                  width: ScreenUtil().setWidth(29),
-                  height: ScreenUtil().setHeight(29),
-                  color: isColourSet ? Color(0xFFB8B8B8) : Colors.white,
-                ),
-              ),
-            ),
-            Positioned(
-              top: ScreenUtil().setHeight(383),
-              right: ScreenUtil().setWidth(26),
-              child: Container(
-                height: ScreenUtil().setHeight(43),
-                width: ScreenUtil().setWidth(43),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF34B0D9),
-                      Color(0xFF3685CB),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: GestureDetector(
-                  onTap: () async {
-                    await Provider.of<Pagination>(context, listen: false)
-                        .toogleFavourite(
-                            styleNumber: widget.product.styleNumber,
-                            context: context,
-                            select: widget.select);
-                    setState(() {});
-                  },
-                  child: Icon(
-                    widget.product.isFavourite
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    size: 30.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),

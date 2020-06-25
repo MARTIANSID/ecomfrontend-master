@@ -1,4 +1,3 @@
-import 'package:Flutter/providers/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:photo_view/photo_view.dart';

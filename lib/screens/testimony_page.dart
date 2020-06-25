@@ -17,7 +17,6 @@ class _TestimonyPageState extends State<TestimonyPage> {
   TextEditingController commentEditingController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     new Future.delayed(Duration(seconds: 0), () async {
       setState(() {

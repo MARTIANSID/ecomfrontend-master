@@ -17,7 +17,6 @@ class TextFieldContainer extends StatelessWidget {
         width: 411.42857142857144,
         height: 774.8571428571429,
         allowFontScaling: true);
-    Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),

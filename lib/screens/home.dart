@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import './product_overview_screen.dart';
 import 'profile_screeen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_animator/flutter_animator.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -16,8 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  // final controller = ScrollController();
-  ScrollController _scrollController;
+
   bool _visible = true;
 
   void _onTap(int a) {

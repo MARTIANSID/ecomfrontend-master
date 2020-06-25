@@ -113,7 +113,7 @@ class Pagination with ChangeNotifier {
       select = 'all',
       addition = false}) async {
     final url =
-        'https://alexa.gemstory.in/product/paginated?select=${select}&sortby=${sortby}&sort=${sort}&page=${page}&quant=20';
+        'https://alexa.gemstory.in/product/paginated?select=$select&sortby=$sortby&sort=$sort&page=$page&quant=20';
     try {
       final response = await http.get(
         url,
@@ -298,7 +298,7 @@ class Pagination with ChangeNotifier {
                   diamondCount: prod['diamondCount'],
                   isFavourite: true,
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  designDimensions: prod['designDimensions']
+                  designDimensions: prod['designDimensions'],
                   // vVS_EF: prod['prices']['VVS_EF'],
                   // vVS_FG: prod['prices']['VVS_FG'],
                   // vVS_VS_FG: prod['prices']['VVS_VS_FG'],
@@ -453,7 +453,7 @@ class Pagination with ChangeNotifier {
                 diamondCount: prod['diamondCount'],
                 isFavourite: prod['isFavourite'],
                 imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                prices: prices,
+                prices:  Map<dynamic, dynamic>.from(prod['prices']),
                 designDimensions: prod['designDimensions']),
           )
           .toList();

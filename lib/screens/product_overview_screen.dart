@@ -4,11 +4,7 @@ import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
-import 'package:Flutter/providers/theme.dart';
-import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/product_detail.dart';
-import 'package:Flutter/screens/splash_screen.dart';
-import 'package:Flutter/widgets/filter_widget.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:Flutter/widgets/sortPage.dart';
@@ -16,19 +12,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart' as cp;
 import 'package:flutter_svg/svg.dart';
-import '../constant/const.dart';
-import '../constant/const.dart';
 import '../constant/const.dart';
 import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
-import '../providers/products.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/material.dart';
-import '../constant/const.dart';
-import './appui.dart';
-import 'dart:ui' as ui;
 
 class ProductOverViewScreen extends StatefulWidget {
   final ScrollController scrollController;
@@ -952,6 +940,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                         builder: (context) =>
                                                             ProductDetail(
                                                           colorKey: 'yellow',
+                                                          select: 'all',
                                                           diamondKey: Provider.of<
                                                                           Pagination>(
                                                                       context,

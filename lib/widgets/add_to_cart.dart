@@ -117,7 +117,6 @@ class AddToCartTState extends State<AddToCart> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     ScreenUtil.init(context,
         width: 411.42857142857144,
         height: 774.8571428571429,
@@ -830,7 +829,7 @@ class AddToCartTState extends State<AddToCart> {
                           await dataSelectConfirmMessage(
                             widget.globalKey.currentContext,
                             'Alert!',
-                            "Are you sure, You want to add this Nose Pin in Cart",
+                            "Are you sure, You want to add this Nose Pin in Cart?",
                             'Request Prices',
                           ).then((value) async {
                             if (value) {

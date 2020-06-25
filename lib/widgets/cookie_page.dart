@@ -1,6 +1,3 @@
-import 'dart:wasm';
-
-import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/product_detail.dart';
@@ -9,13 +6,9 @@ import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
-import '../constant/const.dart';
 import 'package:provider/provider.dart';
-import '../providers/products.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' show ImageFilter;
-
-import 'optionsDialog.dart';
 
 class CookiePage extends StatefulWidget {
   final select;
@@ -50,9 +43,6 @@ class CookiePage extends StatefulWidget {
 }
 
 class _CookiePageState extends State<CookiePage> {
-  bool _showAppbar = true; //this is to show app bar
-  // ScrollController scrollBottomBarController =
-  //     new ScrollController(); // set controller on scrolling
   bool isScrollingDown = false;
   int selectedValue;
   int valueOfQuantity = 0;
@@ -536,7 +526,7 @@ class _CookiePageState extends State<CookiePage> {
     return isLoadingg
         ? Center(child: CircularProgressIndicator())
         : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: ListView(
@@ -544,15 +534,15 @@ class _CookiePageState extends State<CookiePage> {
                   children: <Widget>[
                     GridView.builder(
                       scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(left: 25, right: 26),
+                      padding: EdgeInsets.only(left: 25, right: 21),
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: ScreenUtil().setWidth(411) /
-                            (ScreenUtil().setHeight(775) / 1.9799),
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 15.0,
+                            (ScreenUtil().setHeight(775) / 2.07),
+                        crossAxisSpacing: 20.0,
+                        mainAxisSpacing: 20.0,
                       ),
                       itemCount: widget.products.length,
                       itemBuilder: (context, i) => Stack(
@@ -710,7 +700,7 @@ class _CookiePageState extends State<CookiePage> {
                                   //   ),
                                   // ),
                                   widget.select != 'fav'
-                                      ? Provider.of<Pagination>(context,
+                                      ? !Provider.of<Pagination>(context,
                                                   listen: false)
                                               .isPriced
                                           ? GestureDetector(
@@ -727,24 +717,16 @@ class _CookiePageState extends State<CookiePage> {
                                                     ScreenUtil().setHeight(20),
                                                 width:
                                                     ScreenUtil().setWidth(110),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Colors.black,
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          18.0),
-                                                ),
                                                 child: Center(
                                                   child: Text(
                                                     'Request Prices',
                                                     style: TextStyle(
+                                                      decoration: TextDecoration.underline,
                                                       color: Colors.black,
                                                       fontFamily:
                                                           'Gilroy Medium',
                                                       fontSize: ScreenUtil().setSp(
-                                                          11,
+                                                          14,
                                                           allowFontScalingSelf:
                                                               true),
                                                     ),
