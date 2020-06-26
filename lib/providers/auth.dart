@@ -62,7 +62,7 @@ class Auth with ChangeNotifier {
 
   Future<bool> checkOtp({number,code}) async{
     final response = await http
-        .post('${uurl}user/checkcode', body: {"number": number,"code":code});
+        .post('${uurl}user/resetpassword/checkcode', body: {"number": number,"code":code});
     final responseBody = json.decode(response.body);
     
     if (responseBody['error'] == true)

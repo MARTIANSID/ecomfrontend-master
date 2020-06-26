@@ -84,7 +84,10 @@ class _LoginScreenState extends State<LoginScreen>
   Widget _buildGivenTF({
     @required String name,
     @required String hint,
-    @required TextEditingController controller,
+    @required TextEditingController 
+    
+    
+    controller,
     @required TextInputType inputType,
     @required IconData icon,
   }) {
@@ -244,7 +247,9 @@ class _LoginScreenState extends State<LoginScreen>
               _isRegistered = false;
             })
           : _showDilog('OOPS!', 'Something went wrong, Try again later');
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 
   Widget _buildRememberMeCheckbox() {
@@ -377,19 +382,6 @@ class _LoginScreenState extends State<LoginScreen>
   //   );
   // }
 
-  Future<void> setAllProducts(context) async {
-    Provider.of<Pagination>(context, listen: false)
-        .getProducts(page: 1, addition: false, select: 'all', context: context);
-    Provider.of<Pagination>(context, listen: false).getProducts(
-        page: 1, addition: false, select: 'featured', context: context);
-    Provider.of<Pagination>(context, listen: false)
-        .getProducts(page: 1, addition: false, select: 'new', context: context);
-    Provider.of<Pagination>(context, listen: false).getProducts(
-        page: 1, addition: false, select: 'highestSelling', context: context);
-    Provider.of<Pagination>(context, listen: false).getProducts(
-        page: 1, addition: false, select: 'fancyDiamond', context: context);
-  }
-
   int _screen = 0;
   bool _isLoading = false;
   Future<void> next() async {
@@ -435,6 +427,8 @@ class _LoginScreenState extends State<LoginScreen>
             _controller.forward();
             print(!_forgotPasswordMenu);
             if (!_forgotPasswordMenu) _buildForgetButton = true;
+
+          
             _showPasswordCheckBox = true;
           } else {
             _showSignup = true;
@@ -537,6 +531,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: _buildGivenTF(
                     name: 'Name',
                     hint: 'Enter your full name',
+
                     controller: _nameController,
                     inputType: TextInputType.text,
                     icon: Icons.person),
@@ -568,7 +563,18 @@ class _LoginScreenState extends State<LoginScreen>
             _forgotPasswordMenu && _requirePassword == false
                 ? _resendMessageBtn()
                 : _buildRememberMeCheckbox(),
+             
             _buildNextBtn(),
+            if(_forgotPasswordMenu && _showPassword==false)
+            RaisedButton(
+              onPressed: ()async{
+                await Provider.of<Auth>(context,listen: false).checkOtp(number:'12345'.toString(),code:phoneNumber);
+              },
+
+              child: Text('verify OTP'),
+            )
+
+            
             //_buildSignInWithText(),
             //_buildSocialBtnRow(),
             //_buildSignupBtn(),
