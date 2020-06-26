@@ -578,12 +578,10 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {
         isCartLoading = true;
       });
-      try{
-
-      await Provider.of<Cart>(context, listen: false).getCart(context: context);
-      }catch(err){
-        
-      }
+      try {
+        await Provider.of<Cart>(context, listen: false)
+            .getCart(context: context);
+      } catch (err) {}
       setState(() {
         isCartLoading = false;
       });
@@ -1098,21 +1096,24 @@ class _CartScreenState extends State<CartScreen> {
                                                               //     fontWeight: FontWeight.w500,
                                                               //   ),
                                                               // ),
-                                                              child: product.prices.containsKey(Provider.of<
-                                                                              Cart>(
-                                                                          context,
-                                                                          listen:
-                                                                              true)
-                                                                      .cart[
-                                                                          index]
-                                                                      .diamond) && Provider.of<Pagination>(context,listen: false).isPriced
+                                                              child: product.prices.containsKey(Provider.of<Cart>(
+                                                                              context,
+                                                                              listen:
+                                                                                  true)
+                                                                          .cart[
+                                                                              index]
+                                                                          .diamond) &&
+                                                                      Provider.of<Pagination>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .isPriced
                                                                   ? RichText(
                                                                       text:
                                                                           TextSpan(
                                                                         children: [
                                                                           TextSpan(
                                                                             text:
-                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert])*Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
                                                                             style:
                                                                                 TextStyle(
                                                                               color: Colors.white,
@@ -1259,19 +1260,27 @@ class _CartScreenState extends State<CartScreen> {
                                                               ),
                                                             ),
                                                             SizedBox(
-                                                              width: ScreenUtil()
-                                                                  .setWidth(5),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          5),
                                                             ),
                                                             Container(
-                                                              width: ScreenUtil().setWidth(35),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          35),
                                                               child: Center(
-                                                                child: ShaderMask(
+                                                                child:
+                                                                    ShaderMask(
                                                                   shaderCallback:
                                                                       (bounds) =>
                                                                           LinearGradient(
                                                                     colors: [
-                                                                      Colors.black,
-                                                                      Colors.black,
+                                                                      Colors
+                                                                          .black,
+                                                                      Colors
+                                                                          .black,
                                                                     ],
                                                                     begin: Alignment
                                                                         .topLeft,
@@ -1308,8 +1317,10 @@ class _CartScreenState extends State<CartScreen> {
                                                               ),
                                                             ),
                                                             SizedBox(
-                                                              width: ScreenUtil()
-                                                                  .setWidth(5),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          5),
                                                             ),
                                                             GestureDetector(
                                                               onTap: () async {
@@ -1414,11 +1425,17 @@ class _CartScreenState extends State<CartScreen> {
                                                     height: 0,
                                                   ),
                                             index ==
-                                                    Provider.of<Cart>(context,
-                                                                listen: false)
-                                                            .cart
-                                                            .length -
-                                                        1 && Provider.of<Pagination>(context,listen: false).isPriced
+                                                        Provider.of<Cart>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .cart
+                                                                .length -
+                                                            1 &&
+                                                    Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .isPriced
                                                 ? GestureDetector(
                                                     onTap: () {},
                                                     child: Container(
@@ -1429,7 +1446,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       // padding: EdgeInsets.all(20.0),
                                                       child: Center(
                                                         child: Text(
-                                                          'Checkout ${Provider.of<Cart>(context,listen:false).totalPrice} ₹',
+                                                          'Checkout ${Provider.of<Cart>(context, listen: false).totalPrice} ₹',
                                                           style: TextStyle(
                                                             fontFamily:
                                                                 'Gilroy Bold',
@@ -1455,12 +1472,32 @@ class _CartScreenState extends State<CartScreen> {
                                                 : SizedBox(
                                                     height: 0,
                                                   ),
+                                            // index ==
+                                            //         Provider.of<Cart>(context,
+                                            //                     listen: false)
+                                            //                 .cart
+                                            //                 .length -
+                                            //             1
+                                            //     ? SizedBox(
+                                            //         height: ScreenUtil()
+                                            //             .setHeight(93),
+                                            //       )
+                                            //     : SizedBox(
+                                            //         height: 0.0,
+                                            //       ),
                                             index ==
-                                                    Provider.of<Cart>(context,
+                                                        Provider.of<Cart>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .cart
+                                                                .length -
+                                                            1 &&
+                                                    Provider.of<Pagination>(
+                                                                context,
                                                                 listen: false)
-                                                            .cart
-                                                            .length -
-                                                        1 && Provider.of<Pagination>(context,listen: false).isPriced==false
+                                                            .isPriced ==
+                                                        false
                                                 ? GestureDetector(
                                                     onTap: () {},
                                                     child: Container(
@@ -1471,7 +1508,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       // padding: EdgeInsets.all(20.0),
                                                       child: Center(
                                                         child: Text(
-                                                       'Prices Not Set',
+                                                          'Prices Not Set',
                                                           style: TextStyle(
                                                             fontFamily:
                                                                 'Gilroy Bold',
@@ -1494,7 +1531,6 @@ class _CartScreenState extends State<CartScreen> {
                                                       )),
                                                     ),
                                                   )
-                                                
                                                 : SizedBox(
                                                     height: 0,
                                                   ),
@@ -1506,12 +1542,12 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Text(
                                     "Unfortunately, I'm empty you can fill me up!",
                                     style: TextStyle(
-                                        fontFamily: 'Gilory Medium',
-                                        color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(17,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      fontFamily: 'Gilory Medium',
+                                      color: Colors.black,
+                                      fontSize: ScreenUtil().setSp(17,
+                                          allowFontScalingSelf: true),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -1751,6 +1787,18 @@ class _CartScreenState extends State<CartScreen> {
                                                                 suggestion[
                                                                         index]
                                                                     .styleNumber);
+                                                    FocusScopeNode
+                                                        currentFocus =
+                                                        FocusScope.of(context);
+                                                    currentFocus.unfocus();
+                                                    textEditingController
+                                                        .clear();
+                                                    setState(() {
+                                                      searchValue = "";
+                                                      searchSelected = false;
+                                                      searchSelectedDoneButton =
+                                                          false;
+                                                    });
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(

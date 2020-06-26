@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/accountinfo.dart';
@@ -32,18 +34,22 @@ class _UserPageState extends State<UserPage>
   bool value2;
   bool isLoading = false;
 
+  bool storeCheckValue = false;
+  int timerVal = 0;
+
   @override
   void initState() {
     super.initState();
-    new Future.delayed(Duration(seconds: 0), () async {
+  }
+
+  void setValue() {
+    setState(() {
+      storeCheckValue = true;
+    });
+
+    Timer(Duration(seconds: 1), () {
       setState(() {
-        isLoading = true;
-      });
-      if (Provider.of<Pagination>(context, listen: false).isVerified) {
-        await Provider.of<UserInfo>(context, listen: false).getuser(context);
-      }
-      setState(() {
-        isLoading = false;
+        storeCheckValue = false;
       });
     });
   }
@@ -128,10 +134,10 @@ class _UserPageState extends State<UserPage>
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        'Yash Karade',
-                                        // Provider.of<UserInfo>(context,
-                                        //         listen: false)
-                                        //     .fullname,
+                                        // 'Yash Karade',
+                                        Provider.of<UserInfo>(context,
+                                                listen: false)
+                                            .fullname,
                                         style: TextStyle(
                                           fontFamily: 'Gilroy',
                                           fontSize: ScreenUtil().setSp(25,
@@ -139,18 +145,23 @@ class _UserPageState extends State<UserPage>
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
-                                        'daxy.in',
-                                        // Provider.of<UserInfo>(context,
-                                        //         listen: false)
-                                        //     .firm,
-                                        style: TextStyle(
-                                          fontFamily: 'Gilroy',
-                                          fontSize: ScreenUtil().setSp(15,
-                                              allowFontScalingSelf: true),
-                                          color: Colors.black.withOpacity(0.7),
-                                        ),
-                                      )
+                                      Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isVerified
+                                          ? Text(
+                                              // 'daxy.in',
+                                              Provider.of<UserInfo>(context,
+                                                      listen: false)
+                                                  .firm,
+                                              style: TextStyle(
+                                                fontFamily: 'Gilroy',
+                                                fontSize: ScreenUtil().setSp(15,
+                                                    allowFontScalingSelf: true),
+                                                color: Colors.black
+                                                    .withOpacity(0.7),
+                                              ),
+                                            )
+                                          : SizedBox(height: 0.0),
                                     ],
                                   ),
                                 ],
@@ -170,162 +181,236 @@ class _UserPageState extends State<UserPage>
                           SizedBox(
                             height: ScreenUtil().setHeight(10),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                child: Column(
+                          Provider.of<Pagination>(context, listen: false)
+                                  .isVerified
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    IconButton(
-                                      icon: Icon(Icons.card_travel),
-                                      color: Colors.white,
-                                      iconSize: ScreenUtil().setSp(40,
-                                          allowFontScalingSelf: true),
-                                      onPressed: () async {
-                                        if (!Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isVerified) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CompleteSignUp(),
-                                            ),
-                                          );
-                                        } else if (!Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .isPriced) {
-                                          await Provider.of<Pagination>(context)
-                                              .requestPrice(context: context);
-                                        } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MyOrder(),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                    Text(
-                                      'My Orders',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy',
-                                        fontSize: ScreenUtil().setSp(15,
-                                            allowFontScalingSelf: true),
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: Icon(Icons.account_balance_wallet),
-                                      color: Colors.white,
-                                      iconSize: ScreenUtil().setSp(40,
-                                          allowFontScalingSelf: true),
-                                      onPressed: () async {
-                                        if (!Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isVerified) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CompleteSignUp(),
-                                            ),
-                                          );
-                                        } else if (!Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .isPriced) {
-                                          await Provider.of<Pagination>(context)
-                                              .requestPrice(context: context);
-                                        } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MyPrice(
-                                                onButtonTapped:
-                                                    widget.onButtonTapped,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                    Text(
-                                      'My Prices',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy',
-                                        fontSize: ScreenUtil().setSp(15,
-                                            allowFontScalingSelf: true),
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: Icon(Provider.of<Pagination>(
+                                    Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(Icons.card_travel),
+                                            color: Colors.white,
+                                            iconSize: ScreenUtil().setSp(40,
+                                                allowFontScalingSelf: true),
+                                            onPressed: () async {
+                                              if (!Provider.of<Pagination>(
+                                                      context,
+                                                      listen: false)
+                                                  .isVerified) {
+                                                if (storeCheckValue) {
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CompleteSignUp(
+                                                              val: setValue),
+                                                    ),
+                                                  );
+                                                }
+                                              } else if (!Provider.of<
+                                                          Pagination>(context,
+                                                      listen: false)
+                                                  .isPriced) {
+                                                await Provider.of<Pagination>(
+                                                        context,listen: false)
+                                                    .requestPrice(
+                                                        context: context);
+                                              } else {
+                                                Navigator.push(
                                                   context,
-                                                  listen: false)
-                                              .isVerified
-                                          ? Icons.computer
-                                          : Icons.verified_user),
-                                      color: Colors.white,
-                                      iconSize: ScreenUtil().setSp(40,
-                                          allowFontScalingSelf: true),
-                                      onPressed: () {
-                                        Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .isVerified
-                                            ? Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AccountInfo(),
-                                                ),
-                                              )
-                                            : Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CompleteSignUp(),
-                                                ),
-                                              );
-                                      },
-                                    ),
-                                    Text(
-                                      Provider.of<Pagination>(context,
-                                                  listen: false)
-                                              .isVerified
-                                          ? 'Account\nDetails'
-                                          : 'Complete\nSignUp',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy',
-                                        fontSize: ScreenUtil().setSp(15,
-                                            allowFontScalingSelf: true),
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyOrder(),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          Text(
+                                            'My Orders',
+                                            style: TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              fontSize: ScreenUtil().setSp(15,
+                                                  allowFontScalingSelf: true),
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                      textAlign: TextAlign.center,
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(
+                                                Icons.account_balance_wallet),
+                                            color: Colors.white,
+                                            iconSize: ScreenUtil().setSp(40,
+                                                allowFontScalingSelf: true),
+                                            onPressed: () async {
+                                              if (!Provider.of<Pagination>(
+                                                      context,
+                                                      listen: false)
+                                                  .isVerified) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CompleteSignUp(
+                                                      val: setValue,
+                                                    ),
+                                                  ),
+                                                );
+                                              } else if (!Provider.of<
+                                                          Pagination>(context,
+                                                      listen: false)
+                                                  .isPriced) {
+                                                await Provider.of<Pagination>(
+                                                        context,listen: false)
+                                                    .requestPrice(
+                                                        context: context);
+                                              } else {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyPrice(
+                                                      onButtonTapped:
+                                                          widget.onButtonTapped,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          Text(
+                                            'My Prices',
+                                            style: TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              fontSize: ScreenUtil().setSp(15,
+                                                  allowFontScalingSelf: true),
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .isVerified
+                                                ? Icons.computer
+                                                : Icons.verified_user),
+                                            color: Colors.white,
+                                            iconSize: ScreenUtil().setSp(40,
+                                                allowFontScalingSelf: true),
+                                            onPressed: () {
+                                              Provider.of<Pagination>(context,
+                                                          listen: false)
+                                                      .isVerified
+                                                  ? Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AccountInfo(),
+                                                      ),
+                                                    )
+                                                  : Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CompleteSignUp(),
+                                                      ),
+                                                    );
+                                            },
+                                          ),
+                                          Text(
+                                            Provider.of<Pagination>(context,
+                                                        listen: false)
+                                                    .isVerified
+                                                ? 'Account\nDetails'
+                                                : 'Complete\nSignUp',
+                                            style: TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              fontSize: ScreenUtil().setSp(15,
+                                                  allowFontScalingSelf: true),
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
+                                )
+                              : Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompleteSignUp(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(3.0),
+                                      width: ScreenUtil().setWidth(175),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors
+                                                .white, // Text colour here
+                                            width: 1.0, // Underline width
+                                          ),
+                                        ),
+                                        // border: Border.all(
+                                        //     color: Colors.white, width: 1.5),
+                                        // borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          SvgPicture.asset(
+                                            "assets/icons/completeSignUp.svg",
+                                            color: Colors.white,
+                                            height: ScreenUtil().setHeight(30),
+                                            width: ScreenUtil().setWidth(30),
+                                          ),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(10),
+                                          ),
+                                          Text(
+                                            'Complete Sign-Up',
+                                            style: TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              // decoration:
+                                              //     TextDecoration.underline,
+                                              // height: 1.5,
+                                              fontSize: ScreenUtil().setSp(15,
+                                                  allowFontScalingSelf: true),
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              )
-                            ],
-                          ),
                           SizedBox(
                             height: ScreenUtil().setHeight(25),
                           ),

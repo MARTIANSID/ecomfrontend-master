@@ -19,7 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-
   bool _visible = true;
 
   void _onTap(int a) {
@@ -30,7 +29,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   int _currentIndex = 2;
   int _previousIndex = 0;
-  bool check=false;
+  bool check = false;
 
   ScrollController _hideButtonController;
   var _isVisible;
@@ -41,15 +40,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   );
 
   void pageChanged(int index) {
-  setState(() {
+    setState(() {
       _previousIndex = _currentIndex;
       _currentIndex = index;
     });
-   
-   
   }
 
   void completeSignUp() {
+    Navigator.of(context).pop();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -181,17 +179,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             children: [
               UserPage(
                 onButtonTapped: _onTap,
-              ), 
+              ),
               FavouriteScreen(
                 scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
                 val: _visible,
+                pageController: pageChanged,
+                pageControllerValue: pageController,
               ),
               ProductOverViewScreen(
                 scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
                 val: _visible,
-               
               ),
               // if(check==false)
               CartScreen(),
@@ -415,18 +414,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           //     ),
                           //   ),
                           // );
-                          if(!Provider.of<Pagination>(context,listen: false).isVerified){
+                          if (!Provider.of<Pagination>(context, listen: false)
+                              .isVerified) {
                             dataSelect(
-                                        context,
-                                        'Important!',
-                                        "To get complete access of the app, you need to first verify yourself!",
-                                        'Complete SignUp',
-                                        completeSignUp,
-                                      );
-                          }else{
-                          pageController.animateToPage(3,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.ease);
+                              context,
+                              'Important!',
+                              "To get complete access of the app, you need to first verify yourself!",
+                              'Complete SignUp',
+                              completeSignUp,
+                            );
+                          } else {
+                            pageController.animateToPage(3,
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.ease);
                           }
                         }
                       : null,
