@@ -15,6 +15,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'completeSignUp.dart';
+
 class ProductDetail extends StatefulWidget {
   final colorKey;
   final diamondKey;
@@ -113,9 +115,10 @@ class _ProductDetailState extends State<ProductDetail> {
       ),
     );
   }
-  
-  void requestPrice() async{
-    await Provider.of<Pagination>(context).requestPrice(context:context);
+
+  void requestPrice() async {
+    await Provider.of<Pagination>(context).requestPrice(context: context);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -497,11 +500,11 @@ class _ProductDetailState extends State<ProductDetail> {
                                     // child: widget.product.prices.containsKey(
                                     //             widget.diamondKey) &&
                                     child: Provider.of<Pagination>(context,
-                                                        listen: false)
-                                                    .isPriced ==
-                                                true 
+                                                    listen: false)
+                                                .isPriced ==
+                                            true
                                         ? Text(
-                                          // '50000',
+                                            // '50000',
                                             '${int.parse(widget.product.prices[widget.diamondKey]) + widget.certPrice} ₹',
                                             style: TextStyle(
                                               fontFamily: 'Gilroy Medium',
@@ -677,13 +680,23 @@ class _ProductDetailState extends State<ProductDetail> {
                                             onTap: () {
                                               !Provider.of<Pagination>(context,
                                                           listen: false)
-                                                      .isPriced
+                                                      .isVerified
                                                   ? dataSelect(
                                                       context,
                                                       'Important!',
-                                                      "To see prices you must first request a quotation from Team Gemstory",
-                                                      'Request Prices',
-                                                      requestPrice,
+                                                      "To get complete access of the app, you need to first verify yourself!",
+                                                      'Complete SignUp',
+                                                      () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CompleteSignUp(),
+                                                          ),
+                                                        );
+                                                      },
                                                     )
                                                   : showDialog(
                                                       context: context,
@@ -730,7 +743,6 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             .valueChangeCerti,
                                                         valueChangeDQ: widget
                                                             .valueChangeDQ,
-                                                            
                                                       ),
                                                     );
                                             },
@@ -860,17 +872,14 @@ class _ProductDetailState extends State<ProductDetail> {
                 child: GestureDetector(
                   onTap: () async {
                     String select;
-                    if(widget.product.designDetails['featured']){
-                      select='featured';
-                    }
-                    else if(widget.product.designDetails['new']){
-                      select='new';
-                    }
-                    else if(widget.product.designDetails['highestSelling']){
-                      select='highestSelling';
-                    }
-                    else {
-                      select='fancyDiamond';
+                    if (widget.product.designDetails['featured']) {
+                      select = 'featured';
+                    } else if (widget.product.designDetails['new']) {
+                      select = 'new';
+                    } else if (widget.product.designDetails['highestSelling']) {
+                      select = 'highestSelling';
+                    } else {
+                      select = 'fancyDiamond';
                     }
                     await Provider.of<Pagination>(context, listen: false)
                         .toogleFavourite(
@@ -878,7 +887,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             context: context,
                             select: select);
                     setState(() {
-                      widget.product.isFavourite=!widget.product.isFavourite;
+                      widget.product.isFavourite = !widget.product.isFavourite;
                     });
                   },
                   child: Icon(
@@ -1145,6 +1154,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       styleNumber:
                                                           suggestion[index]
                                                               .styleNumber);
+                                              FocusScopeNode currentFocus =
+                                                  FocusScope.of(context);
+                                              currentFocus.unfocus();
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                                searchSelected = false;
+                                                searchSelectedDoneButton =
+                                                    false;
+                                              });
                                               print(Provider.of<Pagination>(
                                                           context,
                                                           listen: false)

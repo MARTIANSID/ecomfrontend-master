@@ -45,13 +45,13 @@ class _OptionsDialogState extends State<OptionsDialog> {
 
   @override
   void initState() {
-    
     super.initState();
-    _defaultChoiceIndex=widget.defValue;
-    _defaultChoiceIndex1=widget.defValue1;
-    _defaultChoiceIndex2=widget.defValue2;
-    _defaultChoiceIndex3=widget.defValue3;
+    _defaultChoiceIndex = widget.defValue;
+    _defaultChoiceIndex1 = widget.defValue1;
+    _defaultChoiceIndex2 = widget.defValue2;
+    _defaultChoiceIndex3 = widget.defValue3;
   }
+
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
@@ -90,113 +90,6 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   height: ScreenUtil().setHeight(19),
                 ),
                 Text(
-                  'Build',
-                  style: TextStyle(
-                    fontFamily: 'Gilroy Medium',
-                    fontSize: ScreenUtil().setSp(18),
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-                Wrap(
-                  spacing: 5.0,
-                  runSpacing: 4.0,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: List<Widget>.generate(widget.choicesBuild.length,
-                      (int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _defaultChoiceIndex = index;
-                        });
-                        widget.valueChangeBuild(index);
-                      },
-                      child: Container(
-                        // margin: EdgeInsets.only(right: 6.0),
-                        height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(90),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          // border: Border.all(
-                          //   color: Colors.black,
-                          //   width: 1.0,
-                          // ),
-                          gradient: _defaultChoiceIndex != index
-                              ? LinearGradient(
-                                  colors: [
-                                    Colors.black,
-                                    Colors.black,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )
-                              : LinearGradient(
-                                  colors: [
-                                    Color(0xFF34B0D9),
-                                    Color(0xFF3685CB),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: _defaultChoiceIndex != index
-                                  ? Colors.white
-                                  : Color(0xFFD9EEF7),
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    _defaultChoiceIndex == index
-                                        ? LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          )
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.black,
-                                              Colors.black,
-                                            ],
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                child: Text(
-                                  widget.choicesBuild[index],
-                                  style: TextStyle(
-                                      color: _defaultChoiceIndex == index
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontFamily: _defaultChoiceIndex == index
-                                          ? 'Gilroy Medium'
-                                          : 'Gilroy Light'),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(19),
-                ),
-                Text(
                   'Color',
                   style: TextStyle(
                     fontFamily: 'Gilroy Medium',
@@ -207,98 +100,210 @@ class _OptionsDialogState extends State<OptionsDialog> {
                 SizedBox(
                   height: ScreenUtil().setHeight(16),
                 ),
-                Wrap(
-                  spacing: 5.0,
-                  runSpacing: 4.0,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: List<Widget>.generate(widget.choiceColor.length,
-                      (int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _defaultChoiceIndex1 = index;
-                        });
-                        widget.valueChangeColor(index);
-                      },
-                      child: Container(
-                        // margin: EdgeInsets.only(right: 6.0),
-                        height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(90),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          // border: Border.all(
-                          //   color: Colors.black,
-                          //   width: 1.0,
-                          // ),
-                          gradient: _defaultChoiceIndex1 != index
-                              ? LinearGradient(
-                                  colors: [
-                                    Colors.black,
-                                    Colors.black,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )
-                              : LinearGradient(
-                                  colors: [
-                                    Color(0xFF34B0D9),
-                                    Color(0xFF3685CB),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: _defaultChoiceIndex1 != index
-                                  ? Colors.white
-                                  : Color(0xFFD9EEF7),
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    _defaultChoiceIndex1 == index
-                                        ? LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          )
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.black,
-                                              Colors.black,
-                                            ],
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                child: Text(
-                                  widget.choiceColor[index],
-                                  style: TextStyle(
-                                      color: _defaultChoiceIndex1 == index
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontFamily: _defaultChoiceIndex1 == index
-                                          ? 'Gilroy Medium'
-                                          : 'Gilroy Light'),
+                Center(
+                  child: Wrap(
+                    spacing: 5.0,
+                    runSpacing: 7.0,
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: List<Widget>.generate(widget.choiceColor.length,
+                        (int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _defaultChoiceIndex1 = index;
+                          });
+                          widget.valueChangeColor(index);
+                        },
+                        child: Container(
+                          // margin: EdgeInsets.only(right: 6.0),
+                          height: ScreenUtil().setHeight(30),
+                          width: ScreenUtil().setWidth(90),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            // border: Border.all(
+                            //   color: Colors.black,
+                            //   width: 1.0,
+                            // ),
+                            gradient: _defaultChoiceIndex1 != index
+                                ? LinearGradient(
+                                    colors: [
+                                      Colors.black,
+                                      Colors.black,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFF34B0D9),
+                                      Color(0xFF3685CB),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: _defaultChoiceIndex1 != index
+                                    ? Colors.white
+                                    : Color(0xFFD9EEF7),
+                              ),
+                              child: Center(
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) =>
+                                      _defaultChoiceIndex1 == index
+                                          ? LinearGradient(
+                                              colors: [
+                                                Color(0xFF34B0D9),
+                                                Color(0xFF3685CB),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            )
+                                          : LinearGradient(
+                                              colors: [
+                                                Colors.black,
+                                                Colors.black,
+                                              ],
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            ),
+                                  child: Text(
+                                    widget.choiceColor[index],
+                                    style: TextStyle(
+                                        color: _defaultChoiceIndex1 == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily:
+                                            _defaultChoiceIndex1 == index
+                                                ? 'Gilroy Medium'
+                                                : 'Gilroy Light'),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(19),
+                ),
+                Text(
+                  'Build',
+                  style: TextStyle(
+                    fontFamily: 'Gilroy Medium',
+                    fontSize: ScreenUtil().setSp(18),
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(16),
+                ),
+                Center(
+                  child: Wrap(
+                    spacing: 5.0,
+                    runSpacing: 7.0,
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: List<Widget>.generate(widget.choicesBuild.length,
+                        (int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _defaultChoiceIndex = index;
+                          });
+                          widget.valueChangeBuild(index);
+                        },
+                        child: Container(
+                          // margin: EdgeInsets.only(right: 6.0),
+                          height: ScreenUtil().setHeight(30),
+                          width: ScreenUtil().setWidth(90),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            // border: Border.all(
+                            //   color: Colors.black,
+                            //   width: 1.0,
+                            // ),
+                            gradient: _defaultChoiceIndex != index
+                                ? LinearGradient(
+                                    colors: [
+                                      Colors.black,
+                                      Colors.black,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFF34B0D9),
+                                      Color(0xFF3685CB),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: _defaultChoiceIndex != index
+                                    ? Colors.white
+                                    : Color(0xFFD9EEF7),
+                              ),
+                              child: Center(
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) =>
+                                      _defaultChoiceIndex == index
+                                          ? LinearGradient(
+                                              colors: [
+                                                Color(0xFF34B0D9),
+                                                Color(0xFF3685CB),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            )
+                                          : LinearGradient(
+                                              colors: [
+                                                Colors.black,
+                                                Colors.black,
+                                              ],
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            ),
+                                  child: Text(
+                                    widget.choicesBuild[index],
+                                    style: TextStyle(
+                                        color: _defaultChoiceIndex == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily: _defaultChoiceIndex == index
+                                            ? 'Gilroy Medium'
+                                            : 'Gilroy Light'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
                 ),
                 SizedBox(
                   height: ScreenUtil().setHeight(19),
@@ -314,98 +319,101 @@ class _OptionsDialogState extends State<OptionsDialog> {
                 SizedBox(
                   height: ScreenUtil().setHeight(16),
                 ),
-                Wrap(
-                  spacing: 5.0,
-                  runSpacing: 4.0,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: List<Widget>.generate(
-                      widget.choiceCertification.length, (int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _defaultChoiceIndex2 = index;
-                        });
-                        widget.valueChangeCerti(index);
-                      },
-                      child: Container(
-                        // margin: EdgeInsets.only(right: 6.0),
-                        height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(90),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          // border: Border.all(
-                          //   color: Colors.black,
-                          //   width: 1.0,
-                          // ),
-                          gradient: _defaultChoiceIndex2 != index
-                              ? LinearGradient(
-                                  colors: [
-                                    Colors.black,
-                                    Colors.black,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )
-                              : LinearGradient(
-                                  colors: [
-                                    Color(0xFF34B0D9),
-                                    Color(0xFF3685CB),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: _defaultChoiceIndex2 != index
-                                  ? Colors.white
-                                  : Color(0xFFD9EEF7),
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    _defaultChoiceIndex2 == index
-                                        ? LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          )
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.black,
-                                              Colors.black,
-                                            ],
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                child: Text(
-                                  widget.choiceCertification[index],
-                                  style: TextStyle(
-                                      color: _defaultChoiceIndex2 == index
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontFamily: _defaultChoiceIndex2 == index
-                                          ? 'Gilroy Medium'
-                                          : 'Gilroy Light'),
+                Center(
+                  child: Wrap(
+                    spacing: 5.0,
+                    runSpacing: 7.0,
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: List<Widget>.generate(
+                        widget.choiceCertification.length, (int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _defaultChoiceIndex2 = index;
+                          });
+                          widget.valueChangeCerti(index);
+                        },
+                        child: Container(
+                          // margin: EdgeInsets.only(right: 6.0),
+                          height: ScreenUtil().setHeight(30),
+                          width: ScreenUtil().setWidth(90),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            // border: Border.all(
+                            //   color: Colors.black,
+                            //   width: 1.0,
+                            // ),
+                            gradient: _defaultChoiceIndex2 != index
+                                ? LinearGradient(
+                                    colors: [
+                                      Colors.black,
+                                      Colors.black,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFF34B0D9),
+                                      Color(0xFF3685CB),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: _defaultChoiceIndex2 != index
+                                    ? Colors.white
+                                    : Color(0xFFD9EEF7),
+                              ),
+                              child: Center(
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) =>
+                                      _defaultChoiceIndex2 == index
+                                          ? LinearGradient(
+                                              colors: [
+                                                Color(0xFF34B0D9),
+                                                Color(0xFF3685CB),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            )
+                                          : LinearGradient(
+                                              colors: [
+                                                Colors.black,
+                                                Colors.black,
+                                              ],
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            ),
+                                  child: Text(
+                                    widget.choiceCertification[index],
+                                    style: TextStyle(
+                                        color: _defaultChoiceIndex2 == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily:
+                                            _defaultChoiceIndex2 == index
+                                                ? 'Gilroy Medium'
+                                                : 'Gilroy Light'),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ),
                 SizedBox(
                   height: ScreenUtil().setHeight(19),
@@ -421,98 +429,101 @@ class _OptionsDialogState extends State<OptionsDialog> {
                 SizedBox(
                   height: ScreenUtil().setHeight(16),
                 ),
-                Wrap(
-                  spacing: 5.0,
-                  runSpacing: 4.0,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: List<Widget>.generate(
-                      widget.choiceDiamondQuality.length, (int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _defaultChoiceIndex3 = index;
-                        });
-                        widget.valueChangeDQ(index);
-                      },
-                      child: Container(
-                        // margin: EdgeInsets.only(right: 6.0),
-                        height: ScreenUtil().setHeight(30),
-                        width: ScreenUtil().setWidth(90),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          // border: Border.all(
-                          //   color: Colors.black,
-                          //   width: 1.0,
-                          // ),
-                          gradient: _defaultChoiceIndex3 != index
-                              ? LinearGradient(
-                                  colors: [
-                                    Colors.black,
-                                    Colors.black,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )
-                              : LinearGradient(
-                                  colors: [
-                                    Color(0xFF34B0D9),
-                                    Color(0xFF3685CB),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: _defaultChoiceIndex3 != index
-                                  ? Colors.white
-                                  : Color(0xFFD9EEF7),
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    _defaultChoiceIndex3 == index
-                                        ? LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          )
-                                        : LinearGradient(
-                                            colors: [
-                                              Colors.black,
-                                              Colors.black,
-                                            ],
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                child: Text(
-                                  widget.choiceDiamondQuality[index],
-                                  style: TextStyle(
-                                      color: _defaultChoiceIndex3 == index
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontFamily: _defaultChoiceIndex3 == index
-                                          ? 'Gilroy Medium'
-                                          : 'Gilroy Light'),
+                Center(
+                  child: Wrap(
+                    spacing: 5.0,
+                    runSpacing: 7.0,
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: List<Widget>.generate(
+                        widget.choiceDiamondQuality.length, (int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _defaultChoiceIndex3 = index;
+                          });
+                          widget.valueChangeDQ(index);
+                        },
+                        child: Container(
+                          // margin: EdgeInsets.only(right: 6.0),
+                          height: ScreenUtil().setHeight(30),
+                          width: ScreenUtil().setWidth(90),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            // border: Border.all(
+                            //   color: Colors.black,
+                            //   width: 1.0,
+                            // ),
+                            gradient: _defaultChoiceIndex3 != index
+                                ? LinearGradient(
+                                    colors: [
+                                      Colors.black,
+                                      Colors.black,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFF34B0D9),
+                                      Color(0xFF3685CB),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: _defaultChoiceIndex3 != index
+                                    ? Colors.white
+                                    : Color(0xFFD9EEF7),
+                              ),
+                              child: Center(
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) =>
+                                      _defaultChoiceIndex3 == index
+                                          ? LinearGradient(
+                                              colors: [
+                                                Color(0xFF34B0D9),
+                                                Color(0xFF3685CB),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            )
+                                          : LinearGradient(
+                                              colors: [
+                                                Colors.black,
+                                                Colors.black,
+                                              ],
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            ),
+                                  child: Text(
+                                    widget.choiceDiamondQuality[index],
+                                    style: TextStyle(
+                                        color: _defaultChoiceIndex3 == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily:
+                                            _defaultChoiceIndex3 == index
+                                                ? 'Gilroy Medium'
+                                                : 'Gilroy Light'),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ),
                 SizedBox(
                   height: ScreenUtil().setHeight(16),

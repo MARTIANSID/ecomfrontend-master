@@ -4,6 +4,7 @@ import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
@@ -65,7 +66,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       vsync: this,
       initialIndex: 1,
     );
- 
+
     // _tabController.addListener(() {
     //   print(Provider.of<Pagination>(context,listen: false).isVerified);
     //   if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
@@ -107,8 +108,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     //       (Provider.of<Auth>(context, listen: false).autoLogin)) {
 
     // });
-
-  
   }
 
   Future<void> getProduct() async {
@@ -124,10 +123,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       Provider.of<Pagination>(context, listen: false).getProducts(
           addition: false, page: 1, context: context, select: 'fancyDiamond'),
       Provider.of<Pagination>(context, listen: false).getFav(context),
-      Provider.of<Options>(context, listen: false).getStringValuesSF()
+      Provider.of<Options>(context, listen: false).getStringValuesSF(),
     ];
 
     await Future.wait(futures);
+    await Provider.of<UserInfo>(context, listen: false).getuser(context);
 
     //  await Provider.of<Pagination>(context, listen: false).getProducts(
     //       page: 1, addition: false, select: 'fancyDiamond', context: context);
@@ -188,7 +188,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     }
   }
 
-  void _onValueChange(int value) async {
+  void _onValueChange(int value, [int index]) async {
     await Provider.of<Options>(context, listen: false).setBuild(build: value);
     setState(() {
       // await Provider.of<Options>(context, listen: false).setBuild(build: value);
@@ -197,7 +197,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     });
   }
 
-  void _onValueChangeColor(int value) async {
+  void _onValueChangeColor(int value, [int index]) async {
     await Provider.of<Options>(context, listen: false).setColor(color: value);
     setState(() {
       _defaultChoiceIndex2 = value;
@@ -205,6 +205,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   }
 
   void completeSignUp() {
+    Navigator.of(context).pop();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -213,14 +214,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     );
   }
 
-  void _onValueChangeCerti(int value) async {
+  void _onValueChangeCerti(int value, [int index]) async {
     await Provider.of<Options>(context, listen: false).setCert(cert: value);
     setState(() {
       _defaultChoiceIndex3 = value;
     });
   }
 
-  void _onValueChangeDQ(int value) async {
+  void _onValueChangeDQ(int value, [int index]) async {
     await Provider.of<Options>(context, listen: false)
         .setDiamond(diamond: value);
     setState(() {
@@ -357,14 +358,13 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 width: ScreenUtil().setWidth(275),
                                 child: TabBar(
                                   onTap: (value) {
-                                    setState(() {
-                                      _tabController.index = 1;
-                                    });
-                                    if (_tabController.indexIsChanging &&
-                                        Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .isVerified ==
-                                            false) {
+                                    // setState(() {
+                                    //   _tabController.index = 1;
+                                    // });
+                                    if (Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .isVerified ==
+                                        false) {
                                       setState(() {
                                         _tabController.index = 1;
                                       });
@@ -661,7 +661,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                         ),
                         Expanded(
                           child: TabBarView(
-                            
                             physics:
                                 Provider.of<Pagination>(context, listen: false)
                                         .isVerified
@@ -981,6 +980,18 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 suggestion[
                                                                         index]
                                                                     .styleNumber);
+                                                    FocusScopeNode
+                                                        currentFocus =
+                                                        FocusScope.of(context);
+                                                    currentFocus.unfocus();
+                                                    textEditingController
+                                                        .clear();
+                                                    setState(() {
+                                                      searchValue = "";
+                                                      searchSelected = false;
+                                                      searchSelectedDoneButton =
+                                                          false;
+                                                    });
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(

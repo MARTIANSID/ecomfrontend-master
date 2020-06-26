@@ -18,10 +18,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class FavouriteScreen extends StatefulWidget {
   final ScrollController scrollController;
   final void Function(int) onButtonTapped;
+  final void Function(int) pageController;
+  final PageController pageControllerValue;
   final bool val;
 
   const FavouriteScreen(
-      {Key key, this.scrollController, this.onButtonTapped, this.val})
+      {Key key,
+      this.scrollController,
+      this.pageController,
+      this.pageControllerValue,
+      this.onButtonTapped,
+      this.val})
       : super(key: key);
   @override
   _FavouriteScreenState createState() => _FavouriteScreenState();
@@ -46,13 +53,11 @@ class _FavouriteScreenState extends State<FavouriteScreen>
 
   bool searchSelectedDoneButton = false;
 
-  GlobalKey globalKey=GlobalKey();
+  GlobalKey globalKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    
-   
   }
 
   void _onValueChange(int value) async {
@@ -114,7 +119,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
 
   @override
   Widget build(BuildContext context) {
-    final favProducts = Provider.of<Pagination>(context,listen: true).favProducts;
+    final favProducts =
+        Provider.of<Pagination>(context, listen: true).favProducts;
     _defaultChoiceIndex1 =
         Provider.of<Options>(context, listen: false).build == null
             ? 0
@@ -258,16 +264,26 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             diamond: _defaultChoiceIndex4,
                             globalKey: globalKey,
                           )
-                        : Center(
-                            child: Text(
-                              'There aren\t any Favourites product added yet!',
-                              style: TextStyle(
-                                        fontFamily: 'Gilory Medium',
-                                        color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(17,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.bold,),
-                              textAlign: TextAlign.center,
+                        : GestureDetector(
+                            onTap: () {
+                              // widget.pageController(2);
+                              widget.pageControllerValue.animateToPage(2,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.ease);
+                            },
+                            child: Center(
+                              child: Text(
+                                'There aren\'t any Favourites product added yet!',
+                                style: TextStyle(
+                                  fontFamily: 'Gilory Regular',
+                                  color: Color(0xFFA49797),
+                                  decoration: TextDecoration.underline,
+                                  fontSize: ScreenUtil()
+                                      .setSp(17, allowFontScalingSelf: true),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                   )
@@ -502,6 +518,16 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                       styleNumber:
                                                           suggestion[index]
                                                               .styleNumber);
+                                              FocusScopeNode currentFocus =
+                                                  FocusScope.of(context);
+                                              currentFocus.unfocus();
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                                searchSelected = false;
+                                                searchSelectedDoneButton =
+                                                    false;
+                                              });
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

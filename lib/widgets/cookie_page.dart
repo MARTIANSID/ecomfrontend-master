@@ -139,6 +139,7 @@ class _CookiePageState extends State<CookiePage> {
   void requestPrice() async {
     await Provider.of<Pagination>(context, listen: false)
         .requestPrice(context: context);
+    Navigator.of(context).pop();
   }
 
   void didChangeDependencies() async {
@@ -509,15 +510,16 @@ class _CookiePageState extends State<CookiePage> {
                             width: ScreenUtil().setWidth(159),
                             height: ScreenUtil().setHeight(150),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colors.white,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.37),
-                                    offset: Offset(2, 5),
-                                  )
-                                ]),
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.white,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  blurRadius: 10,
+                                  color: Colors.black.withOpacity(0.37),
+                                  offset: Offset(2, 5),
+                                )
+                              ],
+                            ),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -561,12 +563,36 @@ class _CookiePageState extends State<CookiePage> {
                                 children: <Widget>[
                                   Container(
                                     width: ScreenUtil().setWidth(
-                                        widget.select == 'fav' ? 151 : 138),
+                                        widget.select == 'fav' ||
+                                                !Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .isVerified
+                                            ? 151
+                                            : 138),
                                     height: ScreenUtil().setHeight(
-                                        widget.select == 'fav' ? 135 : 122),
+                                        widget.select == 'fav' ||
+                                                !Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .isVerified
+                                            ? 135
+                                            : 122),
                                     margin: EdgeInsets.only(
-                                        top: widget.select == 'fav' ? 8 : 2,
-                                        left: widget.select == 'fav' ? 8 : 19),
+                                        top: widget.select == 'fav' ||
+                                                !Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .isVerified
+                                            ? 8
+                                            : 2,
+                                        left: widget.select == 'fav' ||
+                                                !Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .isVerified
+                                            ? 8
+                                            : 19),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -574,18 +600,25 @@ class _CookiePageState extends State<CookiePage> {
                                         Container(
                                             // color: Colors.amber,
                                             height: ScreenUtil().setHeight(
-                                                widget.select == 'fav'
+                                                widget.select == 'fav' ||
+                                                        !Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isVerified
                                                     ? 135
                                                     : 122),
                                             width: ScreenUtil().setWidth(
-                                                widget.select == 'fav'
+                                                widget.select == 'fav' ||
+                                                        !Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isVerified
                                                     ? 130
                                                     : 117),
                                             // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
 
                                             // color: Colors.amber,
-                                            child: widget.products[i].imageUrl
-                                                    .containsKey(colorKey)
+                                            child: widget.products[i].imageUrl.containsKey(colorKey)
                                                 ? Image(
                                                     // color: Colors.amber,
                                                     image: AdvancedNetworkImage(
@@ -659,64 +692,71 @@ class _CookiePageState extends State<CookiePage> {
                                   widget.select != 'fav'
                                       ? !Provider.of<Pagination>(context,
                                                   listen: false)
-                                              .isPriced
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                dataSelect(
-                                                  context,
-                                                  'Important!',
-                                                  "To see prices you must first request a quotation from Team Gemstory",
-                                                  'Request Prices',
-                                                  requestPrice,
-                                                );
-                                              },
-                                              child: Container(
-                                                height:
-                                                    ScreenUtil().setHeight(20),
-                                                width:
-                                                    ScreenUtil().setWidth(110),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Request Prices',
-                                                    style: TextStyle(
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      color: Colors.black,
-                                                      fontFamily:
-                                                          'Gilroy Medium',
-                                                      fontSize: ScreenUtil().setSp(
-                                                          14,
-                                                          allowFontScalingSelf:
-                                                              true),
+                                              .isVerified
+                                          ? SizedBox(
+                                              height: 0.0,
+                                            )
+                                          : !Provider.of<Pagination>(context,
+                                                      listen: false)
+                                                  .isPriced
+                                              ? GestureDetector(
+                                                  onTap: () {
+                                                    dataSelect(
+                                                      context,
+                                                      'Important!',
+                                                      "To see prices you must first request a quotation from Team Gemstory",
+                                                      'Request Prices',
+                                                      requestPrice,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(20),
+                                                    width: ScreenUtil()
+                                                        .setWidth(110),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Request Prices',
+                                                        style: TextStyle(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline,
+                                                          color: Colors.black,
+                                                          fontFamily:
+                                                              'Gilroy Medium',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(14,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                            )
-                                          : widget.products[i].prices
-                                                  .containsKey(priceKey)
-                                              ? Text(
-                                                  '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
-                                                  style: TextStyle(
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontFamily:
-                                                        'Gilroy Regular',
-                                                  ),
                                                 )
-                                              : Text(
-                                                  'no price',
-                                                  style: TextStyle(
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontFamily:
-                                                        'Gilroy Regular',
-                                                  ),
-                                                )
+                                              : widget.products[i].prices
+                                                      .containsKey(priceKey)
+                                                  ? Text(
+                                                      '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(18,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontFamily:
+                                                            'Gilroy Regular',
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      'no price',
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(18,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontFamily:
+                                                            'Gilroy Regular',
+                                                      ),
+                                                    )
                                       : SizedBox(
                                           height: 0.0,
                                           width: 0.0,
@@ -805,9 +845,11 @@ class _CookiePageState extends State<CookiePage> {
                                             context: context,
                                             select: widget.select);
 
-                                    if (mounted) setState(() {
-                                      widget.products[i].isFavourite=!widget.products[i].isFavourite;
-                                    });
+                                    if (mounted)
+                                      setState(() {
+                                        widget.products[i].isFavourite =
+                                            !widget.products[i].isFavourite;
+                                      });
                                   },
                                 ),
                                 SizedBox(
@@ -842,14 +884,16 @@ class _CookiePageState extends State<CookiePage> {
                                         ? dataSelect(
                                             context,
                                             'Important!',
-                                            "You must veriy yourself first",
-                                            'Complete Signup',
+                                            "To get complete access of the app, you need to first verify yourself!",
+                                            'Complete SignUp',
                                             () {
+                                              Navigator.of(context).pop();
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) =>
-                                                       CompleteSignUp()),
+                                                  builder: (context) =>
+                                                      CompleteSignUp(),
+                                                ),
                                               );
                                             },
                                           )

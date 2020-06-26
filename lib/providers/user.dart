@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -39,6 +40,7 @@ class UserInfo with ChangeNotifier {
   var number;
   var firm;
   var pincode;
+  var email;
 
   final uurl="https://alexa.gemstory.in/";
 
@@ -54,17 +56,22 @@ class UserInfo with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
       print(responseData);
+     if(Provider.of<Pagination>(context,listen: false).isVerified) 
+     {
       street = responseData['user']['additionalDetails']['address']['street'];
       city = responseData['user']['additionalDetails']['address']['city'];
       state = responseData['user']['additionalDetails']['address']['state'];
       verified = responseData['user']['verified'];
-      priced = responseData['user']['priced'];
-      fullname = responseData['user']['fullName'];
-      number = responseData['user']['number'];
+      priced = responseData['user']['priced'];   
       gst = responseData['user']['additionalDetails']['gst'];
       firm = responseData['user']['additionalDetails']['firm'];
       pincode = responseData['user']['additionalDetails']['address']['pincode'];
       priced = responseData['user']['priced'];
+      email = responseData['user']['email'];
+     }
+
+        fullname = responseData['user']['fullName'];
+      number = responseData['user']['number'];
 
       return responseData;
     } catch (err) {
@@ -135,5 +142,6 @@ class UserInfo with ChangeNotifier {
       throw err;
     }
   }
+  
 
 }

@@ -1,13 +1,16 @@
 import 'package:Flutter/components/rounded_input_field.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CompleteSignUp extends StatefulWidget {
   final data;
+  final void Function() val;
 
-  const CompleteSignUp({Key key, this.data}) : super(key: key);
+  const CompleteSignUp({Key key, this.val,this.data}) : super(key: key);
   @override
   _CompleteSignUpState createState() => _CompleteSignUpState();
 }
@@ -22,6 +25,22 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
   String cityName;
   String stateName;
   String pincode;
+  String reference;
+
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailIDController = TextEditingController();
+  TextEditingController firmDetailController = TextEditingController();
+  TextEditingController gstValueController = TextEditingController();
+  TextEditingController streetNameController = TextEditingController();
+  TextEditingController cityNameController = TextEditingController();
+  TextEditingController stateNameController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+  TextEditingController referenceController = TextEditingController();
+
+  bool isLoading = false;
+
+  bool autovalidate = false;
 
   @override
   void initState() {
@@ -29,12 +48,24 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    phoneNumberController.text =
+        Provider.of<UserInfo>(context, listen: false).number.toString();
+    fullNameController.text =
+        Provider.of<UserInfo>(context, listen: false).fullname;
+  }
+
+  GlobalKey<FormState> _key = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    ScreenUtil.init(context,
-        width: 411.42857142857144,
-        height: 774.8571428571429,
-        allowFontScaling: true);
+    ScreenUtil.init(
+      context,
+      width: 411.42857142857144,
+      height: 774.8571428571429,
+      allowFontScaling: true,
+    );
     return Scaffold(
       body: Container(
         height: ScreenUtil().setHeight(775),
@@ -78,7 +109,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             fontFamily: 'Gilroy Black',
                             letterSpacing: 1.0,
                             fontSize: ScreenUtil()
-                                .setSp(37, allowFontScalingSelf: true),
+                                .setSp(34, allowFontScalingSelf: true),
                           ),
                         ),
                       ),
@@ -89,205 +120,269 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       physics: BouncingScrollPhysics(),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: ScreenUtil().setHeight(325),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Colors.white.withOpacity(0.9),
+                      child: Form(
+                        key: _key,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            FadeInDownBig(
+                              child: Text(
+                                "Personal Details",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Gilroy Black',
+                                  letterSpacing: 1.0,
+                                  color: Colors.black,
+                                  fontSize: ScreenUtil()
+                                      .setSp(20, allowFontScalingSelf: true),
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
-                            padding: EdgeInsets.all(25.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                FadeInDownBig(
-                                  child: Text(
-                                    "Personal Details",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Gilroy Black',
-                                      letterSpacing: 1.0,
-                                      color: Colors.black,
-                                      fontSize: ScreenUtil().setSp(20,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: ScreenUtil().setHeight(7.75),
-                                ),
-                                FadeInDownBig(
-                                  child: RoundedInputField(
-                                    hintText: "Full Name",
-                                    // onChanged: (value) {
+                            SizedBox(
+                              height: ScreenUtil().setHeight(7.75),
+                            ),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Full Name",
+                                controller: fullNameController,
+                                // onChanged: (value) {
 
-                                    // },
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        fullName = value;
-                                        print(fullName);
-                                      });
-                                    },
-                                    icon: Icons.person,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "Enter Phone Number",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        phoneNumber = value;
-                                        print(phoneNumber);
-                                      });
-                                    },
-                                    // icon: Icons.person,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "Email-id",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        emailID = value;
-                                        print(emailID);
-                                      });
-                                    },
-                                    icon: Icons.mail,
-                                    proceed: false,
-                                  ),
-                                ),
-                              ],
+                                // },
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    fullName = value;
+                                    print(fullName);
+                                  });
+                                },
+                                icon: Icons.person,
+                                proceed: false,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil().setHeight(20),
-                          ),
-                          Container(
-                            height: ScreenUtil().setHeight(630),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Colors.white.withOpacity(0.9),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Enter Phone Number",
+                                controller: phoneNumberController,
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    phoneNumber = value;
+                                    print(phoneNumber);
+                                  });
+                                },
+                                // icon: Icons.person,
+                                proceed: false,
+                              ),
                             ),
-                            padding: EdgeInsets.all(25.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                FadeInDownBig(
-                                  child: Text(
-                                    "Firm Details!",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Gilroy Black',
-                                      letterSpacing: 1.0,
-                                      color: Colors.black,
-                                      fontSize: ScreenUtil().setSp(20,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                SizedBox(height: ScreenUtil().setHeight(7.75)),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "Firm Detail",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        firmDetail = value;
-                                        print(firmDetail);
-                                      });
-                                    },
-                                    icon: Icons.work,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "Reference",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        firmDetail = value;
-                                        print(firmDetail);
-                                      });
-                                    },
-                                    icon: Icons.people,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "GST",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        gstValue = value;
-                                        print(gstValue);
-                                      });
-                                    },
-                                    icon: Icons.attach_money,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "Street",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        streetName = value;
-                                        print(streetName);
-                                      });
-                                    },
-                                    icon: Icons.streetview,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "City",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        print(cityName);
-                                        cityName = value;
-                                      });
-                                    },
-                                    icon: Icons.location_city,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "State",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        stateName = value;
-                                        print(stateName);
-                                      });
-                                    },
-                                    icon: Icons.location_city,
-                                    proceed: false,
-                                  ),
-                                ),
-                                FadeInDown(
-                                  child: RoundedInputField(
-                                    hintText: "Pincode",
-                                    onSubmitted: (value) {
-                                      setState(() {
-                                        pincode = value;
-                                        print(pincode);
-                                      });
-                                    },
-                                    icon: Icons.pin_drop,
-                                    proceed: false,
-                                  ),
-                                ),
-                              ],
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Email-id",
+                                validator: (value) {
+                                  if (!RegExp(
+                                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                      .hasMatch(value)) {
+                                    return "Check your Email-ID";
+                                  } else if (value.isEmpty) {
+                                    return "Enter Email-ID";
+                                  }
+                                  return null;
+                                },
+                                controller: emailIDController,
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    emailID = value;
+                                    print(emailID);
+                                  });
+                                },
+                                icon: Icons.mail,
+                                proceed: false,
+                              ),
                             ),
-                          ),
-                        ],
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Reference",
+                                controller: referenceController,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Reference";
+                                  }
+                                  return null;
+                                },
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    reference = value;
+                                    print(reference);
+                                  });
+                                },
+                                icon: Icons.people,
+                                proceed: false,
+                              ),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(20),
+                            ),
+                            FadeInDownBig(
+                              child: Text(
+                                "Firm Details!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Gilroy Black',
+                                  letterSpacing: 1.0,
+                                  color: Colors.black,
+                                  fontSize: ScreenUtil()
+                                      .setSp(20, allowFontScalingSelf: true),
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            SizedBox(height: ScreenUtil().setHeight(7.75)),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Firm Name",
+                                controller: firmDetailController,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Firm Name";
+                                  }
+                                  return null;
+                                },
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    firmDetail = value;
+                                    print(firmDetail);
+                                  });
+                                },
+                                icon: Icons.work,
+                                proceed: false,
+                              ),
+                            ),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "GST",
+                                validator: (value) {
+                                  if (value.isNotEmpty) {
+                                    if (!RegExp(
+                                            r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')
+                                        .hasMatch(value)) {
+                                      return "Enter Correct GST Value";
+                                    }
+                                  }
+                                  return null;
+                                },
+                                controller: gstValueController,
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    gstValue = value;
+                                    print(gstValue);
+                                  });
+                                },
+                                icon: Icons.attach_money,
+                                proceed: false,
+                              ),
+                            ),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Street",
+                                controller: streetNameController,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Street Name";
+                                  }
+                                  return null;
+                                },
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    streetName = value;
+                                    print(streetName);
+                                  });
+                                },
+                                icon: Icons.streetview,
+                                proceed: false,
+                              ),
+                            ),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "City",
+                                controller: cityNameController,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter City Name";
+                                  }
+                                  return null;
+                                },
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    print(cityName);
+                                    cityName = value;
+                                  });
+                                },
+                                icon: Icons.location_city,
+                                proceed: false,
+                              ),
+                            ),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "State",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter State Name";
+                                  }
+                                  return null;
+                                },
+                                controller: stateNameController,
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    stateName = value;
+                                    print(stateName);
+                                  });
+                                },
+                                icon: Icons.location_city,
+                                proceed: false,
+                              ),
+                            ),
+                            FadeInDownBig(
+                              child: RoundedInputField(
+                                hintText: "Pincode",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Pincode";
+                                  } else if (value.length != 6) {
+                                    return "Enter Proper Pincode";
+                                  }
+                                  return null;
+                                },
+                                controller: pincodeController,
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    pincode = value;
+                                    print(pincode);
+                                  });
+                                },
+                                icon: Icons.pin_drop,
+                                proceed: false,
+                              ),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(20),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(20),
+                            ),
+                            // Container(
+                            //   height: ScreenUtil().setHeight(555),
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(20.0),
+                            //     color: Colors.white.withOpacity(0.9),
+                            //   ),
+                            //   padding: EdgeInsets.all(25.0),
+                            //   child: Column(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: <Widget>[],
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -297,40 +392,73 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
           ],
         ),
       ),
-      floatingActionButton: Container(
-        width: ScreenUtil().setWidth(200.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF34B0E9),
-              Color(0xFF3685CB),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      floatingActionButton: GestureDetector(
+        onTap: () async {
+          
+          if (_key.currentState.validate()) {
+            _key.currentState.save();
+            setState(() {
+              isLoading = true;
+            });
+            await Provider.of<UserInfo>(context, listen: false).completeSignUp(
+              context: context,
+              fullname: fullName,
+              email: emailID,
+              city: cityName,
+              firm: firmDetail,
+              gst: gstValue,
+              pincode: pincode,
+              reference: reference,
+              state: stateName,
+              street: streetName,
+            );
+            setState(() {
+              isLoading = false;
+            });
+            widget.val();
+            Navigator.of(context).pop();
+          } else {
+            setState(() {
+              autovalidate = true;
+            });
+          }
+        },
+        child: Container(
+          width: ScreenUtil().setWidth(200.0),
+          decoration: BoxDecoration(
+            // image: ,
+            borderRadius: BorderRadius.circular(30),
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF34B0E9),
+                Color(0xFF3685CB),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ),
-        padding: EdgeInsets.all(15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.done_outline,
-              color: Colors.white,
-              size: 23.0,
-            ),
-            SizedBox(
-              width: ScreenUtil().setWidth(10),
-            ),
-            Text(
-              'Submit Your Details',
-              style: TextStyle(
-                fontFamily: 'Gilroy Medium',
-                fontSize: 15.0,
+          padding: EdgeInsets.all(15.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.done_outline,
                 color: Colors.white,
+                size: 23.0,
               ),
-            ),
-          ],
+              SizedBox(
+                width: ScreenUtil().setWidth(10),
+              ),
+              Text(
+                'Submit Your Details',
+                style: TextStyle(
+                  fontFamily: 'Gilroy Medium',
+                  fontSize: 15.0,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

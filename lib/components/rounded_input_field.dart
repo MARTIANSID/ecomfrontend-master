@@ -11,19 +11,24 @@ class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final Function(String) onSubmitted;
+  final Function(String) validator;
   final Function onPressed;
+  // final GlobalKey<FormState> keyForm;
   const RoundedInputField({
     Key key,
     this.hintText,
+    // this.keyForm,
     this.icon = Icons.phone_android,
     this.color = kPrimaryLightColor,
     this.proceed,
+    this.validator,
     this.controller,
     this.onChanged,
     this.onPressed,
     this.onSubmitted
   }) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
@@ -34,10 +39,11 @@ class RoundedInputField extends StatelessWidget {
       color: color,
       child: Stack(
         children: <Widget>[
-          TextField(
+          TextFormField(
+            validator: validator,
             enabled: proceed ? false : true,
             onChanged: onChanged,
-            onSubmitted: onSubmitted,
+            onSaved: onSubmitted,
             cursorColor: kPrimaryColor,
             style: TextStyle(
               fontFamily: 'Gilroy',
