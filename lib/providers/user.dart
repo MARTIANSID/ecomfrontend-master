@@ -54,7 +54,6 @@ class UserInfo with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
       print(responseData);
-
       street = responseData['user']['additionalDetails']['address']['street'];
       city = responseData['user']['additionalDetails']['address']['city'];
       state = responseData['user']['additionalDetails']['address']['state'];

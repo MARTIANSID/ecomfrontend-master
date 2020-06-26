@@ -1,6 +1,7 @@
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/accountinfo.dart';
+import 'package:Flutter/screens/completeSignUp.dart';
 import 'package:Flutter/screens/testimony_page.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +15,13 @@ import 'my_order.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserPage extends StatefulWidget {
-
   final int pageIndex;
   final PageController pageController;
   final void Function(int) onButtonTapped;
 
-  const UserPage({Key key, this.pageIndex, this.pageController, this.onButtonTapped}) : super(key: key);
+  const UserPage(
+      {Key key, this.pageIndex, this.pageController, this.onButtonTapped})
+      : super(key: key);
 
   @override
   _UserPageState createState() => _UserPageState();
@@ -27,20 +29,23 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage>
     with SingleTickerProviderStateMixin {
+  bool value2;
+  bool isLoading = false;
 
-      bool value2;
-  bool isLoading=false;
-
- @override
- void initState() {
+  @override
+  void initState() {
     super.initState();
-    new Future.delayed(Duration(seconds: 0),()async{setState(() {
-      isLoading=true;
-    }); await Provider.of<UserInfo>(context,listen:false).getuser(context);setState(() {
-      isLoading=false;
-    });});
-   
-    
+    new Future.delayed(Duration(seconds: 0), () async {
+      setState(() {
+        isLoading = true;
+      });
+      if (Provider.of<Pagination>(context, listen: false).isVerified) {
+        await Provider.of<UserInfo>(context, listen: false).getuser(context);
+      }
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -52,357 +57,448 @@ class _UserPageState extends State<UserPage>
       allowFontScaling: true,
     );
     return Scaffold(
-      body:isLoading?Center(child: CircularProgressIndicator(),): ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          children: <Widget>[
-            Column(children: <Widget>[
-              Stack(children: <Widget>[
-                Container(
-                  height: ScreenUtil().setHeight(232.5),
-                  width: double.infinity,
-                  color: Colors.blue[400],
-                ),
-                Positioned(
-                  bottom: ScreenUtil().setHeight(460),
-                  right: ScreenUtil().setWidth(98.64),
-                  child: Container(
-                    height: ScreenUtil().setHeight(372),
-                    width: ScreenUtil().setWidth(398.67),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(200.0),
-                        color: Colors.cyan.withOpacity(0.4)),
-                  ),
-                ),
-                Positioned(
-                  bottom: ScreenUtil().setHeight(542),
-                  right: ScreenUtil().setWidth(-50),
-                  child: Container(
-                      height: ScreenUtil().setHeight(279),
-                      width: ScreenUtil().setWidth(300),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(150.0),
-                          color: Colors.cyan.withOpacity(0.5))),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: ScreenUtil().setHeight(25),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              // alignment: Alignment.topLeft,
-                              margin: EdgeInsets.only(left: 20.0, right: 15.0),
-                              height: ScreenUtil().setHeight(70),
-                              width: ScreenUtil().setWidth(70),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                // borderRadius: BorderRadius.circular(37.5),
-                                border: Border.all(
-                                    color: Colors.white,
-                                    style: BorderStyle.solid,
-                                    width: 3.0),
-                                // image: DecorationImage(
-                                //   image: AssetImage('assets/images/chris.jpg'),
-                                // ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                 Provider.of<UserInfo>(context,listen: false).fullname,
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontSize: ScreenUtil()
-                                        .setSp(25, allowFontScalingSelf: true),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                   Provider.of<UserInfo>(context,listen: false).firm,
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontSize: ScreenUtil()
-                                        .setSp(15, allowFontScalingSelf: true),
-                                    color: Colors.black.withOpacity(0.7),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              children: <Widget>[
+                  Column(children: <Widget>[
+                    Stack(children: <Widget>[
+                      Container(
+                        height: ScreenUtil().setHeight(232.5),
+                        width: double.infinity,
+                        color: Colors.blue[400],
+                      ),
+                      Positioned(
+                        bottom: ScreenUtil().setHeight(460),
+                        right: ScreenUtil().setWidth(98.64),
+                        child: Container(
+                          height: ScreenUtil().setHeight(372),
+                          width: ScreenUtil().setWidth(398.67),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(200.0),
+                              color: Colors.cyan.withOpacity(0.4)),
                         ),
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.settings),
-                            onPressed: () {},
-                            color: Colors.white,
-                            iconSize: ScreenUtil().setSp(30,allowFontScalingSelf: true),
+                      ),
+                      Positioned(
+                        bottom: ScreenUtil().setHeight(542),
+                        right: ScreenUtil().setWidth(-50),
+                        child: Container(
+                            height: ScreenUtil().setHeight(279),
+                            width: ScreenUtil().setWidth(300),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(150.0),
+                                color: Colors.cyan.withOpacity(0.5))),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: ScreenUtil().setHeight(25),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: ScreenUtil().setHeight(10),),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Column(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.card_travel),
-                                color: Colors.white,
-                                iconSize: ScreenUtil().setSp(40,allowFontScalingSelf: true),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyOrder(),
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    // alignment: Alignment.topLeft,
+                                    margin: EdgeInsets.only(
+                                        left: 20.0, right: 15.0),
+                                    height: ScreenUtil().setHeight(70),
+                                    width: ScreenUtil().setWidth(70),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // borderRadius: BorderRadius.circular(37.5),
+                                      border: Border.all(
+                                          color: Colors.white,
+                                          style: BorderStyle.solid,
+                                          width: 3.0),
+                                      // image: DecorationImage(
+                                      //   image: AssetImage('assets/images/chris.jpg'),
+                                      // ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        'Yash Karade',
+                                        // Provider.of<UserInfo>(context,
+                                        //         listen: false)
+                                        //     .fullname,
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy',
+                                          fontSize: ScreenUtil().setSp(25,
+                                              allowFontScalingSelf: true),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'daxy.in',
+                                        // Provider.of<UserInfo>(context,
+                                        //         listen: false)
+                                        //     .firm,
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy',
+                                          fontSize: ScreenUtil().setSp(15,
+                                              allowFontScalingSelf: true),
+                                          color: Colors.black.withOpacity(0.7),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'My Orders',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
+                              Container(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: Icon(Icons.settings),
+                                  onPressed: () {},
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  iconSize: ScreenUtil()
+                                      .setSp(30, allowFontScalingSelf: true),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: ScreenUtil().setHeight(10),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: Icon(Icons.card_travel),
+                                      color: Colors.white,
+                                      iconSize: ScreenUtil().setSp(40,
+                                          allowFontScalingSelf: true),
+                                      onPressed: () async {
+                                        if (!Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .isVerified) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CompleteSignUp(),
+                                            ),
+                                          );
+                                        } else if (!Provider.of<Pagination>(
+                                                context,
+                                                listen: false)
+                                            .isPriced) {
+                                          await Provider.of<Pagination>(context)
+                                              .requestPrice(context: context);
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MyOrder(),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    Text(
+                                      'My Orders',
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy',
+                                        fontSize: ScreenUtil().setSp(15,
+                                            allowFontScalingSelf: true),
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: Icon(Icons.account_balance_wallet),
+                                      color: Colors.white,
+                                      iconSize: ScreenUtil().setSp(40,
+                                          allowFontScalingSelf: true),
+                                      onPressed: () async {
+                                        if (!Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .isVerified) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CompleteSignUp(),
+                                            ),
+                                          );
+                                        } else if (!Provider.of<Pagination>(
+                                                context,
+                                                listen: false)
+                                            .isPriced) {
+                                          await Provider.of<Pagination>(context)
+                                              .requestPrice(context: context);
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MyPrice(
+                                                onButtonTapped:
+                                                    widget.onButtonTapped,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    Text(
+                                      'My Prices',
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy',
+                                        fontSize: ScreenUtil().setSp(15,
+                                            allowFontScalingSelf: true),
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon: Icon(Provider.of<Pagination>(
+                                                  context,
+                                                  listen: false)
+                                              .isVerified
+                                          ? Icons.computer
+                                          : Icons.verified_user),
+                                      color: Colors.white,
+                                      iconSize: ScreenUtil().setSp(40,
+                                          allowFontScalingSelf: true),
+                                      onPressed: () {
+                                        Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified
+                                            ? Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AccountInfo(),
+                                                ),
+                                              )
+                                            : Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CompleteSignUp(),
+                                                ),
+                                              );
+                                      },
+                                    ),
+                                    Text(
+                                      Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isVerified
+                                          ? 'Account\nDetails'
+                                          : 'Complete\nSignUp',
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy',
+                                        fontSize: ScreenUtil().setSp(15,
+                                            allowFontScalingSelf: true),
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ],
                                 ),
                               )
                             ],
                           ),
-                        ),
-                        Container(
-                          child: Column(
+                          SizedBox(
+                            height: ScreenUtil().setHeight(25),
+                          ),
+                          Column(
                             children: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.account_balance_wallet),
-                                color: Colors.white,
-                                iconSize: ScreenUtil().setSp(40,allowFontScalingSelf: true),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyPrice(
-                                        onButtonTapped: widget.onButtonTapped,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  cardDetails(
+                                    'Options we have',
+                                    '5',
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 20.0, 20.0, 0.0),
+                                      child: SvgPicture.asset(
+                                        "assets/icons/options.svg",
+                                        fit: BoxFit.contain,
+                                        height: ScreenUtil().setHeight(41),
+                                        width: ScreenUtil().setWidth(41),
+                                        // height: 41.0,
+                                        // width: 41.0,
+                                        color: Colors.amber[300],
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                              Text(
-                                'My Prices',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.computer),
-                                color: Colors.white,
-                                iconSize: ScreenUtil().setSp(40,allowFontScalingSelf: true),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AccountInfo(),
+                                  ),
+                                  cardDetails(
+                                    'Orders Placed',
+                                    // 'assets/images/box.png',
+                                    '2',
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 20.0, 20.0, 0.0),
+                                      // child: Text(
+                                      //   '💎',
+                                      //   style: TextStyle(
+                                      //     fontSize: 35.0,
+                                      //   ),
+                                      // ),
+                                      child: SvgPicture.asset(
+                                        "assets/icons/diamond.svg",
+                                        fit: BoxFit.contain,
+                                        height: ScreenUtil().setHeight(41),
+                                        width: ScreenUtil().setWidth(41),
+                                        // height: 41.0,
+                                        // width: 41.0,
+                                        // color: Colors.amber[300],
+                                      ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Account\nDetails',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
+                              SizedBox(height: ScreenUtil().setHeight(10)),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  cardDetails(
+                                    'Nose Pins I like',
+                                    // 'assets/images/trucks.png',
+                                    Provider.of<Pagination>(context,
+                                            listen: true)
+                                        .favProducts
+                                        .length
+                                        .toString(),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 15.0, 20.0, 0.0),
+                                      // child: Text(
+                                      //   '💙',
+                                      //   style: TextStyle(
+                                      //     fontSize: 35.0,
+                                      //   ),
+                                      // ),
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Colors.cyan[200],
+                                        size: ScreenUtil().setSp(40,
+                                            allowFontScalingSelf: true),
+                                      ),
+                                    ),
+                                  ),
+                                  cardDetails(
+                                    'Today\'s Gold Price',
+                                    // 'assets/images/returnbox.png',
+                                    Provider.of<Pagination>(context,
+                                            listen: false)
+                                        .goldPrice
+                                        .toString(),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 15.0, 20.0, 0.0),
+                                      child: Icon(
+                                        MyFlutterApp.gold_bar,
+                                        color: Colors.amber[300],
+                                        size: ScreenUtil().setSp(40,
+                                            allowFontScalingSelf: true),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(5),
                               )
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: ScreenUtil().setHeight(25),),
-                    Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            cardDetails(
-                              'Options we have',
-                              '5',
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    15.0, 20.0, 20.0, 0.0),
-                                child: SvgPicture.asset(
-                                  "assets/icons/options.svg",
-                                  fit: BoxFit.contain,
-                                  height: ScreenUtil().setHeight(41),
-                                  width: ScreenUtil().setWidth(41),
-                                  // height: 41.0,
-                                  // width: 41.0,
-                                  color: Colors.amber[300],
-                                ),
-                              ),
-                            ),
-                            cardDetails(
-                              'Orders Placed',
-                              // 'assets/images/box.png',
-                              '2',
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    15.0, 20.0, 20.0, 0.0),
-                                // child: Text(
-                                //   '💎',
-                                //   style: TextStyle(
-                                //     fontSize: 35.0,
-                                //   ),
-                                // ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/diamond.svg",
-                                  fit: BoxFit.contain,
-                                  height: ScreenUtil().setHeight(41),
-                                  width: ScreenUtil().setWidth(41),
-                                  // height: 41.0,
-                                  // width: 41.0,
-                                  // color: Colors.amber[300],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: ScreenUtil().setHeight(10)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            cardDetails(
-                              'Nose Pins I like',
-                              // 'assets/images/trucks.png',
-                              Provider.of<Pagination>(context,listen: true).favProducts.length.toString(),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    15.0, 15.0, 20.0, 0.0),
-                                // child: Text(
-                                //   '💙',
-                                //   style: TextStyle(
-                                //     fontSize: 35.0,
-                                //   ),
-                                // ),
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.cyan[200],
-                                  size: ScreenUtil().setSp(40,allowFontScalingSelf: true),
-                                ),
-                              ),
-                            ),
-                            cardDetails(
-                              'Today\'s Gold Price',
-                              // 'assets/images/returnbox.png',
-                              Provider.of<Pagination>(context,listen: false).goldPrice.toString(),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    15.0, 15.0, 20.0, 0.0),
-                                child: Icon(
-                                  MyFlutterApp.gold_bar,
-                                  color: Colors.amber[300],
-                                  size: ScreenUtil().setSp(40,allowFontScalingSelf: true),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: ScreenUtil().setHeight(5),)
-                      ],
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setWidth(10),
-                    ),
-                    ListWidgetUserDetails(
-                      // leadingIcon: Icon(
-                      //   Icons.thumb_up,
-                      //   color: Colors.black,
-                      // ),
-                      leadingIcon: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: SvgPicture.asset(
-                          "assets/icons/rate.svg",
-                          height: ScreenUtil().setHeight(38.75),
-                          width: ScreenUtil().setWidth(20.55),
-                        ),
-                      ),
-                      text: "Testimonies",
-                      tap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TestimonyPage(),
+                          SizedBox(
+                            height: ScreenUtil().setWidth(10),
                           ),
-                        );
-                      },
-                    ),
-                    ListWidgetUserDetails(
-                      leadingIcon: Padding(
-                        padding: const EdgeInsets.only(left: 5.0),
-                        child: SvgPicture.asset(
-                          "assets/icons/logout1.svg",
-                          height: ScreenUtil().setHeight(31),
-                          width: ScreenUtil().setWidth(16.44),
-                        ),
-                      ),
-                      text: "Logout",
-                      tap: () async {
-                        await dataSelectConfirmMessage(
-                           context,
-                            'Alert!',
-                            "Are you sure, You want to logout",
-                            'Request Prices',
-                          ).then((value) async {
-                            if (value) {
-                              value2 = value;
-                              if(value2){
+                          ListWidgetUserDetails(
+                            // leadingIcon: Icon(
+                            //   Icons.thumb_up,
+                            //   color: Colors.black,
+                            // ),
+                            leadingIcon: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: SvgPicture.asset(
+                                "assets/icons/rate.svg",
+                                height: ScreenUtil().setHeight(38.75),
+                                width: ScreenUtil().setWidth(20.55),
+                              ),
+                            ),
+                            text: "Testimonies",
+                            tap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TestimonyPage(),
+                                ),
+                              );
+                            },
+                          ),
+                          ListWidgetUserDetails(
+                            leadingIcon: Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: SvgPicture.asset(
+                                "assets/icons/logout1.svg",
+                                height: ScreenUtil().setHeight(31),
+                                width: ScreenUtil().setWidth(16.44),
+                              ),
+                            ),
+                            text: "Logout",
+                            tap: () async {
+                              await dataSelectConfirmMessage(
+                                context,
+                                'Alert!',
+                                "Are you sure, You want to logout",
+                                'Request Prices',
+                              ).then((value) async {
+                                if (value) {
+                                  value2 = value;
+                                  if (value2) {
+                                    Provider.of<Auth>(context, listen: false)
+                                        .logout();
+                                    Navigator.of(context).pop();
+                                  }
+                                }
+                              });
 
-                                  
-                        Provider.of<Auth>(context,listen:false).logout();
-                           Navigator.of(context).pop();
-                              }
-                            }
-                          });
-
-                 
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => MyPrice(),
-                        //   ),
-                        // );
-                      },
-                    ),
-                  ],
-                )
-              ]),
-            ])
-          ]),
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => MyPrice(),
+                              //   ),
+                              // );
+                            },
+                          ),
+                        ],
+                      )
+                    ]),
+                  ])
+                ]),
     );
   }
 
@@ -421,14 +517,16 @@ class _UserPageState extends State<UserPage>
           children: <Widget>[
             // SizedBox(height: 5.0),
             iconWidget,
-            SizedBox(height: ScreenUtil().setHeight(14),),
+            SizedBox(
+              height: ScreenUtil().setHeight(14),
+            ),
             Padding(
               padding: EdgeInsets.only(left: 15.0),
               child: Text(
                 title,
                 style: TextStyle(
                   fontFamily: 'Gilroy',
-                  fontSize: ScreenUtil().setSp(17,allowFontScalingSelf: true),
+                  fontSize: ScreenUtil().setSp(17, allowFontScalingSelf: true),
                   color: Colors.black,
                 ),
               ),
@@ -440,7 +538,7 @@ class _UserPageState extends State<UserPage>
                 valueCount,
                 style: TextStyle(
                   fontFamily: 'Gilroy',
-                  fontSize: ScreenUtil().setSp(19,allowFontScalingSelf: true),
+                  fontSize: ScreenUtil().setSp(19, allowFontScalingSelf: true),
                   color: kPrimaryColor,
                   fontWeight: FontWeight.bold,
                 ),
@@ -492,7 +590,7 @@ class _ListWidgetUserDetailsState extends State<ListWidgetUserDetails> {
           title: Text(
             widget.text,
             style: TextStyle(
-              fontSize: ScreenUtil().setSp(20,allowFontScalingSelf: true),
+              fontSize: ScreenUtil().setSp(20, allowFontScalingSelf: true),
               fontFamily: 'Gilroy',
               color: Colors.black,
               fontWeight: FontWeight.bold,

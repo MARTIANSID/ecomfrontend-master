@@ -104,6 +104,28 @@ class Pagination with ChangeNotifier {
   }
 
   final uurl = "alexa.gemstory.in/";
+  final req = "alexa.gemstory.in/user/requestprice";
+
+
+  Future<void> requestPrice({context}) async {
+    try {
+      final response = await http.get(
+        req,
+        headers: {
+          'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+        },
+      );
+      final responseData=json.decode(response.body);
+       if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
+
+
+    } catch (err) {
+      throw err;
+    }
+  }
 
   Future<void> getProducts(
       {context,
@@ -124,7 +146,7 @@ class Pagination with ChangeNotifier {
       );
 
       final extractedData = json.decode(response.body);
-        if(extractedData['error'] != false) {
+      if (extractedData['error'] != false) {
         throw HttpException(extractedData['details']['message']);
       }
 
@@ -132,15 +154,15 @@ class Pagination with ChangeNotifier {
       color = extractedData["productOptions"]["color"];
       cert = extractedData["productOptions"]["certification"];
       goldPrice = extractedData['prices']['goldToday'];
-      isVerified=extractedData['user']['verified'];
+      isVerified = extractedData['user']['verified'];
 
       diamondQuality = extractedData["productOptions"]["diamondQuality"];
       buildPrices =
           Map<dynamic, dynamic>.from(extractedData['prices']['labour']);
       certPrices =
           Map<dynamic, dynamic>.from(extractedData['prices']['certification']);
-        
-          certPrices.putIfAbsent('NONE', () => 0);
+
+      certPrices.putIfAbsent('NONE', () => 0);
       comm = extractedData['prices']['comission'];
 
       if (addition) {
@@ -229,10 +251,8 @@ class Pagination with ChangeNotifier {
             )
             .toList();
 
-
         isVerified = extractedData['user']['verified'];
         isPriced = extractedData['user']['priced'];
-        
 
         if (select == 'all') {
           allProducts = [];
@@ -293,35 +313,32 @@ class Pagination with ChangeNotifier {
       List<dynamic> loadedProducts;
 
       final extractedData = json.decode(response.body);
-        if(extractedData['error'] != false) {
+      if (extractedData['error'] != false) {
         throw HttpException(extractedData['details']['message']);
       }
 
-      if (extractedData['favourites'] == null) {
+      if (extractedData['products'] == null) {
         loadedProducts = [];
       } else {
-        loadedProducts = extractedData['favourites']
+        loadedProducts = extractedData['products']
             .map(
               (prod) => Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
-                  styleNumber: prod['styleNumber'],
-                  diamondWeight: prod['diamondWeight'],
-                  goldWeight: prod['goldWeight'],
-                  diamondCount: prod['diamondCount'],
-                  isFavourite: true,
-                  imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  designDimensions: prod['designDimensions'],
-                  // vVS_EF: prod['prices']['VVS_EF'],
-                  // vVS_FG: prod['prices']['VVS_FG'],
-                  // vVS_VS_FG: prod['prices']['VVS_VS_FG'],
-                  // vS_FG: prod['prices']['VS_FG'],
-                  // sI_HI: prod['prices']['SI_HI'],
-                  ),
+                designDetails: Map<String, bool>.from(prod['designDetails']),
+                styleNumber: prod['styleNumber'],
+                diamondWeight: prod['diamondWeight'],
+                goldWeight: prod['goldWeight'],
+                diamondCount: prod['diamondCount'],
+                isFavourite: true,
+                imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                designDimensions: prod['designDimensions'],
+                prices: Map<dynamic, dynamic>.from(prod['prices']),
+              ),
             )
             .toList();
       }
 
       favProducts = loadedProducts;
+      print(favProducts);
     } catch (err) {
       throw err;
     }
@@ -408,35 +425,34 @@ class Pagination with ChangeNotifier {
         'styleNumber': styleNumber
       });
       final responseBody = json.decode(response.body) as Map<String, dynamic>;
-      if (responseBody['error'] == true)
-      {
-         if (select == 'all') {
-        allProducts[index].isFavourite = !allProducts[index].isFavourite;
-        favProducts.remove(allProducts[index]);
-        notifyListeners();
-      }
-      if (select == 'new') {
-        newProducts[index].isFavourite = !newProducts[index].isFavourite;
-        favProducts.remove(newProducts[index]);
-        notifyListeners();
-      }
-      if (select == 'featured') {
-        featuredProducts[index].isFavourite =
-            !featuredProducts[index].isFavourite;
-        favProducts.remove(featuredProducts[index]);
-        notifyListeners();
-      }
-      if (select == 'fancyDiamond') {
-        fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-        favProducts.remove(fancyDiamond[index]);
-        notifyListeners();
-      }
-      if (select == 'highestSelling') {
-        highestSellingProducts[index].isFavourite =
-            !highestSellingProducts[index].isFavourite;
-        favProducts.remove(highestSellingProducts[index]);
-        notifyListeners();
-      }
+      if (responseBody['error'] == true) {
+        if (select == 'all') {
+          allProducts[index].isFavourite = !allProducts[index].isFavourite;
+          favProducts.remove(allProducts[index]);
+          notifyListeners();
+        }
+        if (select == 'new') {
+          newProducts[index].isFavourite = !newProducts[index].isFavourite;
+          favProducts.remove(newProducts[index]);
+          notifyListeners();
+        }
+        if (select == 'featured') {
+          featuredProducts[index].isFavourite =
+              !featuredProducts[index].isFavourite;
+          favProducts.remove(featuredProducts[index]);
+          notifyListeners();
+        }
+        if (select == 'fancyDiamond') {
+          fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+          favProducts.remove(fancyDiamond[index]);
+          notifyListeners();
+        }
+        if (select == 'highestSelling') {
+          highestSellingProducts[index].isFavourite =
+              !highestSellingProducts[index].isFavourite;
+          favProducts.remove(highestSellingProducts[index]);
+          notifyListeners();
+        }
         throw HttpException(responseBody['details']['message']);
       }
     } catch (error) {
@@ -475,14 +491,14 @@ class Pagination with ChangeNotifier {
   Future<void> getProductDetail({context, styleNumber}) async {
     try {
       final response = await http.get(
-        'https://' + uurl + '/product/single?styleNumber='+styleNumber,
+        'https://' + uurl + '/product/single?styleNumber=$styleNumber',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token
         },
       );
       final responseData = json.decode(response.body);
-        if(responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
       var prices = Map<dynamic, dynamic>.from(responseData['prices']);
@@ -497,7 +513,7 @@ class Pagination with ChangeNotifier {
                 diamondCount: prod['diamondCount'],
                 isFavourite: prod['isFavourite'],
                 imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                prices:  Map<dynamic, dynamic>.from(prod['prices']),
+                prices: Map<dynamic, dynamic>.from(prod['prices']),
                 designDimensions: prod['designDimensions']),
           )
           .toList();

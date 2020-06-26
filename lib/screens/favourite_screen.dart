@@ -51,6 +51,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
   @override
   void initState() {
     super.initState();
+    
+   
   }
 
   void _onValueChange(int value) async {
@@ -260,11 +262,11 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             child: Text(
                               'There aren\t any Favourites product added yet!',
                               style: TextStyle(
-                                  fontFamily: 'Gilory Black',
-                                  color: Colors.grey[400],
-                                  fontSize: ScreenUtil()
-                                      .setSp(35, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.bold),
+                                        fontFamily: 'Gilory Medium',
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(17,
+                                            allowFontScalingSelf: true),
+                                        fontWeight: FontWeight.bold,),
                               textAlign: TextAlign.center,
                             ),
                           ),

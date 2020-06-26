@@ -1169,7 +1169,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .spaceEvenly,
+                                                                  .center,
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .center,
@@ -1254,54 +1254,59 @@ class _CartScreenState extends State<CartScreen> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            // SizedBox(
-                                                            //   width: ScreenUtil()
-                                                            //       .setWidth(4),
-                                                            // ),
-                                                            ShaderMask(
-                                                              shaderCallback:
-                                                                  (bounds) =>
-                                                                      LinearGradient(
-                                                                colors: [
-                                                                  Colors.black,
-                                                                  Colors.black,
-                                                                ],
-                                                                begin: Alignment
-                                                                    .topLeft,
-                                                                end: Alignment
-                                                                    .bottomRight,
-                                                              ).createShader(
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0,
-                                                                    bounds
-                                                                        .width,
-                                                                    bounds
-                                                                        .height),
-                                                              ),
-                                                              child: Text(
-                                                                // '888',
-                                                                '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Gilroy Black',
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      20,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                            SizedBox(
+                                                              width: ScreenUtil()
+                                                                  .setWidth(5),
+                                                            ),
+                                                            Container(
+                                                              width: ScreenUtil().setWidth(35),
+                                                              child: Center(
+                                                                child: ShaderMask(
+                                                                  shaderCallback:
+                                                                      (bounds) =>
+                                                                          LinearGradient(
+                                                                    colors: [
+                                                                      Colors.black,
+                                                                      Colors.black,
+                                                                    ],
+                                                                    begin: Alignment
+                                                                        .topLeft,
+                                                                    end: Alignment
+                                                                        .bottomRight,
+                                                                  ).createShader(
+                                                                    Rect.fromLTWH(
+                                                                        0,
+                                                                        0,
+                                                                        bounds
+                                                                            .width,
+                                                                        bounds
+                                                                            .height),
+                                                                  ),
+                                                                  child: Text(
+                                                                    // '888',
+                                                                    '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Gilroy Black',
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          20,
+                                                                          allowFontScalingSelf:
+                                                                              true),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                            // SizedBox(
-                                                            //   width: ScreenUtil()
-                                                            //       .setWidth(4),
-                                                            // ),
+                                                            SizedBox(
+                                                              width: ScreenUtil()
+                                                                  .setWidth(5),
+                                                            ),
                                                             GestureDetector(
                                                               onTap: () async {
                                                                 await Provider.of<Cart>(context, listen: false).incQuantity(
@@ -1467,11 +1472,12 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Text(
                                     "Unfortunately, I'm empty you can fill me up!",
                                     style: TextStyle(
-                                        fontFamily: 'Gilory',
+                                        fontFamily: 'Gilory Medium',
                                         color: Colors.black,
                                         fontSize: ScreenUtil().setSp(17,
                                             allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

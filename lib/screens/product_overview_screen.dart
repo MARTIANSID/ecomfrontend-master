@@ -18,6 +18,8 @@ import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'completeSignUp.dart';
+
 class ProductOverViewScreen extends StatefulWidget {
   final ScrollController scrollController;
   final void Function(int) onButtonTapped;
@@ -48,8 +50,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   bool searchSelected = false;
   bool searchSelectedDoneButton = false;
 
-
-
   var _choices;
   var _choices1;
   var _choices2;
@@ -59,32 +59,31 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 5, vsync: this, initialIndex: 1);
-    _tabController.addListener(() {
-      print(Provider.of<Pagination>(context,listen: false).isVerified);
-
-     
-
-      if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
-        //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
-        
-      _tabController.animateTo(1);
-        dataSelect(
-          context,
-          'Important!',
-          "To get complete access of the app, you need to first verify yourself!",
-          'Complete SignUp',
-        );
-      }
-      // if (_tabController.indexIsChanging) {
-      //   dataSelect(
-      //     context,
-      //     'Important!',
-      //     "To get complete access of the app, you need to first verify yourself!",
-      //     'Complete SignUp',
-      //   );
-      // }
-    });
+    _tabController = TabController(
+      length: 5,
+      vsync: this,
+      initialIndex: 1,
+    );
+    // _tabController.addListener(() {
+    //   print(Provider.of<Pagination>(context,listen: false).isVerified);
+    //   if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
+    //     //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
+    //     dataSelect(
+    //       context,
+    //       'Important!',
+    //       "To get complete access of the app, you need to first verify yourself!",
+    //       'Complete SignUp',
+    //     );
+    //   }
+    //   // if (_tabController.indexIsChanging) {
+    //   //   dataSelect(
+    //   //     context,
+    //   //     'Important!',
+    //   //     "To get complete access of the app, you need to first verify yourself!",
+    //   //     'Complete SignUp',
+    //   //   );
+    //   // }
+    // });
     // _loadedProduct = Provider.of<Products>(context, listen: true);
 
     // new Future.delayed(Duration.zero, () async {
@@ -196,11 +195,20 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     });
   }
 
-  void _onValueChangeColor(int value) async {                     
+  void _onValueChangeColor(int value) async {
     await Provider.of<Options>(context, listen: false).setColor(color: value);
     setState(() {
       _defaultChoiceIndex2 = value;
     });
+  }
+
+  void completeSignUp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompleteSignUp(),
+      ),
+    );
   }
 
   void _onValueChangeCerti(int value) async {
@@ -346,8 +354,28 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 height: ScreenUtil().setHeight(20),
                                 width: ScreenUtil().setWidth(275),
                                 child: TabBar(
-                                  
-
+                                  onTap: (value) {
+                                    setState(() {
+                                      _tabController.index = 1;
+                                    });
+                                    if (_tabController.indexIsChanging &&
+                                        Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified ==
+                                            false) {
+                                      setState(() {
+                                        _tabController.index = 1;
+                                      });
+                                      //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
+                                      dataSelect(
+                                        context,
+                                        'Important!',
+                                        "To get complete access of the app, you need to first verify yourself!",
+                                        'Complete SignUp',
+                                        completeSignUp,
+                                      );
+                                    }
+                                  },
                                   controller: _tabController,
                                   indicatorColor: kPrimaryColor,
                                   labelColor: Colors.black,
@@ -631,7 +659,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                         ),
                         Expanded(
                           child: TabBarView(
-                            physics: Provider.of<Pagination>(context,listen:false).isVerified?ClampingScrollPhysics():NeverScrollableScrollPhysics(),
+                            physics:
+                                Provider.of<Pagination>(context, listen: false)
+                                        .isVerified
+                                    ? ClampingScrollPhysics()
+                                    : NeverScrollableScrollPhysics(),
                             controller: _tabController,
                             children: [
                               CookiePage(

@@ -1,7 +1,9 @@
 import 'package:Flutter/constant/const.dart';
+import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 void showFloatingFlushbar(BuildContext context, text, productName) {
   Flushbar(
@@ -47,7 +49,7 @@ void showFloatingFlushbar(BuildContext context, text, productName) {
   )..show(context);
 }
 
-void dataSelect(context, titleText, contentText, buttonText) {
+void dataSelect(context, titleText, contentText, buttonText, onPressed) {
   var alertDialog = AlertDialog(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20.0),
@@ -83,34 +85,26 @@ void dataSelect(context, titleText, contentText, buttonText) {
             ),
             textAlign: TextAlign.center,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: OutlineButton(
-              onPressed: () {},
-              child: Text(
-                buttonText,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize:
-                        ScreenUtil().setSp(15, allowFontScalingSelf: true)),
-              ),
-              // color: kPrimaryLightColor,
-              borderSide: BorderSide(color: Colors.black, width: 1.0),
-              shape: RoundedRectangleBorder(
-                  // side: BorderSide(color: kPrimaryColor, width: 1.0),
-                  borderRadius: BorderRadius.circular(18.0)),
+          SizedBox(
+            height: ScreenUtil().setHeight(20),
+          ),
+          OutlineButton(
+            onPressed: onPressed,
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true)),
             ),
+            // color: kPrimaryLightColor,
+            borderSide: BorderSide(color: Colors.black, width: 1.0),
+            shape: RoundedRectangleBorder(
+                // side: BorderSide(color: kPrimaryColor, width: 1.0),
+                borderRadius: BorderRadius.circular(18.0)),
           ),
         ],
       ),
     ),
-    // actions: <Widget>[
-    //   FlatButton(
-    //     onPressed: () => Navigator.of(context).pop(false),
-    //     child: Text("Okay",
-    //         style: TextStyle(color: Colors.black, fontFamily: 'Gilroy Medium')),
-    //   )
-    // ],
   );
   showDialog(
     context: context,
@@ -128,7 +122,6 @@ Future<bool> dataSelectConfirmMessage(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),

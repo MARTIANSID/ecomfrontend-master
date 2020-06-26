@@ -113,6 +113,10 @@ class _ProductDetailState extends State<ProductDetail> {
       ),
     );
   }
+  
+  void requestPrice() async{
+    await Provider.of<Pagination>(context).requestPrice(context:context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -495,11 +499,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                     child: Provider.of<Pagination>(context,
                                                         listen: false)
                                                     .isPriced ==
-                                                true &&
-                                            widget.select != 'fav'
+                                                true 
                                         ? Text(
-                                          '50000',
-                                            // '${int.parse(widget.product.prices[widget.diamondKey]) + widget.certPrice} ₹',
+                                          // '50000',
+                                            '${int.parse(widget.product.prices[widget.diamondKey]) + widget.certPrice} ₹',
                                             style: TextStyle(
                                               fontFamily: 'Gilroy Medium',
                                               color: Colors.white,
@@ -680,6 +683,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       'Important!',
                                                       "To see prices you must first request a quotation from Team Gemstory",
                                                       'Request Prices',
+                                                      requestPrice,
                                                     )
                                                   : showDialog(
                                                       context: context,
@@ -855,11 +859,24 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 child: GestureDetector(
                   onTap: () async {
+                    String select;
+                    if(widget.product.designDetails['featured']){
+                      select='featured';
+                    }
+                    else if(widget.product.designDetails['new']){
+                      select='new';
+                    }
+                    else if(widget.product.designDetails['highestSelling']){
+                      select='highestSelling';
+                    }
+                    else {
+                      select='fancyDiamond';
+                    }
                     await Provider.of<Pagination>(context, listen: false)
                         .toogleFavourite(
                             styleNumber: widget.product.styleNumber,
                             context: context,
-                            select: widget.select);
+                            select: select);
                     setState(() {});
                   },
                   child: Icon(

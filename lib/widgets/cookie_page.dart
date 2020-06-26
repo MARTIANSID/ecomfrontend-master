@@ -135,6 +135,10 @@ class _CookiePageState extends State<CookiePage> {
     });
   }
 
+  void requestPrice() async{
+    await Provider.of<Pagination>(context).requestPrice(context:context);
+  }
+
   void didChangeDependencies() async {
     if (isInit) {
       if (widget.select != 'fav') {
@@ -194,54 +198,6 @@ class _CookiePageState extends State<CookiePage> {
     super.dispose();
   }
 
-  // void myScroll() async {
-  //   scrollBottomBarController.addListener(() {
-  //     if (scrollBottomBarController.position.userScrollDirection ==
-  //         ScrollDirection.reverse) {
-  //       if (!isScrollingDown) {
-  //         isScrollingDown = true;
-  //         _showAppbar = false;
-  //         hideBottomBar();
-  //       }
-  //     }
-  //     if (scrollBottomBarController.position.userScrollDirection ==
-  //         ScrollDirection.forward) {
-  //       if (isScrollingDown) {
-  //         isScrollingDown = false;
-  //         _showAppbar = true;
-  //         showBottomBar();
-  //       }
-  //     }
-  //   });
-  // }
-
-  showPicker({BuildContext context, prodcut, color, cert, diamond, build}) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      barrierColor: Colors.black45,
-      isScrollControlled: true,
-      isDismissible: true,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(50.0),
-        topRight: Radius.circular(50.0),
-      )),
-      builder: (BuildContext context) {
-        return Container(
-          padding: EdgeInsets.all(5.0),
-          child: AddToCart(
-            product: prodcut,
-            image: color,
-            cert: cert,
-            diamond: diamond,
-            build: build,
-            updateCart: false,
-          ),
-        );
-      },
-    );
-  }
 
   void _onValueChange(int value, int index) {
     // await Provider.of<Options>(context, listen: false).setBuild(build: value);
@@ -507,7 +463,7 @@ class _CookiePageState extends State<CookiePage> {
             .toLowerCase();
     print(colorKey);
     // setState(() {
-    if (widget.select != 'fav') {
+    // if (widget.select != 'fav') {
       priceKey = (Provider.of<Pagination>(context, listen: false)
           .diamondQuality[widget.diamond]);
 
@@ -515,7 +471,7 @@ class _CookiePageState extends State<CookiePage> {
           Provider.of<Pagination>(context, listen: false).build[widget.build]];
       certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
           Provider.of<Pagination>(context, listen: false).cert[widget.cert]];
-    }
+    // }
 
     ScreenUtil.init(context,
         width: 411.42857142857144,
@@ -710,6 +666,7 @@ class _CookiePageState extends State<CookiePage> {
                                                   'Important!',
                                                   "To see prices you must first request a quotation from Team Gemstory",
                                                   'Request Prices',
+                                                  requestPrice,
                                                 );
                                               },
                                               child: Container(
@@ -721,7 +678,8 @@ class _CookiePageState extends State<CookiePage> {
                                                   child: Text(
                                                     'Request Prices',
                                                     style: TextStyle(
-                                                      decoration: TextDecoration.underline,
+                                                      decoration: TextDecoration
+                                                          .underline,
                                                       color: Colors.black,
                                                       fontFamily:
                                                           'Gilroy Medium',
@@ -845,7 +803,7 @@ class _CookiePageState extends State<CookiePage> {
                                                 widget.products[i].styleNumber,
                                             context: context,
                                             select: widget.select);
-                                    if (!mounted) setState(() {});
+                                    if (mounted) setState(() {});
                                   },
                                 ),
                                 SizedBox(
@@ -874,48 +832,55 @@ class _CookiePageState extends State<CookiePage> {
                                     ),
                                   ),
                                   onTap: () {
-                                    // Provider.of<Pagination>(context,
-                                    //             listen: false)
-                                    //         .isPriced
-                                    //     ? dataSelect(
-                                    //         context,
-                                    //         'Important!',
-                                    //         "To see prices you must first request a quotation from Team Gemstory",
-                                    //         'Request Prices',
-                                    //       )
-                                    //     :
-                                    showDialog(
-                                      context: widget.globalKey.currentContext,
-                                      child: AddToCart(
-                                        globalKey: widget.globalKey,
-                                        product: widget.products[i],
-                                        updateCart: false,
-                                        choicesBuild: Provider.of<Pagination>(
-                                                context,
+                                    !Provider.of<Pagination>(context,
                                                 listen: false)
-                                            .build,
-                                        choiceColor: Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .color,
-                                        choiceCertification:
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .cert,
-                                        choiceDiamondQuality:
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .diamondQuality,
-                                        defValue: _defaultChoiceIndex1,
-                                        defValue1: _defaultChoiceIndex2,
-                                        defValue2: _defaultChoiceIndex3,
-                                        defValue3: _defaultChoiceIndex4,
-                                        valueChangeBuild: _onValueChange,
-                                        valueChangeColor: _onValueChangeColor,
-                                        valueChangeCerti: _onValueChangeCerti,
-                                        valueChangeDQ: _onValueChangeDQ,
-                                      ),
-                                    );
+                                            .isPriced
+                                        ? dataSelect(
+                                            context,
+                                            'Important!',
+                                            "To see prices you must first request a quotation from Team Gemstory",
+                                            'Request Prices',
+                                            requestPrice,
+                                          )
+                                        : showDialog(
+                                            context:
+                                                widget.globalKey.currentContext,
+                                            child: AddToCart(
+                                              globalKey: widget.globalKey,
+                                              product: widget.products[i],
+                                              updateCart: false,
+                                              choicesBuild:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .build,
+                                              choiceColor:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .color,
+                                              choiceCertification:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .cert,
+                                              choiceDiamondQuality:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .diamondQuality,
+                                              defValue: _defaultChoiceIndex1,
+                                              defValue1: _defaultChoiceIndex2,
+                                              defValue2: _defaultChoiceIndex3,
+                                              defValue3: _defaultChoiceIndex4,
+                                              valueChangeBuild: _onValueChange,
+                                              valueChangeColor:
+                                                  _onValueChangeColor,
+                                              valueChangeCerti:
+                                                  _onValueChangeCerti,
+                                              valueChangeDQ: _onValueChangeDQ,
+                                            ),
+                                          );
                                   },
                                 ),
                               ],

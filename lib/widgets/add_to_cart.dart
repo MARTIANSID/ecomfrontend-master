@@ -266,18 +266,19 @@ class AddToCartTState extends State<AddToCart> {
                                       ),
                                     ),
                             ),
-                            SizedBox(
-                              height: ScreenUtil().setHeight(11.625),
-                            ),
+                            // SizedBox(
+                            //   height: ScreenUtil().setHeight(11.625),
+                            // ),
                             Container(
-                              width: ScreenUtil().setWidth(77),
-                              height: ScreenUtil().setHeight(38),
-                              padding: EdgeInsets.all(3.0),
+                              width: ScreenUtil().setWidth(93),
+                              height: ScreenUtil().setHeight(80),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
+                                  // SizedBox(
+                                  //   width: ScreenUtil().setWidth(5),
+                                  // ),
                                   GestureDetector(
                                     onTap: () {
                                       if (valueOfQuantity > 1) {
@@ -286,30 +287,68 @@ class AddToCartTState extends State<AddToCart> {
                                         });
                                       }
                                     },
-                                    child: Text(
-                                      '-',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy',
-                                        color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(22,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.w500,
+                                    child: ShaderMask(
+                                      shaderCallback: (bounds) =>
+                                          LinearGradient(
+                                        colors: [
+                                          Colors.black,
+                                          Colors.black,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ).createShader(
+                                        Rect.fromLTWH(
+                                            0, 0, bounds.width, bounds.height),
+                                      ),
+                                      child: Text(
+                                        '-',
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy Bold',
+                                          color: Colors.black,
+                                          fontSize: ScreenUtil().setSp(25,
+                                              allowFontScalingSelf: true),
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ),
+                                  
+                                  SizedBox(
+                                    width: ScreenUtil()
+                                        .setWidth(5),
+                                  ),
                                   Container(
-                                    height: ScreenUtil().setHeight(19),
-                                    width: ScreenUtil().setWidth(11),
-                                    child: Text(
-                                      '$valueOfQuantity',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy Black',
-                                        color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(18,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.w500,
+                                    width: ScreenUtil().setWidth(35),
+                                    child: Center(
+                                      child: ShaderMask(
+                                        shaderCallback: (bounds) => LinearGradient(
+                                          colors: [
+                                            Colors.black,
+                                            Colors.black,
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(
+                                          Rect.fromLTWH(
+                                              0, 0, bounds.width, bounds.height),
+                                        ),
+                                        child: Text(
+                                          // '888',
+                                          '$valueOfQuantity',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Black',
+                                            color: Colors.black,
+                                            fontSize: ScreenUtil().setSp(20,
+                                                allowFontScalingSelf: true),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
                                     ),
+                                  ),
+                                  SizedBox(
+                                    width: ScreenUtil()
+                                        .setWidth(5),
                                   ),
                                   GestureDetector(
                                     onTap: () {
@@ -333,9 +372,9 @@ class AddToCartTState extends State<AddToCart> {
                                       child: Text(
                                         '+',
                                         style: TextStyle(
-                                          fontFamily: 'Gilroy',
+                                          fontFamily: 'Gilroy Bold',
                                           color: Colors.white,
-                                          fontSize: ScreenUtil().setSp(22,
+                                          fontSize: ScreenUtil().setSp(25,
                                               allowFontScalingSelf: true),
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -352,6 +391,89 @@ class AddToCartTState extends State<AddToCart> {
                                 ),
                               ),
                             ),
+                            // Container(
+                            //   width: ScreenUtil().setWidth(77),
+                            //   height: ScreenUtil().setHeight(38),
+                            //   padding: EdgeInsets.all(3.0),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceEvenly,
+                            //     crossAxisAlignment: CrossAxisAlignment.center,
+                            //     children: <Widget>[
+                            //       GestureDetector(
+                            //         onTap: () {
+                            //           if (valueOfQuantity > 1) {
+                            //             setState(() {
+                            //               valueOfQuantity = valueOfQuantity - 1;
+                            //             });
+                            //           }
+                            //         },
+                            //         child: Text(
+                            //           '-',
+                            //           style: TextStyle(
+                            //             fontFamily: 'Gilroy',
+                            //             color: Colors.black,
+                            //             fontSize: ScreenUtil().setSp(22,
+                            //                 allowFontScalingSelf: true),
+                            //             fontWeight: FontWeight.w500,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //       Container(
+                            //         height: ScreenUtil().setHeight(19),
+                            //         width: ScreenUtil().setWidth(11),
+                            //         child: Text(
+                            //           '$valueOfQuantity',
+                            //           style: TextStyle(
+                            //             fontFamily: 'Gilroy Black',
+                            //             color: Colors.black,
+                            //             fontSize: ScreenUtil().setSp(18,
+                            //                 allowFontScalingSelf: true),
+                            //             fontWeight: FontWeight.w500,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //       GestureDetector(
+                            //         onTap: () {
+                            //           setState(() {
+                            //             valueOfQuantity = valueOfQuantity + 1;
+                            //           });
+                            //         },
+                            //         child: ShaderMask(
+                            //           shaderCallback: (bounds) =>
+                            //               LinearGradient(
+                            //             colors: [
+                            //               Color(0xFF34B0D9),
+                            //               Color(0xFF3685CB),
+                            //             ],
+                            //             begin: Alignment.topLeft,
+                            //             end: Alignment.bottomRight,
+                            //           ).createShader(
+                            //             Rect.fromLTWH(
+                            //                 0, 0, bounds.width, bounds.height),
+                            //           ),
+                            //           child: Text(
+                            //             '+',
+                            //             style: TextStyle(
+                            //               fontFamily: 'Gilroy',
+                            //               color: Colors.white,
+                            //               fontSize: ScreenUtil().setSp(22,
+                            //                   allowFontScalingSelf: true),
+                            //               fontWeight: FontWeight.w500,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            //   decoration: BoxDecoration(
+                            //     image: DecorationImage(
+                            //       image: AssetImage(
+                            //           'assets/images/cartButtonShape.png'),
+                            //       fit: BoxFit.contain,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         )
                       ],
@@ -839,7 +961,7 @@ class AddToCartTState extends State<AddToCart> {
                           print(value2);
                           if (value2) {
                             setState(() {
-                              isLoading=true;
+                              isLoading = true;
                             });
                             await Provider.of<Cart>(context, listen: false)
                                 .addCart(
@@ -861,7 +983,7 @@ class AddToCartTState extends State<AddToCart> {
                               update: widget.updateCart ? true : false,
                             );
                             setState(() {
-                              isLoading=false;
+                              isLoading = false;
                             });
                             Navigator.of(context).pop();
                             widget.updateCart
