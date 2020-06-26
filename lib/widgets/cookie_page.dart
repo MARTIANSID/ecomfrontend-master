@@ -1,5 +1,6 @@
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/screens/completeSignUp.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
@@ -135,8 +136,9 @@ class _CookiePageState extends State<CookiePage> {
     });
   }
 
-  void requestPrice() async{
-    await Provider.of<Pagination>(context,listen: false).requestPrice(context:context);
+  void requestPrice() async {
+    await Provider.of<Pagination>(context, listen: false)
+        .requestPrice(context: context);
   }
 
   void didChangeDependencies() async {
@@ -197,7 +199,6 @@ class _CookiePageState extends State<CookiePage> {
     // scrollBottomBarController.removeListener(() {});
     super.dispose();
   }
-
 
   void _onValueChange(int value, int index) {
     // await Provider.of<Options>(context, listen: false).setBuild(build: value);
@@ -464,13 +465,13 @@ class _CookiePageState extends State<CookiePage> {
     print(colorKey);
     // setState(() {
     // if (widget.select != 'fav') {
-      priceKey = (Provider.of<Pagination>(context, listen: false)
-          .diamondQuality[widget.diamond]);
+    priceKey = (Provider.of<Pagination>(context, listen: false)
+        .diamondQuality[widget.diamond]);
 
-      buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
-          Provider.of<Pagination>(context, listen: false).build[widget.build]];
-      certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
-          Provider.of<Pagination>(context, listen: false).cert[widget.cert]];
+    buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
+        Provider.of<Pagination>(context, listen: false).build[widget.build]];
+    certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
+        Provider.of<Pagination>(context, listen: false).cert[widget.cert]];
     // }
 
     ScreenUtil.init(context,
@@ -803,7 +804,10 @@ class _CookiePageState extends State<CookiePage> {
                                                 widget.products[i].styleNumber,
                                             context: context,
                                             select: widget.select);
-                                    if (mounted) setState(() {});
+
+                                    if (mounted) setState(() {
+                                      widget.products[i].isFavourite=!widget.products[i].isFavourite;
+                                    });
                                   },
                                 ),
                                 SizedBox(
@@ -834,13 +838,20 @@ class _CookiePageState extends State<CookiePage> {
                                   onTap: () {
                                     !Provider.of<Pagination>(context,
                                                 listen: false)
-                                            .isPriced
+                                            .isVerified
                                         ? dataSelect(
                                             context,
                                             'Important!',
-                                            "To see prices you must first request a quotation from Team Gemstory",
-                                            'Request Prices',
-                                            requestPrice,
+                                            "You must veriy yourself first",
+                                            'Complete Signup',
+                                            () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                       CompleteSignUp()),
+                                              );
+                                            },
                                           )
                                         : showDialog(
                                             context:

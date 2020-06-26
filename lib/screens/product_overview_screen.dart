@@ -59,11 +59,13 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(
       length: 5,
       vsync: this,
       initialIndex: 1,
     );
+ 
     // _tabController.addListener(() {
     //   print(Provider.of<Pagination>(context,listen: false).isVerified);
     //   if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
@@ -106,7 +108,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
     // });
 
-    super.initState();
+  
   }
 
   Future<void> getProduct() async {
@@ -659,6 +661,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                         ),
                         Expanded(
                           child: TabBarView(
+                            
                             physics:
                                 Provider.of<Pagination>(context, listen: false)
                                         .isVerified

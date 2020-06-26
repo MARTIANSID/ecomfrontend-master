@@ -578,8 +578,12 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {
         isCartLoading = true;
       });
+      try{
 
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
+      }catch(err){
+        
+      }
       setState(() {
         isCartLoading = false;
       });
@@ -1101,7 +1105,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                               true)
                                                                       .cart[
                                                                           index]
-                                                                      .diamond)
+                                                                      .diamond) && Provider.of<Pagination>(context,listen: false).isPriced
                                                                   ? RichText(
                                                                       text:
                                                                           TextSpan(
@@ -1140,7 +1144,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       // ),
                                                                     )
                                                                   : Text(
-                                                                      'no price',
+                                                                      'Prices not set',
                                                                       style:
                                                                           TextStyle(
                                                                         color: Colors
@@ -1414,7 +1418,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                 listen: false)
                                                             .cart
                                                             .length -
-                                                        1
+                                                        1 && Provider.of<Pagination>(context,listen: false).isPriced
                                                 ? GestureDetector(
                                                     onTap: () {},
                                                     child: Container(
@@ -1456,11 +1460,41 @@ class _CartScreenState extends State<CartScreen> {
                                                                 listen: false)
                                                             .cart
                                                             .length -
-                                                        1
-                                                ? SizedBox(
-                                                    height: ScreenUtil()
-                                                        .setHeight(93),
+                                                        1 && Provider.of<Pagination>(context,listen: false).isPriced==false
+                                                ? GestureDetector(
+                                                    onTap: () {},
+                                                    child: Container(
+                                                      width: ScreenUtil()
+                                                          .setWidth(250),
+                                                      height: ScreenUtil()
+                                                          .setWidth(43),
+                                                      // padding: EdgeInsets.all(20.0),
+                                                      child: Center(
+                                                        child: Text(
+                                                       'Prices Not Set',
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'Gilroy Bold',
+                                                            color: Colors.white,
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(18,
+                                                                    allowFontScalingSelf:
+                                                                        true),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                        image: AssetImage(
+                                                            'assets/images/vector17.png'),
+                                                        fit: BoxFit.contain,
+                                                      )),
+                                                    ),
                                                   )
+                                                
                                                 : SizedBox(
                                                     height: 0,
                                                   ),

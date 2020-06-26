@@ -68,6 +68,10 @@ class _LoginScreenState extends State<LoginScreen>
   bool _showPassword = false;
   bool _showPasswordCheckBox = false;
   bool _forgotPasswordMenu = false;
+  bool timeUpFlag = false;
+  String phoneNumber;
+  String timeText = "0s";
+  int timeCounter = 0;
 
   final _phoneController = TextEditingController();
   final _nameController = TextEditingController();
@@ -172,6 +176,20 @@ class _LoginScreenState extends State<LoginScreen>
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
+          style: kLabelStyle,
+        ),
+      ),
+    );
+  }
+
+  Widget _resendMessageBtn() {
+    return Container(
+      alignment: Alignment.centerRight,
+      child: FlatButton(
+        onPressed: () {},
+        padding: EdgeInsets.only(right: 0.0),
+        child: Text(
+          'Resend Message',
           style: kLabelStyle,
         ),
       ),
@@ -433,20 +451,23 @@ class _LoginScreenState extends State<LoginScreen>
     } else {
       print('PP in second else part: $_forgotPasswordMenu');
       print(_phoneController.text);
+      phoneNumber = _phoneController.text;
       print(_nameController.text);
       print(_passwordController.text);
 
-      _forgotPasswordMenu
-          ? await Provider.of<Auth>(context, listen: false).resetPassword(
-              _phoneController.text,
-              _nameController.text,
-              _passwordController.text)
-          : await Provider.of<Auth>(context, listen: false)
-              .userLogin(_phoneController.text, _passwordController.text);
-      Provider.of<Auth>(context, listen: false).changeLog();
-      setState(() {
-        _showSignup = false;
-      });
+      // await Provider.of<Auth>(context, listen: false)
+      //     .checkOtp(code: _nameController.text, number: phoneNumber);
+
+      if (_forgotPasswordMenu) {
+        await Provider.of<Auth>(context, listen: false).resetPassword(
+            _phoneController.text,
+            _nameController.text,
+            _passwordController.text);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .userLogin(_phoneController.text, _passwordController.text);
+        Provider.of<Auth>(context, listen: false).changeLog();
+      }
     }
   }
 
@@ -544,7 +565,9 @@ class _LoginScreenState extends State<LoginScreen>
             if (_buildForgetButton)
               _buildForgotPasswordBtn(),
 
-            _buildRememberMeCheckbox(),
+            _forgotPasswordMenu && _requirePassword == false
+                ? _resendMessageBtn()
+                : _buildRememberMeCheckbox(),
             _buildNextBtn(),
             //_buildSignInWithText(),
             //_buildSocialBtnRow(),

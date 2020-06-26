@@ -114,7 +114,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
 
   @override
   Widget build(BuildContext context) {
-    final favProducts = Provider.of<Pagination>(context).favProducts;
+    final favProducts = Provider.of<Pagination>(context,listen: true).favProducts;
     _defaultChoiceIndex1 =
         Provider.of<Options>(context, listen: false).build == null
             ? 0

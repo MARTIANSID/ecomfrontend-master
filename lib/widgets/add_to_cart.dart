@@ -135,12 +135,15 @@ class AddToCartTState extends State<AddToCart> {
             .color[_defaultChoiceIndex1])
         .toLowerCase();
 
+if(Provider.of<Pagination>(context,listen: false).isPriced)
+{
     priceKey = (Provider.of<Pagination>(context, listen: false)
         .diamondQuality[_defaultChoiceIndex3]);
 
     certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
         Provider.of<Pagination>(context, listen: false)
             .cert[_defaultChoiceIndex2]];
+}
 
     return isLoading
         ? Center(child: CircularProgressIndicator())
@@ -246,7 +249,7 @@ class AddToCartTState extends State<AddToCart> {
                                 Rect.fromLTWH(
                                     0, 0, bounds.width, bounds.height),
                               ),
-                              child: widget.product.prices.containsKey(priceKey)
+                              child: widget.product.prices.containsKey(priceKey) && Provider.of<Pagination>(context,listen: false).isPriced
                                   ? Text(
                                       '${int.parse(widget.product.prices[priceKey]) + certPrice} ₹',
                                       style: TextStyle(
@@ -257,7 +260,7 @@ class AddToCartTState extends State<AddToCart> {
                                       ),
                                     )
                                   : Text(
-                                      'no price',
+                                      'Prices Not Set ',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: ScreenUtil().setSp(18,

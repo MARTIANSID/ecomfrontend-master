@@ -339,6 +339,7 @@ class Pagination with ChangeNotifier {
       }
 
       favProducts = loadedProducts;
+      notifyListeners();
       print(favProducts);
     } catch (err) {
       throw err;
@@ -348,142 +349,87 @@ class Pagination with ChangeNotifier {
   Future<void> toogleFavourite({String styleNumber, context, select}) async {
     int index;
 
-    if (select == 'all') {
-      index = allProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      allProducts[index].isFavourite = !allProducts[index].isFavourite;
-      if (allProducts[index].isFavourite) {
-        favProducts.add(allProducts[index]);
-      } else {
-        favProducts.remove(allProducts[index]);
-      }
+    // if (select == 'all') {
+    //   index = allProducts
+    //       .indexWhere((element) => element.styleNumber == styleNumber);
+    //   allProducts[index].isFavourite = !allProducts[index].isFavourite;
+    //   if (allProducts[index].isFavourite) {
+    //     favProducts.add(allProducts[index]);
+    //   } else {
+    //     favProducts.remove(allProducts[index]);
+    //   }
 
-      notifyListeners();
-    }
-    if (select == 'new') {
-      index = newProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      newProducts[index].isFavourite = !newProducts[index].isFavourite;
-      if (newProducts[index].isFavourite) {
-        favProducts.add(newProducts[index]);
-      } else {
-        favProducts.remove(newProducts[index]);
-      }
+    //   notifyListeners();
+    // }
+    // if (select == 'new') {
+    //   index = newProducts
+    //       .indexWhere((element) => element.styleNumber == styleNumber);
+    //   newProducts[index].isFavourite = !newProducts[index].isFavourite;
+    //   if (newProducts[index].isFavourite) {
+    //     favProducts.add(newProducts[index]);
+    //   } else {
+    //     favProducts.remove(newProducts[index]);
+    //   }
 
-      notifyListeners();
-    }
-    if (select == 'featured') {
-      index = featuredProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      featuredProducts[index].isFavourite =
-          !featuredProducts[index].isFavourite;
-      if (featuredProducts[index].isFavourite) {
-        favProducts.add(featuredProducts[index]);
-      } else {
-        favProducts.remove(featuredProducts[index]);
-      }
+    //   notifyListeners();
+    // }
+    // if (select == 'featured') {
+    //   index = featuredProducts
+    //       .indexWhere((element) => element.styleNumber == styleNumber);
+    //   featuredProducts[index].isFavourite =
+    //       !featuredProducts[index].isFavourite;
+    //   if (featuredProducts[index].isFavourite) {
+    //     favProducts.add(featuredProducts[index]);
+    //   } else {
+    //     favProducts.remove(featuredProducts[index]);
+    //   }
 
-      notifyListeners();
-    }
-    if (select == 'fancyDiamond') {
-      index = fancyDiamond
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-      if (fancyDiamond[index].isFavourite) {
-        favProducts.add(fancyDiamond[index]);
-      } else {
-        favProducts.remove(fancyDiamond[index]);
-      }
+    //   notifyListeners();
+    // }
+    // if (select == 'fancyDiamond') {
+    //   index = fancyDiamond
+    //       .indexWhere((element) => element.styleNumber == styleNumber);
+    //   fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+    //   if (fancyDiamond[index].isFavourite) {
+    //     favProducts.add(fancyDiamond[index]);
+    //   } else {
+    //     favProducts.remove(fancyDiamond[index]);
+    //   }
 
-      notifyListeners();
-    }
-    if (select == 'highestSelling') {
-      index = highestSellingProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      highestSellingProducts[index].isFavourite =
-          !highestSellingProducts[index].isFavourite;
-      if (highestSellingProducts[index].isFavourite) {
-        favProducts.add(highestSellingProducts[index]);
-      } else {
-        favProducts.remove(highestSellingProducts[index]);
-      }
-      notifyListeners();
-    }
-    if (select == 'fav') {
-      index = favProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts[index].isFavourite = !favProducts[index].isFavourite;
-      favProducts.remove(favProducts[index]);
-      notifyListeners();
-    }
+    //   notifyListeners();
+    // }
+    // if (select == 'highestSelling') {
+    //   index = highestSellingProducts
+    //       .indexWhere((element) => element.styleNumber == styleNumber);
+    //   highestSellingProducts[index].isFavourite =
+    //       !highestSellingProducts[index].isFavourite;
+    //   if (highestSellingProducts[index].isFavourite) {
+    //     favProducts.add(highestSellingProducts[index]);
+    //   } else {
+    //     favProducts.remove(highestSellingProducts[index]);
+    //   }
+    //   notifyListeners();
+    // }
+   
 
     try {
       final response = await http
-          .post('https://' + uurl + '/user/favourite/toggle', headers: {
+          .post( uurl + '/user/favourite/toggle', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token
       }, body: {
         'styleNumber': styleNumber
       });
-      final responseBody = json.decode(response.body) as Map<String, dynamic>;
+      final responseBody = json.decode(response.body);
       if (responseBody['error'] == true) {
-        if (select == 'all') {
-          allProducts[index].isFavourite = !allProducts[index].isFavourite;
-          favProducts.remove(allProducts[index]);
-          notifyListeners();
-        }
-        if (select == 'new') {
-          newProducts[index].isFavourite = !newProducts[index].isFavourite;
-          favProducts.remove(newProducts[index]);
-          notifyListeners();
-        }
-        if (select == 'featured') {
-          featuredProducts[index].isFavourite =
-              !featuredProducts[index].isFavourite;
-          favProducts.remove(featuredProducts[index]);
-          notifyListeners();
-        }
-        if (select == 'fancyDiamond') {
-          fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-          favProducts.remove(fancyDiamond[index]);
-          notifyListeners();
-        }
-        if (select == 'highestSelling') {
-          highestSellingProducts[index].isFavourite =
-              !highestSellingProducts[index].isFavourite;
-          favProducts.remove(highestSellingProducts[index]);
-          notifyListeners();
-        }
+   
         throw HttpException(responseBody['details']['message']);
       }
+     await getFav(context); 
+     
+
     } catch (error) {
-      if (select == 'all') {
-        allProducts[index].isFavourite = !allProducts[index].isFavourite;
-        favProducts.remove(allProducts[index]);
-        notifyListeners();
-      }
-      if (select == 'new') {
-        newProducts[index].isFavourite = !newProducts[index].isFavourite;
-        favProducts.remove(newProducts[index]);
-        notifyListeners();
-      }
-      if (select == 'featured') {
-        featuredProducts[index].isFavourite =
-            !featuredProducts[index].isFavourite;
-        favProducts.remove(featuredProducts[index]);
-        notifyListeners();
-      }
-      if (select == 'fancyDiamond') {
-        fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-        favProducts.remove(fancyDiamond[index]);
-        notifyListeners();
-      }
-      if (select == 'highestSelling') {
-        highestSellingProducts[index].isFavourite =
-            !highestSellingProducts[index].isFavourite;
-        favProducts.remove(highestSellingProducts[index]);
-        notifyListeners();
-      }
+
 
       print('PP in toogleFavourite error block error: $error');
     }
@@ -492,7 +438,7 @@ class Pagination with ChangeNotifier {
   Future<void> getProductDetail({context, styleNumber}) async {
     try {
       final response = await http.get(
-        'https://' + uurl + '/product/single?styleNumber=$styleNumber',
+        uurl + '/product/single?styleNumber=$styleNumber',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token

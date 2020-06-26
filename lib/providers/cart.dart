@@ -262,7 +262,7 @@ class Cart with ChangeNotifier {
                   .indexOf(i['options']['diamondQuality']),
               product: Product(
                   imageUrl: Map<dynamic, dynamic>.from(i['images']),
-                  prices: Map<dynamic, dynamic>.from(i['prices']),
+                  prices:Provider.of<Pagination>(context,listen: false).isPriced? Map<dynamic, dynamic>.from(i['prices']):{},
                   styleNumber: i["styleNumber"])))
           .toList();
 

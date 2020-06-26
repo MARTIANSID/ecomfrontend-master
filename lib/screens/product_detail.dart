@@ -877,7 +877,9 @@ class _ProductDetailState extends State<ProductDetail> {
                             styleNumber: widget.product.styleNumber,
                             context: context,
                             select: select);
-                    setState(() {});
+                    setState(() {
+                      widget.product.isFavourite=!widget.product.isFavourite;
+                    });
                   },
                   child: Icon(
                     widget.product.isFavourite

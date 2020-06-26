@@ -60,6 +60,22 @@ class Auth with ChangeNotifier {
       return true;
   }
 
+  Future<bool> checkOtp({number,code}) async{
+    final response = await http
+        .post('${uurl}user/checkcode', body: {"number": number,"code":code});
+    final responseBody = json.decode(response.body);
+    
+    if (responseBody['error'] == true)
+      throw HttpException(responseBody['details']['message']);
+      print(responseBody['matches']);
+      return responseBody['matches'];
+    
+  
+  }
+  
+
+
+
   Future<bool> resetPassword(String number, String otp, String password) async {
     final response = await http.patch('${uurl}user/resetpassword/',
         body: {"code": "$otp", "password": "$password","number":number});

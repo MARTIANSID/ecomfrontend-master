@@ -1,11 +1,15 @@
+import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/cart_screen.dart';
 import 'package:Flutter/screens/favourite_screen.dart';
 import 'package:Flutter/screens/profile_screeen.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './product_overview_screen.dart';
+import 'completeSignUp.dart';
 import 'profile_screeen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,6 +30,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   int _currentIndex = 2;
   int _previousIndex = 0;
+  bool check=false;
 
   ScrollController _hideButtonController;
   var _isVisible;
@@ -36,10 +41,21 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   );
 
   void pageChanged(int index) {
-    setState(() {
+  setState(() {
       _previousIndex = _currentIndex;
       _currentIndex = index;
     });
+   
+   
+  }
+
+  void completeSignUp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompleteSignUp(),
+      ),
+    );
   }
 
   AnimationController controller;
@@ -165,7 +181,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             children: [
               UserPage(
                 onButtonTapped: _onTap,
-              ),
+              ), 
               FavouriteScreen(
                 scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
@@ -175,7 +191,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
                 val: _visible,
+               
               ),
+              // if(check==false)
               CartScreen(),
               Center(child: Text('Navigate to Whatsapp')),
             ],
@@ -397,9 +415,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           //     ),
                           //   ),
                           // );
+                          if(!Provider.of<Pagination>(context,listen: false).isVerified){
+                            dataSelect(
+                                        context,
+                                        'Important!',
+                                        "To get complete access of the app, you need to first verify yourself!",
+                                        'Complete SignUp',
+                                        completeSignUp,
+                                      );
+                          }else{
                           pageController.animateToPage(3,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.ease);
+                          }
                         }
                       : null,
                   child: Container(
