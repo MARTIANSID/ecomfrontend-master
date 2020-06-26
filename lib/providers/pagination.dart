@@ -103,8 +103,8 @@ class Pagination with ChangeNotifier {
     notifyListeners();
   }
 
-  final uurl = "alexa.gemstory.in/";
-  final req = "alexa.gemstory.in/user/requestprice";
+  final uurl = "https://alexa.gemstory.in/";
+  final req = "https://alexa.gemstory.in/user/requestprice";
 
 
   Future<void> requestPrice({context}) async {
@@ -117,6 +117,7 @@ class Pagination with ChangeNotifier {
         },
       );
       final responseData=json.decode(response.body);
+      print(json.decode(response.body));
        if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }

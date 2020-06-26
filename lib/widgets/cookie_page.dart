@@ -136,7 +136,7 @@ class _CookiePageState extends State<CookiePage> {
   }
 
   void requestPrice() async{
-    await Provider.of<Pagination>(context).requestPrice(context:context);
+    await Provider.of<Pagination>(context,listen: false).requestPrice(context:context);
   }
 
   void didChangeDependencies() async {
