@@ -1,3 +1,4 @@
+import 'package:Flutter/providers/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -121,7 +122,7 @@ class Pagination with ChangeNotifier {
        if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
-
+      await Provider.of<UserInfo>(context,listen: false).storePricDate(DateTime.now().toString());
 
     } catch (err) {
       throw err;

@@ -1,5 +1,6 @@
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/completeSignUp.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
@@ -70,6 +71,7 @@ class _CookiePageState extends State<CookiePage> {
   bool show = true;
 
   Future<void> getMoreProducts() async {
+   try{ 
     if (widget.select == 'all')
       await Provider.of<Pagination>(context, listen: false).getProducts(
           page: Provider.of<Pagination>(context, listen: false).pageAll,
@@ -110,11 +112,16 @@ class _CookiePageState extends State<CookiePage> {
           context: context,
           sort: Provider.of<Pagination>(context, listen: false).sort,
           sortby: Provider.of<Pagination>(context, listen: false).count);
-  }
+  }catch(err){
+    dataSelect(context, '$err', '', 'OK', () {
+          Navigator.pop(context);
+    
+      });
+  }}
 
   createList() async {
     widget.scrollController.addListener(() async {
-      if (widget.scrollController.position.maxScrollExtent ==
+      if (widget.scrollController.position.maxScrollExtent/3 ==
           widget.scrollController.position.pixels) {
         if (!mounted)
           setState(() {
@@ -700,14 +707,45 @@ class _CookiePageState extends State<CookiePage> {
                                                       listen: false)
                                                   .isPriced
                                               ? GestureDetector(
-                                                  onTap: () {
-                                                    dataSelect(
-                                                      context,
-                                                      'Important!',
-                                                      "To see prices you must first request a quotation from Team Gemstory",
-                                                      'Request Prices',
-                                                      requestPrice,
-                                                    );
+                                                  onTap: () async {
+                                                    String date = await Provider
+                                                            .of<UserInfo>(
+                                                                context,
+                                                                listen: false)
+                                                        .getPriceDate();
+                                                    if (date != null) {
+                                                      int d = DateTime.now()
+                                                          .difference(
+                                                              DateTime.parse(
+                                                                  date))
+                                                          .inDays;
+                                                      if (d >= 1) {
+                                                        dataSelect(
+                                                          context,
+                                                          'Important!',
+                                                          "To see prices you must first request a quotation from Team Gemstory",
+                                                          'Request Prices',
+                                                          requestPrice,
+                                                        );
+                                                      } else {
+                                                        dataSelect(
+                                                            context,
+                                                            'Request has already been noted!',
+                                                            '',
+                                                            'ok', () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      }
+                                                    } else {
+                                                      dataSelect(
+                                                        context,
+                                                        'Important!',
+                                                        "To see prices you must first request a quotation from Team Gemstory",
+                                                        'Request Prices',
+                                                        requestPrice,
+                                                      );
+                                                    }
                                                   },
                                                   child: Container(
                                                     height: ScreenUtil()
@@ -886,15 +924,44 @@ class _CookiePageState extends State<CookiePage> {
                                             'Important!',
                                             "To get complete access of the app, you need to first verify yourself!",
                                             'Complete SignUp',
-                                            () {
+                                            () async {
                                               Navigator.of(context).pop();
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CompleteSignUp(),
-                                                ),
-                                              );
+                                              String date =
+                                                  await Provider.of<UserInfo>(
+                                                          context,
+                                                          listen: false)
+                                                      .getDate();
+                                              if (date != null) {
+                                                int d = DateTime.now()
+                                                    .difference(
+                                                        DateTime.parse(date))
+                                                    .inDays;
+                                                if (d >= 1) {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CompleteSignUp(),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  dataSelect(
+                                                      context,
+                                                      'Request has already been noted!',
+                                                      '',
+                                                      'ok', () {
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
+                                              } else {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CompleteSignUp(),
+                                                  ),
+                                                );
+                                              }
                                             },
                                           )
                                         : showDialog(

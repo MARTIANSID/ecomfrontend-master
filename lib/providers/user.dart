@@ -4,6 +4,7 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'http_exception.dart';
@@ -136,12 +137,49 @@ class UserInfo with ChangeNotifier {
         if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
+      await storeDate(DateTime.now().toString());
 
       return responseData;
     } catch (err) {
       throw err;
     }
   }
+  Future<String> getDate()async{
+     SharedPreferences cc = await SharedPreferences.getInstance();
+      return cc.getString('date');
+
+
+
+
+  }
+
+  Future<void> storeDate(date)async{
+    SharedPreferences cc = await SharedPreferences.getInstance();
+    cc.setString('date', date);
+   
+    notifyListeners();
+
+
+  }
+    Future<String> getPriceDate()async{
+     SharedPreferences  cc= await SharedPreferences.getInstance();
+      return cc.getString('priceDate');
+
+
+
+
+  }
+
+  Future<void> storePricDate(date)async{
+    SharedPreferences cc = await SharedPreferences.getInstance();
+     cc.setString('priceDate', date);
+   
+    notifyListeners();
+
+
+  }
+  
+
   
 
 }

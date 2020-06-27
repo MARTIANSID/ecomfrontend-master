@@ -1,10 +1,12 @@
 import 'package:Flutter/providers/auth.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/home.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 
 import '../providers/products.dart';
 
@@ -15,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  bool isVerifyLoading = false;
+
   dispose() {
     _passwordController.dispose();
     _phoneController.dispose();
@@ -84,10 +88,7 @@ class _LoginScreenState extends State<LoginScreen>
   Widget _buildGivenTF({
     @required String name,
     @required String hint,
-    @required TextEditingController 
-    
-    
-    controller,
+    @required TextEditingController controller,
     @required TextInputType inputType,
     @required IconData icon,
   }) {
@@ -186,16 +187,38 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _resendMessageBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: FlatButton(
-        onPressed: () {},
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Resend Message',
-          style: kLabelStyle,
+    return ArgonTimerButton(
+      splashColor: null,
+      color: null,
+      roundLoadingShape: false,
+      colorBrightness: null,
+      height: 25,
+      width: 0.5,
+      child: Container(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.only(right: 0.0),
+          child: Text(
+            'Resend Otp',
+            style: kLabelStyle,
+          ),
         ),
       ),
+      loader: (timeLeft) {
+        return Text("Wait | $timeLeft", style: kLabelStyle);
+      },
+      onTap: (startTimer, btnState) async {
+        if (btnState == ButtonState.Idle) {
+          try {
+            await Provider.of<Auth>(context, listen: false)
+                .resendOtp(phoneNumber);
+
+            startTimer(20);
+          } catch (error) {
+            _showDilog('Oops!', '$error');
+          }
+        }
+      },
     );
   }
 
@@ -213,6 +236,9 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           FlatButton(
             onPressed: () => setState(() {
+              _phoneController.clear();
+              _nameController.clear();
+              _passwordController.clear();
               Navigator.of(context).pop();
               _requirePassword = false;
               _buildForgetButton = false;
@@ -236,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen>
       final a = await Provider.of<Auth>(context, listen: false)
           .resetPasswordRequest(_phoneController.text)
           .catchError((error) {
-        _showDilog('Oops!', 'AFzAL:$error');
+        _showDilog('Oops!', '$error');
       });
       a
           ? setState(() {
@@ -248,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen>
             })
           : _showDilog('OOPS!', 'Something went wrong, Try again later');
     } catch (error) {
-      throw error;
+      _showDilog('Oops!', '$error');
     }
   }
 
@@ -400,6 +426,7 @@ class _LoginScreenState extends State<LoginScreen>
               _nameController.text,
               _phoneController.text,
               _passwordController.text);
+
           await Provider.of<Products>(context, listen: false)
               .fetchAndSetProducts(
                   token: Provider.of<Auth>(context, listen: true).token);
@@ -407,40 +434,53 @@ class _LoginScreenState extends State<LoginScreen>
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (ctx) => Home()));
         } catch (error) {
-          print('PP error occured in signup');
+          _showDilog('Oops!', '$error');
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
         }
       } else {
-        print(_isRegistered);
-        _isRegistered = _forgotPasswordMenu
-            ? true
-            : await Provider.of<Auth>(context, listen: false)
-                .checkIfRegistered(_phoneController.text);
-        setState(() {
-          _isLoading = false;
-          print('PP in setState1: $_isRegistered');
-          // if (_isRegistered != null) {
+        try {
+          print(_isRegistered);
+          _isRegistered = _forgotPasswordMenu
+              ? true
+              : await Provider.of<Auth>(context, listen: false)
+                  .checkIfRegistered(_phoneController.text);
 
-          // }
-          if (_isRegistered) {
-            _requirePassword = true;
+          setState(() {
+            _isLoading = false;
+            print('PP in setState1: $_isRegistered');
+            // if (_isRegistered != null) {
 
-            _controller.forward();
-            print(!_forgotPasswordMenu);
-            if (!_forgotPasswordMenu) _buildForgetButton = true;
+            // }
+            if (_isRegistered) {
+              phoneNumber = _phoneController.text;
+              _requirePassword = true;
 
-          
-            _showPasswordCheckBox = true;
-          } else {
-            _showSignup = true;
+              _controller.forward();
+              print(!_forgotPasswordMenu);
+              if (!_forgotPasswordMenu) _buildForgetButton = true;
 
-            _requirePassword = true;
-            _controller.forward();
-            _showPasswordCheckBox = true;
-          }
-          // setState(() {
-          //   _isLoading = true;
-          // });
-        });
+              _showPasswordCheckBox = true;
+            } else {
+              _showSignup = true;
+
+              _requirePassword = true;
+              _controller.forward();
+              _showPasswordCheckBox = true;
+            }
+            // setState(() {
+            //   _isLoading = true;
+            // });
+          });
+        } catch (error) {
+          _showDilog('Oops!', '$error');
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     } else {
       print('PP in second else part: $_forgotPasswordMenu');
@@ -453,13 +493,41 @@ class _LoginScreenState extends State<LoginScreen>
       //     .checkOtp(code: _nameController.text, number: phoneNumber);
 
       if (_forgotPasswordMenu) {
-        await Provider.of<Auth>(context, listen: false).resetPassword(
-            _phoneController.text,
-            _nameController.text,
-            _passwordController.text);
+        try {
+          await Provider.of<Auth>(context, listen: false).resetPassword(
+              _phoneController.text,
+              _nameController.text,
+              _passwordController.text);
+        } catch (error) {
+          _showDilog('Oops!', '$error');
+        }
+        setState(() {
+          _requirePassword = false;
+          _buildForgetButton = false;
+          _isRegistered = false;
+          _showSignup = false;
+          _rememberMe = false;
+          _showPassword = false;
+          _showPasswordCheckBox = false;
+          _forgotPasswordMenu = false;
+          _screen = 0;
+          _isLoading = false;
+        });
       } else {
-        await Provider.of<Auth>(context, listen: false)
-            .userLogin(_phoneController.text, _passwordController.text);
+        try {
+          await Provider.of<Auth>(context, listen: false)
+              .userLogin(_phoneController.text, _passwordController.text);
+        } catch (error) {
+          _showDilog('Oops!', '$error');
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
         Provider.of<Auth>(context, listen: false).changeLog();
       }
     }
@@ -531,7 +599,6 @@ class _LoginScreenState extends State<LoginScreen>
                 child: _buildGivenTF(
                     name: 'Name',
                     hint: 'Enter your full name',
-
                     controller: _nameController,
                     inputType: TextInputType.text,
                     icon: Icons.person),
@@ -563,18 +630,71 @@ class _LoginScreenState extends State<LoginScreen>
             _forgotPasswordMenu && _requirePassword == false
                 ? _resendMessageBtn()
                 : _buildRememberMeCheckbox(),
-             
-            _buildNextBtn(),
-            if(_forgotPasswordMenu && _showPassword==false)
-            RaisedButton(
-              onPressed: ()async{
-                await Provider.of<Auth>(context,listen: false).checkOtp(number:'12345'.toString(),code:phoneNumber);
-              },
 
-              child: Text('verify OTP'),
-            )
+            _forgotPasswordMenu && _requirePassword == false
+                ? Container(
+                    padding: EdgeInsets.only(top: 20.0),
+                    width: double.infinity,
+                    child: RaisedButton(
+                      onPressed: () async {
+                        setState(() {
+                          isVerifyLoading = true;
+                        });
+                        bool b;
+                        try {
+                          b = await Provider.of<Auth>(context, listen: false)
+                              .checkOtp(
+                                  number: phoneNumber.toString(),
+                                  code: _nameController.text);
+                          setState(() {
+                            isVerifyLoading = false;
+                          });
 
-            
+                          if (b) {
+                            _forgotPasswordMenu = true;
+                            _requirePassword = true;
+                            next();
+                          } else {
+                            dataSelect(context, 'Wrong Otp', '', 'ok', () {
+                              Navigator.pop(context);
+                            });
+                          }
+                        } catch (error) {
+                          _showDilog('Oops!', '$error');
+                        } finally {
+                          setState(() {
+                            isVerifyLoading = false;
+                          });
+                        }
+                      },
+                      elevation: 5.0,
+                      padding: EdgeInsets.all(15.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      color: Colors.white,
+                      child: _isLoading
+                          ? SizedBox(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                              ),
+                              height: ScreenUtil().setHeight(22),
+                              width: ScreenUtil().setWidth(22),
+                            )
+                          : Text(
+                              'Verify Otp',
+                              style: TextStyle(
+                                color: Color(0xFF527DAA),
+                                letterSpacing: 1.5,
+                                fontSize: ScreenUtil()
+                                    .setSp(18, allowFontScalingSelf: true),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Gilroy Regular',
+                              ),
+                            ),
+                    ))
+                : _buildNextBtn()
+
             //_buildSignInWithText(),
             //_buildSocialBtnRow(),
             //_buildSignupBtn(),

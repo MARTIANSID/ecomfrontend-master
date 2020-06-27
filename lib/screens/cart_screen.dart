@@ -581,7 +581,14 @@ class _CartScreenState extends State<CartScreen> {
       try {
         await Provider.of<Cart>(context, listen: false)
             .getCart(context: context);
-      } catch (err) {}
+      } catch (err) {
+        dataSelect(context, '$err', '', 'OK', (){
+          Navigator.pop(context);
+        });
+
+      }finally{
+        isCartLoading=false;
+      }
       setState(() {
         isCartLoading = false;
       });
@@ -624,9 +631,12 @@ class _CartScreenState extends State<CartScreen> {
   List<dynamic> suggestion;
   bool isLoadingSearch = false;
   Future<void> getSearch(query) async {
+  
+
     setState(() {
       isLoadingSearch = true;
     });
+    try{
     await Provider.of<Searchh>(context, listen: false)
         .getSearch(query: query.toUpperCase(), context: context)
         .then((value) {
@@ -639,7 +649,22 @@ class _CartScreenState extends State<CartScreen> {
         isLoadingSearch = false;
         print('DC SEARCH');
       });
+        
+        
     });
+    }catch(err){
+        dataSelect(context, '$err', '', 'OK', (){
+          Navigator.pop(context);
+        });
+
+
+    }
+    finally{
+      setState(() {
+        isLoadingSearch=false;
+      });
+      
+    }
 
     print(suggestion);
     // setState(() {
@@ -813,6 +838,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 // setState(() {
                                                 //   isListLoading=true;
                                                 // });
+                                               try{ 
 
                                                 await Provider.of<Cart>(context,
                                                         listen: false)
@@ -824,6 +850,11 @@ class _CartScreenState extends State<CartScreen> {
                                                             .id,
                                                         context: context);
                                                 if (mounted) setState(() {});
+                                               }catch(err){
+                                                dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                                                });
+                                               }
                                               },
                                               background: Container(
                                                 color: Colors.red,
@@ -1189,6 +1220,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                             index]
                                                                         .quantity >
                                                                     1) {
+                                                                   try{   
                                                                   await Provider.of<Cart>(context, listen: false).decQuantity(
                                                                       context:
                                                                           context,
@@ -1215,7 +1247,12 @@ class _CartScreenState extends State<CartScreen> {
                                                                       certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
                                                                       diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
                                                                       index: index);
+                                                                }catch(err){
+                                                                   dataSelect(context, '$err', '', 'OK', (){
+                                                         Navigator.pop(context);
+                                                });
                                                                 }
+                                                                    }
                                                               },
                                                               child: ShaderMask(
                                                                 shaderCallback:
@@ -1324,6 +1361,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             ),
                                                             GestureDetector(
                                                               onTap: () async {
+                                                               try{ 
                                                                 await Provider.of<Cart>(context, listen: false).incQuantity(
                                                                     context:
                                                                         context,
@@ -1351,7 +1389,13 @@ class _CartScreenState extends State<CartScreen> {
                                                                     diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
                                                                     index: index);
                                                                 setState(() {});
+                                                               }catch(err){
+                                                                  dataSelect(context, '$err', '', 'OK', (){
+                                                           Navigator.pop(context);
+                                                                  });
+                                                               }
                                                               },
+                                                              
                                                               child: ShaderMask(
                                                                 shaderCallback:
                                                                     (bounds) =>
@@ -1633,8 +1677,15 @@ class _CartScreenState extends State<CartScreen> {
                                             //   // info=styleNumber[].split(value);
                                             //   // print(styleNumber[1].split(searchValue));
                                             // });
+                                            try{
+                                            
                                             await getSearch(
                                                 searchValue.toUpperCase());
+                                            }catch(err){
+                                               dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                                                });
+                                            }
                                             // setState(() {
                                             //   isLoadingSearch = false;
                                             // });
@@ -1777,6 +1828,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 print(info);
                                                 return GestureDetector(
                                                   onTap: () async {
+                                                   try{ 
                                                     await Provider.of<
                                                                 Pagination>(
                                                             context,
@@ -1846,6 +1898,11 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                       ),
                                                     );
+                                                  }catch(err){
+                                                     dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                                                });
+                                                  }
                                                   },
                                                   child: Padding(
                                                     padding:

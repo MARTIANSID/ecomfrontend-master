@@ -963,6 +963,8 @@ if(Provider.of<Pagination>(context,listen: false).isPriced)
                           });
                           print(value2);
                           if (value2) {
+                           try{
+
                             setState(() {
                               isLoading = true;
                             });
@@ -985,10 +987,17 @@ if(Provider.of<Pagination>(context,listen: false).isPriced)
                               certvalue: _defaultChoiceIndex2,
                               update: widget.updateCart ? true : false,
                             );
+                           }catch(err){
+                             dataSelect(context, '$err', '', 'OK', () {
+          Navigator.pop(context);
+    
+      });
+                           }finally{
                             setState(() {
                               isLoading = false;
                             });
                             Navigator.of(context).pop();
+                           }
                             widget.updateCart
                                 ? showFloatingFlushbar(
                                     widget.globalKey.currentContext,

@@ -1,4 +1,5 @@
 import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/cart_screen.dart';
 import 'package:Flutter/screens/favourite_screen.dart';
 import 'package:Flutter/screens/profile_screeen.dart';
@@ -20,7 +21,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool _visible = true;
-
   void _onTap(int a) {
     setState(() {
       _currentIndex = a;
@@ -46,14 +46,31 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     });
   }
 
-  void completeSignUp() {
+  void completeSignUp() async {
     Navigator.of(context).pop();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CompleteSignUp(),
-      ),
-    );
+    String date = await Provider.of<UserInfo>(context, listen: false).getDate();
+    if (date != null) {
+      int d = DateTime.now().difference(DateTime.parse(date)).inDays;
+      if (d >= 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CompleteSignUp(),
+          ),
+        );
+      } else {
+        dataSelect(context, 'Request has already been noted!', '', 'ok', () {
+          Navigator.pop(context);
+        });
+      }
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CompleteSignUp(),
+        ),
+      );
+    }
   }
 
   AnimationController controller;
@@ -179,6 +196,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             children: [
               UserPage(
                 onButtonTapped: _onTap,
+                cont: context,
               ),
               FavouriteScreen(
                 scrollController: _hideButtonController,

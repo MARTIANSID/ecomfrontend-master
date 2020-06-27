@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/photo_detail_screen.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
@@ -70,6 +71,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   int page = 0;
   Future<void> getSearch(query) async {
+   try{ 
     setState(() {
       isLoadingSearch = true;
     });
@@ -82,10 +84,17 @@ class _ProductDetailState extends State<ProductDetail> {
             .where((element) =>
                 element.styleNumber.contains(searchValue.toUpperCase()))
             .toList();
-        isLoadingSearch = false;
+      
         print('DC SEARCH');
       });
     });
+   }catch(err){
+      dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                    });
+   }finally{
+  isLoadingSearch = false;
+   }
 
     print(suggestion);
     // setState(() {
@@ -117,8 +126,21 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void requestPrice() async {
-    await Provider.of<Pagination>(context).requestPrice(context: context);
-    Navigator.of(context).pop();
+   try{
+      await Provider.of<Pagination>(context).requestPrice(context: context);
+
+   }catch(err){
+      dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                    });
+
+   }
+    finally{
+     Navigator.of(context).pop();
+
+   }
+   
+    
   }
 
   @override
@@ -686,16 +708,41 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       'Important!',
                                                       "To get complete access of the app, you need to first verify yourself!",
                                                       'Complete SignUp',
-                                                      () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                CompleteSignUp(),
-                                                          ),
-                                                        );
+                                                      () async{
+                                                       Navigator.pop(context);
+                                                        String date =
+                                                    await Provider.of<UserInfo>(
+                                                            context,
+                                                            listen: false)
+                                                        .getDate();
+                                                if (date != null) {
+                                                  int d = DateTime.now()
+                                                      .difference(
+                                                          DateTime.parse(date))
+                                                      .inDays;
+                                                  if (d >= 1) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CompleteSignUp(),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    dataSelect(context, 'Request has already been noted!', '', 'ok', (){
+                                                      Navigator.pop(context);
+
+                                                    });
+                                                  }
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CompleteSignUp(),
+                                                    ),
+                                                  );
+                                                }
                                                       },
                                                     )
                                                   : showDialog(
@@ -1146,6 +1193,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           print(info);
                                           return GestureDetector(
                                             onTap: () async {
+                                             try{ 
                                               await Provider.of<Pagination>(
                                                       context,
                                                       listen: false)
@@ -1241,7 +1289,11 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   ),
                                                 ),
                                               );
-                                            },
+                                            }catch(err){
+                                               dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                    });
+                                            }},
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 20.0, right: 20.0),

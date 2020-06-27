@@ -20,9 +20,10 @@ class UserPage extends StatefulWidget {
   final int pageIndex;
   final PageController pageController;
   final void Function(int) onButtonTapped;
+  final cont;
 
   const UserPage(
-      {Key key, this.pageIndex, this.pageController, this.onButtonTapped})
+      {Key key, this.pageIndex, this.pageController, this.onButtonTapped,this.cont})
       : super(key: key);
 
   @override
@@ -42,18 +43,7 @@ class _UserPageState extends State<UserPage>
     super.initState();
   }
 
-  void setValue() {
-    setState(() {
-      storeCheckValue = true;
-    });
-
-    Timer(Duration(seconds: 1), () {
-      setState(() {
-        storeCheckValue = false;
-      });
-    });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -207,8 +197,7 @@ class _UserPageState extends State<UserPage>
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          CompleteSignUp(
-                                                              val: setValue),
+                                                          CompleteSignUp(),
                                                     ),
                                                   );
                                                 }
@@ -216,10 +205,18 @@ class _UserPageState extends State<UserPage>
                                                           Pagination>(context,
                                                       listen: false)
                                                   .isPriced) {
+                                                try{    
                                                 await Provider.of<Pagination>(
-                                                        context,listen: false)
+                                                        context,
+                                                        listen: false)
                                                     .requestPrice(
                                                         context: context);
+                                                }catch(err){
+                                                  dataSelect(context, '$err', '', 'OK', () {
+          Navigator.pop(context);
+    
+      });
+                                                }
                                               } else {
                                                 Navigator.push(
                                                   context,
@@ -258,23 +255,58 @@ class _UserPageState extends State<UserPage>
                                                       context,
                                                       listen: false)
                                                   .isVerified) {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CompleteSignUp(
-                                                      val: setValue,
+                                                String date =
+                                                    await Provider.of<UserInfo>(
+                                                            context,
+                                                            listen: false)
+                                                        .getDate();
+                                                if (date != null) {
+                                                  int d = DateTime.now()
+                                                      .difference(
+                                                          DateTime.parse(date))
+                                                      .inDays;
+                                                  if (d >= 1) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CompleteSignUp(),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    dataSelect(
+                                                        context,
+                                                        'Request has already been noted!',
+                                                        '',
+                                                        'ok', () {
+                                                      Navigator.pop(context);
+                                                    });
+                                                  }
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CompleteSignUp(),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               } else if (!Provider.of<
                                                           Pagination>(context,
                                                       listen: false)
                                                   .isPriced) {
+                                                 try{   
                                                 await Provider.of<Pagination>(
-                                                        context,listen: false)
+                                                        context,
+                                                        listen: false)
                                                     .requestPrice(
                                                         context: context);
+                                                 }catch(err){
+                                                   dataSelect(context, '$err', '', 'OK', () {
+          Navigator.pop(context);
+    
+      });
+                                                 }
                                               } else {
                                                 Navigator.push(
                                                   context,
@@ -315,24 +347,56 @@ class _UserPageState extends State<UserPage>
                                             color: Colors.white,
                                             iconSize: ScreenUtil().setSp(40,
                                                 allowFontScalingSelf: true),
-                                            onPressed: () {
-                                              Provider.of<Pagination>(context,
-                                                          listen: false)
-                                                      .isVerified
-                                                  ? Navigator.push(
+                                            onPressed: () async {
+                                              if (Provider.of<Pagination>(
                                                       context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AccountInfo(),
-                                                      ),
-                                                    )
-                                                  : Navigator.push(
+                                                      listen: false)
+                                                  .isVerified)
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AccountInfo(),
+                                                  ),
+                                                );
+                                              else {
+                                                String date =
+                                                    await Provider.of<UserInfo>(
+                                                            context,
+                                                            listen: false)
+                                                        .getDate();
+                                                if (date != null) {
+                                                  int d = DateTime.now()
+                                                      .difference(
+                                                          DateTime.parse(date))
+                                                      .inDays;
+                                                  if (d >= 1) {
+                                                    Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             CompleteSignUp(),
                                                       ),
                                                     );
+                                                  } else {
+                                                    dataSelect(
+                                                        context,
+                                                        'Request has already been noted!',
+                                                        '',
+                                                        'ok', () {
+                                                      Navigator.pop(context);
+                                                    });
+                                                  }
+                                                } else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CompleteSignUp(),
+                                                    ),
+                                                  );
+                                                }
+                                              }
                                             },
                                           ),
                                           Text(
@@ -357,14 +421,41 @@ class _UserPageState extends State<UserPage>
                                 )
                               : Center(
                                   child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompleteSignUp(),
-                                        ),
-                                      );
+                                    onTap: () async {
+                                      String date = await Provider.of<UserInfo>(
+                                              context,
+                                              listen: false)
+                                          .getDate();
+                                      if (date != null) {
+                                        int d = DateTime.now()
+                                            .difference(DateTime.parse(date))
+                                            .inDays;
+                                        if (d >= 1) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CompleteSignUp(),
+                                            ),
+                                          );
+                                        } else {
+                                          dataSelect(
+                                              context,
+                                              'Request has already been noted!',
+                                              '',
+                                              'ok', () {
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CompleteSignUp(),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(3.0),
@@ -566,7 +657,9 @@ class _UserPageState extends State<UserPage>
                                   if (value2) {
                                     Provider.of<Auth>(context, listen: false)
                                         .logout();
-                                    Navigator.of(context).pop();
+                                         
+                                
+
                                   }
                                 }
                               });

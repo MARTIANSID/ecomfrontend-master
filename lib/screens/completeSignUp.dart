@@ -1,5 +1,6 @@
 import 'package:Flutter/components/rounded_input_field.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -7,10 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class CompleteSignUp extends StatefulWidget {
-  final data;
-  final void Function() val;
 
-  const CompleteSignUp({Key key, this.val,this.data}) : super(key: key);
   @override
   _CompleteSignUpState createState() => _CompleteSignUpState();
 }
@@ -400,6 +398,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
             setState(() {
               isLoading = true;
             });
+            try{
             await Provider.of<UserInfo>(context, listen: false).completeSignUp(
               context: context,
               fullname: fullName,
@@ -412,16 +411,21 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
               state: stateName,
               street: streetName,
             );
-            setState(() {
+          }catch(err){
+             dataSelect(context, '$err', '', 'OK', (){
+                                                  Navigator.pop(context);
+                    });
+
+          }
+          finally{
+             setState(() {
               isLoading = false;
             });
-            widget.val();
             Navigator.of(context).pop();
-          } else {
-            setState(() {
-              autovalidate = true;
-            });
           }
+
+          }
+          
         },
         child: Container(
           width: ScreenUtil().setWidth(200.0),

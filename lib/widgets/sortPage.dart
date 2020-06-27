@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../widgets/snackbar.dart';
 
 class SortPage extends StatefulWidget {
 
@@ -81,13 +82,21 @@ class _SortPageState extends State<SortPage> {
           sort: checked ? 1 : -1),
       Provider.of<Pagination>(context, listen: false).getFav(context)
     ];
+    try{
     await Future.wait(futures);
      widget.scrollController.animateTo(0, duration: new Duration(seconds: 1), curve: Curves.ease);
-
-    setState(() {
-      isLoading = false;
-    });
+    }catch(err){
+      dataSelect(context, '$err', '', 'OK', () {
+          Navigator.pop(context);
+    
+      });
+    }finally{
+      setState(() {
+        isLoading=false;
+      });
+    }
   }
+   
                    
   bool _check = false;
 
@@ -308,8 +317,17 @@ class _SortPageState extends State<SortPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
+                               try{ 
                                 await sortIt(_selectedTab, _check);
+                               }catch(err){
+                                 dataSelect(context, '$err', '', 'OK', () {
+                                 Navigator.pop(context);
+    
+                                   });
+                               }
+                               finally{
                                 Navigator.of(context).pop();
+                               }
                               },
                               child: Container(
                                 width: ScreenUtil().setWidth(180),

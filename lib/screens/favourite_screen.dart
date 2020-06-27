@@ -7,6 +7,7 @@ import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/cookie_page.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,22 +95,32 @@ class _FavouriteScreenState extends State<FavouriteScreen>
   List<dynamic> suggestion;
   bool isLoadingSearch = false;
   Future<void> getSearch(query) async {
-    setState(() {
-      isLoadingSearch = true;
-    });
-    await Provider.of<Searchh>(context, listen: false)
-        .getSearch(query: query.toUpperCase(), context: context)
-        .then((value) {
+    try {
       setState(() {
-        suggestion = Provider.of<Searchh>(context, listen: false)
-            .searchResult
-            .where((element) =>
-                element.styleNumber.contains(searchValue.toUpperCase()))
-            .toList();
-        isLoadingSearch = false;
-        print('DC SEARCH');
+        isLoadingSearch = true;
       });
-    });
+      await Provider.of<Searchh>(context, listen: false)
+          .getSearch(query: query.toUpperCase(), context: context)
+          .then((value) {
+        setState(() {
+          suggestion = Provider.of<Searchh>(context, listen: false)
+              .searchResult
+              .where((element) =>
+                  element.styleNumber.contains(searchValue.toUpperCase()))
+              .toList();
+
+          print('DC SEARCH');
+        });
+      });
+    } catch (err) {
+      dataSelect(context, '$err', '', 'OK', () {
+        Navigator.pop(context);
+      });
+    } finally {
+      setState(() {
+        isLoadingSearch = false;
+      });
+    }
 
     print(suggestion);
     // setState(() {
@@ -369,8 +380,15 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                         //   // info=styleNumber[].split(value);
                                         //   // print(styleNumber[1].split(searchValue));
                                         // });
-                                        await getSearch(
-                                            searchValue.toUpperCase());
+                                        try {
+                                          await getSearch(
+                                              searchValue.toUpperCase());
+                                        } catch (err) {
+                                          dataSelect(context, '$err', '', 'OK',
+                                              () {
+                                            Navigator.pop(context);
+                                          });
+                                        }
                                         // setState(() {
                                         //   isLoadingSearch = false;
                                         // });
@@ -510,71 +528,79 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                           print(info);
                                           return GestureDetector(
                                             onTap: () async {
-                                              await Provider.of<Pagination>(
-                                                      context,
-                                                      listen: false)
-                                                  .getProductDetail(
-                                                      context: context,
-                                                      styleNumber:
-                                                          suggestion[index]
-                                                              .styleNumber);
-                                              FocusScopeNode currentFocus =
-                                                  FocusScope.of(context);
-                                              currentFocus.unfocus();
-                                              textEditingController.clear();
-                                              setState(() {
-                                                searchValue = "";
-                                                searchSelected = false;
-                                                searchSelectedDoneButton =
-                                                    false;
-                                              });
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetail(
-                                                    colorKey: 'yellow',
-                                                    select: 'all',
-                                                    diamondKey: Provider.of<
-                                                                    Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .diamondQuality[
-                                                        _defaultChoiceIndex4],
-                                                    certPrice: Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .certPrices[Provider.of<
-                                                                    Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .cert[
-                                                        _defaultChoiceIndex3]],
-                                                    product: Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .productDetailsForSearch[0],
-                                                    defaultIndex1:
-                                                        _defaultChoiceIndex1,
-                                                    defaultIndex2:
-                                                        _defaultChoiceIndex2,
-                                                    defaultIndex3:
-                                                        _defaultChoiceIndex3,
-                                                    defaultIndex4:
-                                                        _defaultChoiceIndex4,
-                                                    valueChangeBuild:
-                                                        _onValueChange,
-                                                    valueChangeColor:
-                                                        _onValueChangeColor,
-                                                    valueChangeCerti:
-                                                        _onValueChangeCerti,
-                                                    valueChangeDQ:
-                                                        _onValueChangeDQ,
+                                              try {
+                                                await Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .getProductDetail(
+                                                        context: context,
+                                                        styleNumber:
+                                                            suggestion[index]
+                                                                .styleNumber);
+                                                FocusScopeNode currentFocus =
+                                                    FocusScope.of(context);
+                                                currentFocus.unfocus();
+                                                textEditingController.clear();
+                                                setState(() {
+                                                  searchValue = "";
+                                                  searchSelected = false;
+                                                  searchSelectedDoneButton =
+                                                      false;
+                                                });
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetail(
+                                                      colorKey: 'yellow',
+                                                      select: 'all',
+                                                      diamondKey: Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .diamondQuality[
+                                                          _defaultChoiceIndex4],
+                                                      certPrice: Provider.of<
+                                                                  Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .certPrices[Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .cert[
+                                                          _defaultChoiceIndex3]],
+                                                      product: Provider.of<
+                                                                  Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .productDetailsForSearch[0],
+                                                      defaultIndex1:
+                                                          _defaultChoiceIndex1,
+                                                      defaultIndex2:
+                                                          _defaultChoiceIndex2,
+                                                      defaultIndex3:
+                                                          _defaultChoiceIndex3,
+                                                      defaultIndex4:
+                                                          _defaultChoiceIndex4,
+                                                      valueChangeBuild:
+                                                          _onValueChange,
+                                                      valueChangeColor:
+                                                          _onValueChangeColor,
+                                                      valueChangeCerti:
+                                                          _onValueChangeCerti,
+                                                      valueChangeDQ:
+                                                          _onValueChangeDQ,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
+                                                );
+                                              } catch (err) {
+                                                dataSelect(
+                                                    context, '$err', '', 'OK',
+                                                    () {
+                                                  Navigator.pop(context);
+                                                });
+                                              }
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(

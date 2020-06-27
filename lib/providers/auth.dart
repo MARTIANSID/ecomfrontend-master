@@ -11,10 +11,17 @@ class Auth with ChangeNotifier {
   static const uurl = 'https://alexa.gemstory.in/';
 
   Future<bool> checkIfRegistered(String number) async {
+    try{
+    
     final response = await http.get('${uurl}user/isregistered/$number');
-    final responsebody = jsonDecode(response.body);
-    print('PP checkIfRegistered response: $responsebody');
-    return responsebody['registered'];
+    final responseBody = jsonDecode(response.body);
+    if (responseBody['error'] == true)
+      throw HttpException(responseBody['details']['message']);
+    print('PP checkIfRegistered response: $responseBody');
+    return responseBody['registered'];
+    }catch(err){
+      throw err;
+    }
   }
 
   bool isLogin = false;
@@ -124,6 +131,18 @@ class Auth with ChangeNotifier {
       throw error;
     }
   }
+  Future<void> resendOtp(number) async{
+      final response = await http.post('${uurl}user/resendmessagepassword',
+        body: {"number":number});
+    final responseBody = json.decode(response.body);
+    print('PP resetPassword body details message:$responseBody');
+    if (responseBody['error'] == true)
+      throw HttpException(responseBody['details']['message']);
+    else
+      return true;
+  }
+
+  
 
   Future<void> userSignup(
     String name,
@@ -166,9 +185,11 @@ class Auth with ChangeNotifier {
     _token = null;
     _number = null;
     _expiryDate = null;
+    notifyListeners();
     if (_authTimer != null) {
       _authTimer.cancel();
       _authTimer = null;
+  notifyListeners();
     }
 
     final prefs = await SharedPreferences.getInstance();
@@ -177,10 +198,12 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  void _autoLogout() {
+  void _autoLogout() async{
     if (_authTimer != null) {
       _authTimer.cancel();
+
     }
+  
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
     notifyListeners();

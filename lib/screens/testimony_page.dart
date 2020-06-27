@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import '../widgets/snackbar.dart';
 
 class TestimonyPage extends StatefulWidget {
   @override
@@ -18,16 +19,23 @@ class _TestimonyPageState extends State<TestimonyPage> {
   @override
   void initState() {
     super.initState();
-    new Future.delayed(Duration(seconds: 0), () async {
-      setState(() {
-        isLoading = true;
+    try {
+      new Future.delayed(Duration(seconds: 0), () async {
+        setState(() {
+          isLoading = true;
+        });
+        await Provider.of<Testimony>(context, listen: false)
+            .getTestimony(context: context);
       });
-      await Provider.of<Testimony>(context, listen: false)
-          .getTestimony(context: context);
+    } catch (err) {
+      dataSelect(context, '$err', '', 'OK', () {
+        Navigator.pop(context);
+      });
+    } finally {
       setState(() {
         isLoading = false;
       });
-    });
+    }
   }
 
   double rating = 0;
@@ -186,30 +194,39 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                 ),
                                                 GestureDetector(
                                                   onTap: () async {
-                                                    setState(() {
-                                                      isLoading = true;
-                                                    });
-                                                    await Provider.of<
-                                                                Testimony>(
-                                                            context,
-                                                            listen: false)
-                                                        .writeTestimony(
-                                                            context: context,
-                                                            comment:
-                                                                commentEditingController
-                                                                    .text,
-                                                            rating: rating);
-                                                    await Provider.of<
-                                                                Testimony>(
-                                                            context,
-                                                            listen: false)
-                                                        .getTestimony(
-                                                            context: context);
-                                                    setState(() {
-                                                      isLoading = false;
-                                                    });
+                                                    try {
+                                                      setState(() {
+                                                        isLoading = true;
+                                                      });
+                                                      await Provider.of<
+                                                                  Testimony>(
+                                                              context,
+                                                              listen: false)
+                                                          .writeTestimony(
+                                                              context: context,
+                                                              comment:
+                                                                  commentEditingController
+                                                                      .text,
+                                                              rating: rating);
+                                                      await Provider.of<
+                                                                  Testimony>(
+                                                              context,
+                                                              listen: false)
+                                                          .getTestimony(
+                                                              context: context);
+                                                    } catch (err) {
+                                                      dataSelect(context,
+                                                          '$err', '', 'OK', () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    } finally {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
 
-                                                    Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    }
                                                   },
                                                   child: Container(
                                                     width: ScreenUtil()
@@ -670,4 +687,5 @@ class _TestimonyPageState extends State<TestimonyPage> {
             ),
     );
   }
+
 }
