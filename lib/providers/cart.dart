@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Flutter/providers/http_exception.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -113,6 +114,9 @@ class Cart with ChangeNotifier {
         );
 
         final responseData = json.decode(response.body);
+           if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
         totalPrice=responseData['cart']['totalPrice'];
 
         cart = responseData['cart']['products']
@@ -192,6 +196,9 @@ class Cart with ChangeNotifier {
           }),
         );
         final responseData = json.decode(response.body);
+           if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
          totalPrice=responseData['cart']['totalPrice'];
         cart = responseData['cart']['products']
             .map((i) => Cartt(
@@ -219,6 +226,7 @@ class Cart with ChangeNotifier {
                     styleNumber: i["styleNumber"])))
             .toList();
             notifyListeners();
+      
       } catch (err) {
         throw err;
       }
@@ -238,6 +246,9 @@ class Cart with ChangeNotifier {
       );
 
       final responseData = json.decode(response.body);
+         if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
        totalPrice=responseData['cart']['totalPrice'];
 
       cart = responseData['cart']['products']
@@ -289,6 +300,9 @@ class Cart with ChangeNotifier {
       );
 
       final responseData = json.decode(response.body);
+         if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
        totalPrice=responseData['cart']['totalPrice'];
 
       cart = responseData['cart']['products']
