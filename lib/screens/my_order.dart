@@ -13,7 +13,6 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    
     super.initState();
     _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
   }
@@ -42,7 +41,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
           child: Container(
             width: ScreenUtil().setWidth(330),
             height: ScreenUtil().setHeight(155),
-            margin: EdgeInsets.only(bottom:20.0),
+            margin: EdgeInsets.only(bottom: 20.0),
             padding: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               // color: Colors.amber,
@@ -60,15 +59,19 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      '#'+'200506001',
-                      style: TextStyle(fontFamily: 'Gilroy', fontSize: ScreenUtil().setSp(27,allowFontScalingSelf: true)),
+                      '#' + '200506001',
+                      style: TextStyle(
+                          fontFamily: 'Gilroy',
+                          fontSize: ScreenUtil()
+                              .setSp(27, allowFontScalingSelf: true)),
                     ),
                     Text(
                       '43 Nose Pins',
                       style: TextStyle(
                         color: Colors.grey[400],
-                        fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),
-                        fontFamily: 'Varela',
+                        fontSize:
+                            ScreenUtil().setSp(13, allowFontScalingSelf: true),
+                        fontFamily: 'Gilroy Regular',
                       ),
                     )
                   ],
@@ -88,22 +91,24 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                             'Order Status',
                             style: TextStyle(
                               color: Colors.grey[400],
-                              fontFamily: 'Varela',
-                              fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),
+                              fontFamily: 'Gilroy Regular',
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
                             ),
                           ),
                           Text(
                             'Received at Dock',
                             style: TextStyle(
                               color: Colors.black,
-                              fontFamily: 'Varela',
-                              fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
+                              fontFamily: 'Gilroy Regular',
+                              fontSize: ScreenUtil()
+                                  .setSp(15, allowFontScalingSelf: true),
                             ),
                           )
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: VerticalDivider(
                           color: Colors.blue,
                         ),
@@ -116,19 +121,34 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                             'Approx Arrival Date',
                             style: TextStyle(
                               color: Colors.grey[400],
-                              fontFamily: 'Varela',
-                              fontSize: ScreenUtil().setSp(13,allowFontScalingSelf: true),
+                              fontFamily: 'Gilroy Regular',
+                              fontSize: ScreenUtil()
+                                  .setSp(13, allowFontScalingSelf: true),
                             ),
                           ),
                           SizedBox(
                             // height: size.height * 0.07,
                             width: size.width * 0.4,
-                            child: Text(
-                              '14.05.2020',
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontFamily: 'Varela',
-                                fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
+                            child: ShaderMask(
+                              shaderCallback: (bounds) => LinearGradient(
+                                colors: [
+                                  Color(0xFF34B0D9),
+                                  Color(0xFF3685CB),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ).createShader(
+                                Rect.fromLTWH(
+                                    0, 0, bounds.width, bounds.height),
+                              ),
+                              child: Text(
+                                '14.05.2020',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Gilroy Regular',
+                                  fontSize: ScreenUtil()
+                                      .setSp(15, allowFontScalingSelf: true),
+                                ),
                               ),
                             ),
                           )
@@ -188,7 +208,8 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                             'My Orders',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: ScreenUtil().setSp(25,allowFontScalingSelf: true),
+                              fontSize: ScreenUtil()
+                                  .setSp(25, allowFontScalingSelf: true),
                               fontFamily: 'Gilroy',
                             ),
                           ),
@@ -212,15 +233,23 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                   children: <Widget>[
                     TabBar(
                       controller: _tabController,
-                      indicatorColor: Colors.cyan,
+                      // indicatorColor: Colors.cyan,
                       labelColor: Colors.white,
                       isScrollable: true,
                       // labelPadding: EdgeInsets.only(right: size.width / 12),
                       unselectedLabelColor: Color(0xFFCDCDCD),
                       indicator: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.0),
-                        color: Colors.cyan,
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF34BDDD),
+                            Color(0xFF3680C9),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
+
                       // indicatorPadding: EdgeInsets.all(10.0),
                       //indicator: UnderlineTabIndicator(insets:EdgeI`nsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
                       tabs: [
@@ -228,8 +257,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                           child: Text(
                             'All',
                             style: TextStyle(
-                              fontFamily: 'Varela',
-                              fontSize: ScreenUtil().setSp(19,allowFontScalingSelf: true),
+                              fontFamily: 'Gilroy Regular',
+                              fontSize: ScreenUtil()
+                                  .setSp(19, allowFontScalingSelf: true),
                             ),
                           ),
                         ),
@@ -237,8 +267,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                           child: Text(
                             'Completed',
                             style: TextStyle(
-                              fontFamily: 'Varela',
-                              fontSize: ScreenUtil().setSp(19,allowFontScalingSelf: true),
+                              fontFamily: 'Gilroy Regular',
+                              fontSize: ScreenUtil()
+                                  .setSp(19, allowFontScalingSelf: true),
                             ),
                           ),
                         ),

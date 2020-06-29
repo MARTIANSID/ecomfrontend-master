@@ -24,20 +24,28 @@ class CookiePage extends StatefulWidget {
   final int build;
   final int cert;
   final GlobalKey globalKey;
+  final valueChangeBuild;
+  final valueChangeColor;
+  final valueChangeCerti;
+  final valueChangeDQ;
 
-  CookiePage(
+  const CookiePage(
       {Key key,
+      this.select,
       this.products,
       this.scrollController,
-      this.select,
       this.count,
       this.sort,
       this.c,
-      this.globalKey,
       this.color,
       this.diamond,
       this.build,
-      this.cert})
+      this.cert,
+      this.globalKey,
+      this.valueChangeBuild,
+      this.valueChangeColor,
+      this.valueChangeCerti,
+      this.valueChangeDQ})
       : super(key: key);
 
   @override
@@ -69,9 +77,9 @@ class _CookiePageState extends State<CookiePage> {
   int _defaultChoiceIndex4;
 
   bool show = true;
+  double scroll = 500.0;
 
   Future<void> getMoreProducts() async {
-   try{ 
     if (widget.select == 'all')
       await Provider.of<Pagination>(context, listen: false).getProducts(
           page: Provider.of<Pagination>(context, listen: false).pageAll,
@@ -112,33 +120,40 @@ class _CookiePageState extends State<CookiePage> {
           context: context,
           sort: Provider.of<Pagination>(context, listen: false).sort,
           sortby: Provider.of<Pagination>(context, listen: false).count);
-  }catch(err){
-    dataSelect(context, '$err', '', 'OK', () {
-          Navigator.pop(context);
-    
-      });
-  }}
+  }
+
+  ViewportOffset offset = ViewportOffset.fixed(50);
 
   createList() async {
     widget.scrollController.addListener(() async {
-      if (widget.scrollController.position.maxScrollExtent/3 ==
-          widget.scrollController.position.pixels) {
-        if (!mounted)
-          setState(() {
-            isLoading = true;
-          });
+      print(widget.scrollController.position.pixels);
+
+      if (widget.scrollController.position.pixels > scroll ||
+          widget.scrollController.position.pixels ==
+              widget.scrollController.position.maxScrollExtent) {
+        scroll = scroll + 1000;
+        // if (mounted)
+        //   setState(() {
+        //     isLoading = true;
+        //   });
         // if (Provider.of<Pagination>(context, listen: false).c) {
         //    Provider.of<Pagination>(context,listen:false).pageStart();
 
         // }
 
         Provider.of<Pagination>(context, listen: false).pageAdd(widget.select);
-
-        await getMoreProducts();
-        if (!mounted)
-          setState(() {
-            isLoading = false;
+        try {
+          await getMoreProducts();
+        } catch (err) {
+          dataSelect(context, '$err', '', 'OK', () {
+            Navigator.pop(context);
           });
+        } finally {
+          // if (mounted)
+          //   setState(() {
+          //     isLoading = false;
+          //   });
+        }
       }
     });
   }
@@ -208,7 +223,7 @@ class _CookiePageState extends State<CookiePage> {
     super.dispose();
   }
 
-  void _onValueChange(int value, int index) {
+  void _onValueChange(int value, [int index]) {
     // await Provider.of<Options>(context, listen: false).setBuild(build: value);
     setState(() {
       _defaultChoiceIndex1 = value;
@@ -216,129 +231,129 @@ class _CookiePageState extends State<CookiePage> {
     });
   }
 
-  void _onValueChangeColor(int value, int index) {
+  void _onValueChangeColor(int value, [int index]) {
     // await Provider.of<Options>(context, listen: false).setColor(color: value);
     setState(() {
       _defaultChoiceIndex2 = value;
     });
   }
 
-  void _onValueChangeCerti(int value, int index) {
+  void _onValueChangeCerti(int value, [int index]) {
     // await Provider.of<Options>(context, listen: false).setCert(cert: value);
     setState(() {
       _defaultChoiceIndex3 = value;
     });
   }
 
-  void _onValueChangeDQ(int value, int index) {
+  void _onValueChangeDQ(int value, [int index]) {
     // await Provider.of<Options>(context, listen: false).setDiamond(diamond: value);
     setState(() {
       _defaultChoiceIndex4 = value;
     });
   }
 
-  void dateSelect(context, product, dataShow) {
-    var alertDialog = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      backgroundColor: Colors.black.withOpacity(0.3),
-      elevation: 100.0,
-      content: Container(
-        height: ScreenUtil().setHeight(315),
-        // width: ScreenUtil().setHeight(411),
-        // width: 700.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Text(
-                product.styleNumber,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Gilroy Black',
-                  fontSize: ScreenUtil().setSp(25, allowFontScalingSelf: true),
-                ),
-              ),
-            ),
-            DataTable(
-              columns: [
-                DataColumn(
-                    label: Text(
-                  'Specifications',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                )),
-                DataColumn(
-                    label: Text(
-                  'Units',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                )),
-              ],
-              rows: [
-                DataRow(cells: [
-                  DataCell(Text(
-                    'Gold Weight',
-                    style: TextStyle(color: Colors.white),
-                  )),
-                  DataCell(Text(
-                    product.goldWeight.toString(),
-                    style: TextStyle(color: Colors.white),
-                  )),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text(
-                    'Diamond Weight',
-                    style: TextStyle(color: Colors.white),
-                  )),
-                  DataCell(Text(
-                    product.diamondWeight.toString(),
-                    style: TextStyle(color: Colors.white),
-                  )),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text(
-                    'Diamond Count',
-                    style: TextStyle(color: Colors.white),
-                  )),
-                  DataCell(Text(
-                    product.diamondCount.toString(),
-                    style: TextStyle(color: Colors.white),
-                  )),
-                ]),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-    if (show) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          // return Stack(
-          //   children: <Widget>[
-          //     Positioned(
-          //       top: dY,
-          //       left: dX,
-          //       right: dX,
-          //       child: BackdropFilter(
-          //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          //         child: alertDialog,
-          //       ),
-          //     ),
-          //   ],
-          // );
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: alertDialog,
-          );
-        },
-      );
-    }
-  }
+  // void dateSelect(context, product, dataShow) {
+  //   var alertDialog = AlertDialog(
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(15.0),
+  //     ),
+  //     backgroundColor: Colors.black.withOpacity(0.3),
+  //     elevation: 100.0,
+  //     content: Container(
+  //       height: ScreenUtil().setHeight(315),
+  //       // width: ScreenUtil().setHeight(411),
+  //       // width: 700.0,
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: <Widget>[
+  //           Padding(
+  //             padding: const EdgeInsets.only(bottom: 10.0),
+  //             child: Text(
+  //               product.styleNumber,
+  //               style: TextStyle(
+  //                 color: Colors.white,
+  //                 fontFamily: 'Gilroy Black',
+  //                 fontSize: ScreenUtil().setSp(25, allowFontScalingSelf: true),
+  //               ),
+  //             ),
+  //           ),
+  //           DataTable(
+  //             columns: [
+  //               DataColumn(
+  //                   label: Text(
+  //                 'Specifications',
+  //                 style: TextStyle(
+  //                     color: Colors.white, fontWeight: FontWeight.bold),
+  //               )),
+  //               DataColumn(
+  //                   label: Text(
+  //                 'Units',
+  //                 style: TextStyle(
+  //                     color: Colors.white, fontWeight: FontWeight.bold),
+  //               )),
+  //             ],
+  //             rows: [
+  //               DataRow(cells: [
+  //                 DataCell(Text(
+  //                   'Gold Weight',
+  //                   style: TextStyle(color: Colors.white),
+  //                 )),
+  //                 DataCell(Text(
+  //                   product.goldWeight.toString(),
+  //                   style: TextStyle(color: Colors.white),
+  //                 )),
+  //               ]),
+  //               DataRow(cells: [
+  //                 DataCell(Text(
+  //                   'Diamond Weight',
+  //                   style: TextStyle(color: Colors.white),
+  //                 )),
+  //                 DataCell(Text(
+  //                   product.diamondWeight.toString(),
+  //                   style: TextStyle(color: Colors.white),
+  //                 )),
+  //               ]),
+  //               DataRow(cells: [
+  //                 DataCell(Text(
+  //                   'Diamond Count',
+  //                   style: TextStyle(color: Colors.white),
+  //                 )),
+  //                 DataCell(Text(
+  //                   product.diamondCount.toString(),
+  //                   style: TextStyle(color: Colors.white),
+  //                 )),
+  //               ]),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  //   if (show) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         // return Stack(
+  //         //   children: <Widget>[
+  //         //     Positioned(
+  //         //       top: dY,
+  //         //       left: dX,
+  //         //       right: dX,
+  //         //       child: BackdropFilter(
+  //         //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+  //         //         child: alertDialog,
+  //         //       ),
+  //         //     ),
+  //         //   ],
+  //         // );
+  //         return BackdropFilter(
+  //           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+  //           child: alertDialog,
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -411,6 +426,16 @@ class _CookiePageState extends State<CookiePage> {
                     )),
                     DataCell(Text(
                       product.diamondCount.toString(),
+                      style: TextStyle(color: Colors.white),
+                    )),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text(
+                      'Design Dimensions',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                    DataCell(Text(
+                      product.designDimensions.toString(),
                       style: TextStyle(color: Colors.white),
                     )),
                   ]),
@@ -545,6 +570,13 @@ class _CookiePageState extends State<CookiePage> {
                                       valueChangeColor: _onValueChangeColor,
                                       valueChangeCerti: _onValueChangeCerti,
                                       valueChangeDQ: _onValueChangeDQ,
+                                      valueChangeBuild1:
+                                          widget.valueChangeBuild,
+                                      valueChangeColor1:
+                                          widget.valueChangeColor,
+                                      valueChangeCerti1:
+                                          widget.valueChangeCerti,
+                                      valueChangeDQ1: widget.valueChangeDQ,
                                       select: widget.select,
                                     ),
                                   ),
@@ -570,34 +602,26 @@ class _CookiePageState extends State<CookiePage> {
                                 children: <Widget>[
                                   Container(
                                     width: ScreenUtil().setWidth(
-                                        widget.select == 'fav' ||
-                                                !Provider.of<Pagination>(
-                                                        context,
-                                                        listen: false)
-                                                    .isVerified
+                                        !Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified
                                             ? 151
                                             : 138),
                                     height: ScreenUtil().setHeight(
-                                        widget.select == 'fav' ||
-                                                !Provider.of<Pagination>(
-                                                        context,
-                                                        listen: false)
-                                                    .isVerified
+                                        !Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified
                                             ? 135
                                             : 122),
                                     margin: EdgeInsets.only(
-                                        top: widget.select == 'fav' ||
-                                                !Provider.of<Pagination>(
-                                                        context,
-                                                        listen: false)
-                                                    .isVerified
+                                        top: !Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified
                                             ? 8
                                             : 2,
-                                        left: widget.select == 'fav' ||
-                                                !Provider.of<Pagination>(
-                                                        context,
-                                                        listen: false)
-                                                    .isVerified
+                                        left: !Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified
                                             ? 8
                                             : 19),
                                     child: Row(
@@ -607,25 +631,24 @@ class _CookiePageState extends State<CookiePage> {
                                         Container(
                                             // color: Colors.amber,
                                             height: ScreenUtil().setHeight(
-                                                widget.select == 'fav' ||
-                                                        !Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .isVerified
+                                                !Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .isVerified
                                                     ? 135
                                                     : 122),
                                             width: ScreenUtil().setWidth(
-                                                widget.select == 'fav' ||
-                                                        !Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .isVerified
+                                                !Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .isVerified
                                                     ? 130
                                                     : 117),
                                             // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
 
                                             // color: Colors.amber,
-                                            child: widget.products[i].imageUrl.containsKey(colorKey)
+                                            child: widget.products[i].imageUrl
+                                                    .containsKey(colorKey)
                                                 ? Image(
                                                     // color: Colors.amber,
                                                     image: AdvancedNetworkImage(
@@ -696,109 +719,101 @@ class _CookiePageState extends State<CookiePage> {
                                   //     fontFamily: 'Gilroy Regular',
                                   //   ),
                                   // ),
-                                  widget.select != 'fav'
-                                      ? !Provider.of<Pagination>(context,
+                                  !Provider.of<Pagination>(context,
+                                              listen: false)
+                                          .isVerified
+                                      ? SizedBox(
+                                          height: 0.0,
+                                        )
+                                      : !Provider.of<Pagination>(context,
                                                   listen: false)
-                                              .isVerified
-                                          ? SizedBox(
-                                              height: 0.0,
-                                            )
-                                          : !Provider.of<Pagination>(context,
-                                                      listen: false)
-                                                  .isPriced
-                                              ? GestureDetector(
-                                                  onTap: () async {
-                                                    String date = await Provider
-                                                            .of<UserInfo>(
-                                                                context,
-                                                                listen: false)
-                                                        .getPriceDate();
-                                                    if (date != null) {
-                                                      int d = DateTime.now()
-                                                          .difference(
-                                                              DateTime.parse(
-                                                                  date))
-                                                          .inDays;
-                                                      if (d >= 1) {
-                                                        dataSelect(
-                                                          context,
-                                                          'Important!',
-                                                          "To see prices you must first request a quotation from Team Gemstory",
-                                                          'Request Prices',
-                                                          requestPrice,
-                                                        );
-                                                      } else {
-                                                        dataSelect(
+                                              .isPriced
+                                          ? GestureDetector(
+                                              onTap: () async {
+                                                String date =
+                                                    await Provider.of<UserInfo>(
                                                             context,
-                                                            'Request has already been noted!',
-                                                            '',
-                                                            'ok', () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
-                                                      }
-                                                    } else {
-                                                      dataSelect(
+                                                            listen: false)
+                                                        .getPriceDate();
+                                                if (date != null) {
+                                                  int d = DateTime.now()
+                                                      .difference(
+                                                          DateTime.parse(date))
+                                                      .inDays;
+                                                  if (d >= 1) {
+                                                    dataSelect(
+                                                      context,
+                                                      'Important!',
+                                                      "To see prices you must first request a quotation from Team Gemstory",
+                                                      'Request Prices',
+                                                      requestPrice,
+                                                    );
+                                                  } else {
+                                                    dataSelect(
                                                         context,
-                                                        'Important!',
-                                                        "To see prices you must first request a quotation from Team Gemstory",
-                                                        'Request Prices',
-                                                        requestPrice,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                    height: ScreenUtil()
-                                                        .setHeight(20),
-                                                    width: ScreenUtil()
-                                                        .setWidth(110),
-                                                    child: Center(
-                                                      child: Text(
-                                                        'Request Prices',
-                                                        style: TextStyle(
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline,
-                                                          color: Colors.black,
-                                                          fontFamily:
-                                                              'Gilroy Medium',
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(14,
-                                                                  allowFontScalingSelf:
-                                                                      true),
-                                                        ),
-                                                      ),
+                                                        'Alert!',
+                                                        'Request has already been noted!',
+                                                        'Okay', () {
+                                                      Navigator.pop(context);
+                                                    });
+                                                  }
+                                                } else {
+                                                  dataSelect(
+                                                    context,
+                                                    'Important!',
+                                                    "To see prices you must first request a quotation from Team Gemstory",
+                                                    'Request Prices',
+                                                    requestPrice,
+                                                  );
+                                                }
+                                              },
+                                              child: Container(
+                                                height:
+                                                    ScreenUtil().setHeight(20),
+                                                width:
+                                                    ScreenUtil().setWidth(110),
+                                                child: Center(
+                                                  child: Text(
+                                                    'Request Prices',
+                                                    style: TextStyle(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      color: Colors.black,
+                                                      fontFamily:
+                                                          'Gilroy Medium',
+                                                      fontSize: ScreenUtil().setSp(
+                                                          14,
+                                                          allowFontScalingSelf:
+                                                              true),
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                            )
+                                          : widget.products[i].prices
+                                                  .containsKey(priceKey)
+                                              ? Text(
+                                                  '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        18,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontFamily:
+                                                        'Gilroy Regular',
+                                                  ),
                                                 )
-                                              : widget.products[i].prices
-                                                      .containsKey(priceKey)
-                                                  ? Text(
-                                                      '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(18,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        fontFamily:
-                                                            'Gilroy Regular',
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      'no price',
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(18,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                        fontFamily:
-                                                            'Gilroy Regular',
-                                                      ),
-                                                    )
-                                      : SizedBox(
-                                          height: 0.0,
-                                          width: 0.0,
-                                        ),
+                                              : Text(
+                                                  'no price',
+                                                  style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        18,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontFamily:
+                                                        'Gilroy Regular',
+                                                  ),
+                                                ),
                                   // Row(
                                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   //   // crossAxisAlignment: CrossAxisAlignment.center,
@@ -857,8 +872,8 @@ class _CookiePageState extends State<CookiePage> {
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
+                                          Color(0xFF33D2E4),
                                           Color(0xFF34B0D9),
-                                          Color(0xFF3685CB),
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
@@ -875,19 +890,23 @@ class _CookiePageState extends State<CookiePage> {
                                     ),
                                   ),
                                   onTap: () async {
+                                    try{
+                                      if(mounted)
+                                      setState(() {});
+                                  Provider.of<Pagination>(context,listen: false).favProducts.add(widget.products[i]);
                                     await Provider.of<Pagination>(context,
                                             listen: false)
                                         .toogleFavourite(
                                             styleNumber:
                                                 widget.products[i].styleNumber,
-                                            context: context,
-                                            select: widget.select);
+                                            context: context);
+                          
+                                    }catch(err){
+                                      if(mounted)
+                                       setState(() {});
 
-                                    if (mounted)
-                                      setState(() {
-                                        widget.products[i].isFavourite =
-                                            !widget.products[i].isFavourite;
-                                      });
+                                    }
+                                    
                                   },
                                 ),
                                 SizedBox(
@@ -900,8 +919,8 @@ class _CookiePageState extends State<CookiePage> {
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Color(0xFF34B0D9),
-                                          Color(0xFF3685CB),
+                                          Color(0xFF34BEDD),
+                                          Color(0xFF359DD3),
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
@@ -947,8 +966,8 @@ class _CookiePageState extends State<CookiePage> {
                                                 } else {
                                                   dataSelect(
                                                       context,
+                                                      'Alert!',
                                                       'Request has already been noted!',
-                                                      '',
                                                       'ok', () {
                                                     Navigator.pop(context);
                                                   });
@@ -1023,6 +1042,11 @@ class _CookiePageState extends State<CookiePage> {
                 )
             ],
           );
+
+    // (styleNumber) {
+    //  ar
+    //   isFavourite: True;
+    // }
 
     //body: ListView(
     //   children: <Widget>[

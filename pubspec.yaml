@@ -46,6 +46,7 @@ dependencies:
   intl: ^0.16.1
   smooth_star_rating: ^1.1.1
   argon_buttons_flutter: ^1.0.2
+  onesignal_flutter: ^2.5.0
   
   liquid_swipe:
     git:

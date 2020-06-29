@@ -18,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   bool isVerifyLoading = false;
+  GlobalKey<FormState> _key = GlobalKey();
 
   dispose() {
     _passwordController.dispose();
@@ -73,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool _showPasswordCheckBox = false;
   bool _forgotPasswordMenu = false;
   bool timeUpFlag = false;
+  bool enable = true;
   String phoneNumber;
   String timeText = "0s";
   int timeCounter = 0;
@@ -91,6 +93,8 @@ class _LoginScreenState extends State<LoginScreen>
     @required TextEditingController controller,
     @required TextInputType inputType,
     @required IconData icon,
+    @required void Function(String) validate,
+    bool enable,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,8 +107,10 @@ class _LoginScreenState extends State<LoginScreen>
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
+          height: ScreenUtil().setHeight(60),
+          child: TextFormField(
+            enabled: enable,
+            validator: validate,
             controller: controller,
             keyboardType: inputType,
             style: TextStyle(
@@ -145,7 +151,15 @@ class _LoginScreenState extends State<LoginScreen>
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: ScreenUtil().setHeight(60),
-          child: TextField(
+          child: TextFormField(
+            validator: (value) {
+              if (value.isEmpty) {
+                return "Enter Password";
+              } else if (value.length < 6) {
+                return "Atleast 6 Characters Required!";
+              }
+              return null;
+            },
             keyboardType: TextInputType.text,
             controller: _passwordController,
             obscureText: _showPassword ? false : true,
@@ -167,7 +181,9 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ),
         ),
-        SizedBox(height: 10)
+        SizedBox(
+          height: ScreenUtil().setHeight(10),
+        ),
       ],
     );
   }
@@ -188,11 +204,12 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _resendMessageBtn() {
     return ArgonTimerButton(
+      initialTimer: 60,
       splashColor: null,
       color: null,
       roundLoadingShape: false,
       colorBrightness: null,
-      height: 25,
+      height: ScreenUtil().setSp(25, allowFontScalingSelf: true),
       width: 0.5,
       child: Container(
         alignment: Alignment.centerRight,
@@ -213,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen>
             await Provider.of<Auth>(context, listen: false)
                 .resendOtp(phoneNumber);
 
-            startTimer(20);
+            startTimer(60);
           } catch (error) {
             _showDilog('Oops!', '$error');
           }
@@ -224,37 +241,40 @@ class _LoginScreenState extends State<LoginScreen>
 
   _showDilog(String title, String content) {
     print('PP in showDilog');
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Okay'),
-          ),
-          FlatButton(
-            onPressed: () => setState(() {
-              _phoneController.clear();
-              _nameController.clear();
-              _passwordController.clear();
-              Navigator.of(context).pop();
-              _requirePassword = false;
-              _buildForgetButton = false;
-              _isRegistered = false;
-              _showSignup = false;
-              _rememberMe = false;
-              _showPassword = false;
-              _showPasswordCheckBox = false;
-              _forgotPasswordMenu = false;
-              _screen = 0;
-            }),
-            child: Text('Reset'),
-          )
-        ],
-      ),
-    );
+    if (context != null) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Okay'),
+            ),
+            FlatButton(
+              onPressed: () => setState(() {
+                enable = true;
+                _phoneController.clear();
+                _nameController.clear();
+                _passwordController.clear();
+                Navigator.of(context).pop();
+                _requirePassword = false;
+                _buildForgetButton = false;
+                _isRegistered = false;
+                _showSignup = false;
+                _rememberMe = false;
+                _showPassword = false;
+                _showPasswordCheckBox = false;
+                _forgotPasswordMenu = false;
+                _screen = 0;
+              }),
+              child: Text('Reset'),
+            )
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> _forgotPassword() async {
@@ -266,6 +286,7 @@ class _LoginScreenState extends State<LoginScreen>
       });
       a
           ? setState(() {
+              enable = true;
               _forgotPasswordMenu = true;
               _requirePassword = false;
               _buildForgetButton = false;
@@ -411,124 +432,135 @@ class _LoginScreenState extends State<LoginScreen>
   int _screen = 0;
   bool _isLoading = false;
   Future<void> next() async {
-    setState(() {
-      _isLoading = true;
-    });
-    if (_forgotPasswordMenu) _screen++;
-    print('PP next buttton Pressed');
-    print(!_buildForgetButton);
-    if (!_buildForgetButton && _screen < 2) {
-      print(_showSignup);
-      if (_showSignup) {
-        print('PP In first If part');
-        try {
-          await Provider.of<Auth>(context, listen: false).userSignup(
-              _nameController.text,
-              _phoneController.text,
-              _passwordController.text);
+    if (_key.currentState.validate()) {
+      _key.currentState.save();
+      setState(() {
+        _isLoading = true;
+      });
+      if (_forgotPasswordMenu) _screen++;
+      print('PP next buttton Pressed');
+      print(!_buildForgetButton);
+      if (!_buildForgetButton && _screen < 2) {
+        print(_showSignup);
+        if (_showSignup) {
+          print('PP In first If part');
+          try {
+            await Provider.of<Auth>(context, listen: false).userSignup(
+                _nameController.text,
+                _phoneController.text,
+                _passwordController.text);
+            Provider.of<Auth>(context, listen: false).changeLog();
 
-          await Provider.of<Products>(context, listen: false)
-              .fetchAndSetProducts(
-                  token: Provider.of<Auth>(context, listen: true).token);
+            await Provider.of<Products>(context, listen: false)
+                .fetchAndSetProducts(
+                    token: Provider.of<Auth>(context, listen: false).token);
 
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (ctx) => Home()));
-        } catch (error) {
-          _showDilog('Oops!', '$error');
-        } finally {
-          setState(() {
-            _isLoading = false;
-          });
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (ctx) => Home()));
+          } catch (error) {
+            _showDilog('Oops!', '$error');
+          } finally {
+            if (mounted)
+              setState(() {
+                _isLoading = false;
+              });
+          }
+        } else {
+          try {
+            print(_isRegistered);
+            _isRegistered = _forgotPasswordMenu
+                ? true
+                : await Provider.of<Auth>(context, listen: false)
+                    .checkIfRegistered(_phoneController.text);
+
+            setState(() {
+              _isLoading = false;
+              print('PP in setState1: $_isRegistered');
+              // if (_isRegistered != null) {
+
+              // }
+              if (_isRegistered) {
+                phoneNumber = _phoneController.text;
+                _requirePassword = true;
+                enable = false;
+
+                _controller.forward();
+                print(!_forgotPasswordMenu);
+                if (!_forgotPasswordMenu) _buildForgetButton = true;
+
+                _showPasswordCheckBox = true;
+              } else {
+                _showSignup = true;
+                enable = false;
+
+                _requirePassword = true;
+                _controller.forward();
+                _showPasswordCheckBox = true;
+              }
+              // setState(() {
+              //   _isLoading = true;
+              // });
+            });
+          } catch (error) {
+            _showDilog('Oops!', '$error');
+          } finally {
+            setState(() {
+              _isLoading = false;
+            });
+          }
         }
       } else {
-        try {
-          print(_isRegistered);
-          _isRegistered = _forgotPasswordMenu
-              ? true
-              : await Provider.of<Auth>(context, listen: false)
-                  .checkIfRegistered(_phoneController.text);
+        print('PP in second else part: $_forgotPasswordMenu');
+        print(_phoneController.text);
+        phoneNumber = _phoneController.text;
+        print(_nameController.text);
+        print(_passwordController.text);
 
+        // await Provider.of<Auth>(context, listen: false)
+        //     .checkOtp(code: _nameController.text, number: phoneNumber);
+
+        if (_forgotPasswordMenu) {
+          try {
+            await Provider.of<Auth>(context, listen: false).resetPassword(
+                _phoneController.text,
+                _nameController.text,
+                _passwordController.text);
+          } catch (error) {
+            _showDilog('Oops!', '$error');
+          }
+          _passwordController.clear();
+          _phoneController.clear();
+          _nameController.clear();
           setState(() {
-            _isLoading = false;
-            print('PP in setState1: $_isRegistered');
-            // if (_isRegistered != null) {
-
-            // }
-            if (_isRegistered) {
-              phoneNumber = _phoneController.text;
-              _requirePassword = true;
-
-              _controller.forward();
-              print(!_forgotPasswordMenu);
-              if (!_forgotPasswordMenu) _buildForgetButton = true;
-
-              _showPasswordCheckBox = true;
-            } else {
-              _showSignup = true;
-
-              _requirePassword = true;
-              _controller.forward();
-              _showPasswordCheckBox = true;
-            }
-            // setState(() {
-            //   _isLoading = true;
-            // });
-          });
-        } catch (error) {
-          _showDilog('Oops!', '$error');
-        } finally {
-          setState(() {
+            enable = true;
+            _requirePassword = false;
+            _buildForgetButton = false;
+            _isRegistered = false;
+            _showSignup = false;
+            _rememberMe = false;
+            _showPassword = false;
+            _showPasswordCheckBox = false;
+            _forgotPasswordMenu = false;
+            _screen = 0;
             _isLoading = false;
           });
+        } else {
+          try {
+            await Provider.of<Auth>(context, listen: false)
+                .userLogin(_phoneController.text, _passwordController.text);
+            Provider.of<Auth>(context, listen: false).changeLog();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          } catch (error) {
+            _showDilog('Oops!', '$error');
+          } finally {
+            setState(() {
+              _isLoading = false;
+            });
+          }
         }
-      }
-    } else {
-      print('PP in second else part: $_forgotPasswordMenu');
-      print(_phoneController.text);
-      phoneNumber = _phoneController.text;
-      print(_nameController.text);
-      print(_passwordController.text);
-
-      // await Provider.of<Auth>(context, listen: false)
-      //     .checkOtp(code: _nameController.text, number: phoneNumber);
-
-      if (_forgotPasswordMenu) {
-        try {
-          await Provider.of<Auth>(context, listen: false).resetPassword(
-              _phoneController.text,
-              _nameController.text,
-              _passwordController.text);
-        } catch (error) {
-          _showDilog('Oops!', '$error');
-        }
-        setState(() {
-          _requirePassword = false;
-          _buildForgetButton = false;
-          _isRegistered = false;
-          _showSignup = false;
-          _rememberMe = false;
-          _showPassword = false;
-          _showPasswordCheckBox = false;
-          _forgotPasswordMenu = false;
-          _screen = 0;
-          _isLoading = false;
-        });
-      } else {
-        try {
-          await Provider.of<Auth>(context, listen: false)
-              .userLogin(_phoneController.text, _passwordController.text);
-        } catch (error) {
-          _showDilog('Oops!', '$error');
-        } finally {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
-        Provider.of<Auth>(context, listen: false).changeLog();
       }
     }
   }
@@ -539,166 +571,196 @@ class _LoginScreenState extends State<LoginScreen>
     print('PP value of _showSigUp: $_showSignup');
     ScreenUtil.init(context, allowFontScaling: true, height: 775, width: 411);
     return Scaffold(
-        body: Container(
-      width: double.infinity,
-      // height: ScreenUtil().setHeight(775),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFF32FFF3),
-            Color(0xFF3685CB),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        body: Form(
+      key: _key,
+      child: Container(
+        width: double.infinity,
+        // height: ScreenUtil().setHeight(775),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF32FFF3),
+              Color(0xFF3685CB),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-      ),
-      height: double.infinity,
-      child: AnimatedContainer(
-        padding: EdgeInsets.symmetric(horizontal: 40.0),
-        constraints: BoxConstraints(
-          minHeight: _requirePassword
-              ? ScreenUtil().setHeight(640)
-              : ScreenUtil().setHeight(640),
-          maxHeight: _requirePassword
-              ? _showSignup
-                  ? ScreenUtil().setHeight(675)
-                  : ScreenUtil().setHeight(675)
-              : ScreenUtil().setHeight(640),
-        ),
-        duration: Duration(milliseconds: 300),
-        child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //SizedBox(height: deviceSize.height / 10),
-            Text(
-              'Hello,',
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Gilroy Regular',
-                fontSize: ScreenUtil().setSp(50, allowFontScalingSelf: true),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: ScreenUtil().setHeight(20),
-            ),
-            Image.asset(
-              "assets/images/group7.png",
-              fit: BoxFit.contain,
-              height: ScreenUtil().setHeight(150),
-              width: ScreenUtil().setWidth(150),
-            ),
-            SizedBox(height: ScreenUtil().setHeight(30)),
-            if (_showSignup) ...[
-              SlideTransition(
-                position: _slideAnimation2,
-                child: _buildGivenTF(
-                    name: 'Name',
-                    hint: 'Enter your full name',
-                    controller: _nameController,
-                    inputType: TextInputType.text,
-                    icon: Icons.person),
+        height: double.infinity,
+        child: AnimatedContainer(
+          padding: EdgeInsets.symmetric(horizontal: 40.0),
+          constraints: BoxConstraints(
+            minHeight: _requirePassword
+                ? ScreenUtil().setHeight(640)
+                : ScreenUtil().setHeight(640),
+            maxHeight: _requirePassword
+                ? _showSignup
+                    ? ScreenUtil().setHeight(675)
+                    : ScreenUtil().setHeight(675)
+                : ScreenUtil().setHeight(640),
+          ),
+          duration: Duration(milliseconds: 300),
+          child: ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            physics: BouncingScrollPhysics(),
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              //SizedBox(height: deviceSize.height / 10),
+              Text(
+                'Hello,',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Gilroy Regular',
+                  fontSize: ScreenUtil().setSp(50, allowFontScalingSelf: true),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
-                height: ScreenUtil().setHeight(10),
-              )
-            ],
-            //if (!_isRegistered)
-            _buildGivenTF(
-                name: _forgotPasswordMenu ? 'OTP' : 'Mobile Number',
-                hint: _forgotPasswordMenu
-                    ? 'Check SMS on your Phone'
-                    : 'Enter 10 digits number',
-                controller:
-                    _forgotPasswordMenu ? _nameController : _phoneController,
-                inputType: TextInputType.phone,
-                icon: Icons.phone_iphone),
-
-            if (_requirePassword || _showSignup)
-              SlideTransition(
-                position: _slideAnimation,
-                child: FadeTransition(
-                    opacity: _opacityAnimation, child: _buildPasswordTF()),
+                height: ScreenUtil().setHeight(20),
               ),
-            if (_buildForgetButton)
-              _buildForgotPasswordBtn(),
+              Image.asset(
+                "assets/images/logo.png",
+                fit: BoxFit.contain,
+                height: ScreenUtil().setHeight(150),
+                width: ScreenUtil().setWidth(150),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(30)),
+              if (_showSignup) ...[
+                SlideTransition(
+                  position: _slideAnimation2,
+                  child: _buildGivenTF(
+                      name: 'Name',
+                      enable: true,
+                      validate: (value) {
+                        if (value.isEmpty) {
+                          return "Enter Full Name";
+                        } else if (value.length < 4) {
+                          return "Name Error";
+                        }
+                        return null;
+                      },
+                      hint: 'Enter your full name',
+                      controller: _nameController,
+                      inputType: TextInputType.text,
+                      icon: Icons.person),
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(10),
+                )
+              ],
+              //if (!_isRegistered)
+              _buildGivenTF(
+                  name: _forgotPasswordMenu ? 'OTP' : 'Mobile Number',
+                  enable: enable,
+                  validate: _forgotPasswordMenu
+                      ? (value) {
+                          if (value.isEmpty) {
+                            return "Enter OTP";
+                          } else if (value.length != 4) {
+                            return "OTP Should be of 4 digit";
+                          }
+                          return null;
+                        }
+                      : (value) {
+                          if (value.isEmpty) {
+                            return "Enter Phone Number";
+                          } else if (value.length != 10) {
+                            return "Incorrect Phone Number";
+                          }
+                          return null;
+                        },
+                  hint: _forgotPasswordMenu
+                      ? 'Check SMS on your Phone'
+                      : 'Enter 10 digits number',
+                  controller:
+                      _forgotPasswordMenu ? _nameController : _phoneController,
+                  inputType: TextInputType.phone,
+                  icon: Icons.phone_iphone),
 
-            _forgotPasswordMenu && _requirePassword == false
-                ? _resendMessageBtn()
-                : _buildRememberMeCheckbox(),
+              if (_requirePassword || _showSignup)
+                SlideTransition(
+                  position: _slideAnimation,
+                  child: FadeTransition(
+                      opacity: _opacityAnimation, child: _buildPasswordTF()),
+                ),
+              if (_buildForgetButton)
+                _buildForgotPasswordBtn(),
 
-            _forgotPasswordMenu && _requirePassword == false
-                ? Container(
-                    padding: EdgeInsets.only(top: 20.0),
-                    width: double.infinity,
-                    child: RaisedButton(
-                      onPressed: () async {
-                        setState(() {
-                          isVerifyLoading = true;
-                        });
-                        bool b;
-                        try {
-                          b = await Provider.of<Auth>(context, listen: false)
-                              .checkOtp(
-                                  number: phoneNumber.toString(),
-                                  code: _nameController.text);
+              _forgotPasswordMenu && _requirePassword == false
+                  ? _resendMessageBtn()
+                  : _buildRememberMeCheckbox(),
+
+              _forgotPasswordMenu && _requirePassword == false
+                  ? Container(
+                      padding: EdgeInsets.only(top: 20.0),
+                      width: double.infinity,
+                      child: RaisedButton(
+                        onPressed: () async {
                           setState(() {
-                            isVerifyLoading = false;
+                            isVerifyLoading = true;
                           });
+                          bool b;
+                          try {
+                            b = await Provider.of<Auth>(context, listen: false)
+                                .checkOtp(
+                                    number: phoneNumber.toString(),
+                                    code: _nameController.text);
+                            setState(() {
+                              isVerifyLoading = false;
+                            });
 
-                          if (b) {
-                            _forgotPasswordMenu = true;
-                            _requirePassword = true;
-                            next();
-                          } else {
-                            dataSelect(context, 'Wrong Otp', '', 'ok', () {
-                              Navigator.pop(context);
+                            if (b) {
+                              _forgotPasswordMenu = true;
+                              _requirePassword = true;
+                              next();
+                            } else {
+                              dataSelect(context, 'Wrong Otp', '', 'ok', () {
+                                Navigator.pop(context);
+                              });
+                            }
+                          } catch (error) {
+                            _showDilog('Oops!', '$error');
+                          } finally {
+                            setState(() {
+                              isVerifyLoading = false;
                             });
                           }
-                        } catch (error) {
-                          _showDilog('Oops!', '$error');
-                        } finally {
-                          setState(() {
-                            isVerifyLoading = false;
-                          });
-                        }
-                      },
-                      elevation: 5.0,
-                      padding: EdgeInsets.all(15.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      color: Colors.white,
-                      child: _isLoading
-                          ? SizedBox(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
+                        },
+                        elevation: 5.0,
+                        padding: EdgeInsets.all(15.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        color: Colors.white,
+                        child: _isLoading
+                            ? SizedBox(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3,
+                                ),
+                                height: ScreenUtil().setHeight(22),
+                                width: ScreenUtil().setWidth(22),
+                              )
+                            : Text(
+                                'Verify Otp',
+                                style: TextStyle(
+                                  color: Color(0xFF527DAA),
+                                  letterSpacing: 1.5,
+                                  fontSize: ScreenUtil()
+                                      .setSp(18, allowFontScalingSelf: true),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Gilroy Regular',
+                                ),
                               ),
-                              height: ScreenUtil().setHeight(22),
-                              width: ScreenUtil().setWidth(22),
-                            )
-                          : Text(
-                              'Verify Otp',
-                              style: TextStyle(
-                                color: Color(0xFF527DAA),
-                                letterSpacing: 1.5,
-                                fontSize: ScreenUtil()
-                                    .setSp(18, allowFontScalingSelf: true),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Gilroy Regular',
-                              ),
-                            ),
-                    ))
-                : _buildNextBtn()
+                      ))
+                  : _buildNextBtn()
 
-            //_buildSignInWithText(),
-            //_buildSocialBtnRow(),
-            //_buildSignupBtn(),
-          ],
+              //_buildSignInWithText(),
+              //_buildSocialBtnRow(),
+              //_buildSignupBtn(),
+            ],
+          ),
         ),
       ),
     ));

@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class CompleteSignUp extends StatefulWidget {
-
   @override
   _CompleteSignUpState createState() => _CompleteSignUpState();
 }
@@ -99,12 +98,12 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: FadeInDownBig(
+                      child: FadeInDown(
                         child: Text(
                           "Complete Sign-Up",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Gilroy Black',
+                            // fontWeight: FontWeight.bold,
+                            fontFamily: 'Gilroy Bold',
                             letterSpacing: 1.0,
                             fontSize: ScreenUtil()
                                 .setSp(34, allowFontScalingSelf: true),
@@ -124,12 +123,12 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            FadeInDownBig(
+                            FadeInDown(
                               child: Text(
                                 "Personal Details",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Gilroy Black',
+                                  fontFamily: 'Gilroy Medium',
                                   letterSpacing: 1.0,
                                   color: Colors.black,
                                   fontSize: ScreenUtil()
@@ -141,7 +140,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             SizedBox(
                               height: ScreenUtil().setHeight(7.75),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Full Name",
                                 controller: fullNameController,
@@ -154,25 +153,32 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(fullName);
                                   });
                                 },
+                                validator: (value) {
+                                  if (value.length<3) {
+                                    return "Name Error";
+                                  } else if (value.isEmpty) {
+                                    return "Enter Your Name";
+                                  }
+                                  return null;
+                                },
                                 icon: Icons.person,
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Enter Phone Number",
                                 controller: phoneNumberController,
+                                proceed: true,
                                 onSubmitted: (value) {
                                   setState(() {
                                     phoneNumber = value;
                                     print(phoneNumber);
                                   });
                                 },
-                                // icon: Icons.person,
-                                proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Email-id",
                                 validator: (value) {
@@ -196,7 +202,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Reference",
                                 controller: referenceController,
@@ -219,12 +225,12 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             SizedBox(
                               height: ScreenUtil().setHeight(20),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: Text(
-                                "Firm Details!",
+                                "Firm Details",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Gilroy Black',
+                                  fontFamily: 'Gilroy Medium',
                                   letterSpacing: 1.0,
                                   color: Colors.black,
                                   fontSize: ScreenUtil()
@@ -234,7 +240,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                               ),
                             ),
                             SizedBox(height: ScreenUtil().setHeight(7.75)),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Firm Name",
                                 controller: firmDetailController,
@@ -254,9 +260,9 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
-                                hintText: "GST",
+                                hintText: "GST (OPTIONAL)",
                                 validator: (value) {
                                   if (value.isNotEmpty) {
                                     if (!RegExp(
@@ -278,7 +284,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Street",
                                 controller: streetNameController,
@@ -298,7 +304,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "City",
                                 controller: cityNameController,
@@ -318,7 +324,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "State",
                                 validator: (value) {
@@ -338,7 +344,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 hintText: "Pincode",
                                 validator: (value) {
@@ -392,45 +398,44 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
       ),
       floatingActionButton: GestureDetector(
         onTap: () async {
-          
           if (_key.currentState.validate()) {
             _key.currentState.save();
             setState(() {
               isLoading = true;
             });
-            try{
-            await Provider.of<UserInfo>(context, listen: false).completeSignUp(
-              context: context,
-              fullname: fullName,
-              email: emailID,
-              city: cityName,
-              firm: firmDetail,
-              gst: gstValue,
-              pincode: pincode,
-              reference: reference,
-              state: stateName,
-              street: streetName,
-            );
-          }catch(err){
-             dataSelect(context, '$err', '', 'OK', (){
-                                                  Navigator.pop(context);
-                    });
-
+            try {
+              await Provider.of<UserInfo>(context, listen: false)
+                  .completeSignUp(
+                context: context,
+                fullname: fullName,
+                email: emailID,
+                city: cityName,
+                firm: firmDetail,
+                gst: gstValue,
+                pincode: pincode,
+                reference: reference,
+                state: stateName,
+                street: streetName,
+              );
+            } catch (err) {
+              dataSelect(context, 'Alert!','$err', 'OK', () {
+                Navigator.pop(context);
+              });
+            } finally {
+              setState(() {
+                isLoading = false;
+              });
+              Navigator.of(context).pop();
+            }
           }
-          finally{
-             setState(() {
-              isLoading = false;
-            });
-            Navigator.of(context).pop();
-          }
-
-          }
-          
         },
         child: Container(
-          width: ScreenUtil().setWidth(200.0),
+          width: ScreenUtil().setWidth(120.0),
           decoration: BoxDecoration(
-            // image: ,
+            // image: DecorationImage(
+            //   image: AssetImage('assets/images/vector17.png'),
+            //   fit: BoxFit.contain,
+            // ),
             borderRadius: BorderRadius.circular(30),
             gradient: LinearGradient(
               colors: [
@@ -448,16 +453,16 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
               Icon(
                 Icons.done_outline,
                 color: Colors.white,
-                size: 23.0,
+                size: ScreenUtil().setSp(23,allowFontScalingSelf: true),
               ),
               SizedBox(
                 width: ScreenUtil().setWidth(10),
               ),
               Text(
-                'Submit Your Details',
+                'Submit',
                 style: TextStyle(
                   fontFamily: 'Gilroy Medium',
-                  fontSize: 15.0,
+                  fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
                   color: Colors.white,
                 ),
               ),

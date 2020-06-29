@@ -112,7 +112,13 @@ class Cart with ChangeNotifier {
             "quantity": quantity
           }),
         );
-
+// {
+//   quantity: 1,
+//   build: 'SCREW',
+//   color: 'WHITE',
+//   certificate: 'IGI',
+//   diamondQuality: null
+// }
         final responseData = json.decode(response.body);
            if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
@@ -174,8 +180,7 @@ class Cart with ChangeNotifier {
         print(cart);
         notifyListeners();
       } catch (error) {
-        print(error);
-        print(error);
+       throw error;
       }
     } else {
       try {
@@ -273,7 +278,7 @@ class Cart with ChangeNotifier {
                   .indexOf(i['options']['diamondQuality']),
               product: Product(
                   imageUrl: Map<dynamic, dynamic>.from(i['images']),
-                  prices:Provider.of<Pagination>(context,listen: false).isPriced? Map<dynamic, dynamic>.from(i['prices']):{},
+                  prices: Map<dynamic, dynamic>.from(i['prices']),
                   styleNumber: i["styleNumber"])))
           .toList();
 

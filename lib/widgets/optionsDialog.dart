@@ -56,56 +56,64 @@ class _OptionsDialogState extends State<OptionsDialog> {
   Widget build(BuildContext context) {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-      child: SimpleDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF34B0D9).withOpacity(0.2),
+              Color(0xFF3685CB).withOpacity(0.2),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        contentPadding: EdgeInsets.all(14.0),
-        children: <Widget>[
-          Container(
-            height: ScreenUtil().setHeight(525),
-            width: ScreenUtil().setWidth(400),
-            // width: 700.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: ScreenUtil().setHeight(19),
-                ),
-                Center(
-                  child: Text(
-                    "Options",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Gilroy Medium',
-                      fontSize:
-                          ScreenUtil().setSp(24, allowFontScalingSelf: true),
+        child: SimpleDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          contentPadding: EdgeInsets.all(14.0),
+          children: <Widget>[
+            Container(
+              height: ScreenUtil().setHeight(525),
+              width: ScreenUtil().setWidth(400),
+              // width: 700.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: ScreenUtil().setHeight(19),
+                  ),
+                  Center(
+                    child: Text(
+                      "Options",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Gilroy Medium',
+                        fontSize:
+                            ScreenUtil().setSp(24, allowFontScalingSelf: true),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(19),
-                ),
-                Text(
-                  'Color',
-                  style: TextStyle(
-                    fontFamily: 'Gilroy Medium',
-                    fontSize: ScreenUtil().setSp(18),
-                    color: Colors.black,
+                  SizedBox(
+                    height: ScreenUtil().setHeight(19),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-                Center(
-                  child: Wrap(
+                  Text(
+                    'Color',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy Medium',
+                      fontSize: ScreenUtil().setSp(18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(16),
+                  ),
+                  Wrap(
                     spacing: 5.0,
                     runSpacing: 7.0,
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: List<Widget>.generate(widget.choiceColor.length,
                         (int index) {
                       return GestureDetector(
@@ -195,27 +203,23 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       );
                     }),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(19),
-                ),
-                Text(
-                  'Build',
-                  style: TextStyle(
-                    fontFamily: 'Gilroy Medium',
-                    fontSize: ScreenUtil().setSp(18),
-                    color: Colors.black,
+                  SizedBox(
+                    height: ScreenUtil().setHeight(19),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-                Center(
-                  child: Wrap(
+                  Text(
+                    'Build',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy Medium',
+                      fontSize: ScreenUtil().setSp(18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(16),
+                  ),
+                  Wrap(
                     spacing: 5.0,
                     runSpacing: 7.0,
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: List<Widget>.generate(widget.choicesBuild.length,
                         (int index) {
                       return GestureDetector(
@@ -304,27 +308,23 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       );
                     }),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(19),
-                ),
-                Text(
-                  'Certification',
-                  style: TextStyle(
-                    fontFamily: 'Gilroy Medium',
-                    fontSize: ScreenUtil().setSp(18),
-                    color: Colors.black,
+                  SizedBox(
+                    height: ScreenUtil().setHeight(19),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-                Center(
-                  child: Wrap(
+                  Text(
+                    'Certification',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy Medium',
+                      fontSize: ScreenUtil().setSp(18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(16),
+                  ),
+                  Wrap(
                     spacing: 5.0,
                     runSpacing: 7.0,
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: List<Widget>.generate(
                         widget.choiceCertification.length, (int index) {
                       return GestureDetector(
@@ -414,27 +414,23 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       );
                     }),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(19),
-                ),
-                Text(
-                  'Diamond Quality',
-                  style: TextStyle(
-                    fontFamily: 'Gilroy Medium',
-                    fontSize: ScreenUtil().setSp(18),
-                    color: Colors.black,
+                  SizedBox(
+                    height: ScreenUtil().setHeight(19),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-                Center(
-                  child: Wrap(
+                  Text(
+                    'Diamond Quality',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy Medium',
+                      fontSize: ScreenUtil().setSp(18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(16),
+                  ),
+                  Wrap(
                     spacing: 5.0,
                     runSpacing: 7.0,
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: List<Widget>.generate(
                         widget.choiceDiamondQuality.length, (int index) {
                       return GestureDetector(
@@ -524,46 +520,46 @@ class _OptionsDialogState extends State<OptionsDialog> {
                       );
                     }),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      width: ScreenUtil().setWidth(180),
-                      height: ScreenUtil().setHeight(43),
-                      // padding: EdgeInsets.all(20.0),
-                      child: Center(
-                        child: Text(
-                          'DONE',
-                          style: TextStyle(
-                            fontFamily: 'Gilroy Bold',
-                            color: Colors.white,
-                            fontSize: ScreenUtil()
-                                .setSp(18, allowFontScalingSelf: true),
-                            fontWeight: FontWeight.w500,
+                  SizedBox(
+                    height: ScreenUtil().setHeight(16),
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        width: ScreenUtil().setWidth(180),
+                        height: ScreenUtil().setHeight(43),
+                        // padding: EdgeInsets.all(20.0),
+                        child: Center(
+                          child: Text(
+                            'DONE',
+                            style: TextStyle(
+                              fontFamily: 'Gilroy Bold',
+                              color: Colors.white,
+                              fontSize: ScreenUtil()
+                                  .setSp(18, allowFontScalingSelf: true),
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: AssetImage('assets/images/vector17.png'),
+                          fit: BoxFit.contain,
+                        )),
                       ),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage('assets/images/vector17.png'),
-                        fit: BoxFit.contain,
-                      )),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(16),
-                ),
-              ],
+                  SizedBox(
+                    height: ScreenUtil().setHeight(16),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

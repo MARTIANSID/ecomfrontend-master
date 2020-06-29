@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './http_exception.dart';
@@ -11,15 +12,14 @@ class Auth with ChangeNotifier {
   static const uurl = 'https://alexa.gemstory.in/';
 
   Future<bool> checkIfRegistered(String number) async {
-    try{
-    
-    final response = await http.get('${uurl}user/isregistered/$number');
-    final responseBody = jsonDecode(response.body);
-    if (responseBody['error'] == true)
-      throw HttpException(responseBody['details']['message']);
-    print('PP checkIfRegistered response: $responseBody');
-    return responseBody['registered'];
-    }catch(err){
+    try {
+      final response = await http.get('${uurl}user/isregistered/$number');
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] == true)
+        throw HttpException(responseBody['details']['message']);
+      print('PP checkIfRegistered response: $responseBody');
+      return responseBody['registered'];
+    } catch (err) {
       throw err;
     }
   }
@@ -57,53 +57,71 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> resetPasswordRequest(String number) async {
-    final response = await http
-        .post('${uurl}user/resetpasswordrequest', body: {"number": number});
-    final responseBody = json.decode(response.body);
-    print(
-        'PP resetPasswordRequest body details message:${responseBody['details']}');
-    if (responseBody['error'] == true)
-      throw HttpException(responseBody['details']['message']);
-    else
-      return true;
+    try {
+      final response = await http
+          .post('${uurl}user/resetpasswordrequest', body: {"number": number});
+      final responseBody = json.decode(response.body);
+      print(
+          'PP resetPasswordRequest body details message:${responseBody['details']}');
+      if (responseBody['error'] == true)
+        throw HttpException(responseBody['details']['message']);
+      else
+        return true;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  Future<bool> checkOtp({number,code}) async{
-    final response = await http
-        .post('${uurl}user/resetpassword/checkcode', body: {"number": number,"code":code});
-    final responseBody = json.decode(response.body);
-    
-    if (responseBody['error'] == true)
-      throw HttpException(responseBody['details']['message']);
+  Future<bool> checkOtp({number, code}) async {
+    try {
+      final response = await http.post('${uurl}user/resetpassword/checkcode',
+          body: {"number": number, "code": code});
+      final responseBody = json.decode(response.body);
+
+      if (responseBody['error'] == true)
+        throw HttpException(responseBody['details']['message']);
       print(responseBody['matches']);
       return responseBody['matches'];
-    
-  
+    } catch (err) {
+      throw err;
+    }
   }
-  
+
   String _host = InternetAddress.loopbackIPv4.host;
 
-
-
   Future<bool> resetPassword(String number, String otp, String password) async {
-    final response = await http.patch('${uurl}user/resetpassword/',
-        body: {"code": "$otp", "password": "$password","number":number});
-    final responseBody = json.decode(response.body);
-    print('PP resetPassword body details message:$responseBody');
-    if (responseBody['error'] == true)
-      throw HttpException(responseBody['details']['message']);
-    else
-      return true;
+    try {
+      final response = await http.patch('${uurl}user/resetpassword/',
+          body: {"code": "$otp", "password": "$password", "number": number});
+      final responseBody = json.decode(response.body);
+      print('PP resetPassword body details message:$responseBody');
+      if (responseBody['error'] == true)
+        throw HttpException(responseBody['details']['message']);
+      else
+        return true;
+    } catch (err) {
+      throw err;
+    }
   }
 
   Future<void> _authenticate(String number, String password, String urlSegment,
       [String name]) async {
     try {
+      var status = await OneSignal.shared.getPermissionSubscriptionState();
+      print("DCDCDCDCDC" +
+          status.subscriptionStatus.subscribed.toString() +
+          "DCDCDCDCDC");
+      var playerId = status.subscriptionStatus.userId;
       final response = await http.post(
         '$uurl$urlSegment',
         body: name != null
-            ? {"fullName": name, "number": number, "password": password}
-            : {"number": number, "password": password},
+            ? {
+                "fullName": name,
+                "number": number,
+                "password": password,
+                "notifid": playerId
+              }
+            : {"number": number, "password": password, "notifid": playerId},
       );
       final responseData = json.decode(response.body);
       if (responseData['error'] != false) {
@@ -131,18 +149,21 @@ class Auth with ChangeNotifier {
       throw error;
     }
   }
-  Future<void> resendOtp(number) async{
-      final response = await http.post('${uurl}user/resendmessagepassword',
-        body: {"number":number});
-    final responseBody = json.decode(response.body);
-    print('PP resetPassword body details message:$responseBody');
-    if (responseBody['error'] == true)
-      throw HttpException(responseBody['details']['message']);
-    else
-      return true;
-  }
 
-  
+  Future<void> resendOtp(number) async {
+    try {
+      final response = await http
+          .post('${uurl}user/resendmessagepassword', body: {"number": number});
+      final responseBody = json.decode(response.body);
+      print('PP resetPassword body details message:$responseBody');
+      if (responseBody['error'] == true) {
+        throw HttpException(responseBody['details']['message']);
+      } else
+        return true;
+    } catch (err) {
+      throw err;
+    }
+  }
 
   Future<void> userSignup(
     String name,
@@ -157,53 +178,56 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin(context) async {
-    final prefs = await SharedPreferences.getInstance();
-    print('PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
-    if (!prefs.containsKey('userData')) {
-      return false;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      print(
+          'PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
+      if (!prefs.containsKey('userData')) {
+        return false;
+      }
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
+
+      if (expiryDate.isBefore(DateTime.now())) {
+        return false;
+      }
+      _token = extractedUserData['token'];
+      _number = extractedUserData['number'];
+
+      _expiryDate = expiryDate;
+
+      autoLogin = true;
+
+      _autoLogout();
+      notifyListeners();
+      return true;
+    } catch (err) {
+      throw err;
     }
-    final extractedUserData =
-        json.decode(prefs.getString('userData')) as Map<String, Object>;
-    final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
-
-    if (expiryDate.isBefore(DateTime.now())) {
-      return false;
-    }
-    _token = extractedUserData['token'];
-    _number = extractedUserData['number'];
-
-    _expiryDate = expiryDate;
-
-    autoLogin = true;
-
-    _autoLogout();
-    notifyListeners();
-    return true;
   }
 
   Future<void> logout() async {
     _token = null;
     _number = null;
     _expiryDate = null;
-    notifyListeners();
+
     if (_authTimer != null) {
       _authTimer.cancel();
       _authTimer = null;
-  notifyListeners();
     }
+
+    notifyListeners();
 
     final prefs = await SharedPreferences.getInstance();
-    // prefs.remove('userData');
-    prefs.clear();
-    notifyListeners();
+    prefs.remove('userData');
   }
 
-  void _autoLogout() async{
+  void _autoLogout() {
     if (_authTimer != null) {
       _authTimer.cancel();
-
     }
-  
+
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
     notifyListeners();

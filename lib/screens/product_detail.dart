@@ -7,6 +7,7 @@ import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/photo_detail_screen.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
+import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,10 @@ class ProductDetail extends StatefulWidget {
   final valueChangeColor;
   final valueChangeCerti;
   final valueChangeDQ;
+  final valueChangeBuild1;
+  final valueChangeColor1;
+  final valueChangeCerti1;
+  final valueChangeDQ1;
   final select;
 
   const ProductDetail(
@@ -48,6 +53,10 @@ class ProductDetail extends StatefulWidget {
       this.valueChangeColor,
       this.valueChangeCerti,
       this.valueChangeDQ,
+      this.valueChangeBuild1,
+      this.valueChangeColor1,
+      this.valueChangeCerti1,
+      this.valueChangeDQ1,
       this.select})
       : super(key: key);
 
@@ -56,7 +65,8 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  bool isColourSet = false;
+  bool isColourSetRadial = false;
+  bool isColourSetLinear = false;
   bool searchSelected = false;
 
   String searchValue = "";
@@ -71,30 +81,30 @@ class _ProductDetailState extends State<ProductDetail> {
 
   int page = 0;
   Future<void> getSearch(query) async {
-   try{ 
-    setState(() {
-      isLoadingSearch = true;
-    });
-    await Provider.of<Searchh>(context, listen: false)
-        .getSearch(query: query.toUpperCase(), context: context)
-        .then((value) {
+    try {
       setState(() {
-        suggestion = Provider.of<Searchh>(context, listen: false)
-            .searchResult
-            .where((element) =>
-                element.styleNumber.contains(searchValue.toUpperCase()))
-            .toList();
-      
-        print('DC SEARCH');
+        isLoadingSearch = true;
       });
-    });
-   }catch(err){
-      dataSelect(context, '$err', '', 'OK', (){
-                                                  Navigator.pop(context);
-                    });
-   }finally{
-  isLoadingSearch = false;
-   }
+      await Provider.of<Searchh>(context, listen: false)
+          .getSearch(query: query.toUpperCase(), context: context)
+          .then((value) {
+        setState(() {
+          suggestion = Provider.of<Searchh>(context, listen: false)
+              .searchResult
+              .where((element) =>
+                  element.styleNumber.contains(searchValue.toUpperCase()))
+              .toList();
+
+          print('DC SEARCH');
+        });
+      });
+    } catch (err) {
+      dataSelect(context, '$err', '', 'OK', () {
+        Navigator.pop(context);
+      });
+    } finally {
+      isLoadingSearch = false;
+    }
 
     print(suggestion);
     // setState(() {
@@ -114,7 +124,7 @@ class _ProductDetailState extends State<ProductDetail> {
       width: ScreenUtil().setWidth(20),
       child: new Center(
         child: new Material(
-          color: !isColourSet ? Colors.white : Colors.black,
+          color: !isColourSetRadial ? Colors.white : Colors.black,
           type: MaterialType.circle,
           child: new Container(
             width: 5.0 * zoom,
@@ -126,21 +136,15 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void requestPrice() async {
-   try{
+    try {
       await Provider.of<Pagination>(context).requestPrice(context: context);
-
-   }catch(err){
-      dataSelect(context, '$err', '', 'OK', (){
-                                                  Navigator.pop(context);
-                    });
-
-   }
-    finally{
-     Navigator.of(context).pop();
-
-   }
-   
-    
+    } catch (err) {
+      dataSelect(context, '$err', '', 'OK', () {
+        Navigator.pop(context);
+      });
+    } finally {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -230,17 +234,26 @@ class _ProductDetailState extends State<ProductDetail> {
                           bottomLeft: Radius.elliptical(650, 300),
                           bottomRight: Radius.elliptical(650, 300),
                         ),
-                        gradient: isColourSet
-                            ? LinearGradient(colors: [
-                                Color(0xFF34BDDD).withOpacity(0.1),
-                                Color(0xFF367DC8).withOpacity(0.1),
-                              ])
-                            : RadialGradient(
+                        gradient: isColourSetLinear
+                            ? LinearGradient(
                                 colors: [
-                                  Color(0xFF2B3E50),
-                                  Color(0xFF010101),
+                                  Color(0xFF34BDDD).withOpacity(0.1),
+                                  Color(0xFF367DC8).withOpacity(0.1),
                                 ],
-                              ),
+                              )
+                            : isColourSetRadial
+                                ? RadialGradient(
+                                    colors: [
+                                      Color(0xFF2B3E50),
+                                      Color(0xFF010101),
+                                    ],
+                                  )
+                                : LinearGradient(
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white,
+                                    ],
+                                  ),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -252,7 +265,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           widget.product.imageUrl.containsKey(widget.colorKey)
                               ? Container(
                                   height: ScreenUtil().setHeight(290),
-                                  width: ScreenUtil().setWidth(290),
+                                  width: ScreenUtil().setWidth(286),
                                   child: PageView.builder(
                                     // allowImplicitScrolling: true,
                                     onPageChanged: (value) {
@@ -395,7 +408,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                             child: GestureDetector(
                                               onTap: () {
                                                 setState(() {
-                                                  isColourSet = true;
+                                                  isColourSetLinear =
+                                                      !isColourSetLinear;
+                                                  isColourSetRadial = false;
                                                 });
                                               },
                                               child: Container(
@@ -405,7 +420,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                     ScreenUtil().setWidth(20),
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  gradient: isColourSet
+                                                  gradient: isColourSetLinear
                                                       ? LinearGradient(
                                                           colors: [
                                                             Color(0xFF34BDDD),
@@ -421,7 +436,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 ),
                                                 child: Padding(
                                                   padding: EdgeInsets.all(
-                                                      isColourSet ? 2.0 : 1.0),
+                                                      isColourSetLinear
+                                                          ? 2.0
+                                                          : 1.0),
                                                   child: Container(
                                                     // height: ScreenUtil()
                                                     //     .setHeight(16),
@@ -447,7 +464,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                           GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                isColourSet = false;
+                                                isColourSetRadial =
+                                                    !isColourSetRadial;
+                                                isColourSetLinear = false;
                                               });
                                             },
                                             child: Container(
@@ -456,7 +475,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                               width: ScreenUtil().setWidth(20),
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
-                                                gradient: !isColourSet
+                                                gradient: isColourSetRadial
                                                     ? LinearGradient(
                                                         colors: [
                                                           Color(0xFF34BDDD),
@@ -472,7 +491,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                               ),
                                               child: Padding(
                                                 padding: EdgeInsets.all(
-                                                    !isColourSet ? 2.0 : 1.0),
+                                                    isColourSetRadial
+                                                        ? 2.0
+                                                        : 1.0),
                                                 child: Container(
                                                   // height:
                                                   //     ScreenUtil().setHeight(16),
@@ -708,41 +729,50 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       'Important!',
                                                       "To get complete access of the app, you need to first verify yourself!",
                                                       'Complete SignUp',
-                                                      () async{
-                                                       Navigator.pop(context);
+                                                      () async {
+                                                        Navigator.pop(context);
                                                         String date =
-                                                    await Provider.of<UserInfo>(
+                                                            await Provider.of<
+                                                                        UserInfo>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .getDate();
+                                                        if (date != null) {
+                                                          int d = DateTime.now()
+                                                              .difference(
+                                                                  DateTime
+                                                                      .parse(
+                                                                          date))
+                                                              .inDays;
+                                                          if (d >= 1) {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        CompleteSignUp(),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            dataSelect(
+                                                                context,
+                                                                'Alert!',
+                                                                'Request has already been noted!',
+                                                                'Okay', () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
+                                                          }
+                                                        } else {
+                                                          Navigator.push(
                                                             context,
-                                                            listen: false)
-                                                        .getDate();
-                                                if (date != null) {
-                                                  int d = DateTime.now()
-                                                      .difference(
-                                                          DateTime.parse(date))
-                                                      .inDays;
-                                                  if (d >= 1) {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CompleteSignUp(),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    dataSelect(context, 'Request has already been noted!', '', 'ok', (){
-                                                      Navigator.pop(context);
-
-                                                    });
-                                                  }
-                                                } else {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CompleteSignUp(),
-                                                    ),
-                                                  );
-                                                }
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  CompleteSignUp(),
+                                                            ),
+                                                          );
+                                                        }
                                                       },
                                                     )
                                                   : showDialog(
@@ -880,6 +910,45 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
             Positioned(
               top: ScreenUtil().setHeight(92 + 22),
+              left: ScreenUtil().setWidth(30),
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    child: OptionsDialog(
+                      choicesBuild:
+                          Provider.of<Pagination>(context, listen: false).build,
+                      choiceColor:
+                          Provider.of<Pagination>(context, listen: false).color,
+                      choiceCertification:
+                          Provider.of<Pagination>(context, listen: false).cert,
+                      choiceDiamondQuality:
+                          Provider.of<Pagination>(context, listen: false)
+                              .diamondQuality,
+                      defValue: widget.defaultIndex1,
+                      defValue1: widget.defaultIndex2,
+                      defValue2: widget.defaultIndex3,
+                      defValue3: widget.defaultIndex4,
+                      valueChangeBuild: widget.valueChangeBuild1,
+                      valueChangeColor: widget.valueChangeColor1,
+                      valueChangeCerti: widget.valueChangeCerti1,
+                      valueChangeDQ: widget.valueChangeDQ1,
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/icons/optionsIcon.svg',
+                  width: ScreenUtil().setWidth(29),
+                  height: ScreenUtil().setHeight(29),
+                  color: isColourSetLinear ||
+                          (!isColourSetLinear && !isColourSetRadial)
+                      ? Color(0xFFB8B8B8)
+                      : Colors.white,
+                ),
+              ),
+            ),
+            Positioned(
+              top: ScreenUtil().setHeight(92 + 22),
               right: ScreenUtil().setWidth(26),
               child: GestureDetector(
                 onTap: () {
@@ -895,7 +964,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   'assets/icons/zoomIcon.svg',
                   width: ScreenUtil().setWidth(29),
                   height: ScreenUtil().setHeight(29),
-                  color: isColourSet ? Color(0xFFB8B8B8) : Colors.white,
+                  color: isColourSetLinear ||
+                          (!isColourSetLinear && !isColourSetRadial)
+                      ? Color(0xFFB8B8B8)
+                      : Colors.white,
                 ),
               ),
             ),
@@ -917,26 +989,6 @@ class _ProductDetailState extends State<ProductDetail> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: GestureDetector(
-                  onTap: () async {
-                    String select;
-                    if (widget.product.designDetails['featured']) {
-                      select = 'featured';
-                    } else if (widget.product.designDetails['new']) {
-                      select = 'new';
-                    } else if (widget.product.designDetails['highestSelling']) {
-                      select = 'highestSelling';
-                    } else {
-                      select = 'fancyDiamond';
-                    }
-                    await Provider.of<Pagination>(context, listen: false)
-                        .toogleFavourite(
-                            styleNumber: widget.product.styleNumber,
-                            context: context,
-                            select: select);
-                    setState(() {
-                      widget.product.isFavourite = !widget.product.isFavourite;
-                    });
-                  },
                   child: Icon(
                     widget.product.isFavourite
                         ? Icons.favorite
@@ -944,6 +996,30 @@ class _ProductDetailState extends State<ProductDetail> {
                     size: 30.0,
                     color: Colors.white,
                   ),
+                  onTap: () async {
+                    try {
+                      setState(() {});
+
+                      await Provider.of<Pagination>(context, listen: false)
+                          .toogleFavourite(
+                              styleNumber: widget.product.styleNumber,
+                              context: context);
+                    } catch (err) {
+                      setState(() {
+                        
+                      });
+                      dataSelect(context, "Alert!", '$err', 'Okay', () {
+                        Navigator.pop(context);
+                      });
+                    }
+                  },
+                  // child: Icon(
+                  //   widget.product.isFavourite
+                  //       ? Icons.favorite
+                  //       : Icons.favorite_border,
+                  //   size: 30.0,
+                  //   color: Colors.white,
+                  // ),
                 ),
               ),
             ),
@@ -987,8 +1063,9 @@ class _ProductDetailState extends State<ProductDetail> {
                         children: <Widget>[
                           AnimatedContainer(
                             duration: Duration(milliseconds: 600),
-                            curve: Curves.slowMiddle,
-                            padding: EdgeInsets.only(left: 10.0),
+                            curve: Curves.easeInOut,
+                            padding: EdgeInsets.only(
+                                left: searchSelected ? 10.0 : 0.0),
                             width: ScreenUtil()
                                 .setWidth(searchSelected ? 305 : 360),
                             height: ScreenUtil().setHeight(40),
@@ -1005,7 +1082,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                   child: Container(
                                     width: ScreenUtil()
                                         .setWidth(searchSelected ? 305 : 360),
-                                    height: ScreenUtil().setHeight(40),
+                                    height: ScreenUtil().setHeight(45),
+                                    padding: EdgeInsets.only(bottom: 7.5),
                                     child: TextField(
                                       controller: textEditingController,
                                       onTap: () async {
@@ -1036,30 +1114,30 @@ class _ProductDetailState extends State<ProductDetail> {
                                         // getSearchResult(value.toUpperCase());
                                       },
                                       decoration: InputDecoration(
-                                        // contentPadding: EdgeInsets.all(15.0),
-                                        suffixIcon: searchSelected
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  textEditingController.clear();
-                                                  setState(() {
-                                                    searchValue = "";
-                                                  });
-                                                },
-                                                child: Icon(Icons.clear),
-                                              )
-                                            : SizedBox(
-                                                height: 0.0,
-                                                width: 0.0,
-                                              ),
-                                        hintText: 'SEARCH GEMSTORY',
-                                        hintStyle: TextStyle(
-                                          fontFamily: 'Gilroy Medium',
-                                          color: Color(0xFF595959),
-                                          fontSize: ScreenUtil().setSp(14,
-                                              allowFontScalingSelf: true),
-                                        ),
-                                        border: InputBorder.none,
-                                      ),
+                                          // contentPadding: EdgeInsets.all(15.0),
+                                          // suffixIcon: searchSelected
+                                          //     ? GestureDetector(
+                                          //         onTap: () {
+                                          //           textEditingController.clear();
+                                          //           setState(() {
+                                          //             searchValue = "";
+                                          //           });
+                                          //         },
+                                          //         child: Icon(Icons.clear),
+                                          //       )
+                                          //     : SizedBox(
+                                          //         height: 0.0,
+                                          //         width: 0.0,
+                                          //       ),
+                                          hintText: 'SEARCH GEMSTORY',
+                                          hintStyle: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            color: Color(0xFF595959),
+                                            fontSize: ScreenUtil().setSp(14,
+                                                allowFontScalingSelf: true),
+                                          ),
+                                          border: InputBorder.none,
+                                          alignLabelWithHint: true),
                                       textAlign: searchSelected
                                           ? TextAlign.start
                                           : TextAlign.center,
@@ -1071,24 +1149,45 @@ class _ProductDetailState extends State<ProductDetail> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: 9.0,
-                                  left: 0.0,
+                                  top: 10.0,
+                                  left: 10.0,
                                   child: GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).pop();
                                     },
                                     child: AnimatedContainer(
-                                      margin: EdgeInsets.only(left: 10.0),
+                                      // margin: EdgeInsets.only(left: 10.0),
                                       duration: Duration(milliseconds: 600),
                                       // margin: EdgeInsets.only(right: 6.0),
                                       height: ScreenUtil()
-                                          .setHeight(searchSelected ? 0 : 19),
+                                          .setHeight(searchSelected ? 0 : 18),
                                       width: ScreenUtil()
-                                          .setWidth(searchSelected ? 0 : 20),
+                                          .setWidth(searchSelected ? 0 : 19),
                                       child: Image.asset(
                                         'assets/images/backButton.png',
                                         color: Colors.black,
                                       ),
+                                    ),
+                                  ),
+                                ),
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 600),
+                                  margin: EdgeInsets.only(right: 6.0),
+                                  height: ScreenUtil()
+                                      .setHeight(searchSelected ? 27 : 0),
+                                  width: ScreenUtil()
+                                      .setWidth(searchSelected ? 27 : 0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      textEditingController.clear();
+                                      setState(() {
+                                        searchValue = "";
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.clear,
+                                      color: Colors.black,
+                                      size: searchSelected ? 25 : 0,
                                     ),
                                   ),
                                 ),
@@ -1103,7 +1202,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     'assets/icons/notificationIcon.svg',
                                     color: Colors.black,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -1193,108 +1292,114 @@ class _ProductDetailState extends State<ProductDetail> {
                                           print(info);
                                           return GestureDetector(
                                             onTap: () async {
-                                             try{ 
-                                              await Provider.of<Pagination>(
-                                                      context,
-                                                      listen: false)
-                                                  .getProductDetail(
-                                                      context: context,
-                                                      styleNumber:
-                                                          suggestion[index]
-                                                              .styleNumber);
-                                              FocusScopeNode currentFocus =
-                                                  FocusScope.of(context);
-                                              currentFocus.unfocus();
-                                              textEditingController.clear();
-                                              setState(() {
-                                                searchValue = "";
-                                                searchSelected = false;
-                                                searchSelectedDoneButton =
-                                                    false;
-                                              });
-                                              print(Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .diamondQuality[
-                                                          widget.defaultIndex4]
-                                                      .toString() +
-                                                  "DC");
-                                              print(Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .certPrices[Provider.of<
+                                              try {
+                                                await Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .getProductDetail(
+                                                        context: context,
+                                                        styleNumber:
+                                                            suggestion[index]
+                                                                .styleNumber);
+                                                FocusScopeNode currentFocus =
+                                                    FocusScope.of(context);
+                                                currentFocus.unfocus();
+                                                textEditingController.clear();
+                                                setState(() {
+                                                  searchValue = "";
+                                                  searchSelected = false;
+                                                  searchSelectedDoneButton =
+                                                      false;
+                                                });
+                                                print(Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .diamondQuality[widget
+                                                            .defaultIndex4]
+                                                        .toString() +
+                                                    "DC");
+                                                print(Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .certPrices[Provider.of<
+                                                                        Pagination>(
+                                                                    context,
+                                                                    listen: false)
+                                                                .cert[
+                                                            widget
+                                                                .defaultIndex3]]
+                                                        .toString() +
+                                                    "DC");
+                                                print(widget.defaultIndex1
+                                                        .toString() +
+                                                    "DC");
+                                                print(widget.defaultIndex2
+                                                        .toString() +
+                                                    "DC");
+                                                print(widget.defaultIndex3
+                                                        .toString() +
+                                                    "DC");
+                                                print(widget.defaultIndex4
+                                                        .toString() +
+                                                    "DC");
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetail(
+                                                      select: 'all',
+                                                      colorKey: 'yellow',
+                                                      diamondKey: Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .diamondQuality[
+                                                          widget.defaultIndex4],
+                                                      certPrice: Provider.of<
+                                                                  Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .certPrices[Provider.of<
                                                                       Pagination>(
                                                                   context,
                                                                   listen: false)
                                                               .cert[
-                                                          widget.defaultIndex3]]
-                                                      .toString() +
-                                                  "DC");
-                                              print(widget.defaultIndex1
-                                                      .toString() +
-                                                  "DC");
-                                              print(widget.defaultIndex2
-                                                      .toString() +
-                                                  "DC");
-                                              print(widget.defaultIndex3
-                                                      .toString() +
-                                                  "DC");
-                                              print(widget.defaultIndex4
-                                                      .toString() +
-                                                  "DC");
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetail(
-                                                    select: 'all',
-                                                    colorKey: 'yellow',
-                                                    diamondKey: Provider.of<
-                                                                    Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .diamondQuality[
-                                                        widget.defaultIndex4],
-                                                    certPrice: Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .certPrices[Provider.of<
-                                                                    Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .cert[
-                                                        widget.defaultIndex3]],
-                                                    product: Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .productDetailsForSearch[0],
-                                                    defaultIndex1:
-                                                        widget.defaultIndex1,
-                                                    defaultIndex2:
-                                                        widget.defaultIndex2,
-                                                    defaultIndex3:
-                                                        widget.defaultIndex3,
-                                                    defaultIndex4:
-                                                        widget.defaultIndex4,
-                                                    valueChangeBuild:
-                                                        widget.valueChangeBuild,
-                                                    valueChangeColor:
-                                                        widget.valueChangeColor,
-                                                    valueChangeCerti:
-                                                        widget.valueChangeCerti,
-                                                    valueChangeDQ:
-                                                        widget.valueChangeDQ,
+                                                          widget
+                                                              .defaultIndex3]],
+                                                      product: Provider.of<
+                                                                  Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .productDetailsForSearch[0],
+                                                      defaultIndex1:
+                                                          widget.defaultIndex1,
+                                                      defaultIndex2:
+                                                          widget.defaultIndex2,
+                                                      defaultIndex3:
+                                                          widget.defaultIndex3,
+                                                      defaultIndex4:
+                                                          widget.defaultIndex4,
+                                                      valueChangeBuild: widget
+                                                          .valueChangeBuild,
+                                                      valueChangeColor: widget
+                                                          .valueChangeColor,
+                                                      valueChangeCerti: widget
+                                                          .valueChangeCerti,
+                                                      valueChangeDQ:
+                                                          widget.valueChangeDQ,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            }catch(err){
-                                               dataSelect(context, '$err', '', 'OK', (){
+                                                );
+                                              } catch (err) {
+                                                dataSelect(
+                                                    context, '$err', '', 'OK',
+                                                    () {
                                                   Navigator.pop(context);
-                    });
-                                            }},
-                                            child: Padding(
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              color: Colors.transparent,
                                               padding: const EdgeInsets.only(
                                                   left: 20.0, right: 20.0),
                                               child: Row(
@@ -1328,7 +1433,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontFamily: 'Varela',
+                                                        fontFamily:
+                                                            'Gilroy Medium',
                                                         fontSize: ScreenUtil()
                                                             .setSp(21,
                                                                 allowFontScalingSelf:
@@ -1341,7 +1447,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             color: Colors.grey,
                                                             // fontWeight: FontWeight.bold,
                                                             fontFamily:
-                                                                'Varela',
+                                                                'Gilroy Medium',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(21,
                                                                     allowFontScalingSelf:
@@ -1355,7 +1461,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontFamily:
-                                                                'Varela',
+                                                                'Gilroy Medium',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(21,
                                                                     allowFontScalingSelf:
@@ -1368,7 +1474,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             color: Colors.grey,
                                                             // fontWeight: FontWeight.bold,
                                                             fontFamily:
-                                                                'Varela',
+                                                                'Gilroy Medium',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(21,
                                                                     allowFontScalingSelf:

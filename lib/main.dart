@@ -5,10 +5,12 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/testimony.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/screens/profile_screeen.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './screens/auth_screen.dart';
@@ -30,12 +32,40 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
+// class MyApp extends StatelessWidget {
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]);
+//     return MaterialApp(
+//       builder: (BuildContext context, Widget child){
+//         return MediaQuery(
+//           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0,alwaysUse24HourFormat: false),
+//           child: child,
+//         );
+//       },
+//       theme: ThemeData(
+//         primaryColor: Color(0xFF0F2985),
+//         primarySwatch: Colors.blue,
+//       ),
+//       debugShowCheckedModeBanner: false,
+//       home: UserPage(),
+//     );
+//   }
+// }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
 
     // ));
+    OneSignal.shared.init(
+      "83761a89-31cd-43d2-8aa5-76d81afa7709",
+    );
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -50,10 +80,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Testimony()),
       ],
       child: Consumer<Auth>(
-        builder: (ctx, auth, _) => MaterialApp(
+        builder: (ctx, auth, child) => MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primaryColor: Color(0xFFD06AA9),
+            primaryColor: Colors.blue,
           ),
           initialRoute: initScreen3 == 0 || initScreen3 == null ? "first" : "/",
           routes: {
@@ -81,7 +111,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-
   int page = 0;
   LiquidController liquidController;
   UpdateType updateType;
@@ -139,7 +168,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               height: ScreenUtil().setHeight(260),
             ),
             Image.asset(
-              "assets/images/group7_gradient.png",
+              "assets/images/logo_colour.png",
               fit: BoxFit.contain,
               height: ScreenUtil().setHeight(131),
               width: ScreenUtil().setWidth(131),
@@ -152,7 +181,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: TextStyle(
                 fontFamily: 'Gilroy Black',
                 color: Colors.black,
-                fontSize: ScreenUtil().setSp(35,allowFontScalingSelf: true),
+                fontSize: ScreenUtil().setSp(35, allowFontScalingSelf: true),
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -162,7 +191,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               '"Craft of Perfection"',
               style: TextStyle(
-                  fontSize: ScreenUtil().setSp(24,allowFontScalingSelf: true),
+                  fontSize: ScreenUtil().setSp(24, allowFontScalingSelf: true),
                   color: Colors.black,
                   fontFamily: 'Gilroy'),
             ),
@@ -186,7 +215,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               height: ScreenUtil().setHeight(260),
             ),
             Image.asset(
-              "assets/images/group7_gradient.png",
+              "assets/images/logo_colour.png",
               fit: BoxFit.contain,
               height: ScreenUtil().setHeight(131),
               width: ScreenUtil().setWidth(131),
@@ -199,7 +228,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: TextStyle(
                 fontFamily: 'Gilroy Black',
                 color: Color(0xFFFAAB35),
-                fontSize: ScreenUtil().setSp(35,allowFontScalingSelf: true),
+                fontSize: ScreenUtil().setSp(35, allowFontScalingSelf: true),
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -209,7 +238,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               '"Craft of Perfection"',
               style: TextStyle(
-                  fontSize: ScreenUtil().setSp(24,allowFontScalingSelf: true),
+                  fontSize: ScreenUtil().setSp(24, allowFontScalingSelf: true),
                   color: Color(0xFFFAAB35),
                   fontFamily: 'Gilroy'),
             ),
@@ -236,15 +265,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            // Image.asset(
-            //   'assets/1.png',
-            //   fit: BoxFit.cover,
-            // ),
             SizedBox(
               height: ScreenUtil().setHeight(260),
             ),
             Image.asset(
-              "assets/images/group7.png",
+              "assets/images/logo.png",
               fit: BoxFit.contain,
               height: ScreenUtil().setHeight(131),
               width: ScreenUtil().setWidth(131),
@@ -257,7 +282,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: TextStyle(
                 fontFamily: 'Gilroy Black',
                 color: Colors.black,
-                fontSize: ScreenUtil().setSp(35,allowFontScalingSelf: true),
+                fontSize: ScreenUtil().setSp(35, allowFontScalingSelf: true),
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -267,7 +292,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               '"Craft of Perfection"',
               style: TextStyle(
-                  fontSize: ScreenUtil().setSp(24,allowFontScalingSelf: true),
+                  fontSize: ScreenUtil().setSp(24, allowFontScalingSelf: true),
                   color: Colors.black,
                   fontFamily: 'Gilroy'),
             ),
@@ -318,7 +343,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   page == 2 ? "Next" : "skip",
                   style: TextStyle(
                     fontFamily: "Gilroy Black",
-                    fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                    fontSize:
+                        ScreenUtil().setSp(21, allowFontScalingSelf: true),
                     color: page == 1 ? Color(0xFFFAAB35) : Colors.black,
                   ),
                 ),

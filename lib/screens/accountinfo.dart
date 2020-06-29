@@ -1,5 +1,6 @@
 import 'package:Flutter/components/rounded_input_field.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -37,49 +38,52 @@ class _AccountInfoState extends State<AccountInfo> {
   TextEditingController referenceController = TextEditingController();
 
   bool isLoading = false;
+  bool editFields = false;
 
   bool autovalidate = false;
 
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      phoneNumberController.text =
+          Provider.of<UserInfo>(context, listen: false).number.toString();
+      fullNameController.text =
+          Provider.of<UserInfo>(context, listen: false).fullname.toString();
+      emailIDController.text =
+          Provider.of<UserInfo>(context, listen: false).email.toString();
+      firmDetailController.text =
+          Provider.of<UserInfo>(context, listen: false).firm.toString();
+      gstValueController.text =
+          Provider.of<UserInfo>(context, listen: false).gst.toString();
+      streetNameController.text =
+          Provider.of<UserInfo>(context, listen: false).street.toString();
+      cityNameController.text =
+          Provider.of<UserInfo>(context, listen: false).city.toString();
+      stateNameController.text =
+          Provider.of<UserInfo>(context, listen: false).state.toString();
+      pincodeController.text =
+          Provider.of<UserInfo>(context, listen: false).pincode.toString();
+    });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    phoneNumberController.text =
-        Provider.of<UserInfo>(context, listen: false).number.toString();
-    fullNameController.text =
-        Provider.of<UserInfo>(context, listen: false).fullname.toString();
-    emailIDController.text =
-        Provider.of<UserInfo>(context, listen: false).email.toString();
-    firmDetailController.text =
-        Provider.of<UserInfo>(context, listen: false).firm.toString();
-    gstValueController.text =
-        Provider.of<UserInfo>(context, listen: false).gst.toString();
-    streetNameController.text =
-        Provider.of<UserInfo>(context, listen: false).street.toString();
-    cityNameController.text =
-        Provider.of<UserInfo>(context, listen: false).city.toString();
-    stateNameController.text =
-        Provider.of<UserInfo>(context, listen: false).state.toString();
-    pincodeController.text =
-        Provider.of<UserInfo>(context, listen: false).pincode.toString();
   }
 
   GlobalKey<FormState> _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
     ScreenUtil.init(context,
         width: 411.42857142857144,
         height: 774.8571428571429,
         allowFontScaling: true);
     return Scaffold(
       body: Container(
-        height: size.height,
+        height: ScreenUtil().setHeight(775),
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
@@ -109,10 +113,10 @@ class _AccountInfoState extends State<AccountInfo> {
                     height: ScreenUtil().setHeight(50),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20.0, bottom: 30.0),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: FadeInDownBig(
+                      child: FadeInDown(
                         child: Text(
                           "Account Info",
                           style: TextStyle(
@@ -126,7 +130,60 @@ class _AccountInfoState extends State<AccountInfo> {
                       ),
                     ),
                   ),
-                  SizedBox(height: ScreenUtil().setHeight(25)),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(30),
+                  ),
+                  Container(
+                    height: ScreenUtil().setHeight(35),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              editFields = !editFields;
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  editFields ? Icons.cancel : Icons.edit,
+                                  color: Colors.black,
+                                  size: ScreenUtil()
+                                      .setSp(15, allowFontScalingSelf: true),
+                                ),
+                                SizedBox(
+                                  width: ScreenUtil().setWidth(8),
+                                ),
+                                Text(
+                                  editFields ? 'Cancel' : 'Edit Account',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy Regular',
+                                    fontSize: ScreenUtil()
+                                        .setSp(14, allowFontScalingSelf: true),
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(10),
+                  ),
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
@@ -137,7 +194,7 @@ class _AccountInfoState extends State<AccountInfo> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            FadeInDownBig(
+                            FadeInDown(
                               child: Text(
                                 "Personal Details",
                                 style: TextStyle(
@@ -154,12 +211,20 @@ class _AccountInfoState extends State<AccountInfo> {
                             SizedBox(
                               height: ScreenUtil().setHeight(7.75),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: fullNameController,
                                 hintText: "Full Name",
+                                validator: (value) {
+                                  if (value.length < 3) {
+                                    return "Name Error";
+                                  } else if (value.isEmpty) {
+                                    return "Enter Your Name";
+                                  }
+                                  return null;
+                                },
                                 // onChanged: (value) {
-
+                                //   fullNameController.text = value;
                                 // },
                                 onSubmitted: (value) {
                                   setState(() {
@@ -168,13 +233,16 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.person,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: phoneNumberController,
                                 hintText: "Enter Phone Number",
+                                // onChanged: (value) {
+                                //   gstValueController.text=value;
+                                // },
                                 onSubmitted: (value) {
                                   setState(() {
                                     phoneNumber = value;
@@ -182,13 +250,16 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 // icon: Icons.person,
-                                proceed: false,
+                                proceed: true,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: emailIDController,
                                 hintText: "Email-id",
+                                // onChanged: (value) {
+                                //   gstValueController.text=value;
+                                // },
                                 onSubmitted: (value) {
                                   setState(() {
                                     emailID = value;
@@ -196,13 +267,13 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.mail,
-                                proceed: false,
+                                proceed: true,
                               ),
                             ),
                             SizedBox(
                               height: ScreenUtil().setHeight(20),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: Text(
                                 "Firm Details!",
                                 style: TextStyle(
@@ -217,38 +288,63 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             SizedBox(height: ScreenUtil().setHeight(7.75)),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: firmDetailController,
                                 hintText: "Firm Name",
+                                
                                 onSubmitted: (value) {
                                   setState(() {
                                     firmDetail = value;
                                     print(firmDetail);
                                   });
                                 },
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Firm Name";
+                                  }
+                                  return null;
+                                },
                                 icon: Icons.work,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: gstValueController,
                                 hintText: "GST",
+                                
                                 onSubmitted: (value) {
                                   setState(() {
                                     gstValue = value;
                                     print(gstValue);
                                   });
                                 },
+                                validator: (value) {
+                                  if (value.isNotEmpty) {
+                                    if (!RegExp(
+                                            r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')
+                                        .hasMatch(value)) {
+                                      return "Enter Correct GST Value";
+                                    }
+                                  }
+                                  return null;
+                                },
                                 icon: Icons.attach_money,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: streetNameController,
                                 hintText: "Street",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Street Name";
+                                  }
+                                  return null;
+                                },
+                               
                                 onSubmitted: (value) {
                                   setState(() {
                                     streetName = value;
@@ -256,13 +352,22 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.streetview,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: cityNameController,
                                 hintText: "City",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter City Name";
+                                  }
+                                  return null;
+                                },
+                                // onChanged: (value) {
+                                //   cityNameController.text = value;
+                                // },
                                 onSubmitted: (value) {
                                   setState(() {
                                     print(cityName);
@@ -270,13 +375,22 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.location_city,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: stateNameController,
                                 hintText: "State",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter State Name";
+                                  }
+                                  return null;
+                                },
+                                // onChanged: (value) {
+                                //   stateNameController.text = value;
+                                // },
                                 onSubmitted: (value) {
                                   setState(() {
                                     stateName = value;
@@ -284,13 +398,24 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.location_city,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
-                            FadeInDownBig(
+                            FadeInDown(
                               child: RoundedInputField(
                                 controller: pincodeController,
                                 hintText: "Pincode",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Enter Pincode";
+                                  } else if (value.length != 6) {
+                                    return "Enter Proper Pincode";
+                                  }
+                                  return null;
+                                },
+                                // onChanged: (value) {
+                                //   pincodeController.text = value;
+                                // },
                                 onSubmitted: (value) {
                                   setState(() {
                                     pincode = value;
@@ -298,11 +423,11 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.pin_drop,
-                                proceed: false,
+                                proceed: !editFields,
                               ),
                             ),
                             SizedBox(
-                              height: ScreenUtil().setHeight(20),
+                              height: ScreenUtil().setHeight(50),
                             ),
                           ],
                         ),
@@ -315,6 +440,88 @@ class _AccountInfoState extends State<AccountInfo> {
           ],
         ),
       ),
+      floatingActionButton: editFields
+          ? GestureDetector(
+              onTap: () async {
+                if (_key.currentState.validate()) {
+                  _key.currentState.save();
+                  setState(() {
+                    isLoading = true;
+                  });
+                  try {
+                    await Provider.of<UserInfo>(context, listen: false)
+                        .patchuser(
+                      context: context,
+                      fullname: fullName,
+                      city: cityName,
+                      firm: firmDetail,
+                      gst: gstValue,
+                      pincode: pincode,
+                      state: stateName,
+                      street: streetName,
+                    );
+                    await Provider.of<UserInfo>(context, listen: false)
+                        .getuser(context);
+                  } catch (err) {
+                    dataSelect(context, 'Alert!', '$err', 'OK', () {
+                      Navigator.pop(context);
+                    });
+                  } finally {
+                    setState(() {
+                      isLoading = false;
+                      editFields = false;
+                    });
+                    Navigator.of(context).pop();
+                  }
+                }
+              },
+              child: Container(
+                width: ScreenUtil().setWidth(120.0),
+                height: ScreenUtil().setHeight(50.0),
+                decoration: BoxDecoration(
+                  // image: DecorationImage(
+                  //   image: AssetImage('assets/images/vector17.png'),
+                  //   fit: BoxFit.contain,
+                  // ),
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF34B0E9),
+                      Color(0xFF3685CB),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                padding: EdgeInsets.all(5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.done_outline,
+                      color: Colors.white,
+                      size: ScreenUtil().setSp(23, allowFontScalingSelf: true),
+                    ),
+                    SizedBox(
+                      width: ScreenUtil().setWidth(10),
+                    ),
+                    Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontFamily: 'Gilroy Medium',
+                        fontSize:
+                            ScreenUtil().setSp(15, allowFontScalingSelf: true),
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : SizedBox(
+              height: 0.0,
+              width: 0.0,
+            ),
     );
   }
 }

@@ -59,7 +59,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         );
       } else {
-        dataSelect(context, 'Request has already been noted!', '', 'ok', () {
+        dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay', () {
           Navigator.pop(context);
         });
       }
@@ -106,6 +106,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       }
     });
   }
+
+  GlobalKey globalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -183,6 +185,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       alignment: Alignment.bottomCenter,
       children: <Widget>[
         Scaffold(
+          key: globalKey,
           resizeToAvoidBottomInset: false,
           resizeToAvoidBottomPadding: false,
           // body: _children[_currentIndex],
@@ -240,18 +243,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 GestureDetector(
                   onTap: _isVisible
                       ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UserPage(
-                                pageIndex: _previousIndex,
-                                pageController: pageController,
-                              ),
-                            ),
-                          );
-                          // pageController.animateToPage(0,
-                          //     duration: Duration(milliseconds: 500),
-                          //     curve: Curves.ease);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => UserPage(
+                          //       pageIndex: _previousIndex,
+                          //       pageController: pageController,
+                          //     ),
+                          //   ),
+                          // );
+                          pageController.animateToPage(0,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease);
                         }
                       : null,
                   child: Container(
@@ -501,10 +504,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 GestureDetector(
                   onTap: _isVisible
                       ? () async {
-                          if (await canLaunch("https://wa.me/919322244007")) {
-                            await launch("https://wa.me/919322244007");
-                          } else {
-                            throw 'Could not launch https://wa.me/919322244007';
+                          bool value2 = false;
+                          await dataSelectConfirmMessage(
+                            globalKey.currentContext,
+                            'Alert!',
+                            "Are you sure, You want to open Whatsapp?",
+                            'Open Whatsapp',
+                          ).then((value) async {
+                            if (value) {
+                              value2 = value;
+                            }
+                          });
+                          if (value2) {
+                            if (await canLaunch("https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
+                              await launch("https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
+                            } else {
+                              throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.';
+                            }
                           }
                           // pageController.animateToPage(3,
                           //     duration: Duration(milliseconds: 500),

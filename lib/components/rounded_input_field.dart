@@ -46,7 +46,7 @@ class RoundedInputField extends StatelessWidget {
             onSaved: onSubmitted,
             cursorColor: kPrimaryColor,
             style: TextStyle(
-              fontFamily: 'Gilroy',
+              fontFamily: 'Gilroy Regular',
               fontSize: ScreenUtil().setSp(16,allowFontScalingSelf: true),
             ),
             controller: controller,

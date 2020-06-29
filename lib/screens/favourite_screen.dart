@@ -288,10 +288,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                 style: TextStyle(
                                   fontFamily: 'Gilory Regular',
                                   color: Color(0xFFA49797),
-                                  decoration: TextDecoration.underline,
                                   fontSize: ScreenUtil()
                                       .setSp(17, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -339,7 +337,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                         children: <Widget>[
                           AnimatedContainer(
                             duration: Duration(milliseconds: 600),
-                            curve: Curves.slowMiddle,
+                            curve: Curves.easeInOut,
                             padding: EdgeInsets.only(left: 10.0),
                             width: ScreenUtil()
                                 .setWidth(searchSelected ? 305 : 360),
@@ -396,20 +394,20 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                       },
                                       decoration: InputDecoration(
                                         // contentPadding: EdgeInsets.all(15.0),
-                                        suffixIcon: searchSelected
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  textEditingController.clear();
-                                                  setState(() {
-                                                    searchValue = "";
-                                                  });
-                                                },
-                                                child: Icon(Icons.clear),
-                                              )
-                                            : SizedBox(
-                                                height: 0.0,
-                                                width: 0.0,
-                                              ),
+                                        // suffixIcon: searchSelected
+                                        //     ? GestureDetector(
+                                        //         onTap: () {
+                                        //           textEditingController.clear();
+                                        //           setState(() {
+                                        //             searchValue = "";
+                                        //           });
+                                        //         },
+                                        //         child: Icon(Icons.clear),
+                                        //       )
+                                        //     : SizedBox(
+                                        //         height: 0.0,
+                                        //         width: 0.0,
+                                        //       ),
                                         hintText: 'SEARCH GEMSTORY',
                                         hintStyle: TextStyle(
                                           fontFamily: 'Gilroy Medium',
@@ -602,7 +600,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                 });
                                               }
                                             },
-                                            child: Padding(
+                                            child: Container(
+                                              color: Colors.transparent,
                                               padding: const EdgeInsets.only(
                                                   left: 20.0, right: 20.0),
                                               child: Row(
@@ -633,7 +632,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                   // Text(
                                                   //   styleNumber[index],
                                                   //   style: TextStyle(
-                                                  //     fontFamily: 'Varela',
+                                                  //     fontFamily: 'Gilroy Medium',
                                                   //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
                                                   //   ),
                                                   // )
@@ -648,7 +647,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontFamily: 'Varela',
+                                                        fontFamily: 'Gilroy Medium',
                                                         fontSize: ScreenUtil()
                                                             .setSp(21,
                                                                 allowFontScalingSelf:
@@ -661,7 +660,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                             color: Colors.grey,
                                                             // fontWeight: FontWeight.bold,
                                                             fontFamily:
-                                                                'Varela',
+                                                                'Gilroy Medium',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(21,
                                                                     allowFontScalingSelf:
@@ -675,7 +674,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontFamily:
-                                                                'Varela',
+                                                                'Gilroy Medium',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(21,
                                                                     allowFontScalingSelf:
@@ -688,7 +687,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                             color: Colors.grey,
                                                             // fontWeight: FontWeight.bold,
                                                             fontFamily:
-                                                                'Varela',
+                                                                'Gilroy Medium',
                                                             fontSize: ScreenUtil()
                                                                 .setSp(21,
                                                                     allowFontScalingSelf:

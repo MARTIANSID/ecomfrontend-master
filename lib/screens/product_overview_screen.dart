@@ -12,6 +12,7 @@ import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import '../constant/const.dart';
@@ -125,19 +126,24 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       Provider.of<Pagination>(context, listen: false).getFav(context),
       Provider.of<Options>(context, listen: false).getStringValuesSF(),
     ];
+    try {
+      await Future.wait(futures);
+      await Provider.of<UserInfo>(context, listen: false).getuser(context);
 
-    await Future.wait(futures);
-    await Provider.of<UserInfo>(context, listen: false).getuser(context);
+      //  await Provider.of<Pagination>(context, listen: false).getProducts(
+      //       page: 1, addition: false, select: 'fancyDiamond', context: context);
+      if (Provider.of<Auth>(context, listen: false).isLogin &&
+          Provider.of<Auth>(context, listen: false).autoLogin == false)
+        Provider.of<Auth>(context, listen: false).changeLog();
 
-    //  await Provider.of<Pagination>(context, listen: false).getProducts(
-    //       page: 1, addition: false, select: 'fancyDiamond', context: context);
-    if (Provider.of<Auth>(context, listen: false).isLogin &&
-        Provider.of<Auth>(context, listen: false).autoLogin == false)
-      Provider.of<Auth>(context, listen: false).changeLog();
-
-    if (Provider.of<Auth>(context, listen: false).isLogin == false &&
-        Provider.of<Auth>(context, listen: false).autoLogin)
-      Provider.of<Auth>(context, listen: false).changeAuto();
+      if (Provider.of<Auth>(context, listen: false).isLogin == false &&
+          Provider.of<Auth>(context, listen: false).autoLogin)
+        Provider.of<Auth>(context, listen: false).changeAuto();
+    } catch (err) {
+      dataSelect(context, '$err', '', 'OK', () {
+        Navigator.pop(context);
+      });
+    }
   }
 
   void didChangeDependencies() async {
@@ -155,16 +161,17 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
           Navigator.pop(context);
         });
       } finally {
-        setState(() {
-          isLoading = false;
-          isInit = false;
+        if (mounted)
+          setState(() {
+            isLoading = false;
+            isInit = false;
 
-          super.didChangeDependencies();
-          // colorr = Provider.of<Options>(context, listen: false).color;
-          // diamond = Provider.of<Options>(context, listen: false).diamondQuality;
-          // buildd = Provider.of<Options>(context, listen: false).build;
-          // certt = Provider.of<Options>(context, listen: false).certificate;
-        });
+            super.didChangeDependencies();
+            // colorr = Provider.of<Options>(context, listen: false).color;
+            // diamond = Provider.of<Options>(context, listen: false).diamondQuality;
+            // buildd = Provider.of<Options>(context, listen: false).build;
+            // certt = Provider.of<Options>(context, listen: false).certificate;
+          });
       }
 
       // Timer.periodic(
@@ -223,7 +230,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
           ),
         );
       } else {
-        dataSelect(context, 'Request has already been noted!', '', 'ok', () {
+        dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay',
+            () {
           Navigator.pop(context);
         });
       }
@@ -273,7 +281,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
         });
       });
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
+      dataSelect(context, "Alert!", '$err', 'Okay', () {
         Navigator.pop(context);
       });
     } finally {
@@ -285,7 +293,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
     // });
   }
-    
 
   @override
   Widget build(BuildContext context) {
@@ -411,15 +418,17 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                     }
                                   },
                                   controller: _tabController,
-                                  indicatorColor: kPrimaryColor,
-                                  labelColor: Colors.black,
+                                  // indicatorColor: kPrimaryColor,
+                                  // labelColor: Colors.black,
                                   labelStyle: TextStyle(
                                     fontFamily: 'Gilroy Bold',
+                                    color: Colors.white,
                                     fontSize: ScreenUtil()
                                         .setSp(16, allowFontScalingSelf: true),
                                   ),
                                   unselectedLabelStyle: TextStyle(
                                     fontFamily: 'Gilroy Regular',
+                                    color: Colors.white,
                                     fontSize: ScreenUtil()
                                         .setSp(14, allowFontScalingSelf: true),
                                   ),
@@ -711,6 +720,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 color: _defaultChoiceIndex2,
                                 cert: _defaultChoiceIndex3,
                                 diamond: _defaultChoiceIndex4,
+                                valueChangeBuild: _onValueChange,
+                                valueChangeColor: _onValueChangeColor,
+                                valueChangeCerti: _onValueChangeCerti,
+                                valueChangeDQ: _onValueChangeDQ,
                               ),
                               CookiePage(
                                 globalKey: scaffoldKey,
@@ -725,6 +738,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 color: _defaultChoiceIndex2,
                                 cert: _defaultChoiceIndex3,
                                 diamond: _defaultChoiceIndex4,
+                                valueChangeBuild: _onValueChange,
+                                valueChangeColor: _onValueChangeColor,
+                                valueChangeCerti: _onValueChangeCerti,
+                                valueChangeDQ: _onValueChangeDQ,
                               ),
                               CookiePage(
                                 globalKey: scaffoldKey,
@@ -739,6 +756,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 color: _defaultChoiceIndex2,
                                 cert: _defaultChoiceIndex3,
                                 diamond: _defaultChoiceIndex4,
+                                valueChangeBuild: _onValueChange,
+                                valueChangeColor: _onValueChangeColor,
+                                valueChangeCerti: _onValueChangeCerti,
+                                valueChangeDQ: _onValueChangeDQ,
                               ),
                               CookiePage(
                                 globalKey: scaffoldKey,
@@ -753,6 +774,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 color: _defaultChoiceIndex2,
                                 cert: _defaultChoiceIndex3,
                                 diamond: _defaultChoiceIndex4,
+                                valueChangeBuild: _onValueChange,
+                                valueChangeColor: _onValueChangeColor,
+                                valueChangeCerti: _onValueChangeCerti,
+                                valueChangeDQ: _onValueChangeDQ,
                               ),
                               CookiePage(
                                 globalKey: scaffoldKey,
@@ -767,6 +792,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 color: _defaultChoiceIndex2,
                                 cert: _defaultChoiceIndex3,
                                 diamond: _defaultChoiceIndex4,
+                                valueChangeBuild: _onValueChange,
+                                valueChangeColor: _onValueChangeColor,
+                                valueChangeCerti: _onValueChangeCerti,
+                                valueChangeDQ: _onValueChangeDQ,
                               ),
                             ],
                           ),
@@ -812,7 +841,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                               children: <Widget>[
                                 AnimatedContainer(
                                   duration: Duration(milliseconds: 600),
-                                  curve: Curves.slowMiddle,
+                                  curve: Curves.easeInOut,
                                   padding: EdgeInsets.only(left: 10.0),
                                   width: ScreenUtil()
                                       .setWidth(searchSelected ? 305 : 360),
@@ -827,10 +856,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       Positioned(
                                         top: 0.0,
                                         left: 0.0,
+                                        // right: 0.0,
                                         child: Container(
                                           width: ScreenUtil().setWidth(
                                               searchSelected ? 305 : 360),
-                                          height: ScreenUtil().setHeight(40),
+                                          height: ScreenUtil().setHeight(45),
                                           child: TextField(
                                             controller: textEditingController,
                                             onTap: () async {
@@ -873,21 +903,21 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                             },
                                             decoration: InputDecoration(
                                               // contentPadding: EdgeInsets.all(15.0),
-                                              suffixIcon: searchSelected
-                                                  ? GestureDetector(
-                                                      onTap: () {
-                                                        textEditingController
-                                                            .clear();
-                                                        setState(() {
-                                                          searchValue = "";
-                                                        });
-                                                      },
-                                                      child: Icon(Icons.clear),
-                                                    )
-                                                  : SizedBox(
-                                                      height: 0.0,
-                                                      width: 0.0,
-                                                    ),
+                                              // suffixIcon: searchSelected
+                                              //     ? GestureDetector(
+                                              //         onTap: () {
+                                              //           textEditingController
+                                              //               .clear();
+                                              //           setState(() {
+                                              //             searchValue = "";
+                                              //           });
+                                              //         },
+                                              //         child: Icon(Icons.clear),
+                                              //       )
+                                              //     : SizedBox(
+                                              //         height: 0.0,
+                                              //         width: 0.0,
+                                              //       ),
                                               hintText: 'SEARCH GEMSTORY',
                                               hintStyle: TextStyle(
                                                 fontFamily: 'Gilroy Medium',
@@ -912,6 +942,27 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
+                                            .setHeight(searchSelected ? 27 : 0),
+                                        width: ScreenUtil()
+                                            .setWidth(searchSelected ? 27 : 0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            textEditingController.clear();
+                                            setState(() {
+                                              searchValue = "";
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.clear,
+                                            color: Colors.black,
+                                            size: searchSelected ? 25 : 0,
+                                          ),
+                                        ),
+                                      ),
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        margin: EdgeInsets.only(right: 6.0),
+                                        height: ScreenUtil()
                                             .setHeight(searchSelected ? 0 : 27),
                                         width: ScreenUtil()
                                             .setWidth(searchSelected ? 0 : 27),
@@ -919,7 +970,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -1081,6 +1132,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 _onValueChangeCerti,
                                                             valueChangeDQ:
                                                                 _onValueChangeDQ,
+                                                            valueChangeBuild1:
+                                                                _onValueChange,
+                                                            valueChangeColor1:
+                                                                _onValueChangeColor,
+                                                            valueChangeCerti1:
+                                                                _onValueChangeCerti,
+                                                            valueChangeDQ1:
+                                                                _onValueChangeDQ,
                                                           ),
                                                         ),
                                                       );
@@ -1091,7 +1150,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                       });
                                                     }
                                                   },
-                                                  child: Padding(
+                                                  child: Container(
+                                                    color: Colors.transparent,
                                                     padding:
                                                         const EdgeInsets.only(
                                                             left: 20.0,
@@ -1129,7 +1189,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                         // Text(
                                                         //   styleNumber[index],
                                                         //   style: TextStyle(
-                                                        //     fontFamily: 'Varela',
+                                                        //     fontFamily: 'Gilroy Medium',
                                                         //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
                                                         //   ),
                                                         // )
@@ -1147,7 +1207,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                   FontWeight
                                                                       .bold,
                                                               fontFamily:
-                                                                  'Varela',
+                                                                  'Gilroy Medium',
                                                               fontSize: ScreenUtil()
                                                                   .setSp(21,
                                                                       allowFontScalingSelf:
@@ -1162,7 +1222,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                       .grey,
                                                                   // fontWeight: FontWeight.bold,
                                                                   fontFamily:
-                                                                      'Varela',
+                                                                      'Gilroy Medium',
                                                                   fontSize: ScreenUtil().setSp(
                                                                       21,
                                                                       allowFontScalingSelf:
@@ -1180,7 +1240,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                       FontWeight
                                                                           .bold,
                                                                   fontFamily:
-                                                                      'Varela',
+                                                                      'Gilroy Medium',
                                                                   fontSize: ScreenUtil().setSp(
                                                                       21,
                                                                       allowFontScalingSelf:
@@ -1195,7 +1255,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                       .grey,
                                                                   // fontWeight: FontWeight.bold,
                                                                   fontFamily:
-                                                                      'Varela',
+                                                                      'Gilroy Medium',
                                                                   fontSize: ScreenUtil().setSp(
                                                                       21,
                                                                       allowFontScalingSelf:
@@ -1326,4 +1386,4 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
             ),
     );
   }
-    }
+}

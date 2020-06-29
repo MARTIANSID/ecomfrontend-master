@@ -582,12 +582,11 @@ class _CartScreenState extends State<CartScreen> {
         await Provider.of<Cart>(context, listen: false)
             .getCart(context: context);
       } catch (err) {
-        dataSelect(context, '$err', '', 'OK', (){
+        dataSelect(context, '$err', '', 'OK', () {
           Navigator.pop(context);
         });
-
-      }finally{
-        isCartLoading=false;
+      } finally {
+        isCartLoading = false;
       }
       setState(() {
         isCartLoading = false;
@@ -631,39 +630,31 @@ class _CartScreenState extends State<CartScreen> {
   List<dynamic> suggestion;
   bool isLoadingSearch = false;
   Future<void> getSearch(query) async {
-  
-
     setState(() {
       isLoadingSearch = true;
     });
-    try{
-    await Provider.of<Searchh>(context, listen: false)
-        .getSearch(query: query.toUpperCase(), context: context)
-        .then((value) {
-      setState(() {
-        suggestion = Provider.of<Searchh>(context, listen: false)
-            .searchResult
-            .where((element) =>
-                element.styleNumber.contains(searchValue.toUpperCase()))
-            .toList();
-        isLoadingSearch = false;
-        print('DC SEARCH');
-      });
-        
-        
-    });
-    }catch(err){
-        dataSelect(context, '$err', '', 'OK', (){
-          Navigator.pop(context);
+    try {
+      await Provider.of<Searchh>(context, listen: false)
+          .getSearch(query: query.toUpperCase(), context: context)
+          .then((value) {
+        setState(() {
+          suggestion = Provider.of<Searchh>(context, listen: false)
+              .searchResult
+              .where((element) =>
+                  element.styleNumber.contains(searchValue.toUpperCase()))
+              .toList();
+          isLoadingSearch = false;
+          print('DC SEARCH');
         });
-
-
-    }
-    finally{
-      setState(() {
-        isLoadingSearch=false;
       });
-      
+    } catch (err) {
+      dataSelect(context, '$err', '', 'OK', () {
+        Navigator.pop(context);
+      });
+    } finally {
+      setState(() {
+        isLoadingSearch = false;
+      });
     }
 
     print(suggestion);
@@ -727,7 +718,7 @@ class _CartScreenState extends State<CartScreen> {
                           padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               ShaderMask(
                                 shaderCallback: (bounds) => LinearGradient(
@@ -751,27 +742,6 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 4.0),
-                                    child: SvgPicture.asset(
-                                      'assets/icons/sortIcon.svg',
-                                      width: ScreenUtil().setWidth(24),
-                                      height: ScreenUtil().setHeight(24),
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  SvgPicture.asset(
-                                    'assets/icons/optionsIcon.svg',
-                                    width: ScreenUtil().setWidth(24),
-                                    height: ScreenUtil().setHeight(24),
-                                    color: Colors.black,
-                                  )
-                                ],
-                              )
                             ],
                           ),
                         ),
@@ -838,23 +808,25 @@ class _CartScreenState extends State<CartScreen> {
                                                 // setState(() {
                                                 //   isListLoading=true;
                                                 // });
-                                               try{ 
-
-                                                await Provider.of<Cart>(context,
-                                                        listen: false)
-                                                    .deleteCart(
-                                                        id: Provider.of<Cart>(
-                                                                context,
-                                                                listen: false)
-                                                            .cart[index]
-                                                            .id,
-                                                        context: context);
-                                                if (mounted) setState(() {});
-                                               }catch(err){
-                                                dataSelect(context, '$err', '', 'OK', (){
-                                                  Navigator.pop(context);
-                                                });
-                                               }
+                                                try {
+                                                  await Provider.of<Cart>(
+                                                          context,
+                                                          listen: false)
+                                                      .deleteCart(
+                                                          id: Provider.of<Cart>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .cart[index]
+                                                              .id,
+                                                          context: context);
+                                                  if (mounted) setState(() {});
+                                                } catch (err) {
+                                                  dataSelect(
+                                                      context, '$err', '', 'OK',
+                                                      () {
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
                                               },
                                               background: Container(
                                                 color: Colors.red,
@@ -1220,39 +1192,42 @@ class _CartScreenState extends State<CartScreen> {
                                                                             index]
                                                                         .quantity >
                                                                     1) {
-                                                                   try{   
-                                                                  await Provider.of<Cart>(context, listen: false).decQuantity(
-                                                                      context:
-                                                                          context,
-                                                                      product:
-                                                                          product,
-                                                                      update:
-                                                                          true,
-                                                                      build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
-                                                                          .cart[
-                                                                              index]
-                                                                          .buildValue],
-                                                                      color: Provider.of<Pagination>(context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .color[Provider.of<Cart>(
-                                                                              context,
-                                                                              listen: false)
-                                                                          .cart[index]
-                                                                          .colorValue],
-                                                                      cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
-                                                                      diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
-                                                                      buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
-                                                                      colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
-                                                                      certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
-                                                                      diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                      index: index);
-                                                                }catch(err){
-                                                                   dataSelect(context, '$err', '', 'OK', (){
-                                                         Navigator.pop(context);
-                                                });
+                                                                  try {
+                                                                    await Provider.of<Cart>(context, listen: false).decQuantity(
+                                                                        context:
+                                                                            context,
+                                                                        product:
+                                                                            product,
+                                                                        update:
+                                                                            true,
+                                                                        build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
+                                                                            .cart[
+                                                                                index]
+                                                                            .buildValue],
+                                                                        color: Provider.of<Pagination>(context, listen: false)
+                                                                            .color[Provider.of<Cart>(context,
+                                                                                listen: false)
+                                                                            .cart[index]
+                                                                            .colorValue],
+                                                                        cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
+                                                                        diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
+                                                                        buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
+                                                                        colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
+                                                                        certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
+                                                                        diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
+                                                                        index: index);
+                                                                  } catch (err) {
+                                                                    dataSelect(
+                                                                        context,
+                                                                        'Alert!',
+                                                                        '$err',
+                                                                        'OK',
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    });
+                                                                  }
                                                                 }
-                                                                    }
                                                               },
                                                               child: ShaderMask(
                                                                 shaderCallback:
@@ -1361,41 +1336,46 @@ class _CartScreenState extends State<CartScreen> {
                                                             ),
                                                             GestureDetector(
                                                               onTap: () async {
-                                                               try{ 
-                                                                await Provider.of<Cart>(context, listen: false).incQuantity(
-                                                                    context:
-                                                                        context,
-                                                                    product:
-                                                                        product,
-                                                                    update:
-                                                                        true,
-                                                                    build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
-                                                                        .cart[
-                                                                            index]
-                                                                        .buildValue],
-                                                                    color: Provider.of<Pagination>(context,
-                                                                            listen:
-                                                                                false)
-                                                                        .color[Provider.of<Cart>(
-                                                                            context,
-                                                                            listen: false)
-                                                                        .cart[index]
-                                                                        .colorValue],
-                                                                    cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
-                                                                    diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
-                                                                    buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
-                                                                    colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
-                                                                    certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
-                                                                    diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                    index: index);
-                                                                setState(() {});
-                                                               }catch(err){
-                                                                  dataSelect(context, '$err', '', 'OK', (){
-                                                           Navigator.pop(context);
+                                                                try {
+                                                                  await Provider.of<Cart>(context, listen: false).incQuantity(
+                                                                      context:
+                                                                          context,
+                                                                      product:
+                                                                          product,
+                                                                      update:
+                                                                          true,
+                                                                      build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
+                                                                          .cart[
+                                                                              index]
+                                                                          .buildValue],
+                                                                      color: Provider.of<Pagination>(context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .color[Provider.of<Cart>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .cart[index]
+                                                                          .colorValue],
+                                                                      cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
+                                                                      diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
+                                                                      buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
+                                                                      colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
+                                                                      certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
+                                                                      diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
+                                                                      index: index);
+                                                                  setState(
+                                                                      () {});
+                                                                } catch (err) {
+                                                                  dataSelect(
+                                                                      context,
+                                                                      'Alert!',
+                                                                      '$err',
+                                                                      'OK', () {
+                                                                    Navigator.pop(
+                                                                        context);
                                                                   });
-                                                               }
+                                                                }
                                                               },
-                                                              
                                                               child: ShaderMask(
                                                                 shaderCallback:
                                                                     (bounds) =>
@@ -1516,19 +1496,6 @@ class _CartScreenState extends State<CartScreen> {
                                                 : SizedBox(
                                                     height: 0,
                                                   ),
-                                            // index ==
-                                            //         Provider.of<Cart>(context,
-                                            //                     listen: false)
-                                            //                 .cart
-                                            //                 .length -
-                                            //             1
-                                            //     ? SizedBox(
-                                            //         height: ScreenUtil()
-                                            //             .setHeight(93),
-                                            //       )
-                                            //     : SizedBox(
-                                            //         height: 0.0,
-                                            //       ),
                                             index ==
                                                         Provider.of<Cart>(
                                                                     context,
@@ -1584,13 +1551,14 @@ class _CartScreenState extends State<CartScreen> {
                                     )
                               : Center(
                                   child: Text(
-                                    "Unfortunately, I'm empty you can fill me up!",
+                                    "The cart looks empty, you need to fill it up!",
                                     style: TextStyle(
-                                      fontFamily: 'Gilory Medium',
-                                      color: Colors.black,
+                                      fontFamily: 'Gilory Regular',
+                                      // decoration: TextDecoration.underline,
+                                      color: Color(0xFFA49797),
                                       fontSize: ScreenUtil().setSp(17,
                                           allowFontScalingSelf: true),
-                                      fontWeight: FontWeight.bold,
+                                      // fontWeight: FontWeight.bold,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -1630,18 +1598,18 @@ class _CartScreenState extends State<CartScreen> {
                             width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                24, 11, 21, searchSelected ? 0 : 20),
+                                24, 11, 0, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 AnimatedContainer(
                                   duration: Duration(milliseconds: 600),
-                                  curve: Curves.slowMiddle,
+                                  curve: Curves.easeInOut,
                                   padding: EdgeInsets.only(left: 10.0),
                                   width: ScreenUtil()
                                       .setWidth(searchSelected ? 305 : 360),
-                                  height: ScreenUtil().setHeight(40),
+                                  height: ScreenUtil().setHeight(45),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: Colors.white,
@@ -1677,14 +1645,15 @@ class _CartScreenState extends State<CartScreen> {
                                             //   // info=styleNumber[].split(value);
                                             //   // print(styleNumber[1].split(searchValue));
                                             // });
-                                            try{
-                                            
-                                            await getSearch(
-                                                searchValue.toUpperCase());
-                                            }catch(err){
-                                               dataSelect(context, '$err', '', 'OK', (){
-                                                  Navigator.pop(context);
-                                                });
+                                            try {
+                                              await getSearch(
+                                                  searchValue.toUpperCase());
+                                            } catch (err) {
+                                              dataSelect(
+                                                  context, '$err', '', 'OK',
+                                                  () {
+                                                Navigator.pop(context);
+                                              });
                                             }
                                             // setState(() {
                                             //   isLoadingSearch = false;
@@ -1693,21 +1662,21 @@ class _CartScreenState extends State<CartScreen> {
                                           },
                                           decoration: InputDecoration(
                                             // contentPadding: EdgeInsets.all(15.0),
-                                            suffixIcon: searchSelected
-                                                ? GestureDetector(
-                                                    onTap: () {
-                                                      textEditingController
-                                                          .clear();
-                                                      setState(() {
-                                                        searchValue = "";
-                                                      });
-                                                    },
-                                                    child: Icon(Icons.clear),
-                                                  )
-                                                : SizedBox(
-                                                    height: 0.0,
-                                                    width: 0.0,
-                                                  ),
+                                            // suffixIcon: searchSelected
+                                            //     ? GestureDetector(
+                                            //         onTap: () {
+                                            //           textEditingController
+                                            //               .clear();
+                                            //           setState(() {
+                                            //             searchValue = "";
+                                            //           });
+                                            //         },
+                                            //         child: Icon(Icons.clear),
+                                            //       )
+                                            //     : SizedBox(
+                                            //         height: 0.0,
+                                            //         width: 0.0,
+                                            //       ),
                                             hintText: 'SEARCH GEMSTORY',
                                             hintStyle: TextStyle(
                                               fontFamily: 'Gilroy Medium',
@@ -1730,6 +1699,27 @@ class _CartScreenState extends State<CartScreen> {
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
+                                            .setHeight(searchSelected ? 27 : 0),
+                                        width: ScreenUtil()
+                                            .setWidth(searchSelected ? 27 : 0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            textEditingController.clear();
+                                            setState(() {
+                                              searchValue = "";
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.clear,
+                                            color: Colors.black,
+                                            size: searchSelected ? 25 : 0,
+                                          ),
+                                        ),
+                                      ),
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        margin: EdgeInsets.only(right: 6.0),
+                                        height: ScreenUtil()
                                             .setHeight(searchSelected ? 0 : 27),
                                         width: ScreenUtil()
                                             .setWidth(searchSelected ? 0 : 27),
@@ -1737,7 +1727,7 @@ class _CartScreenState extends State<CartScreen> {
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -1828,83 +1818,89 @@ class _CartScreenState extends State<CartScreen> {
                                                 print(info);
                                                 return GestureDetector(
                                                   onTap: () async {
-                                                   try{ 
-                                                    await Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .getProductDetail(
-                                                            context: context,
-                                                            styleNumber:
-                                                                suggestion[
-                                                                        index]
-                                                                    .styleNumber);
-                                                    FocusScopeNode
-                                                        currentFocus =
-                                                        FocusScope.of(context);
-                                                    currentFocus.unfocus();
-                                                    textEditingController
-                                                        .clear();
-                                                    setState(() {
-                                                      searchValue = "";
-                                                      searchSelected = false;
-                                                      searchSelectedDoneButton =
-                                                          false;
-                                                    });
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetail(
-                                                          colorKey: 'yellow',
-                                                          diamondKey: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen: false)
-                                                                  .diamondQuality[
-                                                              _defaultChoiceIndex4],
-                                                          certPrice: Provider
-                                                                  .of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                              .certPrices[Provider.of<
-                                                                      Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cert[_defaultChoiceIndex3]],
-                                                          defaultIndex1:
-                                                              _defaultChoiceIndex1,
-                                                          defaultIndex2:
-                                                              _defaultChoiceIndex2,
-                                                          defaultIndex3:
-                                                              _defaultChoiceIndex3,
-                                                          defaultIndex4:
-                                                              _defaultChoiceIndex4,
-                                                          product: Provider.of<
-                                                                      Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .productDetailsForSearch[0],
-                                                          select: 'all',
-                                                          valueChangeBuild:
-                                                              _onValueChange,
-                                                          valueChangeColor:
-                                                              _onValueChangeColor,
-                                                          valueChangeCerti:
-                                                              _onValueChangeCerti,
-                                                          valueChangeDQ:
-                                                              _onValueChangeDQ,
+                                                    try {
+                                                      await Provider.of<
+                                                                  Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProductDetail(
+                                                              context: context,
+                                                              styleNumber:
+                                                                  suggestion[
+                                                                          index]
+                                                                      .styleNumber);
+                                                      FocusScopeNode
+                                                          currentFocus =
+                                                          FocusScope.of(
+                                                              context);
+                                                      currentFocus.unfocus();
+                                                      textEditingController
+                                                          .clear();
+                                                      setState(() {
+                                                        searchValue = "";
+                                                        searchSelected = false;
+                                                        searchSelectedDoneButton =
+                                                            false;
+                                                      });
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProductDetail(
+                                                            colorKey: 'yellow',
+                                                            diamondKey: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .diamondQuality[
+                                                                _defaultChoiceIndex4],
+                                                            certPrice: Provider
+                                                                    .of<Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                .certPrices[Provider.of<
+                                                                        Pagination>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .cert[_defaultChoiceIndex3]],
+                                                            defaultIndex1:
+                                                                _defaultChoiceIndex1,
+                                                            defaultIndex2:
+                                                                _defaultChoiceIndex2,
+                                                            defaultIndex3:
+                                                                _defaultChoiceIndex3,
+                                                            defaultIndex4:
+                                                                _defaultChoiceIndex4,
+                                                            product: Provider.of<
+                                                                        Pagination>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .productDetailsForSearch[0],
+                                                            select: 'all',
+                                                            valueChangeBuild:
+                                                                _onValueChange,
+                                                            valueChangeColor:
+                                                                _onValueChangeColor,
+                                                            valueChangeCerti:
+                                                                _onValueChangeCerti,
+                                                            valueChangeDQ:
+                                                                _onValueChangeDQ,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  }catch(err){
-                                                     dataSelect(context, '$err', '', 'OK', (){
-                                                  Navigator.pop(context);
-                                                });
-                                                  }
+                                                      );
+                                                    } catch (err) {
+                                                      dataSelect(context,
+                                                          '$err', '', 'OK', () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    }
                                                   },
-                                                  child: Padding(
+                                                  child: Container(
+                                                    color: Colors.transparent,
                                                     padding:
                                                         const EdgeInsets.only(
                                                             left: 20.0,
@@ -1942,7 +1938,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         // Text(
                                                         //   styleNumber[index],
                                                         //   style: TextStyle(
-                                                        //     fontFamily: 'Varela',
+                                                        //     fontFamily: 'Gilroy Medium',
                                                         //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
                                                         //   ),
                                                         // )
@@ -1960,7 +1956,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   FontWeight
                                                                       .bold,
                                                               fontFamily:
-                                                                  'Varela',
+                                                                  'Gilroy Medium',
                                                               fontSize: ScreenUtil()
                                                                   .setSp(21,
                                                                       allowFontScalingSelf:
@@ -1975,7 +1971,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       .grey,
                                                                   // fontWeight: FontWeight.bold,
                                                                   fontFamily:
-                                                                      'Varela',
+                                                                      'Gilroy Medium',
                                                                   fontSize: ScreenUtil().setSp(
                                                                       21,
                                                                       allowFontScalingSelf:
@@ -1993,7 +1989,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       FontWeight
                                                                           .bold,
                                                                   fontFamily:
-                                                                      'Varela',
+                                                                      'Gilroy Medium',
                                                                   fontSize: ScreenUtil().setSp(
                                                                       21,
                                                                       allowFontScalingSelf:
@@ -2008,7 +2004,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       .grey,
                                                                   // fontWeight: FontWeight.bold,
                                                                   fontFamily:
-                                                                      'Varela',
+                                                                      'Gilroy Medium',
                                                                   fontSize: ScreenUtil().setSp(
                                                                       21,
                                                                       allowFontScalingSelf:

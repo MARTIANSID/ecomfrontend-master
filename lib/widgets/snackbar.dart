@@ -68,7 +68,11 @@ void dataSelect(context, titleText, contentText, buttonText, onPressed) {
       textAlign: TextAlign.center,
     ),
     content: Container(
-      height: ScreenUtil().setHeight(150.0),
+      constraints: BoxConstraints(
+        minHeight: ScreenUtil().setHeight(50),
+        maxHeight: ScreenUtil().setHeight(150),
+      ),
+      // height: ScreenUtil().setHeight(150.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,12 +110,14 @@ void dataSelect(context, titleText, contentText, buttonText, onPressed) {
       ),
     ),
   );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alertDialog;
-    },
-  );
+  if (context != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog;
+      },
+    );
+  }
 }
 
 Future<bool> dataSelectConfirmMessage(
@@ -142,7 +148,7 @@ Future<bool> dataSelectConfirmMessage(
           contentText,
           style: TextStyle(
             color: Colors.black,
-            fontFamily: 'Gilroy',
+            fontFamily: 'Gilroy Medium',
             fontSize: ScreenUtil().setSp(
               16,
               allowFontScalingSelf: true,
