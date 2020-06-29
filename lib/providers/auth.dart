@@ -32,7 +32,7 @@ class Auth with ChangeNotifier {
   bool autoLogin = false;
 
   bool get isAuth {
-    return token != null;
+    return _token != null;
   }
 
   void changeLog() {
@@ -69,6 +69,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> checkOtp({number,code}) async{
+   try{ 
     final response = await http
         .post('${uurl}user/resetpassword/checkcode', body: {"number": number,"code":code});
     final responseBody = json.decode(response.body);
@@ -77,6 +78,9 @@ class Auth with ChangeNotifier {
       throw HttpException(responseBody['details']['message']);
       print(responseBody['matches']);
       return responseBody['matches'];
+   }catch(err){
+     throw err;
+   }
     
   
   }
@@ -86,6 +90,7 @@ class Auth with ChangeNotifier {
 
 
   Future<bool> resetPassword(String number, String otp, String password) async {
+    try{
     final response = await http.patch('${uurl}user/resetpassword/',
         body: {"code": "$otp", "password": "$password","number":number});
     final responseBody = json.decode(response.body);
@@ -94,6 +99,9 @@ class Auth with ChangeNotifier {
       throw HttpException(responseBody['details']['message']);
     else
       return true;
+      }catch(err){
+        throw err;
+      }
   }
 
   Future<void> _authenticate(String number, String password, String urlSegment,
@@ -131,7 +139,10 @@ class Auth with ChangeNotifier {
       throw error;
     }
   }
+
+
   Future<void> resendOtp(number) async{
+    try{
       final response = await http.post('${uurl}user/resendmessagepassword',
         body: {"number":number});
     final responseBody = json.decode(response.body);
@@ -140,6 +151,9 @@ class Auth with ChangeNotifier {
       throw HttpException(responseBody['details']['message']);
     else
       return true;
+    }catch(err){
+      throw err;
+    }
   }
 
   
@@ -157,6 +171,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin(context) async {
+  
     final prefs = await SharedPreferences.getInstance();
     print('PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
     if (!prefs.containsKey('userData')) {
@@ -179,23 +194,23 @@ class Auth with ChangeNotifier {
     _autoLogout();
     notifyListeners();
     return true;
+    
   }
 
   Future<void> logout() async {
     _token = null;
     _number = null;
     _expiryDate = null;
-    notifyListeners();
     if (_authTimer != null) {
       _authTimer.cancel();
       _authTimer = null;
-  notifyListeners();
+ 
     }
 
     final prefs = await SharedPreferences.getInstance();
-    // prefs.remove('userData');
-    prefs.clear();
-    notifyListeners();
+    prefs.remove('userData');
+    
+notifyListeners();
   }
 
   void _autoLogout() async{

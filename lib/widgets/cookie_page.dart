@@ -121,7 +121,7 @@ class _CookiePageState extends State<CookiePage> {
 
   createList() async {
     widget.scrollController.addListener(() async {
-      if (widget.scrollController.position.maxScrollExtent/3 ==
+      if (widget.scrollController.position.maxScrollExtent==
           widget.scrollController.position.pixels) {
         if (!mounted)
           setState(() {
@@ -550,20 +550,16 @@ class _CookiePageState extends State<CookiePage> {
                                   ),
                                 );
                               },
-                              onLongPressEnd: (details) {
-                                dateSelect(
-                                  context,
-                                  widget.products[i],
-                                );
-                                setState(() {
-                                  show = false;
-                                });
+                              onLongPressEnd: (d){
+            
+
                               },
                               onLongPressStart: (details) {
                                 dateSelect(
                                   context,
                                   widget.products[i],
                                 );
+                                
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -875,6 +871,12 @@ class _CookiePageState extends State<CookiePage> {
                                     ),
                                   ),
                                   onTap: () async {
+                                  if(widget.products[i].isFavourite){
+                                    Provider.of<Pagination>(context,listen: false).removeFav(widget.products[i]);
+                                  } 
+                                  else{
+                                     Provider.of<Pagination>(context,listen: false).addFav(widget.products[i]);
+                                  }
                                     await Provider.of<Pagination>(context,
                                             listen: false)
                                         .toogleFavourite(
@@ -885,8 +887,7 @@ class _CookiePageState extends State<CookiePage> {
 
                                     if (mounted)
                                       setState(() {
-                                        widget.products[i].isFavourite =
-                                            !widget.products[i].isFavourite;
+                                        
                                       });
                                   },
                                 ),

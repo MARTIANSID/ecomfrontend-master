@@ -346,72 +346,94 @@ class Pagination with ChangeNotifier {
       throw err;
     }
   }
-
   Future<void> toogleFavourite({String styleNumber, context, select}) async {
     int index;
+    int check=0;
+if(allProducts.indexWhere((element) => element.styleNumber==styleNumber)>=0) {
+  check=1;
+      index = allProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      allProducts[index].isFavourite = !allProducts[index].isFavourite;
+      // if (allProducts[index].isFavourite) {
+      //   if(check==0)
+      //   favProducts.add(allProducts[index]);
+      // } else {
+      //   if(check==0)
+      //   favProducts.remove(allProducts[index]);
+      // }
+      // check=1;
 
-    // if (select == 'all') {
-    //   index = allProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   allProducts[index].isFavourite = !allProducts[index].isFavourite;
-    //   if (allProducts[index].isFavourite) {
-    //     favProducts.add(allProducts[index]);
-    //   } else {
-    //     favProducts.remove(allProducts[index]);
-    //   }
+      notifyListeners();
+    }
+    if (newProducts.indexWhere((element) => element.styleNumber==styleNumber)>=0) {
+      
+      index = newProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      newProducts[index].isFavourite = !newProducts[index].isFavourite;
+      // if (newProducts[index].isFavourite) {
+      //   if(check==0)
+      //   favProducts.add(newProducts[index]);
+      // } else {
+      //   if(check==0)
+      //   favProducts.remove(newProducts[index]);
+      // }
+      // check=1;
 
-    //   notifyListeners();
-    // }
-    // if (select == 'new') {
-    //   index = newProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   newProducts[index].isFavourite = !newProducts[index].isFavourite;
-    //   if (newProducts[index].isFavourite) {
-    //     favProducts.add(newProducts[index]);
-    //   } else {
-    //     favProducts.remove(newProducts[index]);
-    //   }
+      notifyListeners();
+    }
+    if (featuredProducts.indexWhere((element) => element.styleNumber==styleNumber)>=0) {
+      index = featuredProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      featuredProducts[index].isFavourite =
+          !featuredProducts[index].isFavourite;
+      // if (featuredProducts[index].isFavourite) {
+      //   if(check==0)
+      //   favProducts.add(featuredProducts[index]);
+      // } else {
+      //   if(check==0)
+      //   favProducts.remove(featuredProducts[index]);
+      // }
 
-    //   notifyListeners();
-    // }
-    // if (select == 'featured') {
-    //   index = featuredProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   featuredProducts[index].isFavourite =
-    //       !featuredProducts[index].isFavourite;
-    //   if (featuredProducts[index].isFavourite) {
-    //     favProducts.add(featuredProducts[index]);
-    //   } else {
-    //     favProducts.remove(featuredProducts[index]);
-    //   }
+      check=1;
+      notifyListeners();
+    }
+    if (fancyDiamond.indexWhere((element) => element.styleNumber==styleNumber)>=0) {
+      index = fancyDiamond
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+      // if (fancyDiamond[index].isFavourite) {
+      //   if(check==0)
+      //   favProducts.add(fancyDiamond[index]);
+      // } else {
+      //   if(check==0)
+      //   favProducts.remove(fancyDiamond[index]);
+      // }
 
-    //   notifyListeners();
-    // }
-    // if (select == 'fancyDiamond') {
-    //   index = fancyDiamond
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-    //   if (fancyDiamond[index].isFavourite) {
-    //     favProducts.add(fancyDiamond[index]);
-    //   } else {
-    //     favProducts.remove(fancyDiamond[index]);
-    //   }
+      check=1;
 
-    //   notifyListeners();
-    // }
-    // if (select == 'highestSelling') {
-    //   index = highestSellingProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   highestSellingProducts[index].isFavourite =
-    //       !highestSellingProducts[index].isFavourite;
-    //   if (highestSellingProducts[index].isFavourite) {
-    //     favProducts.add(highestSellingProducts[index]);
-    //   } else {
-    //     favProducts.remove(highestSellingProducts[index]);
-    //   }
-    //   notifyListeners();
-    // }
-   
+      notifyListeners();
+    }
+    if (highestSellingProducts.indexWhere((element) => element.styleNumber==styleNumber)>=0) {
+      index = highestSellingProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      highestSellingProducts[index].isFavourite =
+          !highestSellingProducts[index].isFavourite;
+      // if (highestSellingProducts[index].isFavourite) {
+      //   if(check==0)
+      //   favProducts.add(highestSellingProducts[index]);
+      // } else {
+      //   if(check==0)
+      //   favProducts.remove(highestSellingProducts[index]);
+      // }
+
+      check=1;
+      notifyListeners();
+    }
+   if(favProducts.indexWhere((element) => element.styleNumber==styleNumber)>=0){
+    index= favProducts.indexWhere((element) => element.styleNumber==styleNumber);
+     favProducts.remove(favProducts[index]);
+     notifyListeners();
+   }
 
     try {
       final response = await http
@@ -426,10 +448,13 @@ class Pagination with ChangeNotifier {
    
         throw HttpException(responseBody['details']['message']);
       }
-     await getFav(context); 
+    
+
+
      
 
     } catch (error) {
+
 
 
       print('PP in toogleFavourite error block error: $error');
@@ -469,5 +494,19 @@ class Pagination with ChangeNotifier {
     } catch (err) {
       throw err;
     }
+  }
+  void addFav(product){
+    favProducts.add(product);
+    print('add');
+    print(product);
+    print(favProducts.length);    
+    notifyListeners();
+  }
+  void removeFav(product){
+   int  index = favProducts
+          .indexWhere((element) => element.styleNumber == product.styleNumber);
+       favProducts.remove(favProducts[index]);   
+       notifyListeners();
+
   }
 }

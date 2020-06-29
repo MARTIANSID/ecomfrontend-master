@@ -927,7 +927,9 @@ class _ProductDetailState extends State<ProductDetail> {
                       select = 'highestSelling';
                     } else {
                       select = 'fancyDiamond';
+
                     }
+                    try{
                     await Provider.of<Pagination>(context, listen: false)
                         .toogleFavourite(
                             styleNumber: widget.product.styleNumber,
@@ -936,6 +938,12 @@ class _ProductDetailState extends State<ProductDetail> {
                     setState(() {
                       widget.product.isFavourite = !widget.product.isFavourite;
                     });
+                    }catch(err){
+                        dataSelect(context, 'Request has already been noted!', '', 'ok', (){
+                                                      Navigator.pop(context);
+
+                                                    });
+                    }
                   },
                   child: Icon(
                     widget.product.isFavourite
@@ -1028,8 +1036,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                         //   // info=styleNumber[].split(value);
                                         //   // print(styleNumber[1].split(searchValue));
                                         // });
+                                      try{  
                                         await getSearch(
                                             searchValue.toUpperCase());
+                                      }catch(err){
+                                          dataSelect(context, 'Request has already been noted!', '', 'ok', (){
+                                                      Navigator.pop(context);
+
+                                                    });
+                                      }
+
                                         // setState(() {
                                         //   isLoadingSearch = false;
                                         // });

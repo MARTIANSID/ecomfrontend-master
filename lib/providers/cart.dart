@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Flutter/providers/http_exception.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,6 +118,7 @@ class Cart with ChangeNotifier {
            if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
+
         totalPrice=responseData['cart']['totalPrice'];
 
         cart = responseData['cart']['products']
@@ -174,8 +176,7 @@ class Cart with ChangeNotifier {
         print(cart);
         notifyListeners();
       } catch (error) {
-        print(error);
-        print(error);
+        throw error;
       }
     } else {
       try {

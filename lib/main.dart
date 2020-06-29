@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './screens/auth_screen.dart';
 import './providers/products.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: initScreen3 == 0 || initScreen3 == null ? "first" : "/",
           routes: {
-            '/': (context) => auth.isAuth
+            '/': (context) => Provider.of<Auth>(context,listen:true).token!=null
                 ? Home()
                 : FutureBuilder(
                     future: auth.tryAutoLogin(context),

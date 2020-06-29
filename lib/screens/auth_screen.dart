@@ -95,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+      
         Text(
           name,
           style: kLabelStyle,
@@ -105,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen>
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+        
             controller: controller,
             keyboardType: inputType,
             style: TextStyle(
@@ -426,10 +428,11 @@ class _LoginScreenState extends State<LoginScreen>
               _nameController.text,
               _phoneController.text,
               _passwordController.text);
+              
 
-          await Provider.of<Products>(context, listen: false)
-              .fetchAndSetProducts(
-                  token: Provider.of<Auth>(context, listen: true).token);
+          // await Provider.of<Products>(context, listen: false)
+          //     .fetchAndSetProducts(
+          //         token: Provider.of<Auth>(context, listen: true).token);
 
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (ctx) => Home()));
@@ -517,6 +520,8 @@ class _LoginScreenState extends State<LoginScreen>
         try {
           await Provider.of<Auth>(context, listen: false)
               .userLogin(_phoneController.text, _passwordController.text);
+               Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (ctx) => Home()));
         } catch (error) {
           _showDilog('Oops!', '$error');
         } finally {
@@ -524,10 +529,8 @@ class _LoginScreenState extends State<LoginScreen>
             _isLoading = false;
           });
         }
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
+      
+        
         Provider.of<Auth>(context, listen: false).changeLog();
       }
     }

@@ -987,17 +987,7 @@ if(Provider.of<Pagination>(context,listen: false).isPriced)
                               certvalue: _defaultChoiceIndex2,
                               update: widget.updateCart ? true : false,
                             );
-                           }catch(err){
-                             dataSelect(context, '$err', '', 'OK', () {
-          Navigator.pop(context);
-    
-      });
-                           }finally{
-                            setState(() {
-                              isLoading = false;
-                            });
-                            Navigator.of(context).pop();
-                           }
+                        
                             widget.updateCart
                                 ? showFloatingFlushbar(
                                     widget.globalKey.currentContext,
@@ -1009,9 +999,20 @@ if(Provider.of<Pagination>(context,listen: false).isPriced)
                                     'Product has been added to your Cart"🛒"',
                                     widget.product.styleNumber,
                                   );
-                          }
+                         } catch(err){
+                             dataSelect(context, '$err', '', 'OK', () {
+                           Navigator.pop(context);
+    
+                                   });
+                           }finally{
+                               Navigator.of(context).pop();
+                            setState(() {
+                              isLoading = false;
+                            });
+                        
+                           }
                           // print(val);
-                        },
+                        } },
                         child: Container(
                           width: ScreenUtil().setWidth(180),
                           height: ScreenUtil().setHeight(43),

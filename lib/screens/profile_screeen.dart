@@ -657,7 +657,7 @@ class _UserPageState extends State<UserPage>
                                   if (value2) {
                                     Provider.of<Auth>(context, listen: false)
                                         .logout();
-                                         
+                                   Navigator.pop(context);
                                 
 
                                   }

@@ -19,15 +19,15 @@ class _TestimonyPageState extends State<TestimonyPage> {
   @override
   void initState() {
     super.initState();
-    try {
+  
       new Future.delayed(Duration(seconds: 0), () async {
         setState(() {
           isLoading = true;
         });
+        try{
         await Provider.of<Testimony>(context, listen: false)
             .getTestimony(context: context);
-      });
-    } catch (err) {
+        }catch (err) {
       dataSelect(context, '$err', '', 'OK', () {
         Navigator.pop(context);
       });
@@ -36,7 +36,9 @@ class _TestimonyPageState extends State<TestimonyPage> {
         isLoading = false;
       });
     }
-  }
+      });
+    } 
+  
 
   double rating = 0;
   // void update(v){

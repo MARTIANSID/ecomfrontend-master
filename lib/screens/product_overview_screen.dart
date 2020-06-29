@@ -236,6 +236,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       );
     }
   }
+  bool check=false;
 
   void _onValueChangeCerti(int value, [int index]) async {
     await Provider.of<Options>(context, listen: false).setCert(cert: value);
@@ -274,10 +275,15 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       });
     } catch (err) {
       dataSelect(context, '$err', '', 'OK', () {
+
         Navigator.pop(context);
+        check=true;
+
       });
     } finally {
       isLoadingSearch = false;
+      if(check)
+      suggestion=[];
     }
 
     print(suggestion);
@@ -999,7 +1005,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               scrollDirection: Axis.vertical,
                                               physics: BouncingScrollPhysics(),
                                               itemCount: Provider.of<Searchh>(
-                                                      context,
+                                                     context,
                                                       listen: false)
                                                   .searchResult
                                                   .length,
