@@ -95,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen>
     @required IconData icon,
     @required void Function(String) validate,
     bool enable,
+
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,6 +155,7 @@ class _LoginScreenState extends State<LoginScreen>
           child: TextFormField(
             validator: (value) {
               if (value.isEmpty) {
+
                 return "Enter Password";
               } else if (value.length < 6) {
                 return "Atleast 6 Characters Required!";

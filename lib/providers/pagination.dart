@@ -346,7 +346,7 @@ class Pagination with ChangeNotifier {
     }
   }
 
-  Future<void> toogleFavourite({String styleNumber, context, select}) async {
+  Future<void> toogleFavourite({String styleNumber, context, select,product}) async {
     int index;
     int check = 0;
     if (allProducts
@@ -445,6 +445,9 @@ class Pagination with ChangeNotifier {
       favProducts.remove(favProducts[index]);
      
     }
+    else{
+      favProducts.add(product);
+    }
     if (productDetailsForSearch.length>0) {                           
       if (productDetailsForSearch[0].styleNumber == styleNumber) {
         productDetailsForSearch[0].isFavourite =
@@ -454,231 +457,159 @@ class Pagination with ChangeNotifier {
     }
     notifyListeners();
 
-    // try {
-    //   final response = await http.post(uurl + '/user/favourite/toggle',
-    //       headers: {
-    //         'Authorization':
-    //             'Bearer ' + Provider.of<Auth>(context, listen: false).token
-    //       },
-    //       body: {
-    //         'styleNumber': styleNumber
-    //       });
-    //   final responseBody = json.decode(response.body);
-    //   if (responseBody['error'] == true) {
-    //     if (allProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   check = 1;
-    //   index = allProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   allProducts[index].isFavourite = !allProducts[index].isFavourite;
-    //   // if (allProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(allProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(allProducts[index]);
-    //   // }
-    //   // check=1;
+    try {
+      final response = await http.post(uurl + '/user/favourite/toggle',
+          headers: {
+            'Authorization':
+                'Bearer ' + Provider.of<Auth>(context, listen: false).token
+          },
+          body: {
+            'styleNumber': styleNumber
+          });
+      final responseBody = json.decode(response.body);
+      if (responseBody['error'] == true) {
+        if (allProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      check = 1;
+      index = allProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      allProducts[index].isFavourite = !allProducts[index].isFavourite;
+    
 
  
-    // }
-    // if (newProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = newProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   newProducts[index].isFavourite = !newProducts[index].isFavourite;
-    //   // if (newProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(newProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(newProducts[index]);
-    //   // }
-    //   // check=1;
+    }
+    if (newProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = newProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      newProducts[index].isFavourite = !newProducts[index].isFavourite;
+   
 
      
-    // }
-    // if (featuredProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = featuredProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   featuredProducts[index].isFavourite =
-    //       !featuredProducts[index].isFavourite;
-    //   // if (featuredProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(featuredProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(featuredProducts[index]);
-    //   // }
+    }
+    if (featuredProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = featuredProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      featuredProducts[index].isFavourite =
+          !featuredProducts[index].isFavourite;
 
-    //   check = 1;
+      check = 1;
  
-    // }
-    // if (fancyDiamond
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = fancyDiamond
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-    //   // if (fancyDiamond[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(fancyDiamond[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(fancyDiamond[index]);
-    //   // }
+    }
+    if (fancyDiamond
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = fancyDiamond
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
 
-    //   check = 1;
+      check = 1;
 
     
-    // }
-    // if (highestSellingProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = highestSellingProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   highestSellingProducts[index].isFavourite =
-    //       !highestSellingProducts[index].isFavourite;
-    //   // if (highestSellingProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(highestSellingProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(highestSellingProducts[index]);
-    //   // }
-
-    //   check = 1;
+    }
+    if (highestSellingProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = highestSellingProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      highestSellingProducts[index].isFavourite =
+          !highestSellingProducts[index].isFavourite;
+    
+      check = 1;
      
-    // }
-    // if (favProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = favProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   favProducts.remove(favProducts[index]);
+    }
+    if (favProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = favProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      favProducts.remove(favProducts[index]);
     
-    // }
-    // if (productDetailsForSearch.length> 0) {
-    //   if (productDetailsForSearch[0].styleNumber == styleNumber) {
-    //     productDetailsForSearch[0].isFavourite =
-    //         !productDetailsForSearch[0].isFavourite;
+    }
+    if (productDetailsForSearch.length> 0) {
+      if (productDetailsForSearch[0].styleNumber == styleNumber) {
+        productDetailsForSearch[0].isFavourite =
+            !productDetailsForSearch[0].isFavourite;
         
-    //   }
-    // }
-    //     throw HttpException(responseBody['details']['message']);
-    //   }
-    //   await getFav(context);
-    // } catch (error) {
-    //   if (allProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   check = 1;
-    //   index = allProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   allProducts[index].isFavourite = !allProducts[index].isFavourite;
-    //   // if (allProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(allProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(allProducts[index]);
-    //   // }
-    //   // check=1;
+      }
+    }
+        throw HttpException(responseBody['details']['message']);
+      }
+    } catch (error) {
+      if (allProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      check = 1;
+      index = allProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      allProducts[index].isFavourite = !allProducts[index].isFavourite;
 
-    //   notifyListeners();
-    // }
-    // if (newProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = newProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   newProducts[index].isFavourite = !newProducts[index].isFavourite;
-    //   // if (newProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(newProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(newProducts[index]);
-    //   // }
-    //   // check=1;
+      notifyListeners();
+    }
+    if (newProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = newProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      newProducts[index].isFavourite = !newProducts[index].isFavourite;
 
-    //   notifyListeners();
-    // }
-    // if (featuredProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = featuredProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   featuredProducts[index].isFavourite =
-    //       !featuredProducts[index].isFavourite;
-    //   // if (featuredProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(featuredProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(featuredProducts[index]);
-    //   // }
+      notifyListeners();
+    }
+    if (featuredProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = featuredProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      featuredProducts[index].isFavourite =
+          !featuredProducts[index].isFavourite;
+      check = 1;
+      notifyListeners();
+    }
+    if (fancyDiamond
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = fancyDiamond
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
 
-    //   check = 1;
-    //   notifyListeners();
-    // }
-    // if (fancyDiamond
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = fancyDiamond
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-    //   // if (fancyDiamond[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(fancyDiamond[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(fancyDiamond[index]);
-    //   // }
+      check = 1;
 
-    //   check = 1;
-
-    //   notifyListeners();
-    // }
-    // if (highestSellingProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = highestSellingProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   highestSellingProducts[index].isFavourite =
-    //       !highestSellingProducts[index].isFavourite;
-    //   // if (highestSellingProducts[index].isFavourite) {
-    //   //   if(check==0)
-    //   //   favProducts.add(highestSellingProducts[index]);
-    //   // } else {
-    //   //   if(check==0)
-    //   //   favProducts.remove(highestSellingProducts[index]);
-    //   // }
-
-    //   check = 1;
-    //   notifyListeners();
-    // }
-    // if (favProducts
-    //         .indexWhere((element) => element.styleNumber == styleNumber) >=
-    //     0) {
-    //   index = favProducts
-    //       .indexWhere((element) => element.styleNumber == styleNumber);
-    //   favProducts.remove(favProducts[index]);
-    //   notifyListeners();
-    // }
-    // if (productDetailsForSearch.length> 0) {
-    //   if (productDetailsForSearch[0].styleNumber == styleNumber) {
-    //     productDetailsForSearch[0].isFavourite =
-    //         !productDetailsForSearch[0].isFavourite;
-    //     notifyListeners();
-    //   }
-    // }
-    //   print('PP in toogleFavourite error block error: $error');
-    // }
+      notifyListeners();
+    }
+    if (highestSellingProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = highestSellingProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      highestSellingProducts[index].isFavourite =
+          !highestSellingProducts[index].isFavourite;
+      check = 1;
+      notifyListeners();
+    }
+    if (favProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = favProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      favProducts.remove(favProducts[index]);
+      notifyListeners();
+    }
+    else{
+      favProducts.add(product);
+    }
+    if (productDetailsForSearch.length> 0) {
+      if (productDetailsForSearch[0].styleNumber == styleNumber) {
+        productDetailsForSearch[0].isFavourite =
+            !productDetailsForSearch[0].isFavourite;
+        notifyListeners();
+      }
+    }
+      print('PP in toogleFavourite error block error: $error');
+    }
   }
 
   Future<void> getProductDetail({context, styleNumber}) async {

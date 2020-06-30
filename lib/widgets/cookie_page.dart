@@ -76,7 +76,7 @@ class _CookiePageState extends State<CookiePage> {
 
   int _defaultChoiceIndex4;
 
-  bool show = true;
+  bool show = false;
   double scroll = 500.0;
 
   Future<void> getMoreProducts() async {
@@ -354,121 +354,111 @@ class _CookiePageState extends State<CookiePage> {
   //     );
   //   }
   // }
+  var pro;
 
   @override
   Widget build(BuildContext context) {
-    void dateSelect(context, product) {
-      var alertDialog = AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        backgroundColor: Colors.black.withOpacity(0.3),
-        elevation: 100.0,
-        content: Container(
-          height: ScreenUtil().setHeight(315),
-          // width: ScreenUtil().setHeight(411),
-          // width: 700.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  product.styleNumber,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Gilroy Black',
-                    fontSize:
-                        ScreenUtil().setSp(25, allowFontScalingSelf: true),
+    Widget dateSelect(context, product) {
+      // var alertDialog = ;
+      // if (show) {
+      //   showDialog(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: Colors.black.withOpacity(0.7),
+          elevation: 100.0,
+          content: Container(
+            height: ScreenUtil().setHeight(360),
+            // width: ScreenUtil().setHeight(411),
+            // width: 700.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text(
+                    product.styleNumber,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Gilroy Medium',
+                      fontSize:
+                          ScreenUtil().setSp(25, allowFontScalingSelf: true),
+                    ),
                   ),
                 ),
-              ),
-              DataTable(
-                columns: [
-                  DataColumn(
-                      label: Text(
-                    'Specifications',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
-                  DataColumn(
-                      label: Text(
-                    'Units',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
-                ],
-                rows: [
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Gold Weight',
-                      style: TextStyle(color: Colors.white),
+                DataTable(
+                  columns: [
+                    DataColumn(
+                        label: Text(
+                      'Specifications',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     )),
-                    DataCell(Text(
-                      product.goldWeight.toString(),
-                      style: TextStyle(color: Colors.white),
+                    DataColumn(
+                        label: Text(
+                      'Units',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     )),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Diamond Weight',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(
-                      product.diamondWeight.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Diamond Count',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(
-                      product.diamondCount.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text(
-                      'Design Dimensions',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    DataCell(Text(
-                      product.designDimensions.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ]),
-                ],
-              ),
-            ],
+                  ],
+                  rows: [
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Gold Weight',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        product.goldWeight.toString(),
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Diamond Weight',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        product.diamondWeight.toString(),
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Diamond Count',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        product.diamondCount.toString(),
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Design Dimensions',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                      DataCell(Text(
+                        product.designDimensions.toString(),
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ]),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
-      if (show) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // return Stack(
-            //   children: <Widget>[
-            //     Positioned(
-            //       top: dY,
-            //       left: dX,
-            //       right: dX,
-            //       child: BackdropFilter(
-            //         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            //         child: alertDialog,
-            //       ),
-            //     ),
-            //   ],
-            // );
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: alertDialog,
-            );
-          },
-        );
-      }
+      //     },
+      //   );
+      // } else {
+      //   Navigator.of(context).pop();
+      // }
     }
 
     // final scaff = Scaffold.of(context);
@@ -515,531 +505,572 @@ class _CookiePageState extends State<CookiePage> {
     print(size.width.toString() + 'DC');
     return isLoadingg
         ? Center(child: CircularProgressIndicator())
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        : Stack(
             children: <Widget>[
-              Expanded(
-                child: ListView(
-                  controller: widget.scrollController,
-                  children: <Widget>[
-                    GridView.builder(
-                      scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(left: 25, right: 21),
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: ScreenUtil().setWidth(411) /
-                            (ScreenUtil().setHeight(775) / 2.07),
-                        crossAxisSpacing: 20.0,
-                        mainAxisSpacing: 20.0,
-                      ),
-                      itemCount: widget.products.length,
-                      itemBuilder: (context, i) => Stack(
-                        // alignment: Alignment.bottomRight,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(159),
-                            height: ScreenUtil().setHeight(150),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Colors.white,
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  blurRadius: 10,
-                                  color: Colors.black.withOpacity(0.37),
-                                  offset: Offset(2, 5),
-                                )
-                              ],
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetail(
-                                      colorKey: colorKey,
-                                      diamondKey: priceKey,
-                                      certPrice: certPrice,
-                                      product: widget.products[i],
-                                      defaultIndex1: _defaultChoiceIndex1,
-                                      defaultIndex2: _defaultChoiceIndex2,
-                                      defaultIndex3: _defaultChoiceIndex3,
-                                      defaultIndex4: _defaultChoiceIndex4,
-                                      valueChangeBuild: _onValueChange,
-                                      valueChangeColor: _onValueChangeColor,
-                                      valueChangeCerti: _onValueChangeCerti,
-                                      valueChangeDQ: _onValueChangeDQ,
-                                      valueChangeBuild1:
-                                          widget.valueChangeBuild,
-                                      valueChangeColor1:
-                                          widget.valueChangeColor,
-                                      valueChangeCerti1:
-                                          widget.valueChangeCerti,
-                                      valueChangeDQ1: widget.valueChangeDQ,
-                                      select: widget.select,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onLongPressEnd: (details) {
-                                dateSelect(
-                                  context,
-                                  widget.products[i],
-                                );
-                                setState(() {
-                                  show = false;
-                                });
-                              },
-                              onLongPressStart: (details) {
-                                dateSelect(
-                                  context,
-                                  widget.products[i],
-                                );
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width: ScreenUtil().setWidth(
-                                        !Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .isVerified
-                                            ? 151
-                                            : 138),
-                                    height: ScreenUtil().setHeight(
-                                        !Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .isVerified
-                                            ? 135
-                                            : 122),
-                                    margin: EdgeInsets.only(
-                                        top: !Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .isVerified
-                                            ? 8
-                                            : 2,
-                                        left: !Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .isVerified
-                                            ? 8
-                                            : 19),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                            // color: Colors.amber,
-                                            height: ScreenUtil().setHeight(
-                                                !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? 135
-                                                    : 122),
-                                            width: ScreenUtil().setWidth(
-                                                !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? 130
-                                                    : 117),
-                                            // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
-
-                                            // color: Colors.amber,
-                                            child: widget.products[i].imageUrl
-                                                    .containsKey(colorKey)
-                                                ? Image(
-                                                    // color: Colors.amber,
-                                                    image: AdvancedNetworkImage(
-                                                      widget.products[i]
-                                                          .imageUrl[colorKey],
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                : Image(
-                                                    image: AdvancedNetworkImage(
-                                                      widget.products[i]
-                                                          .imageUrl['yellow'],
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                          maxAge:
-                                                              const Duration(
-                                                                  days: 3)),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                  )
-
-                                            // ),
-                                            ),
-                                        SizedBox(
-                                          width: ScreenUtil().setWidth(4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      controller: widget.scrollController,
+                      children: <Widget>[
+                        GridView.builder(
+                          scrollDirection: Axis.vertical,
+                          padding: EdgeInsets.only(left: 25, right: 21),
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: ScreenUtil().setWidth(411) /
+                                (ScreenUtil().setHeight(775) / 2.07),
+                            crossAxisSpacing: 20.0,
+                            mainAxisSpacing: 20.0,
+                          ),
+                          itemCount: widget.products.length,
+                          itemBuilder: (context, i) => Stack(
+                            // alignment: Alignment.bottomRight,
+                            children: <Widget>[
+                              Container(
+                                width: ScreenUtil().setWidth(159),
+                                height: ScreenUtil().setHeight(150),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  color: Colors.white,
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      blurRadius: 10,
+                                      color: Colors.black.withOpacity(0.37),
+                                      offset: Offset(2, 5),
+                                    )
+                                  ],
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProductDetail(
+                                          colorKey: colorKey,
+                                          diamondKey: priceKey,
+                                          certPrice: certPrice,
+                                          product: widget.products[i],
+                                          defaultIndex1: _defaultChoiceIndex1,
+                                          defaultIndex2: _defaultChoiceIndex2,
+                                          defaultIndex3: _defaultChoiceIndex3,
+                                          defaultIndex4: _defaultChoiceIndex4,
+                                          valueChangeBuild: _onValueChange,
+                                          valueChangeColor: _onValueChangeColor,
+                                          valueChangeCerti: _onValueChangeCerti,
+                                          valueChangeDQ: _onValueChangeDQ,
+                                          valueChangeBuild1:
+                                              widget.valueChangeBuild,
+                                          valueChangeColor1:
+                                              widget.valueChangeColor,
+                                          valueChangeCerti1:
+                                              widget.valueChangeCerti,
+                                          valueChangeDQ1: widget.valueChangeDQ,
+                                          select: widget.select,
                                         ),
-                                        Container(
-                                          width: ScreenUtil().setWidth(14),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              SizedBox(
-                                                height:
-                                                    ScreenUtil().setHeight(16),
-                                              ),
-                                              RotatedBox(
-                                                quarterTurns: -1,
-                                                child: Text(
-                                                  widget
-                                                      .products[i].styleNumber,
-                                                  style: TextStyle(
-                                                    fontSize: ScreenUtil().setSp(
-                                                        14,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontFamily:
-                                                        'Gilroy Regular',
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Text(
-                                  //   "5000 ₹",
-                                  //   style: TextStyle(
-                                  //     fontSize: ScreenUtil().setSp(18,
-                                  //         allowFontScalingSelf: true),
-                                  //     fontFamily: 'Gilroy Regular',
-                                  //   ),
-                                  // ),
-                                  !Provider.of<Pagination>(context,
-                                              listen: false)
-                                          .isVerified
-                                      ? SizedBox(
-                                          height: 0.0,
-                                        )
-                                      : !Provider.of<Pagination>(context,
-                                                  listen: false)
-                                              .isPriced
-                                          ? GestureDetector(
-                                              onTap: () async {
-                                                String date =
-                                                    await Provider.of<UserInfo>(
-                                                            context,
-                                                            listen: false)
-                                                        .getPriceDate();
-                                                if (date != null) {
-                                                  int d = DateTime.now()
-                                                      .difference(
-                                                          DateTime.parse(date))
-                                                      .inDays;
-                                                  if (d >= 1) {
-                                                    dataSelect(
-                                                      context,
-                                                      'Important!',
-                                                      "To see prices you must first request a quotation from Team Gemstory",
-                                                      'Request Prices',
-                                                      requestPrice,
-                                                    );
-                                                  } else {
-                                                    dataSelect(
+                                      ),
+                                    );
+                                  },
+                                  onLongPress: () {
+                                    print("Contact");
+                                    setState(() {
+                                      pro = widget.products[i];
+                                      show = true;
+                                    });
+                                  },
+                                  onLongPressUp: () {
+                                    print("No Contact");
+                                    setState(() {
+                                      pro = [];
+                                      show = false;
+                                    });
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width: ScreenUtil().setWidth(
+                                            !Provider.of<Pagination>(context,
+                                                        listen: false)
+                                                    .isVerified
+                                                ? 151
+                                                : 138),
+                                        height: ScreenUtil().setHeight(
+                                            !Provider.of<Pagination>(context,
+                                                        listen: false)
+                                                    .isVerified
+                                                ? 135
+                                                : 122),
+                                        margin: EdgeInsets.only(
+                                            top: !Provider.of<Pagination>(
                                                         context,
-                                                        'Alert!',
-                                                        'Request has already been noted!',
-                                                        'Okay', () {
-                                                      Navigator.pop(context);
-                                                    });
-                                                  }
-                                                } else {
-                                                  dataSelect(
-                                                    context,
-                                                    'Important!',
-                                                    "To see prices you must first request a quotation from Team Gemstory",
-                                                    'Request Prices',
-                                                    requestPrice,
-                                                  );
-                                                }
-                                              },
-                                              child: Container(
-                                                height:
-                                                    ScreenUtil().setHeight(20),
-                                                width:
-                                                    ScreenUtil().setWidth(110),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Request Prices',
-                                                    style: TextStyle(
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      color: Colors.black,
-                                                      fontFamily:
-                                                          'Gilroy Medium',
-                                                      fontSize: ScreenUtil().setSp(
-                                                          14,
-                                                          allowFontScalingSelf:
-                                                              true),
+                                                        listen: false)
+                                                    .isVerified
+                                                ? 8
+                                                : 2,
+                                            left: !Provider.of<Pagination>(
+                                                        context,
+                                                        listen: false)
+                                                    .isVerified
+                                                ? 8
+                                                : 19),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                                // color: Colors.amber,
+                                                height: ScreenUtil().setHeight(
+                                                    !Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isVerified
+                                                        ? 135
+                                                        : 122),
+                                                width: ScreenUtil().setWidth(
+                                                    !Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isVerified
+                                                        ? 130
+                                                        : 117),
+                                                // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
+
+                                                // color: Colors.amber,
+                                                child: widget
+                                                        .products[i].imageUrl
+                                                        .containsKey(colorKey)
+                                                    ? Image(
+                                                        // color: Colors.amber,
+                                                        image:
+                                                            AdvancedNetworkImage(
+                                                          widget.products[i]
+                                                                  .imageUrl[
+                                                              colorKey],
+                                                          useDiskCache: true,
+                                                          cacheRule: CacheRule(
+                                                              maxAge:
+                                                                  const Duration(
+                                                                      days: 3)),
+                                                        ),
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                    : Image(
+                                                        image:
+                                                            AdvancedNetworkImage(
+                                                          widget.products[i]
+                                                                  .imageUrl[
+                                                              'yellow'],
+                                                          useDiskCache: true,
+                                                          cacheRule: CacheRule(
+                                                              maxAge:
+                                                                  const Duration(
+                                                                      days: 3)),
+                                                        ),
+                                                        fit: BoxFit.fill,
+                                                      )
+
+                                                // ),
+                                                ),
+                                            SizedBox(
+                                              width: ScreenUtil().setWidth(4),
+                                            ),
+                                            Container(
+                                              width: ScreenUtil().setWidth(14),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    height: ScreenUtil()
+                                                        .setHeight(16),
+                                                  ),
+                                                  RotatedBox(
+                                                    quarterTurns: -1,
+                                                    child: Text(
+                                                      widget.products[i]
+                                                          .styleNumber,
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontFamily:
+                                                            'Gilroy Regular',
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Text(
+                                      //   "5000 ₹",
+                                      //   style: TextStyle(
+                                      //     fontSize: ScreenUtil().setSp(18,
+                                      //         allowFontScalingSelf: true),
+                                      //     fontFamily: 'Gilroy Regular',
+                                      //   ),
+                                      // ),
+                                      !Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isVerified
+                                          ? SizedBox(
+                                              height: 0.0,
                                             )
-                                          : widget.products[i].prices
-                                                  .containsKey(priceKey)
-                                              ? Text(
-                                                  '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
-                                                  style: TextStyle(
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontFamily:
-                                                        'Gilroy Regular',
+                                          : !Provider.of<Pagination>(context,
+                                                      listen: false)
+                                                  .isPriced
+                                              ? GestureDetector(
+                                                  onTap: () async {
+                                                    String date = await Provider
+                                                            .of<UserInfo>(
+                                                                context,
+                                                                listen: false)
+                                                        .getPriceDate();
+                                                    if (date != null) {
+                                                      int d = DateTime.now()
+                                                          .difference(
+                                                              DateTime.parse(
+                                                                  date))
+                                                          .inDays;
+                                                      if (d >= 1) {
+                                                        dataSelect(
+                                                          context,
+                                                          'Important!',
+                                                          "To see prices you must first request a quotation from Team Gemstory",
+                                                          'Request Prices',
+                                                          requestPrice,
+                                                        );
+                                                      } else {
+                                                        dataSelect(
+                                                            context,
+                                                            'Alert!',
+                                                            'Request has already been noted!',
+                                                            'Okay', () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      }
+                                                    } else {
+                                                      dataSelect(
+                                                        context,
+                                                        'Important!',
+                                                        "To see prices you must first request a quotation from Team Gemstory",
+                                                        'Request Prices',
+                                                        requestPrice,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(20),
+                                                    width: ScreenUtil()
+                                                        .setWidth(110),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Request Prices',
+                                                        style: TextStyle(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline,
+                                                          color: Colors.black,
+                                                          fontFamily:
+                                                              'Gilroy Medium',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(14,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 )
-                                              : Text(
-                                                  'no price',
-                                                  style: TextStyle(
-                                                    fontSize: ScreenUtil().setSp(
-                                                        18,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    fontFamily:
-                                                        'Gilroy Regular',
-                                                  ),
-                                                ),
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  //   // crossAxisAlignment: CrossAxisAlignment.center,
-                                  //   children: <Widget>[
-                                  //     IconButton(
-                                  //       icon: Icon(widget.products[i].isFavourite
-                                  //           ? Icons.favorite
-                                  //           : Icons.favorite_border),
-                                  //       color: kPrimaryColor,
-                                  //       onPressed: () async {
-                                  //         await Provider.of<Products>(context, listen: false)
-                                  //             .toogleFavourite(
-                                  //                 styleNumber: widget.products[i].styleNumber,
-                                  //                 context: context);
-                                  //         setState(() {});
-                                  //       },
-                                  //     ),
-                                  //     IconButton(
-                                  //       icon: Icon(Icons.shopping_cart),
-                                  //       color: kPrimaryColor,
-                                  //       onPressed: () async {
-                                  //         await Provider.of<Cart>(context, listen: false)
-                                  //             .addCart(widget.products[i], context);
-
-                                  //         showFloatingFlushbar(context,
-                                  //             'Product has been added to your favourites"❤"');
-                                  //       },
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // SizedBox(
-                                  //   height: 20.0,
-                                  // ),
-                                  // Text(
-                                  //   '\$52.90',
-                                  //   style: TextStyle(
-                                  //     fontSize: 20.0,
-                                  //     fontFamily: 'Gilroy',
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              // crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                GestureDetector(
-                                  child: Container(
-                                    height: ScreenUtil().setHeight(29),
-                                    width: ScreenUtil().setWidth(29),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color(0xFF33D2E4),
-                                          Color(0xFF34B0D9),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: Icon(
-                                      widget.products[i].isFavourite
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: Colors.white,
-                                      size: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    try{
-                                      if(mounted)
-                                      setState(() {});
-                                  Provider.of<Pagination>(context,listen: false).favProducts.add(widget.products[i]);
-                                    await Provider.of<Pagination>(context,
-                                            listen: false)
-                                        .toogleFavourite(
-                                            styleNumber:
-                                                widget.products[i].styleNumber,
-                                            context: context);
-                          
-                                    }catch(err){
-                                      if(mounted)
-                                       setState(() {});
-
-                                    }
-                                    
-                                  },
-                                ),
-                                SizedBox(
-                                  height: ScreenUtil().setHeight(6.0),
-                                ),
-                                GestureDetector(
-                                  child: Container(
-                                    height: ScreenUtil().setHeight(29),
-                                    width: ScreenUtil().setWidth(29),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color(0xFF34BEDD),
-                                          Color(0xFF359DD3),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: Icon(
-                                      Icons.shopping_cart,
-                                      color: Colors.white,
-                                      size: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    !Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isVerified
-                                        ? dataSelect(
-                                            context,
-                                            'Important!',
-                                            "To get complete access of the app, you need to first verify yourself!",
-                                            'Complete SignUp',
-                                            () async {
-                                              Navigator.of(context).pop();
-                                              String date =
-                                                  await Provider.of<UserInfo>(
-                                                          context,
-                                                          listen: false)
-                                                      .getDate();
-                                              if (date != null) {
-                                                int d = DateTime.now()
-                                                    .difference(
-                                                        DateTime.parse(date))
-                                                    .inDays;
-                                                if (d >= 1) {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CompleteSignUp(),
+                                              : widget.products[i].prices
+                                                      .containsKey(priceKey)
+                                                  ? Text(
+                                                      '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(18,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontFamily:
+                                                            'Gilroy Regular',
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      'no price',
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(18,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontFamily:
+                                                            'Gilroy Regular',
+                                                      ),
                                                     ),
-                                                  );
-                                                } else {
-                                                  dataSelect(
-                                                      context,
-                                                      'Alert!',
-                                                      'Request has already been noted!',
-                                                      'ok', () {
-                                                    Navigator.pop(context);
-                                                  });
-                                                }
-                                              } else {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CompleteSignUp(),
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          )
-                                        : showDialog(
-                                            context:
-                                                widget.globalKey.currentContext,
-                                            child: AddToCart(
-                                              globalKey: widget.globalKey,
-                                              product: widget.products[i],
-                                              updateCart: false,
-                                              choicesBuild:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .build,
-                                              choiceColor:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .color,
-                                              choiceCertification:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .cert,
-                                              choiceDiamondQuality:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .diamondQuality,
-                                              defValue: _defaultChoiceIndex1,
-                                              defValue1: _defaultChoiceIndex2,
-                                              defValue2: _defaultChoiceIndex3,
-                                              defValue3: _defaultChoiceIndex4,
-                                              valueChangeBuild: _onValueChange,
-                                              valueChangeColor:
-                                                  _onValueChangeColor,
-                                              valueChangeCerti:
-                                                  _onValueChangeCerti,
-                                              valueChangeDQ: _onValueChangeDQ,
-                                            ),
-                                          );
-                                  },
+                                      // Row(
+                                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      //   // crossAxisAlignment: CrossAxisAlignment.center,
+                                      //   children: <Widget>[
+                                      //     IconButton(
+                                      //       icon: Icon(widget.products[i].isFavourite
+                                      //           ? Icons.favorite
+                                      //           : Icons.favorite_border),
+                                      //       color: kPrimaryColor,
+                                      //       onPressed: () async {
+                                      //         await Provider.of<Products>(context, listen: false)
+                                      //             .toogleFavourite(
+                                      //                 styleNumber: widget.products[i].styleNumber,
+                                      //                 context: context);
+                                      //         setState(() {});
+                                      //       },
+                                      //     ),
+                                      //     IconButton(
+                                      //       icon: Icon(Icons.shopping_cart),
+                                      //       color: kPrimaryColor,
+                                      //       onPressed: () async {
+                                      //         await Provider.of<Cart>(context, listen: false)
+                                      //             .addCart(widget.products[i], context);
+
+                                      //         showFloatingFlushbar(context,
+                                      //             'Product has been added to your favourites"❤"');
+                                      //       },
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      // SizedBox(
+                                      //   height: 20.0,
+                                      // ),
+                                      // Text(
+                                      //   '\$52.90',
+                                      //   style: TextStyle(
+                                      //     fontSize: 20.0,
+                                      //     fontFamily: 'Gilroy',
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      child: Container(
+                                        height: ScreenUtil().setHeight(29),
+                                        width: ScreenUtil().setWidth(29),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color(0xFF33D2E4),
+                                              Color(0xFF34B0D9),
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: Icon(
+                                          widget.products[i].isFavourite
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: Colors.white,
+                                          size: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                      ),
+                                      onTap: () async {
+                                        try {
+                                          if (mounted) setState(() {});
+                                          if (widget.products[i].isFavourite) {
+                                            await Provider.of<Pagination>(
+                                                    context,
+                                                    listen: false)
+                                                .toogleFavourite(
+                                                    styleNumber: widget
+                                                        .products[i]
+                                                        .styleNumber,
+                                                    context: context);
+                                          } else {
+                                            await Provider.of<Pagination>(
+                                                    context,
+                                                    listen: false)
+                                                .toogleFavourite(
+                                                    styleNumber: widget
+                                                        .products[i]
+                                                        .styleNumber,
+                                                    context: context,
+                                                    product:
+                                                        widget.products[i]);
+                                          }
+                                          if (mounted) setState(() {});
+                                        } catch (err) {
+                                          if (mounted) setState(() {});
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: ScreenUtil().setHeight(6.0),
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        height: ScreenUtil().setHeight(29),
+                                        width: ScreenUtil().setWidth(29),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color(0xFF34BEDD),
+                                              Color(0xFF359DD3),
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: Icon(
+                                          Icons.shopping_cart,
+                                          color: Colors.white,
+                                          size: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        !Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified
+                                            ? dataSelect(
+                                                context,
+                                                'Important!',
+                                                "To get complete access of the app, you need to first verify yourself!",
+                                                'Complete SignUp',
+                                                () async {
+                                                  Navigator.of(context).pop();
+                                                  String date = await Provider
+                                                          .of<UserInfo>(context,
+                                                              listen: false)
+                                                      .getDate();
+                                                  if (date != null) {
+                                                    int d = DateTime.now()
+                                                        .difference(
+                                                            DateTime.parse(
+                                                                date))
+                                                        .inDays;
+                                                    if (d >= 1) {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CompleteSignUp(),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      dataSelect(
+                                                          context,
+                                                          'Alert!',
+                                                          'Request has already been noted!',
+                                                          'ok', () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    }
+                                                  } else {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CompleteSignUp(),
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              )
+                                            : showDialog(
+                                                context: widget
+                                                    .globalKey.currentContext,
+                                                child: AddToCart(
+                                                  globalKey: widget.globalKey,
+                                                  product: widget.products[i],
+                                                  updateCart: false,
+                                                  choicesBuild:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .build,
+                                                  choiceColor:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .color,
+                                                  choiceCertification:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .cert,
+                                                  choiceDiamondQuality:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .diamondQuality,
+                                                  defValue:
+                                                      _defaultChoiceIndex1,
+                                                  defValue1:
+                                                      _defaultChoiceIndex2,
+                                                  defValue2:
+                                                      _defaultChoiceIndex3,
+                                                  defValue3:
+                                                      _defaultChoiceIndex4,
+                                                  valueChangeBuild:
+                                                      _onValueChange,
+                                                  valueChangeColor:
+                                                      _onValueChangeColor,
+                                                  valueChangeCerti:
+                                                      _onValueChangeCerti,
+                                                  valueChangeDQ:
+                                                      _onValueChangeDQ,
+                                                ),
+                                              );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(93),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(93),
-                    ),
-                  ],
-                ),
+                  ),
+                  if (isLoading)
+                    CircularProgressIndicator(
+                      backgroundColor: Colors.cyan,
+                    )
+                ],
               ),
-              if (isLoading)
-                CircularProgressIndicator(
-                  backgroundColor: Colors.cyan,
-                )
+              show
+                  ? Positioned(
+                      left: ScreenUtil().setWidth(0),
+                      top: ScreenUtil().setHeight(50),
+                      child: dateSelect(context, pro))
+                  : SizedBox(
+                      height: 0.0,
+                      width: 0.0,
+                    ),
             ],
           );
 

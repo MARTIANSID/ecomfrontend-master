@@ -989,38 +989,40 @@ class _ProductDetailState extends State<ProductDetail> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: GestureDetector(
-                  child: Icon(
-                    widget.product.isFavourite
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    size: 30.0,
-                    color: Colors.white,
-                  ),
-                  onTap: () async {
-                    try {
-                      setState(() {});
-
-                      await Provider.of<Pagination>(context, listen: false)
-                          .toogleFavourite(
-                              styleNumber: widget.product.styleNumber,
-                              context: context);
-                    } catch (err) {
-                      setState(() {
-                        
-                      });
-                      dataSelect(context, "Alert!", '$err', 'Okay', () {
-                        Navigator.pop(context);
-                      });
-                    }
-                  },
-                  // child: Icon(
-                  //   widget.product.isFavourite
-                  //       ? Icons.favorite
-                  //       : Icons.favorite_border,
-                  //   size: 30.0,
-                  //   color: Colors.white,
-                  // ),
-                ),
+                    child: Icon(
+                      widget.product.isFavourite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      size: 30.0,
+                      color: Colors.white,
+                    ),
+                    onTap: () async {
+                      try {
+                        if (mounted) setState(() {});
+                        if (widget.product.isFavourite) {
+                          await Provider.of<Pagination>(context, listen: false)
+                              .toogleFavourite(
+                                  styleNumber: widget.product.styleNumber,
+                                  context: context);
+                        } else {
+                          await Provider.of<Pagination>(context, listen: false)
+                              .toogleFavourite(
+                                  styleNumber: widget.product.styleNumber,
+                                  context: context,
+                                  product: widget.product);
+                        }
+                        if (mounted) setState(() {});
+                      } catch (err) {
+                        if (mounted) setState(() {});
+                      }
+                      // child: Icon(
+                      //   widget.product.isFavourite
+                      //       ? Icons.favorite
+                      //       : Icons.favorite_border,
+                      //   size: 30.0,
+                      //   color: Colors.white,
+                      // ),
+                    }),
               ),
             ),
             !searchSelected

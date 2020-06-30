@@ -1396,11 +1396,14 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.only(left: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              SizedBox(
+                                height: ScreenUtil().setHeight(14),
+                              ),
                               ShaderMask(
                                 shaderCallback: (bounds) => LinearGradient(
                                   colors: [
@@ -1454,11 +1457,14 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.only(left: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              SizedBox(
+                                height: ScreenUtil().setHeight(14),
+                              ),
                               ShaderMask(
                                 shaderCallback: (bounds) => LinearGradient(
                                   colors: [
@@ -1527,11 +1533,14 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.only(left: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              SizedBox(
+                                height: ScreenUtil().setHeight(14),
+                              ),
                               ShaderMask(
                                 shaderCallback: (bounds) => LinearGradient(
                                   colors: [
@@ -1585,13 +1594,13 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.only(left: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               SizedBox(
-                                height: ScreenUtil().setHeight(7),
+                                height: ScreenUtil().setHeight(14),
                               ),
                               ShaderMask(
                                 shaderCallback: (bounds) => LinearGradient(
@@ -1613,7 +1622,7 @@ class _UserPageState extends State<UserPage>
                                 ),
                               ),
                               SizedBox(
-                                height: ScreenUtil().setHeight(16),
+                                height: ScreenUtil().setHeight(20),
                               ),
                               Container(
                                 width: ScreenUtil().setWidth(99),
@@ -1704,7 +1713,9 @@ class _UserPageState extends State<UserPage>
                             SizedBox(
                               height: ScreenUtil().setHeight(18),
                             ),
-                            GestureDetector(
+
+                           InkWell(
+                             splashColor: Colors.greenAccent,
                               onTap: () async {
                                 await dataSelectConfirmMessage(
                                   context,

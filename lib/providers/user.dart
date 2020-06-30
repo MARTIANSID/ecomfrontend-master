@@ -123,7 +123,7 @@ class UserInfo with ChangeNotifier {
         },
         body: json.encode({
           "fullName": fullname,
-          "gst": gst,
+          "gst": gst==null?'NOT GIVEN':gst,
           "firm": firm,
           "city": city,
           "street": street,
