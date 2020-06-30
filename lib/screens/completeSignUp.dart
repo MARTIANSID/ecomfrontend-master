@@ -39,6 +39,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
 
   bool autovalidate = false;
 
+  bool isButtonLoading=false;
+
   @override
   void initState() {
     super.initState();
@@ -396,7 +398,25 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
           ],
         ),
       ),
-      floatingActionButton: GestureDetector(
+      floatingActionButton:isButtonLoading?Container(
+          width: ScreenUtil().setWidth(120.0),
+          decoration: BoxDecoration(
+            // image: DecorationImage(
+            //   image: AssetImage('assets/images/vector17.png'),
+            //   fit: BoxFit.contain,
+            // ),
+            borderRadius: BorderRadius.circular(30),
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF34B0E9),
+                Color(0xFF3685CB),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          padding: EdgeInsets.all(15.0),
+          child:Center(child:CircularProgressIndicator())) : GestureDetector(
         onTap: () async {
           if (_key.currentState.validate()) {
             _key.currentState.save();
@@ -404,6 +424,9 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
               isLoading = true;
             });
             try {
+              setState(() {
+              isButtonLoading=true;
+              });
               await Provider.of<UserInfo>(context, listen: false)
                   .completeSignUp(
                 context: context,
@@ -423,6 +446,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
               });
             } finally {
               setState(() {
+                isButtonLoading=false;
                 isLoading = false;
               });
               Navigator.of(context).pop();

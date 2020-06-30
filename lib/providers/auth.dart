@@ -111,7 +111,9 @@ class Auth with ChangeNotifier {
       print("DCDCDCDCDC" +
           status.subscriptionStatus.subscribed.toString() +
           "DCDCDCDCDC");
+          
       var playerId = status.subscriptionStatus.userId;
+      print(playerId);
       final response = await http.post(
         '$uurl$urlSegment',
         body: name != null
