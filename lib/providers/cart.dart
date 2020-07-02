@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Flutter/providers/http_exception.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -121,10 +122,10 @@ class Cart with ChangeNotifier {
 //   diamondQuality: null
 // }
         final responseData = json.decode(response.body);
-           if (responseData['error'] != false) {
-        throw HttpException(responseData['details']['message']);
-      }
-        totalPrice=responseData['cart']['totalPrice'];
+        if (responseData['error'] != false) {
+          throw HttpException(responseData['details']['message']);
+        }
+        totalPrice = responseData['cart']['totalPrice'];
 
         cart = responseData['cart']['products']
             .map((i) => Cartt(
@@ -180,11 +181,12 @@ class Cart with ChangeNotifier {
         print(response);
         print(cart);
         notifyListeners();
+      } on PlatformException {
+        throw "Oops Something Went Wrong!";
       } on SocketException {
-      throw 'No Internet';
-      
-    } catch (error) {
-       throw error;
+        throw 'No Internet';
+      } catch (error) {
+        throw error;
       }
     } else {
       try {
@@ -205,10 +207,10 @@ class Cart with ChangeNotifier {
           }),
         );
         final responseData = json.decode(response.body);
-           if (responseData['error'] != false) {
-        throw HttpException(responseData['details']['message']);
-      }
-         totalPrice=responseData['cart']['totalPrice'];
+        if (responseData['error'] != false) {
+          throw HttpException(responseData['details']['message']);
+        }
+        totalPrice = responseData['cart']['totalPrice'];
         cart = responseData['cart']['products']
             .map((i) => Cartt(
                 build: i['options']['build'],
@@ -234,12 +236,12 @@ class Cart with ChangeNotifier {
                     prices: Map<dynamic, dynamic>.from(i['prices']),
                     styleNumber: i["styleNumber"])))
             .toList();
-            notifyListeners();
-      
+        notifyListeners();
+      } on PlatformException {
+        throw "Oops Something Went Wrong!";
       } on SocketException {
-      throw 'No Internet';
-      
-    } catch (err) {
+        throw 'No Internet';
+      } catch (err) {
         throw err;
       }
     }
@@ -258,10 +260,10 @@ class Cart with ChangeNotifier {
       );
 
       final responseData = json.decode(response.body);
-         if (responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
-       totalPrice=responseData['cart']['totalPrice'];
+      totalPrice = responseData['cart']['totalPrice'];
 
       cart = responseData['cart']['products']
           .map((i) => Cartt(
@@ -293,9 +295,10 @@ class Cart with ChangeNotifier {
 
       print(cart);
       notifyListeners();
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
-      
     } catch (error) {
       print(error);
       throw error;
@@ -315,13 +318,12 @@ class Cart with ChangeNotifier {
       );
 
       final responseData = json.decode(response.body);
-         if (responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
-       totalPrice=responseData['cart']['totalPrice'];
+      totalPrice = responseData['cart']['totalPrice'];
 
       cart = responseData['cart']['products']
-
           .map((i) => Cartt(
               build: i['options']['build'],
               color: i['options']['color'].toLowerCase(),
@@ -348,10 +350,11 @@ class Cart with ChangeNotifier {
           .toList();
 
       notifyListeners();
-    }on SocketException {
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
       throw 'No Internet';
-      
-    }  catch (err) {
+    } catch (err) {
       throw err;
     }
   }
@@ -376,9 +379,21 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> decQuantity({ index,context, product, color, cert, diamond, build,
-      quantity, colorValue, buildValue, diamondValue, certvalue, update}) async {
-    await Provider.of<Cart>(context,listen: false).addCart(
+  Future<void> decQuantity(
+      {index,
+      context,
+      product,
+      color,
+      cert,
+      diamond,
+      build,
+      quantity,
+      colorValue,
+      buildValue,
+      diamondValue,
+      certvalue,
+      update}) async {
+    Provider.of<Cart>(context, listen: false).addCart(
         context: context,
         color: color,
         cert: cert,
@@ -390,29 +405,37 @@ class Cart with ChangeNotifier {
         diamond: diamond,
         diamondValue: diamondValue,
         product: product,
-        quantity: cart[index].quantity-1);
-
-    notifyListeners();
+        quantity: cart[index].quantity - 1);
   }
 
-  Future<void> incQuantity({index, context, product, color, cert, diamond, build,
-      quantity, colorValue, buildValue, diamondValue, certvalue, update}) async {
-    await Provider.of<Cart>(context,listen: false).addCart(
-        context: context,
-        color: color,
-        cert: cert,
-        colorValue: colorValue,
-        certvalue: certvalue,
-        build: build,
-        buildValue: buildValue,
-        quantity: cart[index].quantity+1,
-        update: true,
-        diamond: diamond,
-        diamondValue: diamondValue,
-        product: product,
-        );
-
-    notifyListeners();
+  Future<void> incQuantity(
+      {index,
+      context,
+      product,
+      color,
+      cert,
+      diamond,
+      build,
+      quantity,
+      colorValue,
+      buildValue,
+      diamondValue,
+      certvalue,
+      update}) async {
+    Provider.of<Cart>(context, listen: false).addCart(
+      context: context,
+      color: color,
+      cert: cert,
+      colorValue: colorValue,
+      certvalue: certvalue,
+      build: build,
+      buildValue: buildValue,
+      quantity: cart[index].quantity + 1,
+      update: true,
+      diamond: diamond,
+      diamondValue: diamondValue,
+      product: product,
+    );
   }
 }
 

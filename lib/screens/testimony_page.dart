@@ -30,8 +30,10 @@ class _TestimonyPageState extends State<TestimonyPage> {
       //   isLoading = true;
       // });
       try {
-        await Provider.of<Testimony>(context, listen: false)
-            .getTestimony(context: context);
+        if (Provider.of<Testimony>(context, listen: false).userTestimony ==
+            null)
+          await Provider.of<Testimony>(context, listen: false)
+              .getTestimony(context: context);
       } catch (err) {
         dataSelect(context, 'Alert!', '$err', 'Okay', () {
           Navigator.pop(context);
@@ -274,7 +276,6 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                               color: Colors.black,
                                               shape: BoxShape.circle,
                                             ),
-                                            
                                             padding: EdgeInsets.all(2),
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -293,12 +294,11 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               Container(
-                                                width: ScreenUtil()
-                                                    .setWidth(255),
+                                                width:
+                                                    ScreenUtil().setWidth(255),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
@@ -369,8 +369,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                     ScreenUtil().setHeight(7),
                                               ),
                                               SizedBox(
-                                                width: ScreenUtil()
-                                                    .setWidth(255),
+                                                width:
+                                                    ScreenUtil().setWidth(255),
                                                 child: Text(
                                                   "\"" +
                                                       Provider.of<Testimony>(
@@ -391,8 +391,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                height: ScreenUtil()
-                                                    .setHeight(50),
+                                                height:
+                                                    ScreenUtil().setHeight(50),
                                               ),
                                               // Padding(
                                               //   padding:
@@ -437,16 +437,15 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                               //   ),
                                               // ),
                                               SizedBox(
-                                                height: ScreenUtil()
-                                                    .setHeight(20),
+                                                height:
+                                                    ScreenUtil().setHeight(20),
                                               ),
                                               Container(
-                                                width: ScreenUtil()
-                                                    .setWidth(255),
+                                                width:
+                                                    ScreenUtil().setWidth(255),
                                                 child: Row(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                      CrossAxisAlignment.start,
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
@@ -473,16 +472,15 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                                           'fullName']
                                                                       .toString() +
                                                                   ',',
-                                                              style:
-                                                                  TextStyle(
+                                                              style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontFamily:
                                                                     'Gilroy',
-                                                                fontSize: ScreenUtil().setSp(
-                                                                    14,
-                                                                    allowFontScalingSelf:
-                                                                        true),
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(14,
+                                                                        allowFontScalingSelf:
+                                                                            true),
                                                               ),
                                                             ),
                                                             Text(
@@ -495,8 +493,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                                       index]
                                                                       ['firm']
                                                                   .toString(),
-                                                              style:
-                                                                  TextStyle(
+                                                              style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontFamily:
@@ -504,10 +501,10 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                fontSize: ScreenUtil().setSp(
-                                                                    17,
-                                                                    allowFontScalingSelf:
-                                                                        true),
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(17,
+                                                                        allowFontScalingSelf:
+                                                                            true),
                                                               ),
                                                             ),
                                                           ],

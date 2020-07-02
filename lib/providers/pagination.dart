@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Flutter/providers/user.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -73,7 +74,7 @@ class Pagination with ChangeNotifier {
   List<dynamic> diamondQuality;
   Map<dynamic, dynamic> buildPrices;
   Map<dynamic, dynamic> certPrices;
-  List<dynamic> productDetailsForSearch=[];
+  List<dynamic> productDetailsForSearch = [];
   int comm;
   var goldPrice;
 
@@ -127,7 +128,8 @@ class Pagination with ChangeNotifier {
           .storePricDate(DateTime.now().toString());
     } on SocketException {
       throw 'No Internet';
-      
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } catch (err) {
       throw err;
     }
@@ -301,10 +303,11 @@ class Pagination with ChangeNotifier {
           notifyListeners();
         }
       }
-    }on SocketException {
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
       throw 'No Internet';
-      
-    }  catch (err) {
+    } catch (err) {
       throw err;
     }
   }
@@ -349,15 +352,17 @@ class Pagination with ChangeNotifier {
       favProducts = loadedProducts;
       notifyListeners();
       print(favProducts);
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
-      
     } catch (err) {
       throw err;
     }
   }
 
-  Future<void> toogleFavourite({String styleNumber, context, select,product}) async {
+  Future<void> toogleFavourite(
+      {String styleNumber, context, select, product}) async {
     int index;
     int check = 0;
     if (allProducts
@@ -368,15 +373,13 @@ class Pagination with ChangeNotifier {
           .indexWhere((element) => element.styleNumber == styleNumber);
       allProducts[index].isFavourite = !allProducts[index].isFavourite;
       // if (allProducts[index].isFavourite) {
-       
+
       //   favProducts.add(allProducts[index]);
       // } else {
-       
+
       //   favProducts.remove(allProducts[index]);
       // }
-      check=1;
-
-   
+      check = 1;
     }
     if (newProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -386,14 +389,12 @@ class Pagination with ChangeNotifier {
       newProducts[index].isFavourite = !newProducts[index].isFavourite;
       // if (newProducts[index].isFavourite) {
 
-      
       //   favProducts.add(newProducts[index]);
       // } else {
-     
+
       //   favProducts.remove(newProducts[index]);
       // }
-      check=1;
-
+      check = 1;
     }
     if (featuredProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -403,15 +404,14 @@ class Pagination with ChangeNotifier {
       featuredProducts[index].isFavourite =
           !featuredProducts[index].isFavourite;
       // if (featuredProducts[index].isFavourite) {
-    
+
       //   favProducts.add(featuredProducts[index]);
       // } else {
-      
+
       //   favProducts.remove(featuredProducts[index]);
       // }
 
       check = 1;
-    
     }
     if (fancyDiamond
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -420,15 +420,14 @@ class Pagination with ChangeNotifier {
           .indexWhere((element) => element.styleNumber == styleNumber);
       fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
       // if (fancyDiamond[index].isFavourite) {
-       
+
       //   favProducts.add(fancyDiamond[index]);
       // } else {
-      
+
       //   favProducts.remove(fancyDiamond[index]);
       // }
 
       check = 1;
-
     }
     if (highestSellingProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -438,15 +437,14 @@ class Pagination with ChangeNotifier {
       highestSellingProducts[index].isFavourite =
           !highestSellingProducts[index].isFavourite;
       // if (highestSellingProducts[index].isFavourite) {
-    
+
       //   favProducts.add(highestSellingProducts[index]);
       // } else {
-       
+
       //   favProducts.remove(highestSellingProducts[index]);
       // }
 
       check = 1;
-     
     }
     if (favProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -454,16 +452,13 @@ class Pagination with ChangeNotifier {
       index = favProducts
           .indexWhere((element) => element.styleNumber == styleNumber);
       favProducts.remove(favProducts[index]);
-     
-    }
-    else{
+    } else {
       favProducts.add(product);
     }
-    if (productDetailsForSearch.length>0) {                           
+    if (productDetailsForSearch.length > 0) {
       if (productDetailsForSearch[0].styleNumber == styleNumber) {
         productDetailsForSearch[0].isFavourite =
             !productDetailsForSearch[0].isFavourite;
-     
       }
     }
     notifyListeners();
@@ -480,226 +475,190 @@ class Pagination with ChangeNotifier {
       final responseBody = json.decode(response.body);
       if (responseBody['error'] == true) {
         if (allProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      check = 1;
-      index = allProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      allProducts[index].isFavourite = !allProducts[index].isFavourite;
-    
+                .indexWhere((element) => element.styleNumber == styleNumber) >=
+            0) {
+          check = 1;
+          index = allProducts
+              .indexWhere((element) => element.styleNumber == styleNumber);
+          allProducts[index].isFavourite = !allProducts[index].isFavourite;
+        }
+        if (newProducts
+                .indexWhere((element) => element.styleNumber == styleNumber) >=
+            0) {
+          index = newProducts
+              .indexWhere((element) => element.styleNumber == styleNumber);
+          newProducts[index].isFavourite = !newProducts[index].isFavourite;
+        }
+        if (featuredProducts
+                .indexWhere((element) => element.styleNumber == styleNumber) >=
+            0) {
+          index = featuredProducts
+              .indexWhere((element) => element.styleNumber == styleNumber);
+          featuredProducts[index].isFavourite =
+              !featuredProducts[index].isFavourite;
 
- 
-    }
-    if (newProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = newProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      newProducts[index].isFavourite = !newProducts[index].isFavourite;
-   
+          check = 1;
+        }
+        if (fancyDiamond
+                .indexWhere((element) => element.styleNumber == styleNumber) >=
+            0) {
+          index = fancyDiamond
+              .indexWhere((element) => element.styleNumber == styleNumber);
+          fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
 
-     
-    }
-    if (featuredProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = featuredProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      featuredProducts[index].isFavourite =
-          !featuredProducts[index].isFavourite;
+          check = 1;
+        }
+        if (highestSellingProducts
+                .indexWhere((element) => element.styleNumber == styleNumber) >=
+            0) {
+          index = highestSellingProducts
+              .indexWhere((element) => element.styleNumber == styleNumber);
+          highestSellingProducts[index].isFavourite =
+              !highestSellingProducts[index].isFavourite;
 
-      check = 1;
- 
-    }
-    if (fancyDiamond
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = fancyDiamond
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-
-      check = 1;
-
-    
-    }
-    if (highestSellingProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = highestSellingProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      highestSellingProducts[index].isFavourite =
-          !highestSellingProducts[index].isFavourite;
-    
-      check = 1;
-     
-    }
-     if (favProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = favProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts.remove(favProducts[index]);
-    
-    }
-    else{
-      favProducts.add(product);
-    }
-    if (productDetailsForSearch.length> 0) {
-      if (productDetailsForSearch[0].styleNumber == styleNumber) {
-        productDetailsForSearch[0].isFavourite =
-            !productDetailsForSearch[0].isFavourite;
-        
-      }
-
-    }
-    notifyListeners();
+          check = 1;
+        }
+        if (favProducts
+                .indexWhere((element) => element.styleNumber == styleNumber) >=
+            0) {
+          index = favProducts
+              .indexWhere((element) => element.styleNumber == styleNumber);
+          favProducts.remove(favProducts[index]);
+        } else {
+          favProducts.add(product);
+        }
+        if (productDetailsForSearch.length > 0) {
+          if (productDetailsForSearch[0].styleNumber == styleNumber) {
+            productDetailsForSearch[0].isFavourite =
+                !productDetailsForSearch[0].isFavourite;
+          }
+        }
+        notifyListeners();
         throw HttpException(responseBody['details']['message']);
       }
     } on SocketException {
-        if (allProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      check = 1;
-      index = allProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      allProducts[index].isFavourite = !allProducts[index].isFavourite;
-
-
-    }
-    if (newProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = newProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      newProducts[index].isFavourite = !newProducts[index].isFavourite;
-
-  
-    }
-    if (featuredProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = featuredProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      featuredProducts[index].isFavourite =
-          !featuredProducts[index].isFavourite;
-      check = 1;
-    
-    }
-    if (fancyDiamond
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = fancyDiamond
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-
-      check = 1;
-
-    
-    }
-    if (highestSellingProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = highestSellingProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      highestSellingProducts[index].isFavourite =
-          !highestSellingProducts[index].isFavourite;
-      check = 1;
-
-    }
-    if (favProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = favProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts.remove(favProducts[index]);
-   
-    }
-    else{
-      favProducts.add(product);
-    }
-    if (productDetailsForSearch.length> 0) {
-      if (productDetailsForSearch[0].styleNumber == styleNumber) {
-        productDetailsForSearch[0].isFavourite =
-            !productDetailsForSearch[0].isFavourite;
-    
+      if (allProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        check = 1;
+        index = allProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        allProducts[index].isFavourite = !allProducts[index].isFavourite;
       }
-    }
-    notifyListeners();
-      
+      if (newProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = newProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        newProducts[index].isFavourite = !newProducts[index].isFavourite;
+      }
+      if (featuredProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = featuredProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        featuredProducts[index].isFavourite =
+            !featuredProducts[index].isFavourite;
+        check = 1;
+      }
+      if (fancyDiamond
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = fancyDiamond
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+
+        check = 1;
+      }
+      if (highestSellingProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = highestSellingProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        highestSellingProducts[index].isFavourite =
+            !highestSellingProducts[index].isFavourite;
+        check = 1;
+      }
+      if (favProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = favProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        favProducts.remove(favProducts[index]);
+      } else {
+        favProducts.add(product);
+      }
+      if (productDetailsForSearch.length > 0) {
+        if (productDetailsForSearch[0].styleNumber == styleNumber) {
+          productDetailsForSearch[0].isFavourite =
+              !productDetailsForSearch[0].isFavourite;
+        }
+      }
+      notifyListeners();
+
       throw 'No Internet';
-      
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } catch (error) {
       if (allProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      check = 1;
-      index = allProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      allProducts[index].isFavourite = !allProducts[index].isFavourite;
-
-    
-    }
-    if (newProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = newProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      newProducts[index].isFavourite = !newProducts[index].isFavourite;
-
-    
-    }
-    if (featuredProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = featuredProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      featuredProducts[index].isFavourite =
-          !featuredProducts[index].isFavourite;
-      check = 1;
-    
-    }
-    if (fancyDiamond
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = fancyDiamond
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
-
-      check = 1;
-
-    
-    }
-    if (highestSellingProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = highestSellingProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      highestSellingProducts[index].isFavourite =
-          !highestSellingProducts[index].isFavourite;
-      check = 1;
-    
-    }
-    if (favProducts
-            .indexWhere((element) => element.styleNumber == styleNumber) >=
-        0) {
-      index = favProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts.remove(favProducts[index]);
-    
-    }
-    else{
-      favProducts.add(product);
-    }
-    if (productDetailsForSearch.length> 0) {
-      if (productDetailsForSearch[0].styleNumber == styleNumber) {
-        productDetailsForSearch[0].isFavourite =
-            !productDetailsForSearch[0].isFavourite;
-      
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        check = 1;
+        index = allProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        allProducts[index].isFavourite = !allProducts[index].isFavourite;
       }
-    }
-    notifyListeners();
-    throw error;
-     
+      if (newProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = newProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        newProducts[index].isFavourite = !newProducts[index].isFavourite;
+      }
+      if (featuredProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = featuredProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        featuredProducts[index].isFavourite =
+            !featuredProducts[index].isFavourite;
+        check = 1;
+      }
+      if (fancyDiamond
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = fancyDiamond
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+
+        check = 1;
+      }
+      if (highestSellingProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = highestSellingProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        highestSellingProducts[index].isFavourite =
+            !highestSellingProducts[index].isFavourite;
+        check = 1;
+      }
+      if (favProducts
+              .indexWhere((element) => element.styleNumber == styleNumber) >=
+          0) {
+        index = favProducts
+            .indexWhere((element) => element.styleNumber == styleNumber);
+        favProducts.remove(favProducts[index]);
+      } else {
+        favProducts.add(product);
+      }
+      if (productDetailsForSearch.length > 0) {
+        if (productDetailsForSearch[0].styleNumber == styleNumber) {
+          productDetailsForSearch[0].isFavourite =
+              !productDetailsForSearch[0].isFavourite;
+        }
+      }
+      notifyListeners();
+      throw error;
     }
   }
 
@@ -733,10 +692,11 @@ class Pagination with ChangeNotifier {
           )
           .toList();
       productDetailsForSearch = loadedProducts;
-    }on SocketException {
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
       throw 'No Internet';
-      
-    }  catch (err) {
+    } catch (err) {
       throw err;
     }
   }

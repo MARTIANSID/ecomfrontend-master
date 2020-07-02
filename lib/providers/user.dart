@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,6 +79,8 @@ class UserInfo with ChangeNotifier {
       number = responseData['user']['number'];
 
       return responseData;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -110,6 +113,8 @@ class UserInfo with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
       return responseData;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -155,6 +160,8 @@ class UserInfo with ChangeNotifier {
       await storeDate(DateTime.now().toString());
 
       return responseData;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {

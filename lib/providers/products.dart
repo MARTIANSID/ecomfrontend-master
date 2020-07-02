@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -29,12 +30,11 @@ class Product {
   String yellow;
   String rose;
 
-
   bool count = false;
   bool weight = false;
   bool gWeight = false;
 
-  int quantity=0;
+  int quantity = 0;
 
   Product(
       {this.styleNumber,
@@ -86,16 +86,15 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<dynamic> fetchAndSetProducts({bool filterByUser = false, token}) async {
+  Future<dynamic> fetchAndSetProducts(
+      {bool filterByUser = false, token}) async {
     // final filterString =
     //     filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url = '${uurl}product';
     // 'https://$_projectName.firebaseio.com/products.json?auth=$authToken&$filterString';
     try {
-      final response = await http.get(url, headers: {
-        'Authorization':
-            'Bearer ' + token
-      });
+      final response =
+          await http.get(url, headers: {'Authorization': 'Bearer ' + token});
 
       final extractedData = json.decode(response.body);
       if (extractedData['error'] == true) {
@@ -131,15 +130,16 @@ class Products with ChangeNotifier {
             ),
           )
           .toList();
-        isVerified=extractedData['user']['verified'];
-        isPriced=extractedData['user']['priced'];
+      isVerified = extractedData['user']['verified'];
+      isPriced = extractedData['user']['priced'];
       print(loadedProducts.length);
       print(loadedProducts);
-      
+
       _products = loadedProducts;
-        notifyListeners();
+      notifyListeners();
       return _products;
-    
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } catch (error) {
       print('ppps in try catch block Error: $error');
       throw (error);
@@ -179,8 +179,6 @@ class Products with ChangeNotifier {
 
     notifyListeners();
   }
-
-  
 
   Future<void> addProduct(Product product) async {
     final url = '';

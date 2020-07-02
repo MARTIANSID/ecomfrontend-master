@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       print('PP checkIfRegistered response: $responseBody');
       return responseBody['registered'];
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -71,6 +74,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       else
         return true;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -88,6 +93,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       print(responseBody['matches']);
       return responseBody['matches'];
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -107,6 +114,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       else
         return true;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -158,6 +167,8 @@ class Auth with ChangeNotifier {
         },
       );
       prefs.setString('userData', userData);
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (error) {
@@ -175,6 +186,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       } else
         return true;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -226,6 +239,8 @@ class Auth with ChangeNotifier {
         notifyListeners();
         return true;
       }
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {

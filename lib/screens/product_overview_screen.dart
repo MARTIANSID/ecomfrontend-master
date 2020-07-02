@@ -134,8 +134,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     ];
     try {
       await Future.wait(futures);
-      await Provider.of<UserInfo>(context, listen: false).getuser(context);
-
       //  await Provider.of<Pagination>(context, listen: false).getProducts(
       //       page: 1, addition: false, select: 'fancyDiamond', context: context);
       if (Provider.of<Auth>(context, listen: false).isLogin &&
@@ -375,7 +373,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       ScreenUtil().setHeight(22 + 45 + 11 + 20),
                                 )
                               : SizedBox(
-                                  height: ScreenUtil().setHeight(22  + 20),
+                                  height: ScreenUtil().setHeight(22 + 20),
                                 ),
                           Container(
                             width: ScreenUtil().setWidth(357),
@@ -612,35 +610,32 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           child: ShaderMask(
                                         shaderCallback: (bounds) =>
                                             // _tabController.index == 4
-                                            //     ? 
-                                                LinearGradient(
-                                                    colors: [
-                                                      Color(0xFF34B0D9),
-                                                      Color(0xFF3685CB),
-                                                    ],
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                  ).createShader(
-                                                    Rect.fromLTWH(
-                                                        0,
-                                                        0,
-                                                        bounds.width,
-                                                        bounds.height),
-                                                  ),
-                                                // : LinearGradient(
-                                                //     colors: [
-                                                //       Color(0xFFA49797),
-                                                //       Color(0xFFA49797),
-                                                //     ],
-                                                //     begin: Alignment.topLeft,
-                                                //     end: Alignment.bottomRight,
-                                                //   ).createShader(
-                                                //     Rect.fromLTWH(
-                                                //         0,
-                                                //         0,
-                                                //         bounds.width,
-                                                //         bounds.height),
-                                                //   ),
+                                            //     ?
+                                            LinearGradient(
+                                          colors: [
+                                            Color(0xFF34B0D9),
+                                            Color(0xFF3685CB),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(
+                                          Rect.fromLTWH(0, 0, bounds.width,
+                                              bounds.height),
+                                        ),
+                                        // : LinearGradient(
+                                        //     colors: [
+                                        //       Color(0xFFA49797),
+                                        //       Color(0xFFA49797),
+                                        //     ],
+                                        //     begin: Alignment.topLeft,
+                                        //     end: Alignment.bottomRight,
+                                        //   ).createShader(
+                                        //     Rect.fromLTWH(
+                                        //         0,
+                                        //         0,
+                                        //         bounds.width,
+                                        //         bounds.height),
+                                        //   ),
                                         child: Text(
                                           'FANCY DIAMOND',
                                           style: TextStyle(

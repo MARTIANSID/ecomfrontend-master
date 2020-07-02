@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,7 +28,7 @@ class Searchh with ChangeNotifier {
         },
       );
       final responseData = json.decode(response.body);
-        if (responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
 
@@ -39,9 +40,10 @@ class Searchh with ChangeNotifier {
       print(products);
 
       searchResult = products;
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
-      
     } catch (err) {
       throw err;
     }
@@ -55,8 +57,9 @@ class Searchh with ChangeNotifier {
 //   }
 // }
   }
-  void setZero(){
-    searchResult=[];
+
+  void setZero() {
+    searchResult = [];
     notifyListeners();
   }
 }
