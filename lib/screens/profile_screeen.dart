@@ -782,6 +782,8 @@
 //   }
 // }
 
+import 'dart:io';
+
 import 'package:Flutter/providers/auth.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
@@ -792,6 +794,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'accountinfo.dart';
 import 'completeSignUp.dart';
@@ -829,20 +832,22 @@ class _UserPageState extends State<UserPage>
   @override
   void initState() {
     super.initState();
+    if (Provider.of<UserInfo>(context, listen: false).number == null)
+      setState(() {
+        isLoading = true;
+      });
     Future.delayed(Duration(seconds: 0), () async {
       try {
         if (Provider.of<UserInfo>(context, listen: false).number == null) {
-          setState(() {
-            isLoading = true;
-          });
           await Provider.of<UserInfo>(context, listen: false).getuser(context);
-          setState(() {
-            isLoading = false;
-          });
         }
       } catch (err) {
         dataSelect(context, 'Alert!', '$err', 'Okay', () {
           Navigator.pop(context);
+        });
+      } finally {
+        setState(() {
+          isLoading = false;
         });
       }
     });
@@ -938,6 +943,8 @@ class _UserPageState extends State<UserPage>
     return value2;
   }
 
+  File image;
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -1013,12 +1020,22 @@ class _UserPageState extends State<UserPage>
                                   ),
                                 ),
                                 padding: EdgeInsets.all(2),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/userProfile.png'),
-                                      fit: BoxFit.fill,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    image = await ImagePicker.pickImage(
+                                        source: ImageSource.camera);
+                                    Provider.of<UserInfo>(context,
+                                            listen: false)
+                                        .changeImage(
+                                            image: image, context: context);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/userProfile.png'),
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
                                 ),

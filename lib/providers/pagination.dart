@@ -700,4 +700,26 @@ class Pagination with ChangeNotifier {
       throw err;
     }
   }
+
+  Future<void> setCom({comm, context}) async {
+    this.comm = comm;
+    try {
+      final response = await http.patch(uurl + 'user/comission', headers: {
+        'Authorization':
+            'Bearer ' + Provider.of<Auth>(context, listen: false).token
+      }, body: {
+        "comission": comm.toString()
+      });
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
+      throw 'No Internet';
+    } catch (err) {
+      throw err;
+    }
+  }
 }

@@ -524,6 +524,7 @@ import 'dart:ui';
 
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
+import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/screens/product_detail.dart';
@@ -964,13 +965,15 @@ class _CartScreenState extends State<CartScreen> {
                                                         width: ScreenUtil()
                                                             .setWidth(76),
                                                         image: NetworkImage(
-                                                          product.imageUrl[
-                                                              Provider.of<Cart>(
+                                                          product
+                                                              .imageUrl[Provider
+                                                                  .of<Cart>(
                                                                       context,
                                                                       listen:
                                                                           true)
-                                                                  .cart[index]
-                                                                  .color],
+                                                              .cart[index]
+                                                              .color
+                                                              .toLowerCase()],
                                                         ),
                                                         fit: BoxFit.fill,
                                                       ),
@@ -1449,7 +1452,13 @@ class _CartScreenState extends State<CartScreen> {
                                                             listen: false)
                                                         .isPriced
                                                 ? GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      Provider.of<Orders>(
+                                                              context,
+                                                              listen: false)
+                                                          .placeOrder(
+                                                              context: context);
+                                                    },
                                                     child: Container(
                                                       width: ScreenUtil()
                                                           .setWidth(250),

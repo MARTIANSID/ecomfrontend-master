@@ -1,6 +1,9 @@
 import 'package:Flutter/constant/const.dart';
+import 'package:Flutter/providers/order.dart';
+import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'myorder_detail.dart';
 
 class MyOrder extends StatefulWidget {
@@ -11,10 +14,33 @@ class MyOrder extends StatefulWidget {
 class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
   TabController _tabController;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
+
+    if (Provider.of<Orders>(context, listen: false).orderProducts.isEmpty)
+      setState(() {
+        isLoading = true;
+      });
+    Future.delayed(Duration(seconds: 0), () async {
+      try {
+        if (Provider.of<Orders>(context, listen: false).orderProducts.isEmpty) {
+          await Provider.of<Orders>(context, listen: false)
+              .getOrders(context: context);
+        }
+      } catch (err) {
+        dataSelect(context, 'Alert!', '$err', 'Okay', () {
+          Navigator.pop(context);
+        });
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
   }
 
   Widget closeApp(BuildContext context) {
@@ -29,7 +55,8 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: 10,
+      itemCount:
+          Provider.of<Orders>(context, listen: false).orderProducts.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
@@ -59,14 +86,22 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      '#' + '200506001',
+                      '#' +
+                          Provider.of<Orders>(context, listen: false)
+                              .orderProducts[index]
+                              .status
+                              .toString(),
                       style: TextStyle(
                           fontFamily: 'Gilroy Medium',
                           fontSize: ScreenUtil()
                               .setSp(27, allowFontScalingSelf: true)),
                     ),
                     Text(
-                      '43 Nose Pins',
+                      Provider.of<Orders>(context, listen: false)
+                          .orderProducts[index]
+                          .products
+                          .length
+                          .toString(),
                       style: TextStyle(
                         color: Colors.grey[400],
                         fontSize:
@@ -142,7 +177,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                                     0, 0, bounds.width, bounds.height),
                               ),
                               child: Text(
-                                '14.05.2020',
+                                Provider.of<Orders>(context, listen: false)
+                                    .orderProducts[index]
+                                    .datePlaced,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Gilroy Regular',
@@ -177,124 +214,129 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
       allowFontScaling: true,
     );
     return Scaffold(
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.arrow_back_ios),
-                              onPressed: () {
-                                print(MediaQuery.of(context).padding.top);
-                                Navigator.of(context).pop();
-                              },
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30.0),
-                          child: Text(
-                            'My Orders',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: ScreenUtil()
-                                  .setSp(25, allowFontScalingSelf: true),
-                              fontFamily: 'Gilroy Medium',
-                            ),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              child: Stack(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).padding.top),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_back_ios),
+                                    onPressed: () {
+                                      print(MediaQuery.of(context).padding.top);
+                                      Navigator.of(context).pop();
+                                    },
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30.0),
+                                child: Text(
+                                  'My Orders',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: ScreenUtil()
+                                        .setSp(25, allowFontScalingSelf: true),
+                                    fontFamily: 'Gilroy Medium',
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              top: ScreenUtil().setHeight(116.25),
-              left: 0.0,
-              child: Container(
-                // color: Colors.amber,
-                width: ScreenUtil().setWidth(411),
-                height: ScreenUtil().setHeight(655),
-                padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    TabBar(
-                      controller: _tabController,
-                      // indicatorColor: Colors.cyan,
-                      labelColor: Colors.white,
-                      isScrollable: true,
-                      // labelPadding: EdgeInsets.only(right: size.width / 12),
-                      unselectedLabelColor: Color(0xFFCDCDCD),
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.0),
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF34BDDD),
-                            Color(0xFF3680C9),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
                         ),
                       ),
+                    ],
+                  ),
+                  Positioned(
+                    top: ScreenUtil().setHeight(116.25),
+                    left: 0.0,
+                    child: Container(
+                      // color: Colors.amber,
+                      width: ScreenUtil().setWidth(411),
+                      height: ScreenUtil().setHeight(655),
+                      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          TabBar(
+                            controller: _tabController,
+                            // indicatorColor: Colors.cyan,
+                            labelColor: Colors.white,
+                            isScrollable: true,
+                            // labelPadding: EdgeInsets.only(right: size.width / 12),
+                            unselectedLabelColor: Color(0xFFCDCDCD),
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25.0),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFF34BDDD),
+                                  Color(0xFF3680C9),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
 
-                      // indicatorPadding: EdgeInsets.all(10.0),
-                      //indicator: UnderlineTabIndicator(insets:EdgeI`nsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            'All',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy Regular',
-                              fontSize: ScreenUtil()
-                                  .setSp(19, allowFontScalingSelf: true),
+                            // indicatorPadding: EdgeInsets.all(10.0),
+                            //indicator: UnderlineTabIndicator(insets:EdgeI`nsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
+                            tabs: [
+                              Tab(
+                                child: Text(
+                                  'All',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy Regular',
+                                    fontSize: ScreenUtil()
+                                        .setSp(19, allowFontScalingSelf: true),
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'Completed',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy Regular',
+                                    fontSize: ScreenUtil()
+                                        .setSp(19, allowFontScalingSelf: true),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: ScreenUtil().setHeight(20),
+                          ),
+                          Expanded(
+                            // height: 200.0,
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                closeApp(context),
+                                closeApp(context),
+                              ],
                             ),
                           ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'Completed',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy Regular',
-                              fontSize: ScreenUtil()
-                                  .setSp(19, allowFontScalingSelf: true),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(20),
-                    ),
-                    Expanded(
-                      // height: 200.0,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          closeApp(context),
-                          closeApp(context),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
