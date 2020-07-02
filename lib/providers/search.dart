@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -38,6 +39,9 @@ class Searchh with ChangeNotifier {
       print(products);
 
       searchResult = products;
+    } on SocketException {
+      throw 'No Internet';
+      
     } catch (err) {
       throw err;
     }

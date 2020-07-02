@@ -95,7 +95,6 @@ class _LoginScreenState extends State<LoginScreen>
     @required IconData icon,
     @required void Function(String) validate,
     bool enable,
-
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +154,6 @@ class _LoginScreenState extends State<LoginScreen>
           child: TextFormField(
             validator: (value) {
               if (value.isEmpty) {
-
                 return "Enter Password";
               } else if (value.length < 6) {
                 return "Atleast 6 Characters Required!";
@@ -205,27 +203,48 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _resendMessageBtn() {
+    // return ArgonTimerButton(
+    //   initialTimer: 60,
+    //   splashColor: null,
+    //   color: null,
+    //   roundLoadingShape: false,
+    //   colorBrightness: null,
+    //   height: ScreenUtil().setSp(25, allowFontScalingSelf: true),
+    //   width: 0.5,
+    //   child: Container(
+    //     alignment: Alignment.centerRight,
+    //     child: Padding(
+    //       padding: EdgeInsets.only(right: 0.0),
+    //       child: Text(
+    //         'Resend Otp',
+    //         style: kLabelStyle,
+    //       ),
+    //     ),
+    //   ),
+    //   loader: (timeLeft) {
+    //     return Text("Wait | $timeLeft", style: kLabelStyle);
+    //   },
+    //   onTap: (startTimer, btnState) async {
+    //     if (btnState == ButtonState.Idle) {
+    //       try {
+    //         await Provider.of<Auth>(context, listen: false)
+    //             .resendOtp(phoneNumber);
+
+    //         startTimer(60);
+    //       } catch (error) {
+    //         _showDilog('Oops!', '$error');
+    //       }
+    //     }
+    //   },
+    // );
     return ArgonTimerButton(
-      initialTimer: 60,
-      splashColor: null,
-      color: null,
-      roundLoadingShape: false,
-      colorBrightness: null,
       height: ScreenUtil().setSp(25, allowFontScalingSelf: true),
-      width: 0.5,
-      child: Container(
-        alignment: Alignment.centerRight,
-        child: Padding(
-          padding: EdgeInsets.only(right: 0.0),
-          child: Text(
-            'Resend Otp',
-            style: kLabelStyle,
-          ),
-        ),
-      ),
-      loader: (timeLeft) {
-        return Text("Wait | $timeLeft", style: kLabelStyle);
-      },
+      width: MediaQuery.of(context).size.width * 28,
+      minWidth: MediaQuery.of(context).size.width * 0.30,
+      highlightColor: Colors.transparent,
+      highlightElevation: 0,
+      roundLoadingShape: false,
+      splashColor: Colors.transparent,
       onTap: (startTimer, btnState) async {
         if (btnState == ButtonState.Idle) {
           try {
@@ -238,6 +257,21 @@ class _LoginScreenState extends State<LoginScreen>
           }
         }
       },
+      // initialTimer: 10,
+      child: Text(
+        "Resend OTP",
+        style: kLabelStyle,
+      ),
+      loader: (timeLeft) {
+        return Text(
+          "Wait | $timeLeft",
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
+        );
+      },
+      borderRadius: 5.0,
+      color: Colors.transparent,
+      elevation: 0,
     );
   }
 
@@ -282,10 +316,8 @@ class _LoginScreenState extends State<LoginScreen>
   Future<void> _forgotPassword() async {
     try {
       final a = await Provider.of<Auth>(context, listen: false)
-          .resetPasswordRequest(_phoneController.text)
-          .catchError((error) {
-        _showDilog('Oops!', '$error');
-      });
+          .resetPasswordRequest(_phoneController.text);
+
       a
           ? setState(() {
               enable = true;
@@ -314,9 +346,12 @@ class _LoginScreenState extends State<LoginScreen>
               activeColor: Colors.white,
               onChanged: (value) {
                 setState(() {
-                  _showPasswordCheckBox
-                      ? _showPassword = !_showPassword
-                      : _rememberMe = value;
+                  if (_showPasswordCheckBox) {
+                    _showPassword = !_showPassword;
+                  } else {
+                    _rememberMe = value;
+                    Provider.of<Auth>(context, listen: false).setRemeber(value);
+                  }
                 });
               },
             ),
@@ -628,6 +663,40 @@ class _LoginScreenState extends State<LoginScreen>
                 height: ScreenUtil().setHeight(150),
                 width: ScreenUtil().setWidth(150),
               ),
+              if (_showSignup == true ||
+                  _forgotPasswordMenu == true ||
+                  _requirePassword == true)
+                SlideTransition(
+                  position: _slideAnimation2,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          enable = true;
+                          _phoneController.clear();
+                          _nameController.clear();
+                          _passwordController.clear();
+                          _requirePassword = false;
+                          _buildForgetButton = false;
+                          _isRegistered = false;
+                          _showSignup = false;
+                          _rememberMe = false;
+                          _showPassword = false;
+                          _showPasswordCheckBox = false;
+                          _forgotPasswordMenu = false;
+                          _screen = 0;
+                        });
+                      },
+                      padding: EdgeInsets.only(right: 0.0),
+                      child: Text(
+                        'Edit',
+                        style: kLabelStyle,
+                      ),
+                    ),
+                  ),
+                ),
+
               SizedBox(height: ScreenUtil().setHeight(30)),
               if (_showSignup) ...[
                 SlideTransition(
@@ -691,7 +760,11 @@ class _LoginScreenState extends State<LoginScreen>
                 _buildForgotPasswordBtn(),
 
               _forgotPasswordMenu && _requirePassword == false
-                  ? _resendMessageBtn()
+                  ? Container(
+                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerRight,
+                      child: _resendMessageBtn(),
+                    )
                   : _buildRememberMeCheckbox(),
 
               _forgotPasswordMenu && _requirePassword == false

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'http_exception.dart';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'package:http_parser/http_parser.dart';
 
 class User {
   String verified;
@@ -43,38 +47,39 @@ class UserInfo with ChangeNotifier {
   var pincode;
   var email;
 
-  final uurl="https://alexa.gemstory.in/";
+  final uurl = "https://alexa.gemstory.in/";
 
   Future<dynamic> getuser(context) async {
     try {
-      final response = await http.get(uurl+'/user/details',
-          headers: {
-            'Authorization':
-                'Bearer ' + Provider.of<Auth>(context, listen: false).token
-          });
+      final response = await http.get(uurl + '/user/details', headers: {
+        'Authorization':
+            'Bearer ' + Provider.of<Auth>(context, listen: false).token
+      });
       final responseData = json.decode(response.body);
-        if (responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
       print(responseData);
-     if(Provider.of<Pagination>(context,listen: false).isVerified) 
-     {
-      street = responseData['user']['additionalDetails']['address']['street'];
-      city = responseData['user']['additionalDetails']['address']['city'];
-      state = responseData['user']['additionalDetails']['address']['state'];
-      verified = responseData['user']['verified'];
-      priced = responseData['user']['priced'];   
-      gst = responseData['user']['additionalDetails']['gst'];
-      firm = responseData['user']['additionalDetails']['firm'];
-      pincode = responseData['user']['additionalDetails']['address']['pincode'];
-      priced = responseData['user']['priced'];
-      email = responseData['user']['email'];
-     }
+      if (Provider.of<Pagination>(context, listen: false).isVerified) {
+        street = responseData['user']['additionalDetails']['address']['street'];
+        city = responseData['user']['additionalDetails']['address']['city'];
+        state = responseData['user']['additionalDetails']['address']['state'];
+        verified = responseData['user']['verified'];
+        priced = responseData['user']['priced'];
+        gst = responseData['user']['additionalDetails']['gst'];
+        firm = responseData['user']['additionalDetails']['firm'];
+        pincode =
+            responseData['user']['additionalDetails']['address']['pincode'];
+        priced = responseData['user']['priced'];
+        email = responseData['user']['email'];
+      }
 
-        fullname = responseData['user']['fullName'];
+      fullname = responseData['user']['fullName'];
       number = responseData['user']['number'];
 
       return responseData;
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
@@ -84,7 +89,7 @@ class UserInfo with ChangeNotifier {
       {context, fullname, gst, firm, city, street, pincode, state}) async {
     try {
       final response = await http.patch(
-        uurl+'/user',
+        uurl + '/user',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -92,7 +97,7 @@ class UserInfo with ChangeNotifier {
         },
         body: json.encode({
           "fullName": fullname,
-          "gst": gst,
+          "gst": gst == null ? 'NOT GIVEN' : gst,
           "firm": firm,
           "city": city,
           "street": street,
@@ -101,21 +106,31 @@ class UserInfo with ChangeNotifier {
         }),
       );
       final responseData = json.decode(response.body);
-        if (responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
       return responseData;
-      
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
   }
 
   Future<dynamic> completeSignUp(
-      {context, fullname, gst, firm, city, street, pincode, state, reference, email}) async {
+      {context,
+      fullname,
+      gst,
+      firm,
+      city,
+      street,
+      pincode,
+      state,
+      reference,
+      email}) async {
     try {
       final response = await http.post(
-        uurl+'/user/completesignup',
+        uurl + '/user/completesignup',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -123,7 +138,7 @@ class UserInfo with ChangeNotifier {
         },
         body: json.encode({
           "fullName": fullname,
-          "gst": gst==null?'NOT GIVEN':gst,
+          "gst": gst == null ? 'NOT GIVEN' : gst,
           "firm": firm,
           "city": city,
           "street": street,
@@ -134,52 +149,65 @@ class UserInfo with ChangeNotifier {
         }),
       );
       final responseData = json.decode(response.body);
-        if (responseData['error'] != false) {
+      if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
       await storeDate(DateTime.now().toString());
 
       return responseData;
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
   }
-  Future<String> getDate()async{
-     SharedPreferences cc = await SharedPreferences.getInstance();
-      return cc.getString('date');
 
-
-
-
+  Future<String> getDate() async {
+    SharedPreferences cc = await SharedPreferences.getInstance();
+    return cc.getString('date');
   }
 
-  Future<void> storeDate(date)async{
+  Future<void> storeDate(date) async {
     SharedPreferences cc = await SharedPreferences.getInstance();
     cc.setString('date', date);
-   
+
     notifyListeners();
-
-
-  }
-    Future<String> getPriceDate()async{
-     SharedPreferences  cc= await SharedPreferences.getInstance();
-      return cc.getString('priceDate');
-
-
-
-
   }
 
-  Future<void> storePricDate(date)async{
+  Future<String> getPriceDate() async {
     SharedPreferences cc = await SharedPreferences.getInstance();
-     cc.setString('priceDate', date);
-   
-    notifyListeners();
-
-
+    return cc.getString('priceDate');
   }
-  
 
-  
+  Future<void> storePricDate(date) async {
+    SharedPreferences cc = await SharedPreferences.getInstance();
+    cc.setString('priceDate', date);
 
+    notifyListeners();
+  }
+
+  Future<void> changeImage(
+      {File image, String description, String location, context}) async {
+    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
+    var length = await image.length();
+
+    var uri = Uri.parse('http://10.0.2.2:3000/create');
+    Map<String, String> headers = {
+      "Authorization":
+          "Bearer " + Provider.of<Auth>(context, listen: false).token
+    };
+
+    var request = new http.MultipartRequest("POST", uri);
+    var multipartFile = new http.MultipartFile('image', stream, length,
+        filename: basename(image.path),
+        contentType: new MediaType('image', 'png'));
+
+    request.files.add(multipartFile);
+    request.headers.addAll(headers);
+    var response = await request.send();
+    print(response.statusCode);
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+    });
+  }
 }

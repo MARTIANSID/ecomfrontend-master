@@ -292,7 +292,6 @@ class _AccountInfoState extends State<AccountInfo> {
                               child: RoundedInputField(
                                 controller: firmDetailController,
                                 hintText: "Firm Name",
-                                
                                 onSubmitted: (value) {
                                   setState(() {
                                     firmDetail = value;
@@ -313,7 +312,6 @@ class _AccountInfoState extends State<AccountInfo> {
                               child: RoundedInputField(
                                 controller: gstValueController,
                                 hintText: "GST",
-                                
                                 onSubmitted: (value) {
                                   setState(() {
                                     gstValue = value;
@@ -344,7 +342,6 @@ class _AccountInfoState extends State<AccountInfo> {
                                   }
                                   return null;
                                 },
-                               
                                 onSubmitted: (value) {
                                   setState(() {
                                     streetName = value;
@@ -370,8 +367,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 // },
                                 onSubmitted: (value) {
                                   setState(() {
-                                    print(cityName);
                                     cityName = value;
+                                    print(cityName);
                                   });
                                 },
                                 icon: Icons.location_city,
@@ -441,80 +438,90 @@ class _AccountInfoState extends State<AccountInfo> {
         ),
       ),
       floatingActionButton: editFields
-          ? GestureDetector(
-              onTap: () async {
-                if (_key.currentState.validate()) {
-                  _key.currentState.save();
-                  setState(() {
-                    isLoading = true;
-                  });
-                  try {
-                    await Provider.of<UserInfo>(context, listen: false)
-                        .patchuser(
-                      context: context,
-                      fullname: fullName,
-                      city: cityName,
-                      firm: firmDetail,
-                      gst: gstValue,
-                      pincode: pincode,
-                      state: stateName,
-                      street: streetName,
-                    );
-                    await Provider.of<UserInfo>(context, listen: false)
-                        .getuser(context);
-                  } catch (err) {
-                    dataSelect(context, 'Alert!', '$err', 'OK', () {
-                      Navigator.pop(context);
-                    });
-                  } finally {
-                    setState(() {
-                      isLoading = false;
-                      editFields = false;
-                    });
-                    Navigator.of(context).pop();
-                  }
-                }
-              },
-              child: Container(
-                width: ScreenUtil().setWidth(120.0),
-                height: ScreenUtil().setHeight(50.0),
-                decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //   image: AssetImage('assets/images/vector17.png'),
-                  //   fit: BoxFit.contain,
-                  // ),
-                  borderRadius: BorderRadius.circular(30),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF34B0E9),
-                      Color(0xFF3685CB),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                padding: EdgeInsets.all(5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.done_outline,
-                      color: Colors.white,
-                      size: ScreenUtil().setSp(23, allowFontScalingSelf: true),
-                    ),
-                    SizedBox(
-                      width: ScreenUtil().setWidth(10),
-                    ),
-                    Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontFamily: 'Gilroy Medium',
-                        fontSize:
-                            ScreenUtil().setSp(15, allowFontScalingSelf: true),
-                        color: Colors.white,
-                      ),
-                    ),
+          ? Container(
+              width: ScreenUtil().setWidth(120.0),
+              height: ScreenUtil().setHeight(50.0),
+              decoration: BoxDecoration(
+                // image: DecorationImage(
+                //   image: AssetImage('assets/images/vector17.png'),
+                //   fit: BoxFit.contain,
+                // ),
+                borderRadius: BorderRadius.circular(30),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF34B0E9),
+                    Color(0xFF3685CB),
                   ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              padding: EdgeInsets.all(5.0),
+              child: Material(
+                type: MaterialType.transparency,
+                elevation: 6.0,
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+                child: InkWell(
+                  splashColor: Colors.cyan[50],
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () async {
+                    if (_key.currentState.validate()) {
+                      _key.currentState.save();
+                      setState(() {
+                        isLoading = true;
+                      });
+                      try {
+                        await Provider.of<UserInfo>(context, listen: false)
+                            .patchuser(
+                          context: context,
+                          fullname: fullName,
+                          city: cityName,
+                          firm: firmDetail,
+                          gst: gstValue,
+                          pincode: pincode,
+                          state: stateName,
+                          street: streetName,
+                        );
+                        await Provider.of<UserInfo>(context, listen: false)
+                            .getuser(context);
+                      } catch (err) {
+                        throw err;
+                        // dataSelect(context, 'Alert!', '$err', 'OK', () {
+                        //   Navigator.pop(context);
+                        // });
+                      } finally {
+                        setState(() {
+                          isLoading = false;
+                          editFields = false;
+                        });
+                      }
+                      // Navigator.of(context).pop();
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.done_outline,
+                        color: Colors.white,
+                        size:
+                            ScreenUtil().setSp(23, allowFontScalingSelf: true),
+                      ),
+                      SizedBox(
+                        width: ScreenUtil().setWidth(10),
+                      ),
+                      Text(
+                        'Submit',
+                        style: TextStyle(
+                          fontFamily: 'Gilroy Medium',
+                          fontSize: ScreenUtil()
+                              .setSp(15, allowFontScalingSelf: true),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )

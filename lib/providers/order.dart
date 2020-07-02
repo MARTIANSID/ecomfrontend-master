@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -23,7 +25,11 @@ class Orders with ChangeNotifier{
       final responseData=json.decode(response.body);
 
 
-    } catch (err) {
+    } on SocketException {
+      throw 'No Internet';
+      
+    } 
+    catch (err) {
       throw err;
     }
   }

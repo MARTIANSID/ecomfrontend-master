@@ -837,6 +837,90 @@ class _UserPageState extends State<UserPage>
     Navigator.of(context).pop();
   }
 
+  Future<bool> _showDialog(BuildContext context) async {
+    bool p = await Provider.of<Auth>(context, listen: false).getPassword();
+    GlobalKey<FormState> _key = GlobalKey();
+    bool value2;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(16.0),
+          content: Container(
+            width: ScreenUtil().setWidth(300),
+            child: Form(
+              key: _key,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: ScreenUtil().setWidth(290),
+                    // flex: 11,
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontFamily: 'Gilroy Regular',
+                        fontSize:
+                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                      ),
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.code,
+                          color: Colors.black,
+                        ),
+                        hintText: "Password",
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Enter Password";
+                        } else if (Provider.of<Auth>(context, listen: false)
+                                .password !=
+                            value) {
+                          return "Incorrect Password";
+                        } else if (p == false) {
+                          return "Something went wrong";
+                        }
+                        return null;
+                      },
+                      autofocus: true,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  value2 = false;
+                });
+                // return false;
+              },
+            ),
+            FlatButton(
+              child: const Text('OPEN'),
+              onPressed: () {
+                if (_key.currentState.validate()) {
+                  _key.currentState.save();
+                  Navigator.pop(context);
+                  setState(() {
+                    value2 = true;
+                  });
+                  // return true;
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+    print(value2);
+    return value2;
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(
@@ -1163,14 +1247,30 @@ class _UserPageState extends State<UserPage>
                                       });
                                     }
                                   } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MyPrice(
-                                          onButtonTapped: widget.onButtonTapped,
+                                    bool value2 = false;
+
+                                    await _showDialog(
+                                      globalKey.currentContext,
+                                      // 'Alert!',
+                                      // "Are you sure, You want to open Whatsapp?",
+                                      // 'Open Whatsapp',
+                                    ).then((value) async {
+                                      if (value) {
+                                        setState(() {
+                                          value2 = value;
+                                        });
+                                      }
+                                    });
+                                    if (value2)
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MyPrice(
+                                            onButtonTapped:
+                                                widget.onButtonTapped,
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
                                   }
                                 },
                                 child: Column(
@@ -1396,49 +1496,90 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
-                              ),
-                              ShaderMask(
-                                shaderCallback: (bounds) => LinearGradient(
-                                  colors: [
-                                    Color(0xFF34BDDD),
-                                    Color(0xFF367DC8),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ).createShader(
-                                  Rect.fromLTWH(
-                                      0, 0, bounds.width, bounds.height),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/makeDesign.svg",
-                                  height: ScreenUtil().setHeight(47),
-                                  width: ScreenUtil().setWidth(38),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
-                              ),
-                              Container(
-                                width: ScreenUtil().setWidth(99),
-                                child: Text(
-                                  'MAKE YOUR OWN DESIGN',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Medium',
-                                    fontSize: ScreenUtil()
-                                        .setSp(12, allowFontScalingSelf: true),
-                                    color: Colors.black,
+                          // padding: EdgeInsets.only(left: 15),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            elevation: 6.0,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            child: InkWell(
+                              splashColor: Colors.cyan[50],
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () async {
+                                bool value2 = false;
+                                await dataSelectConfirmMessage(
+                                  globalKey.currentContext,
+                                  'Alert!',
+                                  "Are you sure, You want to open Whatsapp?",
+                                  'Open Whatsapp',
+                                ).then((value) async {
+                                  if (value) {
+                                    value2 = value;
+                                  }
+                                });
+                                if (value2) {
+                                  if (await canLaunch(
+                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.")) {
+                                    await launch(
+                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.");
+                                  } else {
+                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.';
+                                  }
+                                }
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(15),
                                   ),
-                                ),
-                              )
-                            ],
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(14),
+                                      ),
+                                      ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: [
+                                            Color(0xFF34BDDD),
+                                            Color(0xFF367DC8),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(
+                                          Rect.fromLTWH(0, 0, bounds.width,
+                                              bounds.height),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/makeDesign.svg",
+                                          height: ScreenUtil().setHeight(47),
+                                          width: ScreenUtil().setWidth(38),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(14),
+                                      ),
+                                      Container(
+                                        width: ScreenUtil().setWidth(99),
+                                        child: Text(
+                                          'MAKE YOUR OWN DESIGN',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            fontSize: ScreenUtil().setSp(12,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -1457,55 +1598,140 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
+                          // padding: EdgeInsets.only(left: 15),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            elevation: 6.0,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            child: InkWell(
+                              onTap: () async {
+                                if (!Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .isVerified) {
+                                  if (storeCheckValue) {
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CompleteSignUp(),
+                                      ),
+                                    );
+                                  }
+                                } else if (!Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .isPriced) {
+                                  try {
+                                    String date = await Provider.of<UserInfo>(
+                                            context,
+                                            listen: false)
+                                        .getPriceDate();
+                                    if (date != null) {
+                                      int d = DateTime.now()
+                                          .difference(DateTime.parse(date))
+                                          .inDays;
+                                      if (d >= 1) {
+                                        dataSelect(
+                                          context,
+                                          'Important!',
+                                          "To see prices you must first request a quotation from Team Gemstory",
+                                          'Request Prices',
+                                          requestPrice,
+                                        );
+                                      } else {
+                                        dataSelect(
+                                            context,
+                                            'Alert!',
+                                            'Request has already been noted!',
+                                            'Okay', () {
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    } else {
+                                      dataSelect(
+                                        context,
+                                        'Important!',
+                                        "To see prices you must first request a quotation from Team Gemstory",
+                                        'Request Prices',
+                                        requestPrice,
+                                      );
+                                    }
+                                  } catch (err) {
+                                    dataSelect(
+                                        context, 'Alert!', '$err', 'Okay', () {
+                                      Navigator.pop(context);
+                                    });
+                                  }
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MyOrder(),
+                                    ),
+                                  );
+                                }
+                              },
+                              splashColor: Colors.cyan[50],
+                              borderRadius: BorderRadius.circular(20),
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(15),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(14),
+                                      ),
+                                      ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: [
+                                            Color(0xFF34BDDD),
+                                            Color(0xFF367DC8),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(
+                                          Rect.fromLTWH(0, 0, bounds.width,
+                                              bounds.height),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/ordersyet.svg",
+                                          height: ScreenUtil().setHeight(47),
+                                          width: ScreenUtil().setWidth(38),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(14),
+                                      ),
+                                      Text(
+                                        '9000000',
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy Medium',
+                                          fontSize: ScreenUtil().setSp(12,
+                                              allowFontScalingSelf: true),
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        'ORDERS YET',
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy Medium',
+                                          fontSize: ScreenUtil().setSp(12,
+                                              allowFontScalingSelf: true),
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
-                              ShaderMask(
-                                shaderCallback: (bounds) => LinearGradient(
-                                  colors: [
-                                    Color(0xFF34BDDD),
-                                    Color(0xFF367DC8),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ).createShader(
-                                  Rect.fromLTWH(
-                                      0, 0, bounds.width, bounds.height),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/ordersyet.svg",
-                                  height: ScreenUtil().setHeight(47),
-                                  width: ScreenUtil().setWidth(38),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
-                              ),
-                              Text(
-                                '9000000',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy Medium',
-                                  fontSize: ScreenUtil()
-                                      .setSp(12, allowFontScalingSelf: true),
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Text(
-                                'ORDERS YET',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy Medium',
-                                  fontSize: ScreenUtil()
-                                      .setSp(12, allowFontScalingSelf: true),
-                                  color: Colors.black,
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                         ),
                       ],
@@ -1533,49 +1759,90 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
-                              ),
-                              ShaderMask(
-                                shaderCallback: (bounds) => LinearGradient(
-                                  colors: [
-                                    Color(0xFF34BDDD),
-                                    Color(0xFF367DC8),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ).createShader(
-                                  Rect.fromLTWH(
-                                      0, 0, bounds.width, bounds.height),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/userDiamonds.svg",
-                                  height: ScreenUtil().setHeight(46),
-                                  width: ScreenUtil().setWidth(38),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
-                              ),
-                              Container(
-                                width: ScreenUtil().setWidth(99),
-                                child: Text(
-                                  'USE YOUR OWN DIAMONDS',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Medium',
-                                    fontSize: ScreenUtil()
-                                        .setSp(12, allowFontScalingSelf: true),
-                                    color: Colors.black,
+                          // padding: EdgeInsets.only(left: 15),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            elevation: 6.0,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            child: InkWell(
+                              splashColor: Colors.cyan[50],
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () async {
+                                bool value2 = false;
+                                await dataSelectConfirmMessage(
+                                  globalKey.currentContext,
+                                  'Alert!',
+                                  "Are you sure, You want to open Whatsapp?",
+                                  'Open Whatsapp',
+                                ).then((value) async {
+                                  if (value) {
+                                    value2 = value;
+                                  }
+                                });
+                                if (value2) {
+                                  if (await canLaunch(
+                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.")) {
+                                    await launch(
+                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.");
+                                  } else {
+                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.';
+                                  }
+                                }
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(15),
                                   ),
-                                ),
-                              )
-                            ],
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(14),
+                                      ),
+                                      ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: [
+                                            Color(0xFF34BDDD),
+                                            Color(0xFF367DC8),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(
+                                          Rect.fromLTWH(0, 0, bounds.width,
+                                              bounds.height),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/userDiamonds.svg",
+                                          height: ScreenUtil().setHeight(46),
+                                          width: ScreenUtil().setWidth(38),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(14),
+                                      ),
+                                      Container(
+                                        width: ScreenUtil().setWidth(99),
+                                        child: Text(
+                                          'USE YOUR OWN DIAMONDS',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            fontSize: ScreenUtil().setSp(12,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -1594,172 +1861,267 @@ class _UserPageState extends State<UserPage>
                           ),
                           height: ScreenUtil().setHeight(122),
                           width: ScreenUtil().setWidth(129),
-                          padding: EdgeInsets.only(left: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: ScreenUtil().setHeight(14),
-                              ),
-                              ShaderMask(
-                                shaderCallback: (bounds) => LinearGradient(
-                                  colors: [
-                                    Color(0xFF34BDDD),
-                                    Color(0xFF367DC8),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ).createShader(
-                                  Rect.fromLTWH(
-                                      0, 0, bounds.width, bounds.height),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/userslove.svg",
-                                  height: ScreenUtil().setHeight(33),
-                                  width: ScreenUtil().setWidth(38),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                height: ScreenUtil().setHeight(20),
-                              ),
-                              Container(
-                                width: ScreenUtil().setWidth(99),
-                                child: Text(
-                                  'OUR USERS LOVE US',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Medium',
-                                    fontSize: ScreenUtil()
-                                        .setSp(12, allowFontScalingSelf: true),
-                                    color: Colors.black,
+                          // padding: EdgeInsets.only(left: 15),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            elevation: 6.0,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            child: InkWell(
+                              splashColor: Colors.cyan[50],
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () async {
+                                if (!Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .isVerified) {
+                                  if (storeCheckValue) {
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CompleteSignUp(),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TestimonyPage(),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(15),
                                   ),
-                                ),
-                              )
-                            ],
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(23),
+                                      ),
+                                      ShaderMask(
+                                        shaderCallback: (bounds) =>
+                                            LinearGradient(
+                                          colors: [
+                                            Color(0xFF34BDDD),
+                                            Color(0xFF367DC8),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ).createShader(
+                                          Rect.fromLTWH(0, 0, bounds.width,
+                                              bounds.height),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/userslove.svg",
+                                          height: ScreenUtil().setHeight(33),
+                                          width: ScreenUtil().setWidth(38),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: ScreenUtil().setHeight(20),
+                                      ),
+                                      Container(
+                                        width: ScreenUtil().setWidth(99),
+                                        child: Text(
+                                          'OUR USERS LOVE US',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            fontSize: ScreenUtil().setSp(12,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: ScreenUtil().setHeight(37),
+                      height: ScreenUtil().setHeight(28),
                     ),
                     Row(
                       children: <Widget>[
                         SizedBox(
-                          width: ScreenUtil().setWidth(51),
+                          width: ScreenUtil().setWidth(42),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 6.0),
-                                  height: ScreenUtil().setHeight(22),
-                                  width: ScreenUtil().setWidth(20),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/notificationIcon.svg',
-                                    color: Colors.black,
+                            Container(
+                              width: ScreenUtil().setWidth(300),
+                              child: Material(
+                                type: MaterialType.transparency,
+                                elevation: 6.0,
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(20),
+                                child: InkWell(
+                                  splashColor: Colors.cyan[50],
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {},
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(9),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.only(right: 6.0),
+                                          height: ScreenUtil().setHeight(22),
+                                          width: ScreenUtil().setWidth(20),
+                                          child: SvgPicture.asset(
+                                            'assets/icons/notificationIcon.svg',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: ScreenUtil().setWidth(14),
+                                        ),
+                                        Text(
+                                          'NOTIFICATIONS',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            fontSize: ScreenUtil().setSp(14,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(14),
-                                ),
-                                Text(
-                                  'NOTIFICATIONS',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Medium',
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                             SizedBox(
                               height: ScreenUtil().setHeight(18),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 6.0),
-                                  height: ScreenUtil().setHeight(22),
-                                  width: ScreenUtil().setWidth(20),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/terms.svg',
-                                    color: Colors.black,
+                            Container(
+                              width: ScreenUtil().setWidth(300),
+                              child: Material(
+                                type: MaterialType.transparency,
+                                elevation: 6.0,
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(20),
+                                child: InkWell(
+                                  splashColor: Colors.cyan[50],
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {},
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(9),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.only(right: 6.0),
+                                          height: ScreenUtil().setHeight(22),
+                                          width: ScreenUtil().setWidth(20),
+                                          child: SvgPicture.asset(
+                                            'assets/icons/terms.svg',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: ScreenUtil().setWidth(14),
+                                        ),
+                                        Text(
+                                          'TERMS AND PRIVACY',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            fontSize: ScreenUtil().setSp(14,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(14),
-                                ),
-                                Text(
-                                  'TERMS AND PRIVACY',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Medium',
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                             SizedBox(
                               height: ScreenUtil().setHeight(18),
                             ),
-
-                           InkWell(
-                             splashColor: Colors.greenAccent,
-                              onTap: () async {
-                                await dataSelectConfirmMessage(
-                                  context,
-                                  'Alert!',
-                                  "Are you sure, You want to logout",
-                                  'Request Prices',
-                                ).then((value) async {
-                                  if (value) {
-                                    value2 = value;
-                                    if (value2) {
-                                      // Navigator.of(context).pop();
-                                      Navigator.popAndPushNamed(context, '/');
-                                      Provider.of<Auth>(context, listen: false)
-                                          .logout();
-                                    }
-                                  }
-                                });
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.only(right: 6.0),
-                                    height: ScreenUtil().setHeight(22),
-                                    width: ScreenUtil().setWidth(20),
-                                    child: Icon(
-                                      Icons.power_settings_new,
-                                      color: Colors.black,
+                            Container(
+                              width: ScreenUtil().setWidth(300),
+                              child: Material(
+                                type: MaterialType.transparency,
+                                elevation: 6.0,
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(20),
+                                child: InkWell(
+                                  splashColor: Colors.cyan[50],
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () async {
+                                    await dataSelectConfirmMessage(
+                                      context,
+                                      'Alert!',
+                                      "Are you sure, You want to logout",
+                                      'Request Prices',
+                                    ).then((value) async {
+                                      if (value) {
+                                        value2 = value;
+                                        if (value2) {
+                                          // Navigator.of(context).pop();
+                                          Navigator.popAndPushNamed(
+                                              context, '/');
+                                          Provider.of<Auth>(context,
+                                                  listen: false)
+                                              .logout();
+                                        }
+                                      }
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(9.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.only(right: 6.0),
+                                          height: ScreenUtil().setHeight(22),
+                                          width: ScreenUtil().setWidth(20),
+                                          child: Icon(
+                                            Icons.power_settings_new,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: ScreenUtil().setWidth(14),
+                                        ),
+                                        Text(
+                                          'LOGOUT',
+                                          style: TextStyle(
+                                            fontFamily: 'Gilroy Medium',
+                                            fontSize: ScreenUtil().setSp(14,
+                                                allowFontScalingSelf: true),
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: ScreenUtil().setWidth(14),
-                                  ),
-                                  Text(
-                                    'LOGOUT',
-                                    style: TextStyle(
-                                      fontFamily: 'Gilroy Medium',
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ],

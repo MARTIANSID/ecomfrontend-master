@@ -61,7 +61,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                     Text(
                       '#' + '200506001',
                       style: TextStyle(
-                          fontFamily: 'Gilroy',
+                          fontFamily: 'Gilroy Medium',
                           fontSize: ScreenUtil()
                               .setSp(27, allowFontScalingSelf: true)),
                     ),
@@ -210,7 +210,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                               color: Colors.black,
                               fontSize: ScreenUtil()
                                   .setSp(25, allowFontScalingSelf: true),
-                              fontFamily: 'Gilroy',
+                              fontFamily: 'Gilroy Medium',
                             ),
                           ),
                         ),

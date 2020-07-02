@@ -19,6 +19,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       print('PP checkIfRegistered response: $responseBody');
       return responseBody['registered'];
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
@@ -30,6 +32,8 @@ class Auth with ChangeNotifier {
   String _number;
   Timer _authTimer;
   bool autoLogin = false;
+  bool remeberMe = false;
+  String password;
 
   bool get isAuth {
     return token != null;
@@ -67,6 +71,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       else
         return true;
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
@@ -82,6 +88,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       print(responseBody['matches']);
       return responseBody['matches'];
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
@@ -99,6 +107,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       else
         return true;
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
@@ -111,7 +121,7 @@ class Auth with ChangeNotifier {
       print("DCDCDCDCDC" +
           status.subscriptionStatus.subscribed.toString() +
           "DCDCDCDCDC");
-          
+
       var playerId = status.subscriptionStatus.userId;
       print(playerId);
       final response = await http.post(
@@ -144,9 +154,12 @@ class Auth with ChangeNotifier {
           'token': _token,
           'number': _number,
           'expiryDate': _expiryDate.toIso8601String(),
+          'password': password,
         },
       );
       prefs.setString('userData', userData);
+    } on SocketException {
+      throw 'No Internet';
     } catch (error) {
       throw error;
     }
@@ -162,6 +175,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       } else
         return true;
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
@@ -190,23 +205,36 @@ class Auth with ChangeNotifier {
       final extractedUserData =
           json.decode(prefs.getString('userData')) as Map<String, Object>;
       final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
-
-      if (expiryDate.isBefore(DateTime.now())) {
-        return false;
-      }
+      String password;
       _token = extractedUserData['token'];
       _number = extractedUserData['number'];
+      password = extractedUserData['password'];
 
-      _expiryDate = expiryDate;
+      if (remeberMe) {
+        await _authenticate(number, password, 'user/login');
+        return true;
+      } else {
+        if (expiryDate.isBefore(DateTime.now())) {
+          return false;
+        }
 
-      autoLogin = true;
+        _expiryDate = expiryDate;
 
-      _autoLogout();
-      notifyListeners();
-      return true;
+        autoLogin = true;
+
+        _autoLogout();
+        notifyListeners();
+        return true;
+      }
+    } on SocketException {
+      throw 'No Internet';
     } catch (err) {
       throw err;
     }
+  }
+
+  void setRemeber(value) {
+    remeberMe = value;
   }
 
   Future<void> logout() async {
@@ -233,5 +261,18 @@ class Auth with ChangeNotifier {
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
     notifyListeners();
+  }
+
+  Future<bool> getPassword() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (!prefs.containsKey('userData')) {
+      return false;
+    }
+    final extractedUserData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    password = extractedUserData['password'];
+
+    return true;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:Flutter/providers/http_exception.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
@@ -179,7 +180,10 @@ class Cart with ChangeNotifier {
         print(response);
         print(cart);
         notifyListeners();
-      } catch (error) {
+      } on SocketException {
+      throw 'No Internet';
+      
+    } catch (error) {
        throw error;
       }
     } else {
@@ -232,7 +236,10 @@ class Cart with ChangeNotifier {
             .toList();
             notifyListeners();
       
-      } catch (err) {
+      } on SocketException {
+      throw 'No Internet';
+      
+    } catch (err) {
         throw err;
       }
     }
@@ -286,6 +293,9 @@ class Cart with ChangeNotifier {
 
       print(cart);
       notifyListeners();
+    } on SocketException {
+      throw 'No Internet';
+      
     } catch (error) {
       print(error);
       throw error;
@@ -338,7 +348,10 @@ class Cart with ChangeNotifier {
           .toList();
 
       notifyListeners();
-    } catch (err) {
+    }on SocketException {
+      throw 'No Internet';
+      
+    }  catch (err) {
       throw err;
     }
   }

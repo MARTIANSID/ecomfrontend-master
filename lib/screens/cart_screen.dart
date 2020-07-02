@@ -1549,18 +1549,21 @@ class _CartScreenState extends State<CartScreen> {
                                         );
                                       },
                                     )
-                              : Center(
-                                  child: Text(
-                                    "The cart looks empty, you need to fill it up!",
-                                    style: TextStyle(
-                                      fontFamily: 'Gilory Regular',
-                                      // decoration: TextDecoration.underline,
-                                      color: Color(0xFFA49797),
-                                      fontSize: ScreenUtil().setSp(17,
-                                          allowFontScalingSelf: true),
-                                      // fontWeight: FontWeight.bold,
+                              : Container(
+                                  width: ScreenUtil().setHeight(350),
+                                  child: Center(
+                                    child: Text(
+                                      "🛒 ➡ 🤷‍♂️ 'This means cart is empty!'",
+                                      style: TextStyle(
+                                        fontFamily: 'Gilory Regular',
+                                        // decoration: TextDecoration.underline,
+                                        color: Color(0xFFA49797),
+                                        fontSize: ScreenUtil().setSp(17,
+                                            allowFontScalingSelf: true),
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                         ),
