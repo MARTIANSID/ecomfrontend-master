@@ -521,7 +521,7 @@
 
 import 'dart:async';
 import 'dart:ui';
-
+import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
@@ -964,13 +964,15 @@ class _CartScreenState extends State<CartScreen> {
                                                         width: ScreenUtil()
                                                             .setWidth(76),
                                                         image: NetworkImage(
-                                                          product.imageUrl[
-                                                              Provider.of<Cart>(
+                                                          product
+                                                              .imageUrl[Provider
+                                                                  .of<Cart>(
                                                                       context,
                                                                       listen:
                                                                           true)
-                                                                  .cart[index]
-                                                                  .color],
+                                                              .cart[index]
+                                                              .color
+                                                              .toLowerCase()],
                                                         ),
                                                         fit: BoxFit.fill,
                                                       ),
@@ -1449,7 +1451,13 @@ class _CartScreenState extends State<CartScreen> {
                                                             listen: false)
                                                         .isPriced
                                                 ? GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      Provider.of<Orders>(
+                                                              context,
+                                                              listen: false)
+                                                          .placeOrder(
+                                                              context: context);
+                                                    },
                                                     child: Container(
                                                       width: ScreenUtil()
                                                           .setWidth(250),
@@ -1480,6 +1488,25 @@ class _CartScreenState extends State<CartScreen> {
                                                         fit: BoxFit.contain,
                                                       )),
                                                     ),
+                                                  )
+                                                : SizedBox(
+                                                    height: 0,
+                                                  ),
+                                            index ==
+                                                        Provider.of<Cart>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .cart
+                                                                .length -
+                                                            1 &&
+                                                    Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .isPriced
+                                                ? SizedBox(
+                                                    height: ScreenUtil()
+                                                        .setHeight(93),
                                                   )
                                                 : SizedBox(
                                                     height: 0,
@@ -1711,9 +1738,9 @@ class _CartScreenState extends State<CartScreen> {
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 27),
+                                            .setHeight(searchSelected ? 0 : 20),
                                         width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 27),
+                                            .setWidth(searchSelected ? 0 : 20),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,

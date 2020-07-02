@@ -139,7 +139,7 @@ class _MyPriceState extends State<MyPrice> {
 
   @override
   Widget build(BuildContext context) {
-    prevage = Provider.of<Pagination>(context, listen: false).comm.toDouble();
+    prevage = Provider.of<Pagination>(context, listen: true).comm.toDouble();
     ScreenUtil.init(context,
         width: 411.42857142857144,
         height: 774.8571428571429,
@@ -560,29 +560,43 @@ class _MyPriceState extends State<MyPrice> {
                                                 shrinkWrap: true,
                                                 scrollDirection: Axis.vertical,
                                                 itemBuilder: (context, index) {
-                                                  return Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 5.0),
-                                                    child: Text(
-                                                      Provider.of<Pagination>(
+                                                  if (Provider.of<Pagination>(
                                                               context,
                                                               listen: false)
                                                           .certPrices
                                                           .keys
                                                           .toList()[index]
                                                           .toString()
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            'Gilroy Light',
-                                                        color: Colors.black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14,
-                                                                allowFontScalingSelf:
-                                                                    true),
+                                                          .toUpperCase() ==
+                                                      'NONE') {
+                                                    return Container(
+                                                      height: 0,
+                                                    );
+                                                  } else {
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 5.0),
+                                                      child: Text(
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .certPrices
+                                                            .keys
+                                                            .toList()[index]
+                                                            .toString()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Gilroy Light',
+                                                          color: Colors.black,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(14,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
+                                                    );
+                                                  }
                                                 },
                                               ),
                                             ),
@@ -698,10 +712,25 @@ class _MyPriceState extends State<MyPrice> {
                                                       .then((value) =>
                                                           value2 = value);
                                                   if (value2) {
-                                                    setState(() {
-                                                      prevage = age;
-                                                      age = value;
-                                                    });
+                                                    try {
+                                                      setState(() {
+                                                        prevage = age;
+                                                        age = value;
+                                                      });
+                                                      await Provider.of<
+                                                                  Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .setCom(
+                                                              comm:
+                                                                  value.toInt(),
+                                                              context: context);
+                                                    } catch (err) {
+                                                      dataSelect(context,
+                                                          '$err', '', 'OK', () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    }
                                                   } else {
                                                     setState(() {
                                                       age = prevage;

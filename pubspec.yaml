@@ -47,7 +47,8 @@ dependencies:
   smooth_star_rating: ^1.1.1
   argon_buttons_flutter: ^1.0.2
   onesignal_flutter: ^2.5.0
-  worm_indicator: 0.1.1
+  worm_indicator: ^0.1.1
+  image_picker: ^0.6.7+3
   
   liquid_swipe:
     git:

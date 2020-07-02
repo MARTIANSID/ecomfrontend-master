@@ -29,6 +29,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
     return Scaffold(
       body: Container(
         // color: Colors.amber,
+        color: Color(0xFFF4F4F4),
         child: Stack(
           children: <Widget>[
             Column(
@@ -117,7 +118,8 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                               margin:
                                                   EdgeInsets.only(top: 10.0),
                                               padding: EdgeInsets.all(7.0),
-                                              width: ScreenUtil().setWidth(308.25),
+                                              width:
+                                                  ScreenUtil().setWidth(308.25),
                                               child: Text(
                                                 'Each and every diamond is checked thoroughly to deliver quality products to our client.',
                                                 style: TextStyle(
@@ -144,23 +146,54 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         children: <Widget>[
                                           index != 0
                                               ? Container(
-                                                  height: ScreenUtil().setWidth(20),
-                                                  width: ScreenUtil().setWidth(20),
+                                                  height:
+                                                      ScreenUtil().setWidth(20),
+                                                  width:
+                                                      ScreenUtil().setWidth(20),
                                                   margin: index == 4
                                                       ? EdgeInsets.only(
                                                           left: 3.0)
                                                       : null,
                                                   decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: kPrimaryColor,
-                                                      width: 1.0,
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Color(0xFF34B0D9),
+                                                        Color(0xFF3685CB),
+                                                      ],
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
                                                     ),
                                                     shape: BoxShape.circle,
                                                   ),
+                                                  padding: EdgeInsets.all(1.5),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xFFF4F4F4),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
                                                 )
-                                              : Icon(
-                                                  Icons.check_circle,
-                                                  color: kPrimaryColor,
+                                              : ShaderMask(
+                                                  shaderCallback: (bounds) =>
+                                                      LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.check_circle,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                           index != 4
                                               ? Padding(
@@ -172,11 +205,31 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                                   ),
                                                   child: RotatedBox(
                                                     quarterTurns: 1,
-                                                    child: Text(
-                                                      '................',
-                                                      style: TextStyle(
-                                                        color: Colors.grey,
-                                                        letterSpacing: 2.0,
+                                                    child: ShaderMask(
+                                                      shaderCallback:
+                                                          (bounds) =>
+                                                              LinearGradient(
+                                                        colors: [
+                                                          Color(0xFF34B0D9),
+                                                          Color(0xFF3685CB),
+                                                        ],
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
+                                                      ).createShader(
+                                                        Rect.fromLTWH(
+                                                            0,
+                                                            0,
+                                                            bounds.width,
+                                                            bounds.height),
+                                                      ),
+                                                      child: Text(
+                                                        '................',
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          letterSpacing: 2.0,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

@@ -9,6 +9,8 @@ class SplashScreen extends StatelessWidget {
         height: 774.8571428571429,
         allowFontScaling: true);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       body: Container(
         width: ScreenUtil().setWidth(411),
         height: ScreenUtil().setHeight(775),

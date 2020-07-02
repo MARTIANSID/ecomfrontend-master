@@ -304,7 +304,9 @@ class _AccountInfoState extends State<AccountInfo> {
                                   }
                                   return null;
                                 },
-                                icon: Icons.work,
+                                svgOrIcon: false,
+                                svg: "assets/icons/workOutline.svg",
+                                // icon: Icons.work,
                                 proceed: !editFields,
                               ),
                             ),
@@ -328,7 +330,9 @@ class _AccountInfoState extends State<AccountInfo> {
                                   }
                                   return null;
                                 },
-                                icon: Icons.attach_money,
+                                svgOrIcon: false,
+                                svg: "assets/icons/taxes.svg",
+                                // icon: Icons.attach_money,
                                 proceed: !editFields,
                               ),
                             ),
@@ -348,7 +352,9 @@ class _AccountInfoState extends State<AccountInfo> {
                                     print(streetName);
                                   });
                                 },
-                                icon: Icons.streetview,
+                                svgOrIcon: false,
+                                svg: "assets/icons/streetView.svg",
+                                // icon: Icons.streetview,
                                 proceed: !editFields,
                               ),
                             ),
@@ -394,7 +400,9 @@ class _AccountInfoState extends State<AccountInfo> {
                                     print(stateName);
                                   });
                                 },
-                                icon: Icons.location_city,
+                                svg: "assets/icons/realEstate.svg",
+                                svgOrIcon: false,
+                                // icon: Icons.location_city,
                                 proceed: !editFields,
                               ),
                             ),
@@ -419,7 +427,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                     print(pincode);
                                   });
                                 },
-                                icon: Icons.pin_drop,
+                                icon: Icons.person_pin,
                                 proceed: !editFields,
                               ),
                             ),

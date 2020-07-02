@@ -198,7 +198,7 @@ class UserInfo with ChangeNotifier {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
 
-    var uri = Uri.parse('http://10.0.2.2:3000/create');
+    var uri = Uri.parse(uurl + '/user/profileimage');
     Map<String, String> headers = {
       "Authorization":
           "Bearer " + Provider.of<Auth>(context, listen: false).token

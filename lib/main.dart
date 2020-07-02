@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
+import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/testimony.dart';
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Pagination()),
         ChangeNotifierProvider.value(value: Options()),
         ChangeNotifierProvider.value(value: Testimony()),
+        ChangeNotifierProvider.value(value: Orders()),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, child) => MaterialApp(

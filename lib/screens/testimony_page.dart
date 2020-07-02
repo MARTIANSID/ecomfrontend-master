@@ -134,7 +134,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                 ' reviews',
                             style: TextStyle(
                               color: Colors.grey,
-                              fontFamily: 'Gilroy Black',
+                              fontFamily: 'Gilroy Medium',
                               fontSize: ScreenUtil()
                                   .setSp(15, allowFontScalingSelf: true),
                             ),
@@ -381,7 +381,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                           index]['comment'] +
                                                       "\"",
                                                   style: TextStyle(
-                                                    fontFamily: 'Varela',
+                                                    fontFamily:
+                                                        'Gilroy Regular',
                                                     fontSize: ScreenUtil().setSp(
                                                         14,
                                                         allowFontScalingSelf:
@@ -469,14 +470,17 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                                       .testimonies[
                                                                           index]
                                                                           [
-                                                                          'fullName']
+                                                                          'firm']
                                                                       .toString() +
                                                                   ',',
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontFamily:
-                                                                    'Gilroy',
+                                                                    'Gilroy Medium',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
                                                                 fontSize: ScreenUtil()
                                                                     .setSp(14,
                                                                         allowFontScalingSelf:
@@ -490,17 +494,14 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                                           false)
                                                                   .userTestimony
                                                                   .testimonies[
-                                                                      index]
-                                                                      ['firm']
+                                                                      index][
+                                                                      'fullName']
                                                                   .toString(),
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontFamily:
-                                                                    'Gilroy',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                    'Gilroy Regular',
                                                                 fontSize: ScreenUtil()
                                                                     .setSp(17,
                                                                         allowFontScalingSelf:
@@ -517,7 +518,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                           .format(dateFormat),
                                                       style: TextStyle(
                                                         color: Colors.grey,
-                                                        fontFamily: 'Gilroy',
+                                                        fontFamily:
+                                                            'Gilroy Regular',
                                                         fontSize: ScreenUtil()
                                                             .setSp(14,
                                                                 allowFontScalingSelf:
@@ -540,7 +542,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                     .length -
                                                 1
                                         ? SizedBox(
-                                            height: ScreenUtil().setHeight(40),
+                                            height: ScreenUtil().setHeight(70),
                                           )
                                         : SizedBox(
                                             height: 0.0,

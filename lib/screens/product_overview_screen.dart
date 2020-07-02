@@ -13,6 +13,7 @@ import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
@@ -64,6 +65,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   var _choices3;
 
   GlobalKey scaffoldKey = GlobalKey();
+
+  bool tapNotication = false;
 
   @override
   void initState() {
@@ -991,18 +994,28 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   ),
                                                 ),
                                               ),
-                                              AnimatedContainer(
-                                                duration:
-                                                    Duration(milliseconds: 600),
-                                                margin:
-                                                    EdgeInsets.only(right: 6.0),
-                                                height: ScreenUtil().setHeight(
-                                                    searchSelected ? 0 : 27),
-                                                width: ScreenUtil().setWidth(
-                                                    searchSelected ? 0 : 27),
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/notificationIcon.svg',
-                                                  color: Colors.black,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    tapNotication =
+                                                        !tapNotication;
+                                                  });
+                                                },
+                                                child: AnimatedContainer(
+                                                  duration: Duration(
+                                                      milliseconds: 600),
+                                                  margin: EdgeInsets.only(
+                                                      right: 6.0),
+                                                  height: ScreenUtil()
+                                                      .setHeight(searchSelected
+                                                          ? 0
+                                                          : 20),
+                                                  width: ScreenUtil().setWidth(
+                                                      searchSelected ? 0 : 20),
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/notificationIcon.svg',
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -1446,10 +1459,240 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                     //     ],
                     //   ),
                     // ),
+                    !tapNotication
+                        ? SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                        : Container(
+                            height: ScreenUtil().setHeight(775),
+                            width: ScreenUtil().setWidth(411),
+                            color: Colors.transparent,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                height: ScreenUtil().setHeight(775),
+                                width: ScreenUtil().setWidth(411),
+                              ),
+                            ),
+                          ),
+                    tapNotication
+                        ? WillPopScope(
+                            onWillPop: () {
+                              // return ;
+                              setState(() {
+                                tapNotication = false;
+                              });
+                              return null;
+                            },
+                            child: Container(
+                              height: ScreenUtil().setHeight(775),
+                              width: ScreenUtil().setWidth(411),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9).withOpacity(0.2),
+                                    Color(0xFF3685CB).withOpacity(0.2),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Stack(
+                                  children: <Widget>[
+                                    FadeIn(
+                                      child: CustomPaint(
+                                        painter: CurvePainter(),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: ScreenUtil().setHeight(82.5 + 22),
+                                      left: ScreenUtil().setWidth(27),
+                                      child: FadeIn(
+                                        child: Container(
+                                          width: ScreenUtil().setWidth(341),
+                                          height: ScreenUtil().setHeight(300),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(26),
+                                              bottomRight: Radius.circular(26),
+                                              topLeft: Radius.circular(26),
+                                            ),
+                                            color: Colors.white,
+                                          ),
+                                          padding: EdgeInsets.all(25),
+                                          child: ListView.builder(
+                                            physics: BouncingScrollPhysics(),
+                                            itemCount: 15,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                margin:
+                                                    EdgeInsets.only(bottom: 20),
+                                                width:
+                                                    ScreenUtil().setWidth(260),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    ShaderMask(
+                                                      shaderCallback:
+                                                          (bounds) =>
+                                                              LinearGradient(
+                                                        colors: [
+                                                          Color(0xFF34BDDD),
+                                                          Color(0xFF367DC8),
+                                                        ],
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
+                                                      ).createShader(
+                                                        Rect.fromLTWH(
+                                                            0,
+                                                            0,
+                                                            bounds.width,
+                                                            bounds.height),
+                                                      ),
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/ordersyet.svg",
+                                                        height: ScreenUtil()
+                                                            .setHeight(39),
+                                                        width: ScreenUtil()
+                                                            .setWidth(32),
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: ScreenUtil()
+                                                          .setWidth(23),
+                                                    ),
+                                                    Container(
+                                                      width: ScreenUtil()
+                                                          .setWidth(204),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            "Order Update",
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  "Gilroy Light",
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(18,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: ScreenUtil()
+                                                                .setHeight(4),
+                                                          ),
+                                                          Text(
+                                                            "Your order has been processed",
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  "Gilroy Light",
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(12,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: ScreenUtil().setHeight(19 + 22 + 6),
+                                      left: ScreenUtil().setWidth(360),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            tapNotication = false;
+                                          });
+                                        },
+                                        child: SvgPicture.asset(
+                                          'assets/icons/notificationIcon.svg',
+                                          height: ScreenUtil().setHeight(20),
+                                          width: ScreenUtil().setWidth(20),
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
                   ],
                 ),
               ),
       ),
     );
+  }
+}
+
+class CurvePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    // TODO: Set properties to paint
+    paint.color = Colors.white;
+    paint.style = PaintingStyle.fill;
+
+    // var path = Path();
+    // // var paint = Paint();
+
+    // path.moveTo(0, size.height * 0.84);
+    // path.quadraticBezierTo(size.width * 0.25, size.height * 0.77,
+    //     size.width * 0.52, size.height * 0.84);
+    // path.quadraticBezierTo(
+    //     size.width * 0.74, size.height * 0.92, size.width, size.height * 0.84);
+    // path.lineTo(size.width, size.height);
+    // path.lineTo(0, size.height);
+    // path.close();
+    // // paint.color = AppColors.primaryColor.withOpacity(0.70);
+    // canvas.drawPath(path, paint);
+
+    var path = Path();
+    path.moveTo(
+        ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22));
+    path.quadraticBezierTo(
+        ScreenUtil().setWidth(349.33),
+        ScreenUtil().setHeight(81.45 + 22),
+        ScreenUtil().setWidth(368),
+        ScreenUtil().setHeight(54 + 22));
+    // path.lineTo(ScreenUtil().setWidth(368, 54);
+    path.lineTo(ScreenUtil().setWidth(368), ScreenUtil().setHeight(82.73 + 22));
+    path.lineTo(
+        ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22));
+    path.close();
+
+    // TODO: Draw your path
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }
