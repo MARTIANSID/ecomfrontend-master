@@ -838,6 +838,7 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<bool> _showDialog(BuildContext context) async {
+    bool p = await Provider.of<Auth>(context, listen: false).getPassword();
     GlobalKey<FormState> _key = GlobalKey();
     bool value2;
     await showDialog(
@@ -872,6 +873,12 @@ class _UserPageState extends State<UserPage>
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Enter Password";
+                        } else if (Provider.of<Auth>(context, listen: false)
+                                .password !=
+                            value) {
+                          return "Incorrect Password";
+                        } else if (p == false) {
+                          return "Something went wrong";
                         }
                         return null;
                       },
@@ -1241,6 +1248,7 @@ class _UserPageState extends State<UserPage>
                                     }
                                   } else {
                                     bool value2 = false;
+
                                     await _showDialog(
                                       globalKey.currentContext,
                                       // 'Alert!',
@@ -1494,9 +1502,6 @@ class _UserPageState extends State<UserPage>
                             elevation: 6.0,
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(20),
-                            // shape: RoundedRectangleBorder(
-                            //   borderRadius: BorderRadius.circular(20),
-                            // ),
                             child: InkWell(
                               splashColor: Colors.cyan[50],
                               borderRadius: BorderRadius.circular(20),
@@ -1514,11 +1519,11 @@ class _UserPageState extends State<UserPage>
                                 });
                                 if (value2) {
                                   if (await canLaunch(
-                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
+                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.")) {
                                     await launch(
-                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
+                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.");
                                   } else {
-                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.';
+                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.';
                                   }
                                 }
                               },
@@ -1600,30 +1605,74 @@ class _UserPageState extends State<UserPage>
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
-                              splashColor: Colors.cyan[50],
-                              borderRadius: BorderRadius.circular(20),
                               onTap: () async {
-                                bool value2 = false;
-                                await dataSelectConfirmMessage(
-                                  globalKey.currentContext,
-                                  'Alert!',
-                                  "Are you sure, You want to open Whatsapp?",
-                                  'Open Whatsapp',
-                                ).then((value) async {
-                                  if (value) {
-                                    value2 = value;
-                                  }
-                                });
-                                if (value2) {
-                                  if (await canLaunch(
-                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
-                                    await launch(
-                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
+                                if (!Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .isVerified) {
+                                  if (storeCheckValue) {
                                   } else {
-                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.';
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CompleteSignUp(),
+                                      ),
+                                    );
                                   }
+                                } else if (!Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .isPriced) {
+                                  try {
+                                    String date = await Provider.of<UserInfo>(
+                                            context,
+                                            listen: false)
+                                        .getPriceDate();
+                                    if (date != null) {
+                                      int d = DateTime.now()
+                                          .difference(DateTime.parse(date))
+                                          .inDays;
+                                      if (d >= 1) {
+                                        dataSelect(
+                                          context,
+                                          'Important!',
+                                          "To see prices you must first request a quotation from Team Gemstory",
+                                          'Request Prices',
+                                          requestPrice,
+                                        );
+                                      } else {
+                                        dataSelect(
+                                            context,
+                                            'Alert!',
+                                            'Request has already been noted!',
+                                            'Okay', () {
+                                          Navigator.pop(context);
+                                        });
+                                      }
+                                    } else {
+                                      dataSelect(
+                                        context,
+                                        'Important!',
+                                        "To see prices you must first request a quotation from Team Gemstory",
+                                        'Request Prices',
+                                        requestPrice,
+                                      );
+                                    }
+                                  } catch (err) {
+                                    dataSelect(
+                                        context, 'Alert!', '$err', 'Okay', () {
+                                      Navigator.pop(context);
+                                    });
+                                  }
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MyOrder(),
+                                    ),
+                                  );
                                 }
                               },
+                              splashColor: Colors.cyan[50],
+                              borderRadius: BorderRadius.circular(20),
                               child: Row(
                                 children: <Widget>[
                                   SizedBox(
@@ -1733,11 +1782,11 @@ class _UserPageState extends State<UserPage>
                                 });
                                 if (value2) {
                                   if (await canLaunch(
-                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
+                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.")) {
                                     await launch(
-                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
+                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.");
                                   } else {
-                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.';
+                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.';
                                   }
                                 }
                               },
@@ -1822,25 +1871,25 @@ class _UserPageState extends State<UserPage>
                               splashColor: Colors.cyan[50],
                               borderRadius: BorderRadius.circular(20),
                               onTap: () async {
-                                bool value2 = false;
-                                await dataSelectConfirmMessage(
-                                  globalKey.currentContext,
-                                  'Alert!',
-                                  "Are you sure, You want to open Whatsapp?",
-                                  'Open Whatsapp',
-                                ).then((value) async {
-                                  if (value) {
-                                    value2 = value;
-                                  }
-                                });
-                                if (value2) {
-                                  if (await canLaunch(
-                                      "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
-                                    await launch(
-                                        "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
+                                if (!Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .isVerified) {
+                                  if (storeCheckValue) {
                                   } else {
-                                    throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.';
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CompleteSignUp(),
+                                      ),
+                                    );
                                   }
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TestimonyPage(),
+                                    ),
+                                  );
                                 }
                               },
                               child: Row(
@@ -1854,7 +1903,7 @@ class _UserPageState extends State<UserPage>
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       SizedBox(
-                                        height: ScreenUtil().setHeight(14),
+                                        height: ScreenUtil().setHeight(23),
                                       ),
                                       ShaderMask(
                                         shaderCallback: (bounds) =>
@@ -1958,9 +2007,9 @@ class _UserPageState extends State<UserPage>
                                 ),
                               ),
                             ),
-                            // SizedBox(
-                            //   height: ScreenUtil().setHeight(18),
-                            // ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(18),
+                            ),
                             Container(
                               width: ScreenUtil().setWidth(300),
                               child: Material(
@@ -2007,9 +2056,9 @@ class _UserPageState extends State<UserPage>
                                 ),
                               ),
                             ),
-                            // SizedBox(
-                            //   height: ScreenUtil().setHeight(18),
-                            // ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(18),
+                            ),
                             Container(
                               width: ScreenUtil().setWidth(300),
                               child: Material(
@@ -2041,7 +2090,7 @@ class _UserPageState extends State<UserPage>
                                     });
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.all(9),
+                                    padding: const EdgeInsets.all(9.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -2137,20 +2186,5 @@ class _UserPageState extends State<UserPage>
         ),
       ),
     );
-  }
-}
-
-class _SystemPadding extends StatelessWidget {
-  final Widget child;
-
-  _SystemPadding({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    return AnimatedContainer(
-        padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 300),
-        child: child);
   }
 }

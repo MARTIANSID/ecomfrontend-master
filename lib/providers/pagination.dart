@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:Flutter/providers/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
@@ -123,6 +125,9 @@ class Pagination with ChangeNotifier {
       }
       await Provider.of<UserInfo>(context, listen: false)
           .storePricDate(DateTime.now().toString());
+    } on SocketException {
+      throw 'No Internet';
+      
     } catch (err) {
       throw err;
     }
@@ -296,7 +301,10 @@ class Pagination with ChangeNotifier {
           notifyListeners();
         }
       }
-    } catch (err) {
+    }on SocketException {
+      throw 'No Internet';
+      
+    }  catch (err) {
       throw err;
     }
   }
@@ -341,6 +349,9 @@ class Pagination with ChangeNotifier {
       favProducts = loadedProducts;
       notifyListeners();
       print(favProducts);
+    } on SocketException {
+      throw 'No Internet';
+      
     } catch (err) {
       throw err;
     }
@@ -522,7 +533,7 @@ class Pagination with ChangeNotifier {
       check = 1;
      
     }
-    if (favProducts
+     if (favProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
         0) {
       index = favProducts
@@ -530,17 +541,22 @@ class Pagination with ChangeNotifier {
       favProducts.remove(favProducts[index]);
     
     }
+    else{
+      favProducts.add(product);
+    }
     if (productDetailsForSearch.length> 0) {
       if (productDetailsForSearch[0].styleNumber == styleNumber) {
         productDetailsForSearch[0].isFavourite =
             !productDetailsForSearch[0].isFavourite;
         
       }
+
     }
+    notifyListeners();
         throw HttpException(responseBody['details']['message']);
       }
-    } catch (error) {
-      if (allProducts
+    } on SocketException {
+        if (allProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
         0) {
       check = 1;
@@ -548,7 +564,7 @@ class Pagination with ChangeNotifier {
           .indexWhere((element) => element.styleNumber == styleNumber);
       allProducts[index].isFavourite = !allProducts[index].isFavourite;
 
-      notifyListeners();
+
     }
     if (newProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -557,7 +573,7 @@ class Pagination with ChangeNotifier {
           .indexWhere((element) => element.styleNumber == styleNumber);
       newProducts[index].isFavourite = !newProducts[index].isFavourite;
 
-      notifyListeners();
+  
     }
     if (featuredProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -567,7 +583,7 @@ class Pagination with ChangeNotifier {
       featuredProducts[index].isFavourite =
           !featuredProducts[index].isFavourite;
       check = 1;
-      notifyListeners();
+    
     }
     if (fancyDiamond
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -578,7 +594,7 @@ class Pagination with ChangeNotifier {
 
       check = 1;
 
-      notifyListeners();
+    
     }
     if (highestSellingProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -588,7 +604,7 @@ class Pagination with ChangeNotifier {
       highestSellingProducts[index].isFavourite =
           !highestSellingProducts[index].isFavourite;
       check = 1;
-      notifyListeners();
+
     }
     if (favProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -596,7 +612,7 @@ class Pagination with ChangeNotifier {
       index = favProducts
           .indexWhere((element) => element.styleNumber == styleNumber);
       favProducts.remove(favProducts[index]);
-      notifyListeners();
+   
     }
     else{
       favProducts.add(product);
@@ -605,10 +621,85 @@ class Pagination with ChangeNotifier {
       if (productDetailsForSearch[0].styleNumber == styleNumber) {
         productDetailsForSearch[0].isFavourite =
             !productDetailsForSearch[0].isFavourite;
-        notifyListeners();
+    
       }
     }
-      print('PP in toogleFavourite error block error: $error');
+    notifyListeners();
+      
+      throw 'No Internet';
+      
+    } catch (error) {
+      if (allProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      check = 1;
+      index = allProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      allProducts[index].isFavourite = !allProducts[index].isFavourite;
+
+    
+    }
+    if (newProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = newProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      newProducts[index].isFavourite = !newProducts[index].isFavourite;
+
+    
+    }
+    if (featuredProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = featuredProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      featuredProducts[index].isFavourite =
+          !featuredProducts[index].isFavourite;
+      check = 1;
+    
+    }
+    if (fancyDiamond
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = fancyDiamond
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      fancyDiamond[index].isFavourite = !fancyDiamond[index].isFavourite;
+
+      check = 1;
+
+    
+    }
+    if (highestSellingProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = highestSellingProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      highestSellingProducts[index].isFavourite =
+          !highestSellingProducts[index].isFavourite;
+      check = 1;
+    
+    }
+    if (favProducts
+            .indexWhere((element) => element.styleNumber == styleNumber) >=
+        0) {
+      index = favProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      favProducts.remove(favProducts[index]);
+    
+    }
+    else{
+      favProducts.add(product);
+    }
+    if (productDetailsForSearch.length> 0) {
+      if (productDetailsForSearch[0].styleNumber == styleNumber) {
+        productDetailsForSearch[0].isFavourite =
+            !productDetailsForSearch[0].isFavourite;
+      
+      }
+    }
+    notifyListeners();
+    throw error;
+     
     }
   }
 
@@ -642,7 +733,10 @@ class Pagination with ChangeNotifier {
           )
           .toList();
       productDetailsForSearch = loadedProducts;
-    } catch (err) {
+    }on SocketException {
+      throw 'No Internet';
+      
+    }  catch (err) {
       throw err;
     }
   }

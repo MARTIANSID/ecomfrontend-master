@@ -11,9 +11,8 @@ import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_animator/widgets/fading_exits/fade_out.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -66,13 +65,11 @@ class ProductDetail extends StatefulWidget {
   _ProductDetailState createState() => _ProductDetailState();
 }
 
-class _ProductDetailState extends State<ProductDetail>
-    with SingleTickerProviderStateMixin {
+class _ProductDetailState extends State<ProductDetail> {
   bool isColourSetRadial = false;
   bool isColourSetLinear = false;
   bool searchSelected = false;
   bool hideButton = false;
-
   String searchValue = "";
 
   TextEditingController textEditingController = TextEditingController();
@@ -82,37 +79,6 @@ class _ProductDetailState extends State<ProductDetail>
   List<dynamic> suggestion;
   bool isLoadingSearch = false;
   GlobalKey globalKey = GlobalKey();
-
-  ScrollController _hideButtonController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    // controller =
-    //     AnimationController(vsync: this, duration: Duration(milliseconds: 350));
-    // heightAnimation = Tween(begin: 45.0, end: 0.0)
-    //     .animate(CurvedAnimation(curve: Curves.easeInOut, parent: controller));
-    // _hideButtonController.addListener(() {
-    //   if (_hideButtonController.position.userScrollDirection ==
-    //       ScrollDirection.reverse) {
-    //     // if (_isVisible)
-    //     setState(() {
-    //       // _isVisible = false;
-    //       print("**** false up");
-    //       controller.forward();
-    //     });
-    //   }
-    //   if (_hideButtonController.position.userScrollDirection ==
-    //       ScrollDirection.forward) {
-    //     // if (!_isVisible)
-    //     setState(() {
-    //       // _isVisible = true;
-    //       print("**** true down");
-    //       controller.reverse();
-    //     });
-    //   }
-    // });
-  }
 
   int page = 0;
   Future<void> getSearch(query) async {
@@ -181,9 +147,6 @@ class _ProductDetailState extends State<ProductDetail>
       Navigator.of(context).pop();
     }
   }
-
-  AnimationController controller;
-  Animation<double> heightAnimation;
 
   @override
   Widget build(BuildContext context) {
@@ -1355,7 +1318,11 @@ class _ProductDetailState extends State<ProductDetail>
                                         style: TextStyle(
                                           fontFamily: 'Gilroy Bold',
                                           color: searchSelected
-                                              ? Colors.white
+                                              ? isColourSetLinear ||
+                                                      (!isColourSetLinear &&
+                                                          !isColourSetRadial)
+                                                  ? Colors.black
+                                                  : Colors.white
                                               : Colors.black,
                                           fontSize: ScreenUtil().setSp(16,
                                               allowFontScalingSelf: true),

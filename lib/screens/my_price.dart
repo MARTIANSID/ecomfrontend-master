@@ -639,83 +639,139 @@ class _MyPriceState extends State<MyPrice> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: ScreenUtil().setHeight(21),
-                                ),
-                                Text(
-                                  'Commission: ',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontSize: ScreenUtil()
-                                        .setSp(17, allowFontScalingSelf: true),
-                                  ),
-                                ),
-                                Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        width: ScreenUtil().setWidth(300),
-                                        decoration: BoxDecoration(
+                                Provider.of<Pagination>(context, listen: false)
+                                        .isPriced
+                                    ? SizedBox(
+                                        height: ScreenUtil().setHeight(21),
+                                      )
+                                    : SizedBox(
+                                        height: ScreenUtil().setHeight(57),
+                                      ),
+                                Provider.of<Pagination>(context, listen: false)
+                                        .isPriced
+                                    ? Text(
+                                        'Commission: ',
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy',
+                                          fontSize: ScreenUtil().setSp(17,
+                                              allowFontScalingSelf: true),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 0.0,
+                                      ),
+                                Provider.of<Pagination>(context, listen: false)
+                                        .isPriced
+                                    ? Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              width: ScreenUtil().setWidth(300),
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(29),
+                                              ),
+                                              child: NeumorphicSlider(
+                                                min: 0,
+                                                max: 100,
+                                                value: this.age,
+                                                onChanged: (percent) {
+                                                  setState(() {
+                                                    age = percent;
+                                                  });
+                                                },
+                                                onChangeEnd: (value) async {
+                                                  // setState(() {
+                                                  //   age = value;
+                                                  // });
+                                                  bool value2 = false;
+                                                  await dataSelectConfirmMessage(
+                                                          context,
+                                                          "Alert!",
+                                                          "Are you sure you want to change the Commission?",
+                                                          "")
+                                                      .then((value) =>
+                                                          value2 = value);
+                                                  if (value2) {
+                                                    setState(() {
+                                                      prevage = age;
+                                                      age = value;
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      age = prevage;
+                                                    });
+                                                  }
+                                                },
+                                                style: SliderStyle(
+                                                  accent: Color(0xFF34B0D9),
+                                                  variant: Color(0xFF3685CB),
+                                                ),
+                                                // thumb: Text('$age'),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(10.0),
+                                              child: Text(
+                                                "${age.floor()} %",
+                                                style: TextStyle(
+                                                    fontSize: ScreenUtil().setSp(
+                                                        17,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    color: kPrimaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Material(
+                                          type: MaterialType.transparency,
+                                          elevation: 6.0,
                                           color: Colors.transparent,
                                           borderRadius:
-                                              BorderRadius.circular(29),
-                                        ),
-                                        child: NeumorphicSlider(
-                                          min: 0,
-                                          max: 100,
-                                          value: this.age,
-                                          onChanged: (percent) {
-                                            setState(() {
-                                              age = percent;
-                                            });
-                                          },
-                                          onChangeEnd: (value) async {
-                                            // setState(() {
-                                            //   age = value;
-                                            // });
-                                            bool value2 = false;
-                                            await dataSelectConfirmMessage(
-                                                    context,
-                                                    "Alert!",
-                                                    "Are you sure you want to change the Commission?",
-                                                    "")
-                                                .then(
-                                                    (value) => value2 = value);
-                                            if (value2) {
-                                              setState(() {
-                                                prevage = age;
-                                                age = value;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                age = prevage;
-                                              });
-                                            }
-                                          },
-                                          style: SliderStyle(
-                                            accent: Color(0xFF34B0D9),
-                                            variant: Color(0xFF3685CB),
+                                              BorderRadius.circular(20),
+                                          child: InkWell(
+                                            splashColor: Colors.cyan[50],
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            onTap: () {},
+                                            child: Container(
+                                              width: ScreenUtil().setWidth(250),
+                                              height: ScreenUtil().setWidth(43),
+                                              // padding: EdgeInsets.all(20.0),
+                                              child: Center(
+                                                child: Text(
+                                                  'Request Prices',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Gilroy Bold',
+                                                    color: Colors.white,
+                                                    fontSize: ScreenUtil().setSp(
+                                                        18,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/images/vector17.png'),
+                                                fit: BoxFit.contain,
+                                              )),
+                                            ),
                                           ),
-                                          // thumb: Text('$age'),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Text(
-                                          "${age.floor()} %",
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(17,
-                                                  allowFontScalingSelf: true),
-                                              color: kPrimaryColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               ],
                             ),
                           ],
@@ -905,9 +961,9 @@ class _MyPriceState extends State<MyPrice> {
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 27),
+                                            .setHeight(searchSelected ? 0 : 20),
                                         width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 27),
+                                            .setWidth(searchSelected ? 0 : 20),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,
@@ -944,7 +1000,7 @@ class _MyPriceState extends State<MyPrice> {
                                             style: TextStyle(
                                               fontFamily: 'Gilroy Bold',
                                               color: searchSelected
-                                                  ? Colors.white
+                                                  ? Colors.black
                                                   : Colors.black,
                                               fontSize: ScreenUtil().setSp(16,
                                                   allowFontScalingSelf: true),

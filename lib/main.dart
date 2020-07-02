@@ -64,12 +64,12 @@ class MyApp extends StatelessWidget {
     OneSignal.shared.init(
       "83761a89-31cd-43d2-8aa5-76d81afa7709",
     );
-    // OneSignal.shared.setNotificationReceivedHandler((notification) {
-    //   notification.payload.smallIcon = "ic_stat_onesignal_default.png";
-    //   notification.payload.smallIconAccentColor = "FF4267B2";
-    //   notification.payload.backgroundImageLayout.titleTextColor = "FF4267B2";
-    //   notification.payload.ledColor = "FF4267B2";
-    // });
+    OneSignal.shared.setNotificationReceivedHandler((notification) {
+      notification.payload.smallIcon = "ic_stat_onesignal_default.png";
+      notification.payload.largeIcon = "ic_onesignal_large_icon_default.png";
+      notification.payload.smallIconAccentColor = "FF32FFF3";
+      // notification.payload.ledColor = "FF4267B2";
+    });
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 

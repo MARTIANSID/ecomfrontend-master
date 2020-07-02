@@ -59,7 +59,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                       color: Colors.black,
                       fontSize:
                           ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                      fontFamily: 'Gilroy',
+                      fontFamily: 'Gilroy Medium',
                     ),
                   ),
                 ),
@@ -97,7 +97,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                             Text(
                                               str[index],
                                               style: TextStyle(
-                                                  fontFamily: 'Varela',
+                                                  fontFamily: 'Gilroy Regular',
                                                   fontSize: ScreenUtil().setSp(
                                                       16,
                                                       allowFontScalingSelf:
@@ -250,6 +250,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           'StyleNumber: GS0021',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
+                                            fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
                                                 allowFontScalingSelf: true),
                                           ),
@@ -257,6 +258,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         Text(
                                           'Build: Taar',
                                           style: TextStyle(
+                                            fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
                                                 allowFontScalingSelf: true),
                                           ),
@@ -264,6 +266,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         Text(
                                           'Color: Rose',
                                           style: TextStyle(
+                                            fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
                                                 allowFontScalingSelf: true),
                                           ),
@@ -271,6 +274,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         Text(
                                           'Diamond Quality: SI_HI_BFGD',
                                           style: TextStyle(
+                                            fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
                                                 allowFontScalingSelf: true),
                                           ),
@@ -278,6 +282,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         Text(
                                           'Certification: None',
                                           style: TextStyle(
+                                            fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
                                                 allowFontScalingSelf: true),
                                           ),
@@ -285,6 +290,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         Text(
                                           'Quantity: 4',
                                           style: TextStyle(
+                                            fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
                                                 allowFontScalingSelf: true),
                                           ),

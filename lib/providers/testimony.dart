@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
@@ -43,6 +45,9 @@ class Testimony with ChangeNotifier{
      //array of maps 
 
   
+    } on SocketException {
+      throw 'No Internet';
+      
     } catch (err) {
       throw err;
     }
@@ -73,7 +78,10 @@ class Testimony with ChangeNotifier{
      //array of maps 
 
   
-    } catch (err) {
+    }on SocketException {
+      throw 'No Internet';
+      
+    }  catch (err) {
       throw err;
     }
 }

@@ -175,9 +175,13 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
-                  ),
+                  widget.val
+                      ? SizedBox(
+                          height: ScreenUtil().setHeight(22 + 45 + 11 + 20),
+                        )
+                      : SizedBox(
+                          height: ScreenUtil().setHeight(22 + 20),
+                        ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(25, 0, 26, 0),
                     child: Row(
@@ -282,16 +286,20 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                   duration: Duration(milliseconds: 500),
                                   curve: Curves.ease);
                             },
-                            child: Center(
-                              child: Text(
-                                'There aren\'t any Favourites product added yet!',
-                                style: TextStyle(
-                                  fontFamily: 'Gilory Regular',
-                                  color: Color(0xFFA49797),
-                                  fontSize: ScreenUtil()
-                                      .setSp(17, allowFontScalingSelf: true),
+                            child: Container(
+                              width: ScreenUtil().setHeight(350),
+                              child: Center(
+                                child: Text(
+                                  // 'There aren\'t any Favourites product added yet!',
+                                  "😕 No, Favourites yet?",
+                                  style: TextStyle(
+                                    fontFamily: 'Gilory Regular',
+                                    color: Color(0xFFA49797),
+                                    fontSize: ScreenUtil()
+                                        .setSp(17, allowFontScalingSelf: true),
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -316,7 +324,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                       ),
                     ),
                   ),
-            Container(
+            widget.val ? Container(
               child: BackdropFilter(
                 filter: ImageFilter.blur(
                     sigmaX: searchSelected ? 5 : 0,
@@ -647,7 +655,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                         color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontFamily: 'Gilroy Medium',
+                                                        fontFamily:
+                                                            'Gilroy Medium',
                                                         fontSize: ScreenUtil()
                                                             .setSp(21,
                                                                 allowFontScalingSelf:
@@ -712,6 +721,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                   ],
                 ),
               ),
+            ) : SizedBox(
+              height: 0.0,
             ),
             // Positioned(
             //   right: ScreenUtil().setHeight(32.88),
