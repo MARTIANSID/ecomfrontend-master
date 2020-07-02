@@ -134,12 +134,10 @@ class AddToCartTState extends State<AddToCart> {
     colorKey = (Provider.of<Pagination>(context, listen: false)
             .color[_defaultChoiceIndex1])
         .toLowerCase();
-     priceKey = (Provider.of<Pagination>(context, listen: false)
-          .diamondQuality[_defaultChoiceIndex3]);
+    priceKey = (Provider.of<Pagination>(context, listen: false)
+        .diamondQuality[_defaultChoiceIndex3]);
 
     if (Provider.of<Pagination>(context, listen: false).isPriced) {
-     
-
       certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
           Provider.of<Pagination>(context, listen: false)
               .cert[_defaultChoiceIndex2]];
@@ -978,52 +976,51 @@ class AddToCartTState extends State<AddToCart> {
                             // });
                             // print(value2);
                             // if (value2) {
-                              try {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                await Provider.of<Cart>(context, listen: false)
-                                    .addCart(
-                                  context: context,
-                                  product: widget.product,
-                                  color: colorKey,
-                                  cert: Provider.of<Pagination>(context,
-                                          listen: false)
-                                      .cert[_defaultChoiceIndex2],
-                                  diamond: priceKey,
-                                  build: Provider.of<Pagination>(context,
-                                          listen: false)
-                                      .build[_defaultChoiceIndex],
-                                  quantity: valueOfQuantity,
-                                  colorValue: _defaultChoiceIndex1,
-                                  buildValue: _defaultChoiceIndex,
-                                  diamondValue: _defaultChoiceIndex3,
-                                  certvalue: _defaultChoiceIndex2,
-                                  update: widget.updateCart ? true : false,
-                                );
+                            try {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await Provider.of<Cart>(context, listen: false)
+                                  .addCart(
+                                context: context,
+                                product: widget.product,
+                                color: colorKey,
+                                cert: Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .cert[_defaultChoiceIndex2],
+                                diamond: priceKey,
+                                build: Provider.of<Pagination>(context,
+                                        listen: false)
+                                    .build[_defaultChoiceIndex],
+                                quantity: valueOfQuantity,
+                                colorValue: _defaultChoiceIndex1,
+                                buildValue: _defaultChoiceIndex,
+                                diamondValue: _defaultChoiceIndex3,
+                                certvalue: _defaultChoiceIndex2,
+                                update: widget.updateCart ? true : false,
+                              );
 
-                                widget.updateCart
-                                    ? showFloatingFlushbar(
-                                        widget.globalKey.currentContext,
-                                        'Your Cart data has been successfully Updated',
-                                        widget.product.styleNumber,
-                                      )
-                                    : showFloatingFlushbar(
-                                        widget.globalKey.currentContext,
-                                        'Product has been added to your Cart"🛒"',
-                                        widget.product.styleNumber,
-                                      );
-                              } catch (err) {
-                                dataSelect(context, '$err', '', 'OK', () {
-                                  Navigator.pop(context);
-                                });
-                              } finally {
-                                Navigator.of(context).pop();
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              
-                              }
+                              widget.updateCart
+                                  ? showFloatingFlushbar(
+                                      widget.globalKey.currentContext,
+                                      'Your Cart data has been successfully Updated',
+                                      widget.product.styleNumber,
+                                    )
+                                  : showFloatingFlushbar(
+                                      widget.globalKey.currentContext,
+                                      'Product has been added to your Cart"🛒"',
+                                      widget.product.styleNumber,
+                                    );
+                            } catch (err) {
+                              dataSelect(context, '$err', '', 'OK', () {
+                                Navigator.pop(context);
+                              });
+                            } finally {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
                             // }
                             Navigator.of(context).pop();
                             // print(val);

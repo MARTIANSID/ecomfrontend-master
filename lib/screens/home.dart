@@ -20,7 +20,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  bool _visible = true;
+  // bool _visible = true;
   void _onTap(int a) {
     setState(() {
       _currentIndex = a;
@@ -32,7 +32,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool check = false;
 
   ScrollController _hideButtonController;
-  var _isVisible;
+  bool _isVisible;
 
   PageController pageController = PageController(
     initialPage: 2,
@@ -59,7 +59,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         );
       } else {
-        dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay', () {
+        dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay',
+            () {
           Navigator.pop(context);
         });
       }
@@ -75,6 +76,28 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   AnimationController controller;
   Animation<double> heightAnimation;
+
+  GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
+
+  // _displaySnackBar(BuildContext context) {
+  //   final snackBar = SnackBar(
+  //     elevation: 100,
+  //     backgroundColor: Colors.black.withOpacity(0.6),
+  //     duration: Duration(
+  //       seconds: 1,
+  //     ),
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(50),
+  //     ),
+  //     content: Container(
+  //       margin: EdgeInsets.only(
+  //         bottom: 30.0,
+  //       ),
+  //       child: Text("Swipe Right to Delete From Cart!"),
+  //     ),
+  //   );
+  //   globalKey.currentState.showSnackBar(snackBar);
+  // }
 
   @override
   void initState() {
@@ -107,15 +130,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     });
   }
 
-  GlobalKey globalKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     // print(.height);
-    ScreenUtil.init(context,
-        width: 411.42857142857144,
-        height: 774.8571428571429,
-        allowFontScaling: true);
+    ScreenUtil.init(
+      context,
+      width: 411.42857142857144,
+      height: 774.8571428571429,
+      allowFontScaling: true,
+    );
     // var size = MediaQuery.of(context).size;
     // return Scaffold(
     //   body: [
@@ -204,14 +227,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               FavouriteScreen(
                 scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
-                val: _visible,
+                val: _isVisible,
                 pageController: pageChanged,
                 pageControllerValue: pageController,
               ),
               ProductOverViewScreen(
                 scrollController: _hideButtonController,
                 onButtonTapped: _onTap,
-                val: _visible,
+                val: _isVisible,
               ),
               // if(check==false)
               CartScreen(),
@@ -448,6 +471,27 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             pageController.animateToPage(3,
                                 duration: Duration(milliseconds: 500),
                                 curve: Curves.ease);
+
+                            // _displaySnackBar(context);
+                            // Scaffold.of(globalKey.currentContext).showSnackBar(
+                            //   SnackBar(
+                            //     elevation: 100,
+                            //     backgroundColor: Colors.black.withOpacity(0.6),
+                            //     duration: Duration(
+                            //       seconds: 1,
+                            //     ),
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(50),
+                            //     ),
+                            //     content: Container(
+                            //       margin: EdgeInsets.only(
+                            //         bottom: 30.0,
+                            //       ),
+                            //       child:
+                            //           Text("Swipe Right to Delete From Cart!"),
+                            //     ),
+                            //   ),
+                            // );
                           }
                         }
                       : null,
@@ -516,8 +560,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             }
                           });
                           if (value2) {
-                            if (await canLaunch("https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
-                              await launch("https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
+                            if (await canLaunch(
+                                "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
+                              await launch(
+                                  "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.");
                             } else {
                               throw 'Could not launch https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.';
                             }

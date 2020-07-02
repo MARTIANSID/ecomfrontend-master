@@ -232,7 +232,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                     print(fullName);
                                   });
                                 },
-                                icon: Icons.person,
+                                icon: Icons.person_outline,
                                 proceed: !editFields,
                               ),
                             ),
@@ -266,7 +266,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                     print(emailID);
                                   });
                                 },
-                                icon: Icons.mail,
+                                icon: Icons.mail_outline,
                                 proceed: true,
                               ),
                             ),
@@ -292,7 +292,6 @@ class _AccountInfoState extends State<AccountInfo> {
                               child: RoundedInputField(
                                 controller: firmDetailController,
                                 hintText: "Firm Name",
-                                
                                 onSubmitted: (value) {
                                   setState(() {
                                     firmDetail = value;
@@ -313,7 +312,6 @@ class _AccountInfoState extends State<AccountInfo> {
                               child: RoundedInputField(
                                 controller: gstValueController,
                                 hintText: "GST",
-                                
                                 onSubmitted: (value) {
                                   setState(() {
                                     gstValue = value;
@@ -344,7 +342,6 @@ class _AccountInfoState extends State<AccountInfo> {
                                   }
                                   return null;
                                 },
-                               
                                 onSubmitted: (value) {
                                   setState(() {
                                     streetName = value;

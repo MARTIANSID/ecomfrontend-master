@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +120,129 @@ void dataSelect(context, titleText, contentText, buttonText, onPressed) {
       },
     );
   }
+}
+
+Widget dataSelect1(context, titleText, contentText, buttonText, onPressed) {
+  return BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+    // shape: RoundedRectangleBorder(
+    //   borderRadius: BorderRadius.circular(20.0),
+    // ),
+    // title: Text(
+    //   titleText,
+    //   style: TextStyle(
+    //     color: Colors.black,
+    //     fontFamily: 'Gilroy Black',
+    //     fontWeight: FontWeight.bold,
+    //     fontSize: ScreenUtil().setSp(
+    //       19,
+    //       allowFontScalingSelf: true,
+    //     ),
+    //   ),
+    //   textAlign: TextAlign.center,
+    // ),
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF34B0D9).withOpacity(0.2),
+            Color(0xFF3685CB).withOpacity(0.2),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            blurRadius: 7,
+            color: Color(0xFF3BB96D).withOpacity(0.25),
+            offset: Offset(-10, -10),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     Color(0xFF34B0D9).withOpacity(0.2),
+            //     Color(0xFF3685CB).withOpacity(0.2),
+            //   ],
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            // ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                blurRadius: 7,
+                color: Color(0xFF3BB96D).withOpacity(0.25),
+                offset: Offset(10, 10),
+              ),
+            ],
+          ),
+          constraints: BoxConstraints(
+            minHeight: ScreenUtil().setHeight(50),
+            maxHeight: ScreenUtil().setHeight(150),
+          ),
+          // height: ScreenUtil().setHeight(150.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                contentText,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Gilroy',
+                  fontSize: ScreenUtil().setSp(
+                    16,
+                    allowFontScalingSelf: true,
+                  ),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(20),
+              ),
+              OutlineButton(
+                onPressed: onPressed,
+                child: Text(
+                  buttonText,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize:
+                          ScreenUtil().setSp(15, allowFontScalingSelf: true)),
+                ),
+                // color: kPrimaryLightColor,
+                borderSide: BorderSide(color: Colors.black, width: 1.0),
+                shape: RoundedRectangleBorder(
+                    // side: BorderSide(color: kPrimaryColor, width: 1.0),
+                    borderRadius: BorderRadius.circular(18.0)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+  // if (context != null) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //           decoration: BoxDecoration(
+  //             gradient: LinearGradient(
+  //               colors: [
+  //                 Color(0xFF34B0D9).withOpacity(0.2),
+  //                 Color(0xFF3685CB).withOpacity(0.2),
+  //               ],
+  //               begin: Alignment.topLeft,
+  //               end: Alignment.bottomRight,
+  //             ),
+  //           ),
+  //           child: alertDialog);
+  //     },
+  //   );
+  // }
 }
 
 Future<bool> dataSelectConfirmMessage(

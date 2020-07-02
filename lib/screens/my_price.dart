@@ -686,7 +686,7 @@ class _MyPriceState extends State<MyPrice> {
                                                     (value) => value2 = value);
                                             if (value2) {
                                               setState(() {
-                                                prevage=age;
+                                                prevage = age;
                                                 age = value;
                                               });
                                             } else {
