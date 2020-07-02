@@ -39,7 +39,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
 
   bool autovalidate = false;
 
-  bool isButtonLoading=false;
+  bool isButtonLoading = false;
 
   @override
   void initState() {
@@ -156,14 +156,14 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                   });
                                 },
                                 validator: (value) {
-                                  if (value.length<3) {
+                                  if (value.length < 3) {
                                     return "Name Error";
                                   } else if (value.isEmpty) {
                                     return "Enter Your Name";
                                   }
                                   return null;
                                 },
-                                icon: Icons.person,
+                                icon: Icons.person_outline,
                                 proceed: false,
                               ),
                             ),
@@ -200,7 +200,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(emailID);
                                   });
                                 },
-                                icon: Icons.mail,
+                                icon: Icons.mail_outline,
                                 proceed: false,
                               ),
                             ),
@@ -220,7 +220,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(reference);
                                   });
                                 },
-                                icon: Icons.people,
+                                icon: Icons.people_outline,
                                 proceed: false,
                               ),
                             ),
@@ -258,7 +258,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(firmDetail);
                                   });
                                 },
-                                icon: Icons.work,
+                                svgOrIcon: false,
+                                svg: "assets/icons/workOutline.svg",
                                 proceed: false,
                               ),
                             ),
@@ -282,7 +283,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(gstValue);
                                   });
                                 },
-                                icon: Icons.attach_money,
+                                svgOrIcon: false,
+                                svg: "assets/icons/taxes.svg",
                                 proceed: false,
                               ),
                             ),
@@ -302,7 +304,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(streetName);
                                   });
                                 },
-                                icon: Icons.streetview,
+                                svgOrIcon: false,
+                                svg: "assets/icons/streetView.svg",
                                 proceed: false,
                               ),
                             ),
@@ -342,7 +345,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(stateName);
                                   });
                                 },
-                                icon: Icons.location_city,
+                                svg: "assets/icons/realEstate.svg",
+                                svgOrIcon: false,
                                 proceed: false,
                               ),
                             ),
@@ -364,7 +368,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     print(pincode);
                                   });
                                 },
-                                icon: Icons.pin_drop,
+                                icon: Icons.person_pin,
                                 proceed: false,
                               ),
                             ),
@@ -398,102 +402,105 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
           ],
         ),
       ),
-      floatingActionButton:isButtonLoading?Container(
-          width: ScreenUtil().setWidth(120.0),
-          decoration: BoxDecoration(
-            // image: DecorationImage(
-            //   image: AssetImage('assets/images/vector17.png'),
-            //   fit: BoxFit.contain,
-            // ),
-            borderRadius: BorderRadius.circular(30),
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF34B0E9),
-                Color(0xFF3685CB),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          padding: EdgeInsets.all(15.0),
-          child:Center(child:CircularProgressIndicator())) : GestureDetector(
-        onTap: () async {
-          if (_key.currentState.validate()) {
-            _key.currentState.save();
-            setState(() {
-              isLoading = true;
-            });
-            try {
-              setState(() {
-              isButtonLoading=true;
-              });
-              await Provider.of<UserInfo>(context, listen: false)
-                  .completeSignUp(
-                context: context,
-                fullname: fullName,
-                email: emailID,
-                city: cityName,
-                firm: firmDetail,
-                gst: gstValue,
-                pincode: pincode,
-                reference: reference,
-                state: stateName,
-                street: streetName,
-              );
-            } catch (err) {
-              dataSelect(context, 'Alert!','$err', 'OK', () {
-                Navigator.pop(context);
-              });
-            } finally {
-              setState(() {
-                isButtonLoading=false;
-                isLoading = false;
-              });
-              Navigator.of(context).pop();
-            }
-          }
-        },
-        child: Container(
-          width: ScreenUtil().setWidth(120.0),
-          decoration: BoxDecoration(
-            // image: DecorationImage(
-            //   image: AssetImage('assets/images/vector17.png'),
-            //   fit: BoxFit.contain,
-            // ),
-            borderRadius: BorderRadius.circular(30),
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF34B0E9),
-                Color(0xFF3685CB),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          padding: EdgeInsets.all(15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.done_outline,
-                color: Colors.white,
-                size: ScreenUtil().setSp(23,allowFontScalingSelf: true),
-              ),
-              SizedBox(
-                width: ScreenUtil().setWidth(10),
-              ),
-              Text(
-                'Submit',
-                style: TextStyle(
-                  fontFamily: 'Gilroy Medium',
-                  fontSize: ScreenUtil().setSp(15,allowFontScalingSelf: true),
-                  color: Colors.white,
+      floatingActionButton: isButtonLoading
+          ? Container(
+              width: ScreenUtil().setWidth(120.0),
+              decoration: BoxDecoration(
+                // image: DecorationImage(
+                //   image: AssetImage('assets/images/vector17.png'),
+                //   fit: BoxFit.contain,
+                // ),
+                borderRadius: BorderRadius.circular(30),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF34B0E9),
+                    Color(0xFF3685CB),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+              padding: EdgeInsets.all(15.0),
+              child: Center(child: CircularProgressIndicator()))
+          : GestureDetector(
+              onTap: () async {
+                if (_key.currentState.validate()) {
+                  _key.currentState.save();
+                  setState(() {
+                    isLoading = true;
+                  });
+                  try {
+                    setState(() {
+                      isButtonLoading = true;
+                    });
+                    await Provider.of<UserInfo>(context, listen: false)
+                        .completeSignUp(
+                      context: context,
+                      fullname: fullName,
+                      email: emailID,
+                      city: cityName,
+                      firm: firmDetail,
+                      gst: gstValue,
+                      pincode: pincode,
+                      reference: reference,
+                      state: stateName,
+                      street: streetName,
+                    );
+                  } catch (err) {
+                    dataSelect(context, 'Alert!', '$err', 'OK', () {
+                      Navigator.pop(context);
+                    });
+                  } finally {
+                    setState(() {
+                      isButtonLoading = false;
+                      isLoading = false;
+                    });
+                    Navigator.of(context).pop();
+                  }
+                }
+              },
+              child: Container(
+                width: ScreenUtil().setWidth(120.0),
+                decoration: BoxDecoration(
+                  // image: DecorationImage(
+                  //   image: AssetImage('assets/images/vector17.png'),
+                  //   fit: BoxFit.contain,
+                  // ),
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF34B0E9),
+                      Color(0xFF3685CB),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                padding: EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.done_outline,
+                      color: Colors.white,
+                      size: ScreenUtil().setSp(23, allowFontScalingSelf: true),
+                    ),
+                    SizedBox(
+                      width: ScreenUtil().setWidth(10),
+                    ),
+                    Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontFamily: 'Gilroy Medium',
+                        fontSize:
+                            ScreenUtil().setSp(15, allowFontScalingSelf: true),
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

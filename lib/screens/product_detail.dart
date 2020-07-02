@@ -1279,9 +1279,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                     duration: Duration(milliseconds: 600),
                                     margin: EdgeInsets.only(right: 6.0),
                                     height: ScreenUtil()
-                                        .setHeight(searchSelected ? 0 : 27),
+                                        .setHeight(searchSelected ? 0 : 20),
                                     width: ScreenUtil()
-                                        .setWidth(searchSelected ? 0 : 27),
+                                        .setWidth(searchSelected ? 0 : 20),
                                     child: SvgPicture.asset(
                                       'assets/icons/notificationIcon.svg',
                                       color: Colors.black,

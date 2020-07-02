@@ -140,8 +140,9 @@ class _CookiePageState extends State<CookiePage> {
         //    Provider.of<Pagination>(context,listen:false).pageStart();
 
         // }
-    if(context!=null)
-        Provider.of<Pagination>(context, listen: false).pageAdd(widget.select);
+        if (context != null)
+          Provider.of<Pagination>(context, listen: false)
+              .pageAdd(widget.select);
         try {
           await getMoreProducts();
         } catch (err) {

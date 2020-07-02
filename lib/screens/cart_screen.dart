@@ -521,7 +521,7 @@
 
 import 'dart:async';
 import 'dart:ui';
-
+import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/order.dart';
@@ -1502,6 +1502,25 @@ class _CartScreenState extends State<CartScreen> {
                                                                 .length -
                                                             1 &&
                                                     Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .isPriced
+                                                ? SizedBox(
+                                                    height: ScreenUtil()
+                                                        .setHeight(93),
+                                                  )
+                                                : SizedBox(
+                                                    height: 0,
+                                                  ),
+                                            index ==
+                                                        Provider.of<Cart>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .cart
+                                                                .length -
+                                                            1 &&
+                                                    Provider.of<Pagination>(
                                                                 context,
                                                                 listen: false)
                                                             .isPriced ==
@@ -1720,9 +1739,9 @@ class _CartScreenState extends State<CartScreen> {
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 27),
+                                            .setHeight(searchSelected ? 0 : 20),
                                         width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 27),
+                                            .setWidth(searchSelected ? 0 : 20),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,

@@ -2,6 +2,7 @@ import 'package:Flutter/components/text_field_container.dart';
 import 'package:Flutter/constant/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
@@ -13,22 +14,25 @@ class RoundedInputField extends StatelessWidget {
   final Function(String) onSubmitted;
   final Function(String) validator;
   final Function onPressed;
+  final String svg;
+  final bool svgOrIcon;
   // final GlobalKey<FormState> keyForm;
-  const RoundedInputField({
-    Key key,
-    this.hintText,
-    // this.keyForm,
-    this.icon = Icons.phone_android,
-    this.color = kPrimaryLightColor,
-    this.proceed,
-    this.validator,
-    this.controller,
-    this.onChanged,
-    this.onPressed,
-    this.onSubmitted
-  }) : super(key: key);
+  const RoundedInputField(
+      {Key key,
+      this.hintText,
+      // this.keyForm,
+      this.icon = Icons.phone_android,
+      this.color = kPrimaryLightColor,
+      this.proceed,
+      this.svg,
+      this.svgOrIcon = true,
+      this.validator,
+      this.controller,
+      this.onChanged,
+      this.onPressed,
+      this.onSubmitted})
+      : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
@@ -47,7 +51,7 @@ class RoundedInputField extends StatelessWidget {
             cursorColor: kPrimaryColor,
             style: TextStyle(
               fontFamily: 'Gilroy Regular',
-              fontSize: ScreenUtil().setSp(16,allowFontScalingSelf: true),
+              fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
             ),
             controller: controller,
             keyboardType: hintText == "Enter Phone Number" ||
@@ -56,10 +60,17 @@ class RoundedInputField extends StatelessWidget {
                 ? TextInputType.phone
                 : TextInputType.text,
             decoration: InputDecoration(
-              icon: Icon(
-                icon,
-                color: Colors.black,
-              ),
+              icon: svgOrIcon
+                  ? Icon(
+                      icon,
+                      color: Colors.black,
+                    )
+                  : SvgPicture.asset(
+                      svg,
+                      fit: BoxFit.contain,
+                      height: ScreenUtil().setHeight(22),
+                      width: ScreenUtil().setWidth(22),
+                    ),
               hintText: hintText,
               border: InputBorder.none,
             ),

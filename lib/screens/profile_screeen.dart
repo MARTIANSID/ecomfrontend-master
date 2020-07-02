@@ -866,76 +866,199 @@ class _UserPageState extends State<UserPage>
     await showDialog(
       context: context,
       builder: (context) {
+        // return AlertDialog(
+        //   content:
+        //   actions: <Widget>[
+        //     FlatButton(
+        //       child: const Text('CANCEL'),
+        //       onPressed: () {
+        //         Navigator.pop(context);
+        //         setState(() {
+        //           value2 = false;
+        //         });
+        //         // return false;
+        //       },
+        //     ),
+        //     FlatButton(
+        //       child: const Text('OPEN'),
+        //       onPressed: () {
+        //         if (_key.currentState.validate()) {
+        //           _key.currentState.save();
+        //           Navigator.pop(context);
+        //           setState(() {
+        //             value2 = true;
+        //           });
+        //           // return true;
+        //         }
+        //       },
+        //     ),
+        //   ],
+        // );
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          contentPadding: EdgeInsets.all(0),
           content: Container(
-            width: ScreenUtil().setWidth(300),
-            child: Form(
-              key: _key,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: ScreenUtil().setWidth(290),
-                    // flex: 11,
-                    child: TextFormField(
-                      style: TextStyle(
-                        fontFamily: 'Gilroy Regular',
-                        fontSize:
-                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
-                      ),
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.code,
-                          color: Colors.black,
+            height: ScreenUtil().setHeight(180 + 50),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: ScreenUtil().setWidth(283),
+                  height: ScreenUtil().setHeight(180),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                  ),
+                  child: Form(
+                    key: _key,
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.clear),
+                              color: Colors.black,
+                              onPressed: () {
+                                Navigator.pop(context);
+                                setState(() {
+                                  value2 = false;
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                        hintText: "Password",
-                        border: InputBorder.none,
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Enter Password";
-                        } else if (Provider.of<Auth>(context, listen: false)
-                                .password !=
-                            value) {
-                          return "Incorrect Password";
-                        } else if (p == false) {
-                          return "Something went wrong";
-                        }
-                        return null;
-                      },
-                      autofocus: true,
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'Enter your password',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Gilroy Medium",
+                              fontSize: ScreenUtil()
+                                  .setSp(18, allowFontScalingSelf: true),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          width: ScreenUtil().setWidth(290),
+                          // flex: 11,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFF34BDDD),
+                                Color(0xFF367DC8),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          padding: EdgeInsets.all(3),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.only(left: 10),
+                            child: TextFormField(
+                              style: TextStyle(
+                                fontFamily: 'Gilroy Regular',
+                                fontSize: ScreenUtil()
+                                    .setSp(16, allowFontScalingSelf: true),
+                              ),
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                icon: SvgPicture.asset(
+                                  "assets/icons/lock.svg",
+                                  height: ScreenUtil().setWidth(18),
+                                  width: ScreenUtil().setHeight(21),
+                                  color: Colors.black,
+                                ),
+                                hintText: "Password",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return "Enter Password";
+                                } else if (Provider.of<Auth>(context,
+                                            listen: false)
+                                        .password !=
+                                    value) {
+                                  return "Incorrect Password";
+                                } else if (p == false) {
+                                  return "Something went wrong";
+                                }
+                                return null;
+                              },
+                              autofocus: true,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                Material(
+                  type: MaterialType.transparency,
+                  elevation: 6.0,
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
+                  child: InkWell(
+                    splashColor: Colors.cyan[50],
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                    onTap: () {
+                      if (_key.currentState.validate()) {
+                        _key.currentState.save();
+                        Navigator.pop(context);
+                        setState(() {
+                          value2 = true;
+                        });
+                        // return true;
+                      }
+                    },
+                    child: Container(
+                      width: ScreenUtil().setWidth(283),
+                      height: ScreenUtil().setHeight(50),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF34BDDD),
+                            Color(0xFF367DC8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Confirm",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Gilroy Medium",
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  value2 = false;
-                });
-                // return false;
-              },
-            ),
-            FlatButton(
-              child: const Text('OPEN'),
-              onPressed: () {
-                if (_key.currentState.validate()) {
-                  _key.currentState.save();
-                  Navigator.pop(context);
-                  setState(() {
-                    value2 = true;
-                  });
-                  // return true;
-                }
-              },
-            ),
-          ],
         );
       },
     );
@@ -2112,9 +2235,9 @@ class _UserPageState extends State<UserPage>
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: ScreenUtil().setHeight(18),
-                                  ),
+                                  // SizedBox(
+                                  //   height: ScreenUtil().setHeight(18),
+                                  // ),
                                   Container(
                                     width: ScreenUtil().setWidth(300),
                                     child: Material(
@@ -2167,9 +2290,9 @@ class _UserPageState extends State<UserPage>
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: ScreenUtil().setHeight(18),
-                                  ),
+                                  // SizedBox(
+                                  //   height: ScreenUtil().setHeight(18),
+                                  // ),
                                   Container(
                                     width: ScreenUtil().setWidth(300),
                                     child: Material(
