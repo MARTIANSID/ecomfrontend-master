@@ -125,7 +125,9 @@ class _ProductDetailState extends State<ProductDetail> {
       width: ScreenUtil().setWidth(20),
       child: new Center(
         child: new Material(
-          color: !isColourSetRadial ? Colors.white : Colors.black,
+          color: isColourSetLinear || (!isColourSetLinear && !isColourSetRadial)
+              ? Colors.black
+              : Colors.white,
           type: MaterialType.circle,
           child: new Container(
             width: 5.0 * zoom,
@@ -170,9 +172,14 @@ class _ProductDetailState extends State<ProductDetail> {
         },
         onPanEnd: (details) {
           print("object2");
-          setState(() {
-            hideButton = false;
-          });
+          Timer(
+            Duration(seconds: 3),
+            () => setState(
+              () {
+                hideButton = false;
+              },
+            ),
+          );
         },
         child: Container(
           color: Colors.white,
@@ -596,7 +603,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                   Container(
                                     margin: EdgeInsets.only(left: 9.0),
                                     width: ScreenUtil().setWidth(285),
-                                    height: ScreenUtil().setHeight(95),
+                                    height: ScreenUtil().setHeight(97),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -609,7 +616,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           children: <Widget>[
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 5.0),
+                                                  EdgeInsets.only(bottom: 3.0),
                                               child: Text(
                                                 'Gold Weight'.toUpperCase(),
                                                 style: TextStyle(
@@ -624,7 +631,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 5.0),
+                                                  EdgeInsets.only(bottom: 3.0),
                                               child: Text(
                                                 'Diamond Weight'.toUpperCase(),
                                                 style: TextStyle(
@@ -639,7 +646,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 5.0),
+                                                  EdgeInsets.only(bottom: 3.0),
                                               child: Text(
                                                 'Diamond Count'.toUpperCase(),
                                                 style: TextStyle(
@@ -675,7 +682,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           children: <Widget>[
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 5.0),
+                                                  EdgeInsets.only(bottom: 3.0),
                                               child: Text(
                                                 '${widget.product.goldWeight}' +
                                                     ' gms',
@@ -691,7 +698,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 5.0),
+                                                  EdgeInsets.only(bottom: 3.0),
                                               child: Text(
                                                 '${widget.product.diamondWeight}' +
                                                     ' ct',
@@ -707,7 +714,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                             ),
                                             Container(
                                               margin:
-                                                  EdgeInsets.only(bottom: 5.0),
+                                                  EdgeInsets.only(bottom: 3.0),
                                               child: Text(
                                                 '${widget.product.diamondCount}' +
                                                     ' pieces',
@@ -751,7 +758,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
                                         SizedBox(
-                                          width: ScreenUtil().setWidth(17),
+                                          width: ScreenUtil().setWidth(15),
                                         ),
                                         Column(
                                           crossAxisAlignment:
@@ -871,7 +878,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 width:
                                                     ScreenUtil().setWidth(270),
                                                 height:
-                                                    ScreenUtil().setWidth(43),
+                                                    ScreenUtil().setWidth(40),
                                                 // padding: EdgeInsets.all(20.0),
                                                 child: Center(
                                                   child: Text(
@@ -925,12 +932,29 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             TapGestureRecognizer()
                                                               ..onTap =
                                                                   () async {
-                                                                if (await canLaunch(
-                                                                    "https://wa.me/919322244007")) {
-                                                                  await launch(
-                                                                      "https://wa.me/919322244007");
-                                                                } else {
-                                                                  throw 'Could not launch https://wa.me/919322244007';
+                                                                bool value2 =
+                                                                    false;
+                                                                await dataSelectConfirmMessage(
+                                                                  globalKey
+                                                                      .currentContext,
+                                                                  'Alert!',
+                                                                  "Are you sure, You want to open Whatsapp?",
+                                                                  'Open Whatsapp',
+                                                                ).then(
+                                                                    (value) async {
+                                                                  if (value) {
+                                                                    value2 =
+                                                                        value;
+                                                                  }
+                                                                });
+                                                                if (value2) {
+                                                                  if (await canLaunch(
+                                                                      "https://wa.me/919322244007")) {
+                                                                    await launch(
+                                                                        "https://wa.me/919322244007");
+                                                                  } else {
+                                                                    throw 'Could not launch https://wa.me/919322244007';
+                                                                  }
                                                                 }
                                                               },
                                                         style: TextStyle(
@@ -1072,7 +1096,8 @@ class _ProductDetailState extends State<ProductDetail> {
                         widget.product.isFavourite
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        size: 30.0,
+                        size:
+                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
                         color: Colors.white,
                       ),
                       onTap: () async {
@@ -1139,7 +1164,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         width: ScreenUtil().setWidth(360),
                         height: ScreenUtil().setHeight(45),
                         margin: EdgeInsets.fromLTRB(
-                            26, 17, 0, searchSelected ? 0 : 20),
+                            26, 11, 0, searchSelected ? 0 : 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1147,113 +1172,119 @@ class _ProductDetailState extends State<ProductDetail> {
                             AnimatedContainer(
                               duration: Duration(milliseconds: 600),
                               curve: Curves.easeInOut,
-                              padding: EdgeInsets.only(
-                                  left: searchSelected ? 10.0 : 0.0),
+                              padding: EdgeInsets.only(left: 10.0),
                               width: ScreenUtil()
                                   .setWidth(searchSelected ? 305 : 360),
-                              height: ScreenUtil().setHeight(40),
+                              height: ScreenUtil().setHeight(45),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.white,
+                                color: isColourSetLinear || isColourSetRadial
+                                    ? Colors.white
+                                    : Color(0xFFF4F4F4),
                               ),
                               child: Stack(
                                 alignment: Alignment.centerRight,
                                 children: <Widget>[
-                                  Positioned(
-                                    top: 0.0,
-                                    left: 0.0,
-                                    child: Container(
-                                      width: ScreenUtil()
-                                          .setWidth(searchSelected ? 305 : 360),
-                                      height: ScreenUtil().setHeight(45),
-                                      padding: EdgeInsets.only(bottom: 7.5),
-                                      child: TextField(
-                                        controller: textEditingController,
-                                        onTap: () async {
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 600),
+                                    width: ScreenUtil()
+                                        .setWidth(searchSelected ? 305 : 360),
+                                    height: ScreenUtil().setHeight(40),
+                                    padding: EdgeInsets.only(bottom: 2),
+                                    child: TextField(
+                                      controller: textEditingController,
+                                      onTap: () async {
+                                        setState(() {
+                                          searchSelected = true;
+                                        });
+                                        Timer(Duration(milliseconds: 700), () {
                                           setState(() {
-                                            searchSelected = true;
+                                            searchSelectedDoneButton = true;
                                           });
-                                          Timer(Duration(milliseconds: 700),
-                                              () {
-                                            setState(() {
-                                              searchSelectedDoneButton = true;
-                                            });
-                                          });
-                                        },
-                                        onChanged: (value) async {
-                                          setState(() {
-                                            // isLoadingSearch = true;
-                                            searchValue = value.toUpperCase();
-                                          });
-                                          // setState(() {
+                                        });
+                                      },
+                                      onChanged: (value) async {
+                                        setState(() {
+                                          // isLoadingSearch = true;
+                                          searchValue = value.toUpperCase();
+                                        });
+                                        // setState(() {
 
-                                          //   // info=styleNumber[].split(value);
-                                          //   // print(styleNumber[1].split(searchValue));
-                                          // });
+                                        //   // info=styleNumber[].split(value);
+                                        //   // print(styleNumber[1].split(searchValue));
+                                        // });
+                                        try {
                                           await getSearch(
                                               searchValue.toUpperCase());
-                                          // setState(() {
-                                          //   isLoadingSearch = false;
-                                          // });
-                                          // getSearchResult(value.toUpperCase());
-                                        },
-                                        decoration: InputDecoration(
-                                            // contentPadding: EdgeInsets.all(15.0),
-                                            // suffixIcon: searchSelected
-                                            //     ? GestureDetector(
-                                            //         onTap: () {
-                                            //           textEditingController.clear();
-                                            //           setState(() {
-                                            //             searchValue = "";
-                                            //           });
-                                            //         },
-                                            //         child: Icon(Icons.clear),
-                                            //       )
-                                            //     : SizedBox(
-                                            //         height: 0.0,
-                                            //         width: 0.0,
-                                            //       ),
-                                            hintText: 'SEARCH GEMSTORY',
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'Gilroy Medium',
-                                              color: Color(0xFF595959),
-                                              fontSize: ScreenUtil().setSp(14,
-                                                  allowFontScalingSelf: true),
-                                            ),
-                                            border: InputBorder.none,
-                                            alignLabelWithHint: true),
-                                        textAlign: searchSelected
-                                            ? TextAlign.start
-                                            : TextAlign.center,
-                                        style: TextStyle(
-                                            fontFamily: 'Gilroy Regular',
-                                            fontSize: ScreenUtil().setSp(16,
-                                                allowFontScalingSelf: true)),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 10.0,
-                                    left: 10.0,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pop();
+                                        } catch (err) {
+                                          dataSelect(context, '$err', '', 'OK',
+                                              () {
+                                            Navigator.pop(context);
+                                          });
+                                        }
+                                        // await getSearch(
+                                        //     searchValue.toUpperCase());
+                                        // setState(() {
+                                        //   isLoadingSearch = false;
+                                        // });
+                                        // getSearchResult(value.toUpperCase());
                                       },
-                                      child: AnimatedContainer(
-                                        // margin: EdgeInsets.only(left: 10.0),
-                                        duration: Duration(milliseconds: 600),
-                                        // margin: EdgeInsets.only(right: 6.0),
-                                        height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 18),
-                                        width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 19),
-                                        child: Image.asset(
-                                          'assets/images/backButton.png',
-                                          color: Colors.black,
+                                      decoration: InputDecoration(
+                                        // contentPadding: EdgeInsets.all(15.0),
+                                        // suffixIcon: searchSelected
+                                        //     ? GestureDetector(
+                                        //         onTap: () {
+                                        //           textEditingController.clear();
+                                        //           setState(() {
+                                        //             searchValue = "";
+                                        //           });
+                                        //         },
+                                        //         child: Icon(Icons.clear),
+                                        //       )
+                                        //     : SizedBox(
+                                        //         height: 0.0,
+                                        //         width: 0.0,
+                                        //       ),
+                                        hintText: 'SEARCH GEMSTORY',
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Gilroy Medium',
+                                          color: Color(0xFF595959),
+                                          fontSize: ScreenUtil().setSp(14,
+                                              allowFontScalingSelf: true),
                                         ),
+                                        border: InputBorder.none,
                                       ),
+                                      textAlign: searchSelected
+                                          ? TextAlign.start
+                                          : TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: 'Gilroy Regular',
+                                          fontSize: ScreenUtil().setSp(16,
+                                              allowFontScalingSelf: true)),
                                     ),
                                   ),
+                                  // Positioned(
+                                  //   top: 10.0,
+                                  //   left: 10.0,
+                                  //   child: GestureDetector(
+                                  //     onTap: () {
+                                  //       Navigator.of(context).pop();
+                                  //     },
+                                  //     child: AnimatedContainer(
+                                  //       // margin: EdgeInsets.only(left: 10.0),
+                                  //       duration: Duration(milliseconds: 600),
+                                  //       // margin: EdgeInsets.only(right: 6.0),
+                                  //       height: ScreenUtil()
+                                  //           .setHeight(searchSelected ? 0 : 18),
+                                  //       width: ScreenUtil()
+                                  //           .setWidth(searchSelected ? 0 : 19),
+                                  //       child: Image.asset(
+                                  //         'assets/images/backButton.png',
+                                  //         color: Colors.black,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   AnimatedContainer(
                                     duration: Duration(milliseconds: 600),
                                     margin: EdgeInsets.only(right: 6.0),
@@ -1271,7 +1302,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                       child: Icon(
                                         Icons.clear,
                                         color: Colors.black,
-                                        size: searchSelected ? 25 : 0,
+                                        size: searchSelected
+                                            ? ScreenUtil().setSp(25,
+                                                allowFontScalingSelf: true)
+                                            : 0,
                                       ),
                                     ),
                                   ),
@@ -1279,9 +1313,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                     duration: Duration(milliseconds: 600),
                                     margin: EdgeInsets.only(right: 6.0),
                                     height: ScreenUtil()
-                                        .setHeight(searchSelected ? 0 : 20),
+                                        .setHeight(searchSelected ? 0 : 25),
                                     width: ScreenUtil()
-                                        .setWidth(searchSelected ? 0 : 20),
+                                        .setWidth(searchSelected ? 0 : 25),
                                     child: SvgPicture.asset(
                                       'assets/icons/notificationIcon.svg',
                                       color: Colors.black,

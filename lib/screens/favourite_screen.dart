@@ -350,7 +350,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                   padding: EdgeInsets.only(left: 10.0),
                                   width: ScreenUtil()
                                       .setWidth(searchSelected ? 305 : 360),
-                                  height: ScreenUtil().setHeight(40),
+                                  height: ScreenUtil().setHeight(45),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: Colors.white,
@@ -358,86 +358,101 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                   child: Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
-                                      Positioned(
-                                        top: 0.0,
-                                        left: 0.0,
-                                        child: Container(
-                                          width: ScreenUtil().setWidth(
-                                              searchSelected ? 305 : 360),
-                                          height: ScreenUtil().setHeight(40),
-                                          child: TextField(
-                                            controller: textEditingController,
-                                            onTap: () async {
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        width: ScreenUtil().setWidth(
+                                            searchSelected ? 305 : 360),
+                                        height: ScreenUtil().setHeight(40),
+                                        child: TextField(
+                                          controller: textEditingController,
+                                          onTap: () async {
+                                            setState(() {
+                                              searchSelected = true;
+                                            });
+                                            Timer(Duration(milliseconds: 700),
+                                                () {
                                               setState(() {
-                                                searchSelected = true;
+                                                searchSelectedDoneButton = true;
                                               });
-                                              Timer(Duration(milliseconds: 700),
-                                                  () {
-                                                setState(() {
-                                                  searchSelectedDoneButton =
-                                                      true;
-                                                });
-                                              });
-                                            },
-                                            onChanged: (value) async {
-                                              setState(() {
-                                                // isLoadingSearch = true;
-                                                searchValue =
-                                                    value.toUpperCase();
-                                              });
-                                              // setState(() {
+                                            });
+                                          },
+                                          onChanged: (value) async {
+                                            setState(() {
+                                              // isLoadingSearch = true;
+                                              searchValue = value.toUpperCase();
+                                            });
+                                            // setState(() {
 
-                                              //   // info=styleNumber[].split(value);
-                                              //   // print(styleNumber[1].split(searchValue));
-                                              // });
-                                              try {
-                                                await getSearch(
-                                                    searchValue.toUpperCase());
-                                              } catch (err) {
-                                                dataSelect(
-                                                    context, '$err', '', 'OK',
-                                                    () {
-                                                  Navigator.pop(context);
-                                                });
-                                              }
-                                              // setState(() {
-                                              //   isLoadingSearch = false;
-                                              // });
-                                              // getSearchResult(value.toUpperCase());
-                                            },
-                                            decoration: InputDecoration(
-                                              // contentPadding: EdgeInsets.all(15.0),
-                                              // suffixIcon: searchSelected
-                                              //     ? GestureDetector(
-                                              //         onTap: () {
-                                              //           textEditingController.clear();
-                                              //           setState(() {
-                                              //             searchValue = "";
-                                              //           });
-                                              //         },
-                                              //         child: Icon(Icons.clear),
-                                              //       )
-                                              //     : SizedBox(
-                                              //         height: 0.0,
-                                              //         width: 0.0,
-                                              //       ),
-                                              hintText: 'SEARCH GEMSTORY',
-                                              hintStyle: TextStyle(
-                                                fontFamily: 'Gilroy Medium',
-                                                color: Color(0xFF595959),
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                              ),
-                                              border: InputBorder.none,
+                                            //   // info=styleNumber[].split(value);
+                                            //   // print(styleNumber[1].split(searchValue));
+                                            // });
+                                            try {
+                                              await getSearch(
+                                                  searchValue.toUpperCase());
+                                            } catch (err) {
+                                              dataSelect(
+                                                  context, '$err', '', 'OK',
+                                                  () {
+                                                Navigator.pop(context);
+                                              });
+                                            }
+                                            // setState(() {
+                                            //   isLoadingSearch = false;
+                                            // });
+                                            // getSearchResult(value.toUpperCase());
+                                          },
+                                          decoration: InputDecoration(
+                                            // contentPadding: EdgeInsets.all(15.0),
+                                            // suffixIcon: searchSelected
+                                            //     ? GestureDetector(
+                                            //         onTap: () {
+                                            //           textEditingController.clear();
+                                            //           setState(() {
+                                            //             searchValue = "";
+                                            //           });
+                                            //         },
+                                            //         child: Icon(Icons.clear),
+                                            //       )
+                                            //     : SizedBox(
+                                            //         height: 0.0,
+                                            //         width: 0.0,
+                                            //       ),
+                                            hintText: 'SEARCH GEMSTORY',
+                                            hintStyle: TextStyle(
+                                              fontFamily: 'Gilroy Medium',
+                                              color: Color(0xFF595959),
+                                              fontSize: ScreenUtil().setSp(14,
+                                                  allowFontScalingSelf: true),
                                             ),
-                                            textAlign: searchSelected
-                                                ? TextAlign.start
-                                                : TextAlign.center,
-                                            style: TextStyle(
-                                                fontFamily: 'Gilroy Regular',
-                                                fontSize: ScreenUtil().setSp(16,
-                                                    allowFontScalingSelf:
-                                                        true)),
+                                            border: InputBorder.none,
+                                          ),
+                                          textAlign: searchSelected
+                                              ? TextAlign.start
+                                              : TextAlign.center,
+                                          style: TextStyle(
+                                              fontFamily: 'Gilroy Regular',
+                                              fontSize: ScreenUtil().setSp(16,
+                                                  allowFontScalingSelf: true)),
+                                        ),
+                                      ),
+                                      AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        margin: EdgeInsets.only(right: 6.0),
+                                        height: ScreenUtil()
+                                            .setHeight(searchSelected ? 27 : 0),
+                                        width: ScreenUtil()
+                                            .setWidth(searchSelected ? 27 : 0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            textEditingController.clear();
+                                            setState(() {
+                                              searchValue = "";
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.clear,
+                                            color: Colors.black,
+                                            size: searchSelected ? 25 : 0,
                                           ),
                                         ),
                                       ),
@@ -445,9 +460,9 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 20),
+                                            .setHeight(searchSelected ? 0 : 25),
                                         width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 20),
+                                            .setWidth(searchSelected ? 0 : 25),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,

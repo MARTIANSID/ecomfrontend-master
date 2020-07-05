@@ -67,6 +67,13 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   GlobalKey scaffoldKey = GlobalKey();
 
   bool tapNotication = false;
+  Animation<int> _characterCount;
+
+  int _stringIndex;
+
+  AnimationController controller;
+
+  int flag = 0;
 
   @override
   void initState() {
@@ -75,6 +82,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       length: 5,
       vsync: this,
       initialIndex: 1,
+    );
+    controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
     );
 
     // _tabController.addListener(() {
@@ -223,8 +234,17 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   void _onValueChangeColor(int value, [int index]) async {
     await Provider.of<Options>(context, listen: false).setColor(color: value);
     setState(() {
+      flag = 1;
       _defaultChoiceIndex2 = value;
+      // _stringIndex = _stringIndex == null ? 0 : _stringIndex + 1;
+      // _characterCount = StepTween(begin: 0, end: 3)
+      //     .animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
     });
+
+    // setState(() {
+    //   flag = 1;
+    //   _defaultChoiceIndex2 = value;
+    // });
   }
 
   void completeSignUp() async {
@@ -268,6 +288,18 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     setState(() {
       _defaultChoiceIndex4 = value;
     });
+  }
+
+  void changeFlag() {
+    setState(() {
+      flag = 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 
   List<dynamic> suggestion;
@@ -376,340 +408,375 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       ScreenUtil().setHeight(22 + 45 + 11 + 20),
                                 )
                               : SizedBox(
-                                  height: ScreenUtil().setHeight(22 + 20),
+                                  height: ScreenUtil().setHeight(22),
                                 ),
-                          Container(
-                            width: ScreenUtil().setWidth(357),
-                            margin: EdgeInsets.fromLTRB(24, 0, 0, 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                // ShaderMask(
-                                // shaderCallback: (bounds) => LinearGradient(
-                                //   colors: [
-                                //     Color(0xFF34B0D9),
-                                //     Color(0xFF3685CB),
-                                //   ],
-                                //   begin: Alignment.topLeft,
-                                //   end: Alignment.bottomRight,
-                                // ).createShader(
-                                //   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                                // ),
-                                //   child: Text(
-                                //     'CART',
-                                //     style: TextStyle(
-                                //       color: Colors.white,
-                                //       fontFamily: 'Gilroy Black',
-                                //       fontSize: ScreenUtil()
-                                //           .setSp(20, allowFontScalingSelf: true),
-                                //     ),
-                                //   ),
-                                // ),
-                                Container(
-                                  height: ScreenUtil().setHeight(20),
-                                  width: ScreenUtil().setWidth(275),
-                                  child: TabBar(
-                                    onTap: (value) {
-                                      // setState(() {
-                                      //   _tabController.index = 1;
-                                      // });
-                                      if (Provider.of<Pagination>(context,
-                                                  listen: false)
-                                              .isVerified ==
-                                          false) {
-                                        setState(() {
-                                          _tabController.index = 1;
-                                        });
-                                        //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
-                                        dataSelect(
-                                          context,
-                                          'Important!',
-                                          "To get complete access of the app, you need to first verify yourself!",
-                                          'Complete SignUp',
-                                          completeSignUp,
-                                        );
-                                      }
-                                    },
-                                    controller: _tabController,
-                                    // indicatorColor: kPrimaryColor,
-                                    // labelColor: Colors.black,
-                                    labelStyle: TextStyle(
-                                      fontFamily: 'Gilroy Bold',
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    unselectedLabelStyle: TextStyle(
-                                      fontFamily: 'Gilroy Regular',
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    // indicatorPadding: EdgeInsets.only(left: 8.0, right: 8.0),
-                                    labelPadding:
-                                        EdgeInsets.only(left: 5.0, right: 5.0),
-                                    isScrollable: true,
-                                    indicator: BoxDecoration(),
-                                    tabs: [
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 0
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'ALL',
-                                            style: TextStyle(
-                                              // color: Colors.black,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 1
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'FEATURED',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 2
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'NEW',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 3
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'HIGHEST SELLING',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                          child: ShaderMask(
-                                        shaderCallback: (bounds) =>
-                                            // _tabController.index == 4
-                                            //     ?
-                                            LinearGradient(
-                                          colors: [
-                                            Color(0xFF34B0D9),
-                                            Color(0xFF3685CB),
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ).createShader(
-                                          Rect.fromLTWH(0, 0, bounds.width,
-                                              bounds.height),
-                                        ),
-                                        // : LinearGradient(
-                                        //     colors: [
-                                        //       Color(0xFFA49797),
-                                        //       Color(0xFFA49797),
-                                        //     ],
-                                        //     begin: Alignment.topLeft,
-                                        //     end: Alignment.bottomRight,
-                                        //   ).createShader(
-                                        //     Rect.fromLTWH(
-                                        //         0,
-                                        //         0,
-                                        //         bounds.width,
-                                        //         bounds.height),
-                                        //   ),
-                                        child: Text(
-                                          'FANCY DIAMOND',
-                                          style: TextStyle(
+                          widget.val
+                              ? Container(
+                                  width: ScreenUtil().setWidth(357),
+                                  margin: EdgeInsets.fromLTRB(24, 0, 0, 15),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      // ShaderMask(
+                                      // shaderCallback: (bounds) => LinearGradient(
+                                      //   colors: [
+                                      //     Color(0xFF34B0D9),
+                                      //     Color(0xFF3685CB),
+                                      //   ],
+                                      //   begin: Alignment.topLeft,
+                                      //   end: Alignment.bottomRight,
+                                      // ).createShader(
+                                      //   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                                      // ),
+                                      //   child: Text(
+                                      //     'CART',
+                                      //     style: TextStyle(
+                                      //       color: Colors.white,
+                                      //       fontFamily: 'Gilroy Black',
+                                      //       fontSize: ScreenUtil()
+                                      //           .setSp(20, allowFontScalingSelf: true),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      Container(
+                                        height: ScreenUtil().setHeight(20),
+                                        width: ScreenUtil().setWidth(265),
+                                        child: TabBar(
+                                          onTap: (value) {
+                                            // setState(() {
+                                            //   _tabController.index = 1;
+                                            // });
+                                            if (Provider.of<Pagination>(context,
+                                                        listen: false)
+                                                    .isVerified ==
+                                                false) {
+                                              setState(() {
+                                                _tabController.index = 1;
+                                              });
+                                              //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
+                                              dataSelect(
+                                                context,
+                                                'Important!',
+                                                "To get complete access of the app, you need to first verify yourself!",
+                                                'Complete SignUp',
+                                                completeSignUp,
+                                              );
+                                            }
+                                          },
+                                          controller: _tabController,
+                                          // indicatorColor: kPrimaryColor,
+                                          // labelColor: Colors.black,
+                                          labelStyle: TextStyle(
+                                            fontFamily: 'Gilroy Bold',
                                             color: Colors.white,
+                                            fontSize: ScreenUtil().setSp(16,
+                                                allowFontScalingSelf: true),
                                           ),
+                                          unselectedLabelStyle: TextStyle(
+                                            fontFamily: 'Gilroy Regular',
+                                            color: Colors.white,
+                                            fontSize: ScreenUtil().setSp(14,
+                                                allowFontScalingSelf: true),
+                                          ),
+                                          // indicatorPadding: EdgeInsets.only(left: 8.0, right: 8.0),
+                                          labelPadding: EdgeInsets.only(
+                                              left: 5.0, right: 5.0),
+                                          isScrollable: true,
+                                          indicator: BoxDecoration(),
+                                          tabs: [
+                                            Tab(
+                                              child: ShaderMask(
+                                                shaderCallback: (bounds) =>
+                                                    // _tabController.index == 0
+                                                    // ?
+                                                    LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF34B0D9),
+                                                    Color(0xFF3685CB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                ),
+                                                // : LinearGradient(
+                                                //     colors: [
+                                                //       Color(0xFFA49797),
+                                                //       Color(0xFFA49797),
+                                                //     ],
+                                                //     begin: Alignment.topLeft,
+                                                //     end:
+                                                //         Alignment.bottomRight,
+                                                //   ).createShader(
+                                                //     Rect.fromLTWH(
+                                                //         0,
+                                                //         0,
+                                                //         bounds.width,
+                                                //         bounds.height),
+                                                //   ),
+                                                child: Text(
+                                                  'ALL',
+                                                  style: TextStyle(
+                                                    // color: Colors.black,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Tab(
+                                              child: ShaderMask(
+                                                shaderCallback: (bounds) =>
+                                                    // _tabController.index == 1
+                                                    // ?
+                                                    LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF34B0D9),
+                                                    Color(0xFF3685CB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                ),
+                                                // : LinearGradient(
+                                                //     colors: [
+                                                //       Color(0xFFA49797),
+                                                //       Color(0xFFA49797),
+                                                //     ],
+                                                //     begin: Alignment.topLeft,
+                                                //     end:
+                                                //         Alignment.bottomRight,
+                                                //   ).createShader(
+                                                //     Rect.fromLTWH(
+                                                //         0,
+                                                //         0,
+                                                //         bounds.width,
+                                                //         bounds.height),
+                                                //   ),
+                                                child: Text(
+                                                  'FEATURED',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Tab(
+                                              child: ShaderMask(
+                                                shaderCallback: (bounds) =>
+                                                    // _tabController.index == 2
+                                                    // ?
+                                                    LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF34B0D9),
+                                                    Color(0xFF3685CB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                ),
+                                                // : LinearGradient(
+                                                //     colors: [
+                                                //       Color(0xFFA49797),
+                                                //       Color(0xFFA49797),
+                                                //     ],
+                                                //     begin: Alignment.topLeft,
+                                                //     end:
+                                                //         Alignment.bottomRight,
+                                                //   ).createShader(
+                                                //     Rect.fromLTWH(
+                                                //         0,
+                                                //         0,
+                                                //         bounds.width,
+                                                //         bounds.height),
+                                                //   ),
+                                                child: Text(
+                                                  'NEW',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Tab(
+                                              child: ShaderMask(
+                                                shaderCallback: (bounds) =>
+                                                    // _tabController.index == 3
+                                                    // ?
+                                                    LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF34B0D9),
+                                                    Color(0xFF3685CB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                ),
+                                                // : LinearGradient(
+                                                //     colors: [
+                                                //       Color(0xFFA49797),
+                                                //       Color(0xFFA49797),
+                                                //     ],
+                                                //     begin: Alignment.topLeft,
+                                                //     end:
+                                                //         Alignment.bottomRight,
+                                                //   ).createShader(
+                                                //     Rect.fromLTWH(
+                                                //         0,
+                                                //         0,
+                                                //         bounds.width,
+                                                //         bounds.height),
+                                                //   ),
+                                                child: Text(
+                                                  'HIGHEST SELLING',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Tab(
+                                                child: ShaderMask(
+                                              shaderCallback: (bounds) =>
+                                                  // _tabController.index == 4
+                                                  //     ?
+                                                  LinearGradient(
+                                                colors: [
+                                                  Color(0xFF34B0D9),
+                                                  Color(0xFF3685CB),
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ).createShader(
+                                                Rect.fromLTWH(
+                                                    0,
+                                                    0,
+                                                    bounds.width,
+                                                    bounds.height),
+                                              ),
+                                              // : LinearGradient(
+                                              //     colors: [
+                                              //       Color(0xFFA49797),
+                                              //       Color(0xFFA49797),
+                                              //     ],
+                                              //     begin: Alignment.topLeft,
+                                              //     end: Alignment.bottomRight,
+                                              //   ).createShader(
+                                              //     Rect.fromLTWH(
+                                              //         0,
+                                              //         0,
+                                              //         bounds.width,
+                                              //         bounds.height),
+                                              //   ),
+                                              child: Text(
+                                                'FANCY DIAMOND',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )),
+                                          ],
                                         ),
-                                      )),
+                                      ),
+                                      // SizedBox(
+                                      //   width: ScreenUtil().setWidth(30),
+                                      // ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                child: SortPage(
+                                                  scrollController:
+                                                      widget.scrollController,
+                                                ),
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 8.0),
+                                              child: SvgPicture.asset(
+                                                'assets/icons/sortIcon.svg',
+                                                width:
+                                                    ScreenUtil().setWidth(24),
+                                                height:
+                                                    ScreenUtil().setHeight(24),
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                child: OptionsDialog(
+                                                  choicesBuild: _choices,
+                                                  choiceColor: _choices1,
+                                                  choiceCertification:
+                                                      _choices2,
+                                                  choiceDiamondQuality:
+                                                      _choices3,
+                                                  defValue:
+                                                      _defaultChoiceIndex1,
+                                                  defValue1:
+                                                      _defaultChoiceIndex2,
+                                                  defValue2:
+                                                      _defaultChoiceIndex3,
+                                                  defValue3:
+                                                      _defaultChoiceIndex4,
+                                                  valueChangeBuild:
+                                                      _onValueChange,
+                                                  valueChangeColor:
+                                                      _onValueChangeColor,
+                                                  valueChangeCerti:
+                                                      _onValueChangeCerti,
+                                                  valueChangeDQ:
+                                                      _onValueChangeDQ,
+                                                ),
+                                              );
+                                            },
+                                            child: SvgPicture.asset(
+                                              'assets/icons/optionsIcon.svg',
+                                              width: ScreenUtil().setWidth(24),
+                                              height:
+                                                  ScreenUtil().setHeight(24),
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        ],
+                                      )
                                     ],
                                   ),
-                                ),
-                                // SizedBox(
-                                //   width: ScreenUtil().setWidth(30),
-                                // ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          child: SortPage(
-                                            scrollController:
-                                                widget.scrollController,
-                                          ),
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 4.0),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/sortIcon.svg',
-                                          width: ScreenUtil().setWidth(24),
-                                          height: ScreenUtil().setHeight(24),
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          child: OptionsDialog(
-                                            choicesBuild: _choices,
-                                            choiceColor: _choices1,
-                                            choiceCertification: _choices2,
-                                            choiceDiamondQuality: _choices3,
-                                            defValue: _defaultChoiceIndex1,
-                                            defValue1: _defaultChoiceIndex2,
-                                            defValue2: _defaultChoiceIndex3,
-                                            defValue3: _defaultChoiceIndex4,
-                                            valueChangeBuild: _onValueChange,
-                                            valueChangeColor:
-                                                _onValueChangeColor,
-                                            valueChangeCerti:
-                                                _onValueChangeCerti,
-                                            valueChangeDQ: _onValueChangeDQ,
-                                          ),
-                                        );
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/icons/optionsIcon.svg',
-                                        width: ScreenUtil().setWidth(24),
-                                        height: ScreenUtil().setHeight(24),
-                                        color: Colors.black,
-                                      ),
-                                    )
-                                  ],
                                 )
-                              ],
-                            ),
-                          ),
+                              : SizedBox(
+                                  height: 0.0,
+                                ),
                           Expanded(
                             child: TabBarView(
                               physics: Provider.of<Pagination>(context,
@@ -730,6 +797,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   color: _defaultChoiceIndex2,
                                   cert: _defaultChoiceIndex3,
                                   diamond: _defaultChoiceIndex4,
+                                  characterCount: _characterCount,
+                                  controller: controller,
+                                  flag: flag,
                                   valueChangeBuild: _onValueChange,
                                   valueChangeColor: _onValueChangeColor,
                                   valueChangeCerti: _onValueChangeCerti,
@@ -748,6 +818,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   color: _defaultChoiceIndex2,
                                   cert: _defaultChoiceIndex3,
                                   diamond: _defaultChoiceIndex4,
+                                  characterCount: _characterCount,
+                                  controller: controller,
+                                  flag: flag,
                                   valueChangeBuild: _onValueChange,
                                   valueChangeColor: _onValueChangeColor,
                                   valueChangeCerti: _onValueChangeCerti,
@@ -766,6 +839,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   color: _defaultChoiceIndex2,
                                   cert: _defaultChoiceIndex3,
                                   diamond: _defaultChoiceIndex4,
+                                  characterCount: _characterCount,
+                                  controller: controller,
+                                  flag: flag,
                                   valueChangeBuild: _onValueChange,
                                   valueChangeColor: _onValueChangeColor,
                                   valueChangeCerti: _onValueChangeCerti,
@@ -784,6 +860,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   color: _defaultChoiceIndex2,
                                   cert: _defaultChoiceIndex3,
                                   diamond: _defaultChoiceIndex4,
+                                  characterCount: _characterCount,
+                                  controller: controller,
+                                  flag: flag,
                                   valueChangeBuild: _onValueChange,
                                   valueChangeColor: _onValueChangeColor,
                                   valueChangeCerti: _onValueChangeCerti,
@@ -802,6 +881,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   color: _defaultChoiceIndex2,
                                   cert: _defaultChoiceIndex3,
                                   diamond: _defaultChoiceIndex4,
+                                  characterCount: _characterCount,
+                                  controller: controller,
+                                  flag: flag,
                                   valueChangeBuild: _onValueChange,
                                   valueChangeColor: _onValueChangeColor,
                                   valueChangeCerti: _onValueChangeCerti,
@@ -809,7 +891,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -858,7 +940,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           padding: EdgeInsets.only(left: 10.0),
                                           width: ScreenUtil().setWidth(
                                               searchSelected ? 305 : 360),
-                                          height: ScreenUtil().setHeight(40),
+                                          height: ScreenUtil().setHeight(45),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -877,7 +959,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                           ? 305
                                                           : 360),
                                                   height: ScreenUtil()
-                                                      .setHeight(45),
+                                                      .setHeight(40),
                                                   child: TextField(
                                                     controller:
                                                         textEditingController,
@@ -989,8 +1071,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   child: Icon(
                                                     Icons.clear,
                                                     color: Colors.black,
-                                                    size:
-                                                        searchSelected ? 25 : 0,
+                                                    size: searchSelected
+                                                        ? ScreenUtil().setSp(25,
+                                                            allowFontScalingSelf:
+                                                                true)
+                                                        : 0,
                                                   ),
                                                 ),
                                               ),
@@ -1009,9 +1094,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   height: ScreenUtil()
                                                       .setHeight(searchSelected
                                                           ? 0
-                                                          : 20),
+                                                          : 25),
                                                   width: ScreenUtil().setWidth(
-                                                      searchSelected ? 0 : 20),
+                                                      searchSelected ? 0 : 25),
                                                   child: SvgPicture.asset(
                                                     'assets/icons/notificationIcon.svg',
                                                     color: Colors.black,

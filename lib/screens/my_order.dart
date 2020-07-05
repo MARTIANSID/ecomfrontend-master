@@ -62,7 +62,12 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyOrderDetailPage()),
+              MaterialPageRoute(
+                  builder: (context) => MyOrderDetailPage(
+                      products: Provider.of<Orders>(context, listen: false)
+                          .orderProducts[index]
+                          .products,
+                      index: index)),
             );
           },
           child: Container(
@@ -89,7 +94,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                       '#' +
                           Provider.of<Orders>(context, listen: false)
                               .orderProducts[index]
-                              .status
+                              .orderNumber
                               .toString(),
                       style: TextStyle(
                           fontFamily: 'Gilroy Medium',

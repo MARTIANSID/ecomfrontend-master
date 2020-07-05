@@ -183,7 +183,7 @@ class _MyPriceState extends State<MyPrice> {
                           height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
+                          padding: EdgeInsets.fromLTRB(24, 15, 25, 0),
                           child: ShaderMask(
                             shaderCallback: (bounds) => LinearGradient(
                               colors: [
@@ -621,30 +621,44 @@ class _MyPriceState extends State<MyPrice> {
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemBuilder: (context, index) {
-                                                return Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 5.0),
-                                                  child: Text(
-                                                    Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .certPrices
-                                                            .values
-                                                            .toList()[index]
-                                                            .toString()
-                                                            .toUpperCase() +
-                                                        ' ₹',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          'Gilroy Light',
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          14,
-                                                          allowFontScalingSelf:
-                                                              true),
+                                                if (Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .certPrices
+                                                        .keys
+                                                        .toList()[index]
+                                                        .toString()
+                                                        .toUpperCase() ==
+                                                    'NONE') {
+                                                  return Container(
+                                                    height: 0,
+                                                  );
+                                                } else {
+                                                  return Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 5.0),
+                                                    child: Text(
+                                                      Provider.of<Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .certPrices
+                                                              .values
+                                                              .toList()[index]
+                                                              .toString()
+                                                              .toUpperCase() +
+                                                          ' ₹',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               },
                                             ),
                                           ),
@@ -856,7 +870,7 @@ class _MyPriceState extends State<MyPrice> {
                                       left: searchSelected ? 10.0 : 0.0),
                                   width: ScreenUtil()
                                       .setWidth(searchSelected ? 305 : 360),
-                                  height: ScreenUtil().setHeight(40),
+                                  height: ScreenUtil().setHeight(45),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: Colors.white,
@@ -942,29 +956,29 @@ class _MyPriceState extends State<MyPrice> {
                                           ),
                                         ),
                                       ),
-                                      Positioned(
-                                        top: 10.0,
-                                        left: 10.0,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: AnimatedContainer(
-                                            // margin: EdgeInsets.only(left: 10.0),
-                                            duration:
-                                                Duration(milliseconds: 600),
-                                            // margin: EdgeInsets.only(right: 6.0),
-                                            height: ScreenUtil().setHeight(
-                                                searchSelected ? 0 : 18),
-                                            width: ScreenUtil().setWidth(
-                                                searchSelected ? 0 : 19),
-                                            child: Image.asset(
-                                              'assets/images/backButton.png',
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                      // Positioned(
+                                      //   top: 10.0,
+                                      //   left: 10.0,
+                                      //   child: GestureDetector(
+                                      //     onTap: () {
+                                      //       Navigator.of(context).pop();
+                                      //     },
+                                      //     child: AnimatedContainer(
+                                      //       // margin: EdgeInsets.only(left: 10.0),
+                                      //       duration:
+                                      //           Duration(milliseconds: 600),
+                                      //       // margin: EdgeInsets.only(right: 6.0),
+                                      //       height: ScreenUtil().setHeight(
+                                      //           searchSelected ? 0 : 18),
+                                      //       width: ScreenUtil().setWidth(
+                                      //           searchSelected ? 0 : 19),
+                                      //       child: Image.asset(
+                                      //         'assets/images/backButton.png',
+                                      //         color: Colors.black,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
                                       AnimatedContainer(
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
@@ -990,9 +1004,9 @@ class _MyPriceState extends State<MyPrice> {
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 20),
+                                            .setHeight(searchSelected ? 0 : 25),
                                         width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 20),
+                                            .setWidth(searchSelected ? 0 : 25),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,

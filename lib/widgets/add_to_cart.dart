@@ -138,6 +138,9 @@ class AddToCartTState extends State<AddToCart> {
         .diamondQuality[_defaultChoiceIndex3]);
 
     if (Provider.of<Pagination>(context, listen: false).isPriced) {
+      buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
+          Provider.of<Pagination>(context, listen: false)
+              .build[_defaultChoiceIndex]];
       certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
           Provider.of<Pagination>(context, listen: false)
               .cert[_defaultChoiceIndex2]];
@@ -264,7 +267,8 @@ class AddToCartTState extends State<AddToCart> {
                                                 listen: false)
                                             .isPriced
                                     ? Text(
-                                        '${int.parse(widget.product.prices[priceKey]) + certPrice} ₹',
+                                        // '${int.parse(widget.product.prices[priceKey]) + certPrice} ₹',
+                                        '${(int.parse(widget.product.prices[priceKey]) + certPrice + buildPrice) * valueOfQuantity}₹',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: ScreenUtil().setSp(18,
@@ -999,18 +1003,6 @@ class AddToCartTState extends State<AddToCart> {
                                 certvalue: _defaultChoiceIndex2,
                                 update: widget.updateCart ? true : false,
                               );
-
-                              widget.updateCart
-                                  ? showFloatingFlushbar(
-                                      widget.globalKey.currentContext,
-                                      'Your Cart data has been successfully Updated',
-                                      widget.product.styleNumber,
-                                    )
-                                  : showFloatingFlushbar(
-                                      widget.globalKey.currentContext,
-                                      'Product has been added to your Cart"🛒"',
-                                      widget.product.styleNumber,
-                                    );
                             } catch (err) {
                               dataSelect(context, '$err', '', 'OK', () {
                                 Navigator.pop(context);
@@ -1022,7 +1014,18 @@ class AddToCartTState extends State<AddToCart> {
                               });
                             }
                             // }
-                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
+                            widget.updateCart
+                                ? showFloatingFlushbar(
+                                    widget.globalKey.currentContext,
+                                    'Your Cart data has been successfully Updated',
+                                    widget.product.styleNumber,
+                                  )
+                                : showFloatingFlushbar(
+                                    widget.globalKey.currentContext,
+                                    'Product has been added to your Cart"🛒"',
+                                    widget.product.styleNumber,
+                                  );
                             // print(val);
                           },
                           child: Container(
@@ -1031,7 +1034,9 @@ class AddToCartTState extends State<AddToCart> {
                             // padding: EdgeInsets.all(20.0),
                             child: Center(
                               child: Text(
-                                'ADD TO CART',
+                                !widget.updateCart
+                                    ? 'ADD TO CART'
+                                    : 'UPDATE CART',
                                 style: TextStyle(
                                   fontFamily: 'Gilroy Bold',
                                   color: Colors.white,

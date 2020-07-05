@@ -75,29 +75,29 @@ class RoundedInputField extends StatelessWidget {
               border: InputBorder.none,
             ),
           ),
-          proceed
-              ? Positioned(
-                  right: 0.0,
-                  bottom: ScreenUtil().setHeight(50.375),
-                  child: Container(
-                    height: ScreenUtil().setHeight(40),
-                    width: ScreenUtil().setWidth(40),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.cyan,
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                      onPressed: onPressed,
-                    ),
-                  ),
-                )
-              : SizedBox(
-                  height: 0.0,
-                )
+          // proceed
+          //     ? Positioned(
+          //         right: 0.0,
+          //         bottom: ScreenUtil().setHeight(50.375),
+          //         child: Container(
+          //           height: ScreenUtil().setHeight(40),
+          //           width: ScreenUtil().setWidth(40),
+          //           decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: Colors.cyan,
+          //           ),
+          //           child: IconButton(
+          //             icon: Icon(
+          //               Icons.edit,
+          //               color: Colors.white,
+          //             ),
+          //             onPressed: onPressed,
+          //           ),
+          //         ),
+          //       )
+          //     : SizedBox(
+          //         height: 0.0,
+          //       )
         ],
       ),
     );

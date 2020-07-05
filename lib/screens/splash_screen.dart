@@ -37,8 +37,8 @@ class SplashScreen extends StatelessWidget {
             Image.asset(
               "assets/images/logo_colour.png",
               fit: BoxFit.contain,
-              height: ScreenUtil().setHeight(131),
-              width: ScreenUtil().setWidth(131),
+              height: ScreenUtil().setHeight(130),
+              width: ScreenUtil().setWidth(130),
             ),
             // SizedBox(
             //   height: ScreenUtil().setHeight(30),

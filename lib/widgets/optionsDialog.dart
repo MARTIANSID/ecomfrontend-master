@@ -76,7 +76,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
           contentPadding: EdgeInsets.all(14.0),
           children: <Widget>[
             Container(
-              height: ScreenUtil().setHeight(525),
+              height: ScreenUtil().setHeight(530),
               width: ScreenUtil().setWidth(400),
               // width: 700.0,
               child: Column(
@@ -121,7 +121,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex1 = index;
                           });
-                          widget.valueChangeColor(index);
+                          // widget.valueChangeColor(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -227,7 +227,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex = index;
                           });
-                          widget.valueChangeBuild(index);
+                          // widget.valueChangeBuild(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -332,7 +332,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex2 = index;
                           });
-                          widget.valueChangeCerti(index);
+                          // widget.valueChangeCerti(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -438,7 +438,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex3 = index;
                           });
-                          widget.valueChangeDQ(index);
+                          // widget.valueChangeDQ(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -526,6 +526,10 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
+                        widget.valueChangeBuild(_defaultChoiceIndex);
+                        widget.valueChangeColor(_defaultChoiceIndex1);
+                        widget.valueChangeCerti(_defaultChoiceIndex2);
+                        widget.valueChangeDQ(_defaultChoiceIndex3);
                         Navigator.of(context).pop();
                       },
                       child: Container(

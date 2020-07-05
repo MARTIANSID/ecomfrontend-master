@@ -1,6 +1,7 @@
 import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/testimony.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -264,8 +265,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                             width: ScreenUtil().setWidth(10),
                                           ),
                                           Container(
-                                            height: ScreenUtil().setHeight(75),
-                                            width: ScreenUtil().setWidth(75),
+                                            height: ScreenUtil().setHeight(60),
+                                            width: ScreenUtil().setWidth(60),
                                             decoration: BoxDecoration(
                                               // borderRadius: BorderRadius.circular(37.5),
                                               // border: Border.all(
@@ -280,11 +281,36 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/userProfile.png'),
+                                                  image: AdvancedNetworkImage(
+                                                    Provider.of<Testimony>(
+                                                                context,
+                                                                listen: true)
+                                                            .userTestimony
+                                                            .testimonies[index]
+                                                        ['profileImage'],
+                                                    useDiskCache: true,
+                                                    cacheRule: CacheRule(
+                                                        maxAge: const Duration(
+                                                            days: 3)),
+                                                  ),
                                                   fit: BoxFit.fill,
                                                 ),
+                                                shape: BoxShape.circle,
                                               ),
+                                              // child: Image(
+                                              //   image: AdvancedNetworkImage(
+                                              //     Provider.of<Testimony>(
+                                              //                 context,
+                                              //                 listen: true)
+                                              //             .userTestimony
+                                              //             .testimonies[index]
+                                              //         ['profileImage'],
+                                              //     useDiskCache: true,
+                                              //     cacheRule: CacheRule(
+                                              //         maxAge: const Duration(
+                                              //             days: 3)),
+                                              //   ),
+                                              // ),
                                             ),
                                           ),
                                           SizedBox(
@@ -559,202 +585,229 @@ class _TestimonyPageState extends State<TestimonyPage> {
                 ],
               ),
             ),
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              double rating = 5.0;
-              return SimpleDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-                children: <Widget>[
-                  Form(
-                    key: _key,
-                    child: Container(
-                      height: ScreenUtil().setHeight(313),
-                      width: ScreenUtil().setWidth(400),
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Wrtie a Testimony',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy Medium',
-                              fontSize: ScreenUtil()
-                                  .setSp(17, allowFontScalingSelf: true),
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil().setHeight(20),
-                          ),
-                          ShaderMask(
-                            blendMode: BlendMode.srcIn,
-                            shaderCallback: (bounds) => LinearGradient(
-                              colors: [
-                                Color(0xFF34B0D9),
-                                Color(0xFF3685CB),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ).createShader(
-                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                            ),
-                            child: SmoothStarRating(
-                              allowHalfRating: true,
-
-                              onRated: (v) {
-                                // update(v);
-                                setState(() {
-                                  rating = v;
-                                });
-                                print(rating);
-                              },
-                              starCount: 5,
-                              rating: rating,
-                              size: 40.0,
-                              isReadOnly: false,
-                              filledIconData: Icons.star,
-                              halfFilledIconData: Icons.star_half,
-                              // color: Colors
-                              //     .amber,
-                              // borderColor: Colors
-                              //     .yellowAccent,
-                              spacing: 5.0,
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil().setHeight(20),
-                          ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value.length < 100) {
-                                return "Minimum 100 Characters";
-                              }
-                              return null;
-                            },
-                            maxLines: 3,
-                            maxLength: 245,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: "Gilroy Regular"),
-                            controller: commentEditingController,
-                            // expands: true,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Leave a comment!'),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil().setHeight(20),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              if (_key.currentState.validate()) {
-                                _key.currentState.save();
-                                try {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  await Provider.of<Testimony>(context,
-                                          listen: false)
-                                      .writeTestimony(
-                                          context: context,
-                                          comment:
-                                              commentEditingController.text,
-                                          rating: rating);
-                                  await Provider.of<Testimony>(context,
-                                          listen: false)
-                                      .getTestimony(context: context);
-                                } catch (err) {
-                                  dataSelect(context, 'Alert!', '$err', 'OK',
-                                      () {
-                                    Navigator.pop(context);
-                                  });
-                                } finally {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-
-                                  Navigator.of(context).pop();
-                                }
-                              }
-                            },
-                            child: Container(
-                              width: ScreenUtil().setWidth(180),
-                              height: ScreenUtil().setHeight(43),
-                              // padding: EdgeInsets.all(20.0),
-                              child: Center(
-                                child: Text(
-                                  'SUBMIT',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Bold',
-                                    color: Colors.white,
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                    fontWeight: FontWeight.w500,
-                                  ),
+      floatingActionButton: Container(
+        padding: EdgeInsets.all(15.0),
+        width: ScreenUtil().setWidth(120),
+        decoration: BoxDecoration(
+          // image: DecorationImage(
+          //   image: AssetImage('assets/images/vector17.png'),
+          //   fit: BoxFit.contain,
+          // ),
+          borderRadius: BorderRadius.circular(30),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF34B0E9),
+              Color(0xFF3685CB),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          elevation: 6.0,
+          color: Colors.transparent,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),
+          child: InkWell(
+            splashColor: Colors.cyan[100],
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15),
+            ),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  double rating = 5.0;
+                  return SimpleDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0)),
+                    children: <Widget>[
+                      Form(
+                        key: _key,
+                        child: Container(
+                          height: ScreenUtil().setHeight(325),
+                          width: ScreenUtil().setWidth(400),
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Wrtie a Testimony',
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy Medium',
+                                  fontSize: ScreenUtil()
+                                      .setSp(17, allowFontScalingSelf: true),
+                                  color: Colors.black,
                                 ),
                               ),
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                image: AssetImage('assets/images/vector17.png'),
-                                fit: BoxFit.contain,
-                              )),
-                            ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(10),
+                              ),
+                              ShaderMask(
+                                blendMode: BlendMode.srcIn,
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9),
+                                    Color(0xFF3685CB),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                      0, 0, bounds.width, bounds.height),
+                                ),
+                                child: SmoothStarRating(
+                                  allowHalfRating: true,
+
+                                  onRated: (v) {
+                                    // update(v);
+                                    setState(() {
+                                      rating = v;
+                                    });
+                                    print(rating);
+                                  },
+                                  starCount: 5,
+                                  rating: rating,
+                                  size: ScreenUtil()
+                                      .setSp(40, allowFontScalingSelf: true),
+                                  isReadOnly: false,
+                                  filledIconData: Icons.star,
+                                  halfFilledIconData: Icons.star_half,
+                                  // color: Colors
+                                  //     .amber,
+                                  // borderColor: Colors
+                                  //     .yellowAccent,
+                                  spacing: 5.0,
+                                ),
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(10),
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value.length < 100) {
+                                    return "Minimum 100 Characters";
+                                  }
+                                  return null;
+                                },
+                                maxLines: 3,
+                                maxLength: 245,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Gilroy Regular"),
+                                controller: commentEditingController,
+                                // expands: true,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Leave a comment!'),
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(10),
+                              ),
+                              Container(
+                                width: ScreenUtil().setWidth(180),
+                                height: ScreenUtil().setHeight(43),
+                                // padding: EdgeInsets.all(20.0),
+                                child: Material(
+                                  type: MaterialType.transparency,
+                                  elevation: 6.0,
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: InkWell(
+                                    splashColor: Colors.cyan[50],
+                                    borderRadius: BorderRadius.circular(20),
+                                    onTap: () async {
+                                      if (_key.currentState.validate()) {
+                                        _key.currentState.save();
+                                        try {
+                                          setState(() {
+                                            isLoading = true;
+                                          });
+                                          await Provider.of<Testimony>(context,
+                                                  listen: false)
+                                              .writeTestimony(
+                                                  context: context,
+                                                  comment:
+                                                      commentEditingController
+                                                          .text,
+                                                  rating: rating);
+                                          await Provider.of<Testimony>(context,
+                                                  listen: false)
+                                              .getTestimony(context: context);
+                                        } catch (err) {
+                                          dataSelect(
+                                              context, 'Alert!', '$err', 'OK',
+                                              () {
+                                            Navigator.pop(context);
+                                          });
+                                        } finally {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+
+                                          Navigator.of(context).pop();
+                                        }
+                                      }
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        'SUBMIT',
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy Bold',
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(14,
+                                              allowFontScalingSelf: true),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/images/vector17.png'),
+                                  fit: BoxFit.contain,
+                                )),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
+                    ],
+                  );
+                },
               );
             },
-          );
-        },
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          width: ScreenUtil().setWidth(120),
-          decoration: BoxDecoration(
-            // image: DecorationImage(
-            //   image: AssetImage('assets/images/vector17.png'),
-            //   fit: BoxFit.contain,
-            // ),
-            borderRadius: BorderRadius.circular(30),
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF34B0E9),
-                Color(0xFF3685CB),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SvgPicture.asset(
-                // Icons.border_color,
-                'assets/icons/writeTestimony.svg',
-                height: ScreenUtil().setHeight(20),
-                width: ScreenUtil().setWidth(20),
-                color: Colors.white,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Text(
-                  'WRITE',
-                  style: TextStyle(
-                    fontFamily: 'Gilroy Medium',
-                    color: Colors.white,
-                    fontSize:
-                        ScreenUtil().setSp(17, allowFontScalingSelf: true),
-                  ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SvgPicture.asset(
+                  // Icons.border_color,
+                  'assets/icons/writeTestimony.svg',
+                  height: ScreenUtil().setHeight(20),
+                  width: ScreenUtil().setWidth(20),
+                  color: Colors.white,
                 ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Text(
+                    'WRITE',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy Medium',
+                      color: Colors.white,
+                      fontSize:
+                          ScreenUtil().setSp(17, allowFontScalingSelf: true),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

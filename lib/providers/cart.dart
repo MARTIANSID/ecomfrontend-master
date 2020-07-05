@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 
@@ -99,6 +100,20 @@ class Cart with ChangeNotifier {
     }
 
     if (check) {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+          Provider.of<Auth>(context, listen: false).remeberMe == false) {
+        Navigator.popAndPushNamed(context, '/');
+        return;
+      } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+          Provider.of<Auth>(context, listen: false).remeberMe == true) {
+        final prefs = await SharedPreferences.getInstance();
+        final extractedUserData =
+            json.decode(prefs.getString('userData')) as Map<String, Object>;
+        String number = extractedUserData['number'];
+        String password = extractedUserData['password'];
+        await Provider.of<Auth>(context, listen: false)
+            .authenticate(number, password, 'user/login');
+      }
       try {
         final response = await http.post(
           url,
@@ -191,6 +206,20 @@ class Cart with ChangeNotifier {
         throw error;
       }
     } else {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+          Provider.of<Auth>(context, listen: false).remeberMe == false) {
+        Navigator.popAndPushNamed(context, '/');
+        return;
+      } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+          Provider.of<Auth>(context, listen: false).remeberMe == true) {
+        final prefs = await SharedPreferences.getInstance();
+        final extractedUserData =
+            json.decode(prefs.getString('userData')) as Map<String, Object>;
+        String number = extractedUserData['number'];
+        String password = extractedUserData['password'];
+        await Provider.of<Auth>(context, listen: false)
+            .authenticate(number, password, 'user/login');
+      }
       try {
         final response = await http.patch(
           this.url,
@@ -258,6 +287,20 @@ class Cart with ChangeNotifier {
   Future<void> getCart({context}) async {
     final url = 'https://alexa.gemstory.in/cart';
 
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.get(
         url,
@@ -314,6 +357,20 @@ class Cart with ChangeNotifier {
   }
 
   Future<void> deleteCart({String id, context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.patch(
         this.url,
@@ -365,6 +422,11 @@ class Cart with ChangeNotifier {
     } catch (err) {
       throw err;
     }
+  }
+
+  void cartNull() {
+    cart = [];
+    notifyListeners();
   }
 
   void buildChange(value, index) {

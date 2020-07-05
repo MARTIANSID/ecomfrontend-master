@@ -790,6 +790,7 @@ import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -826,8 +827,12 @@ class _UserPageState extends State<UserPage>
   bool value2;
   bool isLoading = false;
 
+  bool isLoadingimage = false;
+
   bool storeCheckValue = false;
   int timerVal = 0;
+
+  bool isSwitched = false;
 
   @override
   void initState() {
@@ -862,7 +867,7 @@ class _UserPageState extends State<UserPage>
   Future<bool> _showDialog(BuildContext context) async {
     bool p = await Provider.of<Auth>(context, listen: false).getPassword();
     GlobalKey<FormState> _key = GlobalKey();
-    bool value2;
+    bool value2 = false;
     await showDialog(
       context: context,
       builder: (context) {
@@ -900,12 +905,28 @@ class _UserPageState extends State<UserPage>
           ),
           contentPadding: EdgeInsets.all(0),
           content: Container(
-            height: ScreenUtil().setHeight(180 + 50),
+            width: ScreenUtil().setWidth(400),
+            height: ScreenUtil().setHeight(200),
             child: Column(
               children: <Widget>[
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: <Widget>[
+                //     IconButton(
+                //       icon: Icon(Icons.clear),
+                //       color: Colors.black,
+                //       onPressed: () {
+                //         Navigator.pop(context);
+                //         setState(() {
+                //           value2 = false;
+                //         });
+                //       },
+                //     ),
+                //   ],
+                // ),
                 Container(
-                  width: ScreenUtil().setWidth(283),
-                  height: ScreenUtil().setHeight(180),
+                  width: ScreenUtil().setWidth(400),
+                  height: ScreenUtil().setHeight(150),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
@@ -913,24 +934,14 @@ class _UserPageState extends State<UserPage>
                   child: Form(
                     key: _key,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.clear),
-                              color: Colors.black,
-                              onPressed: () {
-                                Navigator.pop(context);
-                                setState(() {
-                                  value2 = false;
-                                });
-                              },
-                            ),
-                          ],
+                        SizedBox(
+                          height: ScreenUtil().setHeight(15),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(bottom: 15.0),
                           child: Text(
                             'Enter your password',
                             style: TextStyle(
@@ -960,7 +971,7 @@ class _UserPageState extends State<UserPage>
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             padding: EdgeInsets.only(left: 10),
                             child: TextFormField(
@@ -997,51 +1008,54 @@ class _UserPageState extends State<UserPage>
                             ),
                           ),
                         ),
+                        // SizedBox(
+                        //   height: ScreenUtil().setHeight(5),
+                        // )
                       ],
                     ),
                   ),
                 ),
-                Material(
-                  type: MaterialType.transparency,
-                  elevation: 6.0,
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
-                  child: InkWell(
-                    splashColor: Colors.cyan[50],
+                Container(
+                  width: ScreenUtil().setWidth(400),
+                  height: ScreenUtil().setHeight(50),
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),
                     ),
-                    onTap: () {
-                      if (_key.currentState.validate()) {
-                        _key.currentState.save();
-                        Navigator.pop(context);
-                        setState(() {
-                          value2 = true;
-                        });
-                        // return true;
-                      }
-                    },
-                    child: Container(
-                      width: ScreenUtil().setWidth(283),
-                      height: ScreenUtil().setHeight(50),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF34BDDD),
-                            Color(0xFF367DC8),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF34BDDD),
+                        Color(0xFF367DC8),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Material(
+                    type: MaterialType.transparency,
+                    elevation: 6.0,
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                    child: InkWell(
+                      splashColor: Colors.cyan[50],
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
                       ),
+                      onTap: () {
+                        if (_key.currentState.validate()) {
+                          _key.currentState.save();
+                          Navigator.pop(context);
+                          setState(() {
+                            value2 = true;
+                          });
+                          // return true;
+                        }
+                      },
                       child: Center(
                         child: Text(
                           "Confirm",
@@ -1067,6 +1081,7 @@ class _UserPageState extends State<UserPage>
   }
 
   File image;
+  final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -1145,22 +1160,165 @@ class _UserPageState extends State<UserPage>
                                 padding: EdgeInsets.all(2),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    image = await ImagePicker.pickImage(
-                                        source: ImageSource.camera);
-                                    Provider.of<UserInfo>(context,
-                                            listen: false)
-                                        .changeImage(
-                                            image: image, context: context);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title:
+                                              Text('Alert Dialog Title Text.'),
+                                          content: Text(
+                                              "Are You Sure Want To Proceed ?"),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text("YES"),
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Column(children: <
+                                                        Widget>[
+                                                      GestureDetector(
+                                                          onTap: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                            final i = await picker
+                                                                .getImage(
+                                                                    source: ImageSource
+                                                                        .gallery);
+                                                            print(i.path);
+                                                            if (i != null) {
+                                                              setState(() {
+                                                                isLoadingimage =
+                                                                    true;
+                                                              });
+                                                              try {
+                                                                if (context !=
+                                                                    null)
+                                                                  await Provider.of<
+                                                                              UserInfo>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .changeImage(
+                                                                          image:
+                                                                              File(i.path));
+
+                                                                image = File(
+                                                                    i.path);
+                                                              } catch (err) {
+                                                                dataSelect(
+                                                                    context,
+                                                                    'Alert!',
+                                                                    '$err',
+                                                                    'Okay', () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                });
+                                                              } finally {
+                                                                setState(() {
+                                                                  isLoadingimage =
+                                                                      false;
+                                                                });
+                                                              }
+                                                            }
+                                                          },
+                                                          child:
+                                                              Text('Gallery')),
+                                                      GestureDetector(
+                                                          onTap: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                            final i = await picker
+                                                                .getImage(
+                                                                    source: ImageSource
+                                                                        .camera);
+
+                                                            if (i != null) {
+                                                              try {
+                                                                setState(() {
+                                                                  isLoadingimage =
+                                                                      true;
+                                                                });
+                                                                if (context !=
+                                                                    null)
+                                                                  await Provider.of<
+                                                                              UserInfo>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .changeImage(
+                                                                          image:
+                                                                              File(i.path));
+
+                                                                image = File(
+                                                                    i.path);
+                                                              } catch (err) {
+                                                                dataSelect(
+                                                                    context,
+                                                                    'Alert!',
+                                                                    '$err',
+                                                                    'Okay', () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                });
+                                                              } finally {
+                                                                setState(() {
+                                                                  isLoadingimage =
+                                                                      false;
+                                                                });
+                                                              }
+                                                            }
+                                                          },
+                                                          child: Text('Camera'))
+                                                    ]);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text("NO"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text("CANCEL"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/userProfile.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
+                                  child: isLoadingimage
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: image == null
+                                                  ? AdvancedNetworkImage(
+                                                      Provider.of<UserInfo>(
+                                                              context,
+                                                              listen: true)
+                                                          .profileImage,
+                                                      useDiskCache: true,
+                                                      cacheRule: CacheRule(
+                                                        maxAge: const Duration(
+                                                            days: 3),
+                                                      ),
+                                                    )
+                                                  : FileImage(image),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ),
                               SizedBox(
@@ -1792,19 +1950,21 @@ class _UserPageState extends State<UserPage>
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(20),
                                   child: InkWell(
+                                    splashColor: Colors.cyan[50],
+                                    borderRadius: BorderRadius.circular(20),
                                     onTap: () async {
                                       if (!Provider.of<Pagination>(context,
                                               listen: false)
                                           .isVerified) {
                                         if (storeCheckValue) {
                                         } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CompleteSignUp(),
-                                            ),
-                                          );
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         CompleteSignUp(),
+                                          //   ),
+                                          // );
                                         }
                                       } else if (!Provider.of<Pagination>(
                                               context,
@@ -1863,8 +2023,6 @@ class _UserPageState extends State<UserPage>
                                         );
                                       }
                                     },
-                                    splashColor: Colors.cyan[50],
-                                    borderRadius: BorderRadius.circular(20),
                                     child: Row(
                                       children: <Widget>[
                                         SizedBox(
@@ -2081,28 +2239,12 @@ class _UserPageState extends State<UserPage>
                                     splashColor: Colors.cyan[50],
                                     borderRadius: BorderRadius.circular(20),
                                     onTap: () async {
-                                      if (!Provider.of<Pagination>(context,
-                                              listen: false)
-                                          .isVerified) {
-                                        if (storeCheckValue) {
-                                        } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CompleteSignUp(),
-                                            ),
-                                          );
-                                        }
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TestimonyPage(),
-                                          ),
-                                        );
-                                      }
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => TestimonyPage(),
+                                        ),
+                                      );
                                     },
                                     child: Row(
                                       children: <Widget>[
@@ -2172,7 +2314,7 @@ class _UserPageState extends State<UserPage>
                             ],
                           ),
                           SizedBox(
-                            height: ScreenUtil().setHeight(28),
+                            height: ScreenUtil().setHeight(20),
                           ),
                           Row(
                             children: <Widget>[
@@ -2189,45 +2331,86 @@ class _UserPageState extends State<UserPage>
                                       type: MaterialType.transparency,
                                       elevation: 6.0,
                                       color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(30),
                                       child: InkWell(
                                         splashColor: Colors.cyan[50],
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(30),
                                         onTap: () {},
                                         child: Padding(
-                                          padding: const EdgeInsets.all(9),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              9, 0, 9, 0),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                                MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: <Widget>[
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 6.0),
-                                                height:
-                                                    ScreenUtil().setHeight(22),
-                                                width:
-                                                    ScreenUtil().setWidth(20),
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/notificationIcon.svg',
-                                                  color: Colors.black,
-                                                ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 6.0),
+                                                    height: ScreenUtil()
+                                                        .setHeight(22),
+                                                    width: ScreenUtil()
+                                                        .setWidth(20),
+                                                    child: SvgPicture.asset(
+                                                      'assets/icons/notificationIcon.svg',
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: ScreenUtil()
+                                                        .setWidth(14),
+                                                  ),
+                                                  Text(
+                                                    'NOTIFICATIONS',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Gilroy Medium',
+                                                      fontSize: ScreenUtil().setSp(
+                                                          14,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(
-                                                width:
-                                                    ScreenUtil().setWidth(14),
-                                              ),
-                                              Text(
-                                                'NOTIFICATIONS',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Medium',
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                  color: Colors.black,
-                                                ),
+                                              Switch(
+                                                value: isSwitched,
+                                                onChanged: (value) async {
+                                                  bool value2 = false;
+                                                  // if (value2) {
+                                                  setState(() {
+                                                    isSwitched = value;
+                                                    print(isSwitched);
+                                                  });
+                                                  await dataSelectConfirmMessage(
+                                                          context,
+                                                          "Important!",
+                                                          "Are you sure, you want to turn ${value ? "On" : "Off"} the Notification?",
+                                                          " buttonText")
+                                                      .then((value) {
+                                                    setState(() {
+                                                      value2 = value;
+                                                    });
+                                                  });
+                                                  // }
+                                                  if (!value2) {
+                                                    setState(() {
+                                                      isSwitched = !value;
+                                                      print(isSwitched);
+                                                    });
+                                                  }
+                                                },
+                                                activeTrackColor:
+                                                    Colors.lightBlueAccent[100],
+                                                activeColor: Colors.blue,
                                               ),
                                             ],
                                           ),
@@ -2369,7 +2552,7 @@ class _UserPageState extends State<UserPage>
                             ],
                           ),
                           SizedBox(
-                            height: ScreenUtil().setHeight(32),
+                            height: ScreenUtil().setHeight(32 - 22),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

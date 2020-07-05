@@ -1,8 +1,13 @@
 import 'package:Flutter/constant/const.dart';
+import 'package:Flutter/providers/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class MyOrderDetailPage extends StatefulWidget {
+  final List<dynamic> products;
+  final int index;
+  MyOrderDetailPage({this.products, this.index});
   @override
   _MyOrderDetailPageState createState() => _MyOrderDetailPageState();
 }
@@ -11,9 +16,16 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
   List<String> str = [
     'Processing',
     'Manufacturing',
-    'Certification',
-    'Final Inspection',
+    'Certification© & Final Inspection',
     'Delivery',
+    'Completed',
+  ];
+  List<String> strMessage = [
+    'We\'ve just recieved your order! Our software is handling this order with #priority.😊',
+    'We at Gemstory are fully committed to deliver products before time. Product finishing, setting and polishing, all minor details taken into Account.',
+    'Each and every diamond is checked thoroughly to deliver the best in your hands.',
+    'Out for delivery! Our team will handover the package to you any moment!🚚',
+    'Hope you love our art! wating for the feedback🤝',
   ];
   @override
   Widget build(BuildContext context) {
@@ -29,7 +41,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
     return Scaffold(
       body: Container(
         // color: Colors.amber,
-        color: Color(0xFFF4F4F4),
+        color: Colors.white,
         child: Stack(
           children: <Widget>[
             Column(
@@ -55,7 +67,11 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(40.0, 10.0, 10.0, 10.0),
                   child: Text(
-                    '#200506001',
+                    "#" +
+                        Provider.of<Orders>(context, listen: false)
+                            .orderProducts[widget.index]
+                            .orderNumber
+                            .toString(),
                     style: TextStyle(
                       color: Colors.black,
                       fontSize:
@@ -121,7 +137,8 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                               width:
                                                   ScreenUtil().setWidth(308.25),
                                               child: Text(
-                                                'Each and every diamond is checked thoroughly to deliver quality products to our client.',
+                                                strMessage[index],
+                                                // 'Each and every diamond is checked thoroughly to deliver quality products to our client.',
                                                 style: TextStyle(
                                                   fontSize: ScreenUtil().setSp(
                                                       13,
@@ -267,7 +284,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                 ),
                               );
                             },
-                            itemCount: 4,
+                            itemCount: widget.products.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 height: ScreenUtil().setHeight(130),
@@ -277,15 +294,16 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                       MainAxisAlignment.spaceEvenly,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Container(
-                                      // color: Colors.black,
-                                      child: Image.asset(
-                                        'assets/images/nosepin4.png',
-                                        fit: BoxFit.fill,
-                                        height: ScreenUtil().setHeight(77.5),
-                                        width: ScreenUtil().setWidth(82.2),
+                                    // color: Colors.black,
+                                    Image(
+                                      image: NetworkImage(
+                                        widget.products[index].displayImage,
                                       ),
+                                      fit: BoxFit.fill,
+                                      height: ScreenUtil().setHeight(77.5),
+                                      width: ScreenUtil().setWidth(82.2),
                                     ),
+
                                     Padding(
                                       padding: const EdgeInsets.only(
                                         top: 8.0,
@@ -300,7 +318,8 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
-                                          'StyleNumber: GS0021',
+                                          widget.products[index].styleNumber
+                                              .toString(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontFamily: "Gilroy Regular",
@@ -309,7 +328,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           ),
                                         ),
                                         Text(
-                                          'Build: Taar',
+                                          'Build: ${widget.products[index].build}',
                                           style: TextStyle(
                                             fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
@@ -317,7 +336,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           ),
                                         ),
                                         Text(
-                                          'Color: Rose',
+                                          'Color: ${widget.products[index].color}',
                                           style: TextStyle(
                                             fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
@@ -325,7 +344,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           ),
                                         ),
                                         Text(
-                                          'Diamond Quality: SI_HI_BFGD',
+                                          'Diamond Quality:${widget.products[index].diamondQuality}',
                                           style: TextStyle(
                                             fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
@@ -333,7 +352,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           ),
                                         ),
                                         Text(
-                                          'Certification: None',
+                                          'Certification: ${widget.products[index].certificate}',
                                           style: TextStyle(
                                             fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,
@@ -341,7 +360,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                           ),
                                         ),
                                         Text(
-                                          'Quantity: 4',
+                                          'Quantity: ${widget.products[index].quantity}',
                                           style: TextStyle(
                                             fontFamily: "Gilroy Regular",
                                             fontSize: ScreenUtil().setSp(13,

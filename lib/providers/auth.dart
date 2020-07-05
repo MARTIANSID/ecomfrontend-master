@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:Flutter/screens/auth_screen.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -123,7 +125,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> _authenticate(String number, String password, String urlSegment,
+  Future<void> authenticate(String number, String password, String urlSegment,
       [String name]) async {
     try {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
@@ -155,7 +157,7 @@ class Auth with ChangeNotifier {
       _expiryDate = DateTime.now().add(
         Duration(seconds: 3600),
       );
-      _autoLogout();
+      autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode(
@@ -200,11 +202,11 @@ class Auth with ChangeNotifier {
     String number,
     String password,
   ) async {
-    return _authenticate(number, password, 'user/signup', name);
+    return authenticate(number, password, 'user/signup', name);
   }
 
   Future<void> userLogin(String number, String password) async {
-    return _authenticate(number, password, 'user/login');
+    return authenticate(number, password, 'user/login');
   }
 
   Future<bool> tryAutoLogin(context) async {
@@ -224,7 +226,7 @@ class Auth with ChangeNotifier {
       password = extractedUserData['password'];
 
       if (remeberMe) {
-        await _authenticate(number, password, 'user/login');
+        await authenticate(number, password, 'user/login');
         return true;
       } else {
         if (expiryDate.isBefore(DateTime.now())) {
@@ -235,7 +237,7 @@ class Auth with ChangeNotifier {
 
         autoLogin = true;
 
-        _autoLogout();
+        autoLogout();
         notifyListeners();
         return true;
       }
@@ -252,7 +254,10 @@ class Auth with ChangeNotifier {
     remeberMe = value;
   }
 
-  Future<void> logout() async {
+  Future<void> logout({context}) async {
+    if (context != null) {
+      Navigator.popAndPushNamed(context, '/');
+    }
     _token = null;
     _number = null;
     _expiryDate = null;
@@ -268,13 +273,15 @@ class Auth with ChangeNotifier {
     prefs.remove('userData');
   }
 
-  void _autoLogout() {
+  void autoLogout({context}) {
     if (_authTimer != null) {
       _authTimer.cancel();
     }
 
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
+    _authTimer = Timer(Duration(seconds: timeToExpiry),
+        remeberMe ? null : () => logout(context: context));
+
     notifyListeners();
   }
 

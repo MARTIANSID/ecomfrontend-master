@@ -791,6 +791,7 @@ class _CartScreenState extends State<CartScreen> {
 
                                         return Column(
                                           children: <Widget>[
+                                            
                                             Dismissible(
                                               direction:
                                                   DismissDirection.startToEnd,
@@ -805,6 +806,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   return value2 = value;
                                                 });
                                               },
+                                              
                                               onDismissed: (DismissDirection
                                                   direction) async {
                                                 // setState(() {
@@ -928,7 +930,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   width: ScreenUtil()
                                                       .setWidth(390),
                                                   margin: EdgeInsets.fromLTRB(
-                                                      11.0, 0.0, 0.0, 5.0),
+                                                      11.0, 0.0, 10.0, 5.0),
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -946,60 +948,23 @@ class _CartScreenState extends State<CartScreen> {
                                                         width: ScreenUtil()
                                                             .setWidth(4),
                                                       ),
-                                                      // Image.asset(
-                                                      //   'assets/images/nosepin12.png',
-                                                      //   height: ScreenUtil().setHeight(76),
-                                                      //   width: ScreenUtil().setWidth(79),
-                                                      //   fit: BoxFit.fill,
-                                                      // ),
-                                                      // product.imageUrl.containsKey(
-                                                      //         Provider.of<Cart>(
-                                                      //                 context,
-                                                      //                 listen:
-                                                      //                     true)
-                                                      //             .cart[index]
-                                                      //             .color)
                                                       Image(
                                                         height: ScreenUtil()
                                                             .setHeight(79),
                                                         width: ScreenUtil()
                                                             .setWidth(76),
-                                                        image: NetworkImage(
-                                                          product
-                                                              .imageUrl[Provider
-                                                                  .of<Cart>(
-                                                                      context,
-                                                                      listen:
-                                                                          true)
-                                                              .cart[index]
-                                                              .color
-                                                              .toLowerCase()],
+                                                        image:
+                                                            AdvancedNetworkImage(
+                                                          product.imageUrl[
+                                                              'yellow'],
+                                                          useDiskCache: true,
+                                                          cacheRule: CacheRule(
+                                                              maxAge:
+                                                                  const Duration(
+                                                                      days: 3)),
                                                         ),
                                                         fit: BoxFit.fill,
                                                       ),
-
-                                                      // : Image(
-                                                      //     height:
-                                                      //         ScreenUtil()
-                                                      //             .setHeight(
-                                                      //                 79),
-                                                      //     width:
-                                                      //         ScreenUtil()
-                                                      //             .setWidth(
-                                                      //                 76),
-                                                      //     image:
-                                                      //         AdvancedNetworkImage(
-                                                      //       product.imageUrl[
-                                                      //           'yellow'],
-                                                      //       useDiskCache:
-                                                      //           true,
-                                                      //       cacheRule: CacheRule(
-                                                      //           maxAge: const Duration(
-                                                      //               days:
-                                                      //                   3)),
-                                                      //     ),
-                                                      //     fit: BoxFit.fill,
-                                                      //   ),
                                                       SizedBox(
                                                         width: ScreenUtil()
                                                             .setWidth(2),
@@ -1008,7 +973,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         width: ScreenUtil()
                                                             .setWidth(192),
                                                         height: ScreenUtil()
-                                                            .setHeight(76),
+                                                            .setHeight(79),
                                                         // color: Colors.amber,
                                                         child: Column(
                                                           crossAxisAlignment:
@@ -1109,7 +1074,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                         children: [
                                                                           TextSpan(
                                                                             text:
-                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert] + Provider.of<Pagination>(context, listen: true).buildPrices[Provider.of<Cart>(context, listen: true).cart[index].build]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                            // '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
                                                                             style:
                                                                                 TextStyle(
                                                                               color: Colors.white,
@@ -1731,7 +1697,10 @@ class _CartScreenState extends State<CartScreen> {
                                           child: Icon(
                                             Icons.clear,
                                             color: Colors.black,
-                                            size: searchSelected ? 25 : 0,
+                                            size: searchSelected
+                                                ? ScreenUtil().setSp(25,
+                                                    allowFontScalingSelf: true)
+                                                : 0,
                                           ),
                                         ),
                                       ),
@@ -1739,9 +1708,9 @@ class _CartScreenState extends State<CartScreen> {
                                         duration: Duration(milliseconds: 600),
                                         margin: EdgeInsets.only(right: 6.0),
                                         height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 20),
+                                            .setHeight(searchSelected ? 0 : 25),
                                         width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 20),
+                                            .setWidth(searchSelected ? 0 : 25),
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
                                           color: Colors.black,

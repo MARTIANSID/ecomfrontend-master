@@ -56,6 +56,81 @@ Future<void> main() async {
 //   }
 // }
 
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primaryColor: const Color.fromARGB(255, 0, 199, 0),
+//         accentColor: const Color.fromARGB(255, 222, 233, 226),
+//         brightness: Brightness.dark,
+//         canvasColor: Colors.black,
+//       ),
+//       home: MyHomePage(),
+//       debugShowCheckedModeBanner: false,
+//     );
+//   }
+// }
+
+// class MyHomePage extends StatefulWidget {
+//   @override
+//   State createState() => MyHomePageState();
+// }
+
+// class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+//   Animation<int> _characterCount;
+
+//   int _stringIndex;
+//   static const List<String> _kStrings = const <String>[
+//     'Call trans opt: received. 2-19-98 13:24:18 REC:Log>',
+//     'Trace program running.',
+//     '[312]555-0690',
+//   ];
+//   String get _currentString => _kStrings[_stringIndex % _kStrings.length];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     ThemeData theme = Theme.of(context);
+//     TextStyle textStyle = theme.textTheme.title.copyWith(
+//       fontFamily: 'Courier New',
+//       color: theme.primaryColor,
+//     );
+//     return Scaffold(
+//       floatingActionButton: FloatingActionButton(
+//         child: Icon(Icons.navigate_next),
+//         onPressed: () async {
+//           AnimationController controller = AnimationController(
+//             duration: const Duration(milliseconds: 4000),
+//             vsync: this,
+//           );
+//           setState(() {
+//             _stringIndex = _stringIndex == null ? 0 : _stringIndex + 1;
+//             _characterCount = StepTween(begin: 0, end: _currentString.length)
+//                 .animate(
+//                     CurvedAnimation(parent: controller, curve: Curves.easeIn));
+//           });
+//           await controller.forward();
+//           controller.dispose();
+//         },
+//       ),
+//       body: Container(
+//         margin: EdgeInsets.symmetric(vertical: 50.0, horizontal: 10.0),
+//         child: _characterCount == null
+//             ? null
+//             : AnimatedBuilder(
+//                 animation: _characterCount,
+//                 builder: (BuildContext context, Widget child) {
+//                   String text =
+//                       _currentString.substring(0, _characterCount.value);
+//                   return Text(text, style: textStyle);
+//                 },
+//               ),
+//       ),
+//     );
+//   }
+// }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -139,13 +214,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
     double zoom = 1.0 + (2.0 - 1.0) * selectedness;
-    return new Container(
+    return Container(
       width: ScreenUtil().setWidth(20),
-      child: new Center(
-        child: new Material(
+      child: Center(
+        child: Material(
           color: page == 1 ? Color(0xFFFAAB35) : Colors.black,
           type: MaterialType.circle,
-          child: new Container(
+          child: Container(
             width: 5.0 * zoom,
             height: 5.0 * zoom,
           ),
@@ -180,8 +255,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Image.asset(
               "assets/images/logo_colour.png",
               fit: BoxFit.contain,
-              height: ScreenUtil().setHeight(131),
-              width: ScreenUtil().setWidth(131),
+              height: ScreenUtil().setHeight(130),
+              width: ScreenUtil().setWidth(130),
             ),
             SizedBox(
               height: ScreenUtil().setHeight(30),
@@ -227,8 +302,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Image.asset(
               "assets/images/logo_colour.png",
               fit: BoxFit.contain,
-              height: ScreenUtil().setHeight(131),
-              width: ScreenUtil().setWidth(131),
+              height: ScreenUtil().setHeight(130),
+              width: ScreenUtil().setWidth(130),
             ),
             SizedBox(
               height: ScreenUtil().setHeight(30),
@@ -281,8 +356,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Image.asset(
               "assets/images/logo.png",
               fit: BoxFit.contain,
-              height: ScreenUtil().setHeight(131),
-              width: ScreenUtil().setWidth(131),
+              height: ScreenUtil().setHeight(130),
+              width: ScreenUtil().setWidth(130),
             ),
             SizedBox(
               height: ScreenUtil().setHeight(30),

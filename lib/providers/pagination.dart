@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'http_exception.dart';
@@ -111,6 +112,20 @@ class Pagination with ChangeNotifier {
   final req = "https://alexa.gemstory.in/user/requestprice";
 
   Future<void> requestPrice({context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.get(
         req,
@@ -144,6 +159,20 @@ class Pagination with ChangeNotifier {
       addition = false}) async {
     final url =
         'https://alexa.gemstory.in/product/paginated?select=$select&sortby=$sortby&sort=$sort&page=$page&quant=20';
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.get(
         url,
@@ -314,6 +343,21 @@ class Pagination with ChangeNotifier {
 
   Future<void> getFav(context) async {
     final url = 'https://alexa.gemstory.in/user/favourite/';
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
+
     try {
       final response = await http.get(
         url,
@@ -462,6 +506,20 @@ class Pagination with ChangeNotifier {
       }
     }
     notifyListeners();
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
 
     try {
       final response = await http.post(uurl + '/user/favourite/toggle',
@@ -663,6 +721,20 @@ class Pagination with ChangeNotifier {
   }
 
   Future<void> getProductDetail({context, styleNumber}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.get(
         uurl + '/product/single?styleNumber=$styleNumber',
@@ -702,7 +774,22 @@ class Pagination with ChangeNotifier {
   }
 
   Future<void> setCom({comm, context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     this.comm = comm;
+
     try {
       final response = await http.patch(uurl + 'user/comission', headers: {
         'Authorization':

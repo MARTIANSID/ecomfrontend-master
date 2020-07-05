@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'cart.dart';
@@ -47,6 +48,19 @@ final uurl = "https://alexa.gemstory.in/";
 class Orders with ChangeNotifier {
   List<dynamic> orderProducts = [];
   Future<void> getOrders({context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.get(
         uurl + '/order',
@@ -60,7 +74,7 @@ class Orders with ChangeNotifier {
       orderProducts = responseData['user']['orders']
           .map((i) => Order(
               status: i['status'],
-              orderNumber: i['oderNumber'],
+              orderNumber: i['orderNumber'],
               datePlaced: i['datePlaced'],
               products: i['products']
                   .map((i) => ProductDetails(
@@ -83,6 +97,19 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> placeOrder({context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
       final response = await http.post(
         uurl + '/order',
@@ -92,8 +119,7 @@ class Orders with ChangeNotifier {
         },
       );
       if (response.statusCode == 200) {
-        Provider.of<Cart>(context, listen: false).cart = [];
-        notifyListeners();
+        Provider.of<Cart>(context, listen: false).cartNull();
       }
     } on PlatformException {
       throw 'Oops Something went wrong';

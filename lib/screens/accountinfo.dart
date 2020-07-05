@@ -133,53 +133,50 @@ class _AccountInfoState extends State<AccountInfo> {
                   SizedBox(
                     height: ScreenUtil().setHeight(30),
                   ),
-                  Container(
-                    height: ScreenUtil().setHeight(35),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              editFields = !editFields;
-                            });
-                          },
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 500),
-                            padding: EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              border:
-                                  Border.all(color: Colors.black, width: 1.0),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  editFields ? Icons.cancel : Icons.edit,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            editFields = !editFields;
+                          });
+                        },
+                        child: Container(
+                          // duration: Duration(milliseconds: 500),
+                          height: ScreenUtil().setHeight(45),
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            border: Border.all(color: Colors.black, width: 1.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                editFields ? Icons.cancel : Icons.edit,
+                                color: Colors.black,
+                                size: ScreenUtil()
+                                    .setSp(15, allowFontScalingSelf: true),
+                              ),
+                              SizedBox(
+                                width: ScreenUtil().setWidth(8),
+                              ),
+                              Text(
+                                editFields ? 'Cancel' : 'Edit Account',
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy Regular',
+                                  fontSize: ScreenUtil()
+                                      .setSp(14, allowFontScalingSelf: true),
                                   color: Colors.black,
-                                  size: ScreenUtil()
-                                      .setSp(15, allowFontScalingSelf: true),
                                 ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(8),
-                                ),
-                                Text(
-                                  editFields ? 'Cancel' : 'Edit Account',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Regular',
-                                    fontSize: ScreenUtil()
-                                        .setSp(14, allowFontScalingSelf: true),
-                                    color: Colors.black,
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: ScreenUtil().setHeight(10),
@@ -267,7 +264,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 icon: Icons.mail_outline,
-                                proceed: true,
+                                proceed: !editFields,
                               ),
                             ),
                             SizedBox(
@@ -464,7 +461,6 @@ class _AccountInfoState extends State<AccountInfo> {
                   end: Alignment.bottomRight,
                 ),
               ),
-              padding: EdgeInsets.all(5.0),
               child: Material(
                 type: MaterialType.transparency,
                 elevation: 6.0,
@@ -487,6 +483,7 @@ class _AccountInfoState extends State<AccountInfo> {
                           city: cityName,
                           firm: firmDetail,
                           gst: gstValue,
+                          email: emailID,
                           pincode: pincode,
                           state: stateName,
                           street: streetName,
@@ -507,28 +504,31 @@ class _AccountInfoState extends State<AccountInfo> {
                       // Navigator.of(context).pop();
                     }
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.done_outline,
-                        color: Colors.white,
-                        size:
-                            ScreenUtil().setSp(23, allowFontScalingSelf: true),
-                      ),
-                      SizedBox(
-                        width: ScreenUtil().setWidth(10),
-                      ),
-                      Text(
-                        'Submit',
-                        style: TextStyle(
-                          fontFamily: 'Gilroy Medium',
-                          fontSize: ScreenUtil()
-                              .setSp(15, allowFontScalingSelf: true),
+                  child: Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.done_outline,
                           color: Colors.white,
+                          size: ScreenUtil()
+                              .setSp(23, allowFontScalingSelf: true),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: ScreenUtil().setWidth(10),
+                        ),
+                        Text(
+                          'Submit',
+                          style: TextStyle(
+                            fontFamily: 'Gilroy Medium',
+                            fontSize: ScreenUtil()
+                                .setSp(15, allowFontScalingSelf: true),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

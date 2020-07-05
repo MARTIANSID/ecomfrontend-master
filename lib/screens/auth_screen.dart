@@ -108,25 +108,81 @@ class _LoginScreenState extends State<LoginScreen>
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: ScreenUtil().setHeight(60),
-          child: TextFormField(
-            enabled: enable,
-            validator: validate,
-            controller: controller,
-            keyboardType: inputType,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Gilroy Regular',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                icon,
-                color: Colors.white,
+          child: Stack(
+            alignment: Alignment.centerRight,
+            children: <Widget>[
+              TextFormField(
+                enabled: enable,
+                validator: validate,
+                controller: controller,
+                keyboardType: inputType,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Gilroy Regular',
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14.0),
+                  prefixIcon: Icon(
+                    icon,
+                    color: Colors.white,
+                  ),
+                  // suffixIcon: !enable
+                  //     ? IconButton(
+                  //         onPressed: () {
+                  //           setState(() {
+                  //             enable = true;
+                  //             _phoneController.clear();
+                  //             _nameController.clear();
+                  //             _passwordController.clear();
+                  //             _requirePassword = false;
+                  //             _buildForgetButton = false;
+                  //             _isRegistered = false;
+                  //             _showSignup = false;
+                  //             _rememberMe = false;
+                  //             _showPassword = false;
+                  //             _showPasswordCheckBox = false;
+                  //             _forgotPasswordMenu = false;
+                  //             _screen = 0;
+                  //           });
+                  //         },
+                  //         icon: Icon(
+                  //           Icons.edit,
+                  //           color: Colors.white,
+                  //         ),
+                  //       )
+                  //     : SizedBox(height: 0.0),
+                  hintText: hint,
+                  hintStyle: kHintTextStyle,
+                ),
               ),
-              hintText: hint,
-              hintStyle: kHintTextStyle,
-            ),
+              !this.enable
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          this.enable = true;
+                          enable = true;
+                          _phoneController.clear();
+                          _nameController.clear();
+                          _passwordController.clear();
+                          _requirePassword = false;
+                          _buildForgetButton = false;
+                          _isRegistered = false;
+                          _showSignup = false;
+                          _rememberMe = false;
+                          _showPassword = false;
+                          _showPasswordCheckBox = false;
+                          _forgotPasswordMenu = false;
+                          _screen = 0;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    )
+                  : SizedBox(height: 0.0),
+            ],
           ),
         ),
         SizedBox(
@@ -151,34 +207,62 @@ class _LoginScreenState extends State<LoginScreen>
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: ScreenUtil().setHeight(60),
-          child: TextFormField(
-            validator: (value) {
-              if (value.isEmpty) {
-                return "Enter Password";
-              } else if (value.length < 6) {
-                return "Atleast 6 Characters Required!";
-              }
-              return null;
-            },
-            keyboardType: TextInputType.text,
-            controller: _passwordController,
-            obscureText: _showPassword ? false : true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Gilroy Regular',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
+          child: Stack(
+            alignment: Alignment.centerRight,
+            children: <Widget>[
+              TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Enter Password";
+                  } else if (value.length < 6) {
+                    return "Atleast 6 Characters Required!";
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.text,
+                controller: _passwordController,
+                obscureText: _showPassword ? false : true,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Gilroy Regular',
+                ),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14.0),
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  hintText: _forgotPasswordMenu
+                      ? 'Enter New Password'
+                      : 'Enter your Password',
+                  hintStyle: kHintTextStyle,
+                ),
               ),
-              hintText: _forgotPasswordMenu
-                  ? 'Enter New Password'
-                  : 'Enter your Password',
-              hintStyle: kHintTextStyle,
-            ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    // enable = true;
+                    // _phoneController.clear();
+                    // _nameController.clear();
+                    // _passwordController.clear();
+                    // _requirePassword = false;
+                    // _buildForgetButton = false;
+                    // _isRegistered = false;
+                    // _showSignup = false;
+                    // _rememberMe = false;
+                    _showPassword = !_showPassword;
+                    // _showPasswordCheckBox = false;
+                    // _forgotPasswordMenu = false;
+                    // _screen = 0;
+                  });
+                },
+                icon: Icon(
+                  _showPassword ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.white,
+                ),
+              )
+            ],
           ),
         ),
         SizedBox(
@@ -337,27 +421,28 @@ class _LoginScreenState extends State<LoginScreen>
     return Container(
       height: ScreenUtil().setHeight(20),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Theme(
             data: ThemeData(unselectedWidgetColor: Colors.white),
             child: Checkbox(
-              value: _showPasswordCheckBox ? _showPassword : _rememberMe,
+              value: _rememberMe,
               checkColor: Colors.green,
               activeColor: Colors.white,
               onChanged: (value) {
                 setState(() {
-                  if (_showPasswordCheckBox) {
-                    _showPassword = !_showPassword;
-                  } else {
-                    _rememberMe = value;
-                    Provider.of<Auth>(context, listen: false).setRemeber(value);
-                  }
+                  // if (_showPasswordCheckBox) {
+                  // _showPassword = !_showPassword;
+                  // } else {
+                  _rememberMe = value;
+                  Provider.of<Auth>(context, listen: false).setRemeber(value);
+                  // }
                 });
               },
             ),
           ),
           Text(
-            _showPasswordCheckBox ? 'Show Password' : 'Remember me',
+            'Remember me',
             style: kLabelStyle,
           ),
         ],
@@ -625,216 +710,221 @@ class _LoginScreenState extends State<LoginScreen>
           ),
         ),
         height: double.infinity,
-        child: AnimatedContainer(
-          padding: EdgeInsets.symmetric(horizontal: 40.0),
-          constraints: BoxConstraints(
-            minHeight: _requirePassword
-                ? ScreenUtil().setHeight(640)
-                : ScreenUtil().setHeight(640),
-            maxHeight: _requirePassword
-                ? _showSignup
-                    ? ScreenUtil().setHeight(675)
-                    : ScreenUtil().setHeight(675)
-                : ScreenUtil().setHeight(640),
-          ),
-          duration: Duration(milliseconds: 300),
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            physics: BouncingScrollPhysics(),
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              //SizedBox(height: deviceSize.height / 10),
-              Text(
-                'Hello,',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Gilroy Regular',
-                  fontSize: ScreenUtil().setSp(50, allowFontScalingSelf: true),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: ScreenUtil().setHeight(20),
-              ),
-              Image.asset(
-                "assets/images/logo.png",
-                fit: BoxFit.contain,
-                height: ScreenUtil().setHeight(150),
-                width: ScreenUtil().setWidth(150),
-              ),
-              if (_showSignup == true ||
-                  _forgotPasswordMenu == true ||
-                  _requirePassword == true)
-                SlideTransition(
-                  position: _slideAnimation2,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          enable = true;
-                          _phoneController.clear();
-                          _nameController.clear();
-                          _passwordController.clear();
-                          _requirePassword = false;
-                          _buildForgetButton = false;
-                          _isRegistered = false;
-                          _showSignup = false;
-                          _rememberMe = false;
-                          _showPassword = false;
-                          _showPasswordCheckBox = false;
-                          _forgotPasswordMenu = false;
-                          _screen = 0;
-                        });
-                      },
-                      padding: EdgeInsets.only(right: 0.0),
-                      child: Text(
-                        'Edit',
-                        style: kLabelStyle,
-                      ),
-                    ),
+        child: Center(
+          child: AnimatedContainer(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            constraints: BoxConstraints(
+              minHeight: _requirePassword
+                  ? ScreenUtil().setHeight(700)
+                  : ScreenUtil().setHeight(700),
+              maxHeight: _requirePassword
+                  ? _showSignup
+                      ? ScreenUtil().setHeight(775)
+                      : ScreenUtil().setHeight(775)
+                  : ScreenUtil().setHeight(700),
+            ),
+            duration: Duration(milliseconds: 300),
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //SizedBox(height: deviceSize.height / 10),
+                Text(
+                  'Hello,',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Gilroy Regular',
+                    fontSize:
+                        ScreenUtil().setSp(50, allowFontScalingSelf: true),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-
-              SizedBox(height: ScreenUtil().setHeight(30)),
-              if (_showSignup) ...[
-                SlideTransition(
-                  position: _slideAnimation2,
-                  child: _buildGivenTF(
-                      name: 'Name',
-                      enable: true,
-                      validate: (value) {
-                        if (value.isEmpty) {
-                          return "Enter Full Name";
-                        } else if (value.length < 4) {
-                          return "Name Error";
-                        }
-                        return null;
-                      },
-                      hint: 'Enter your full name',
-                      controller: _nameController,
-                      inputType: TextInputType.text,
-                      icon: Icons.person),
-                ),
                 SizedBox(
-                  height: ScreenUtil().setHeight(10),
-                )
-              ],
-              //if (!_isRegistered)
-              _buildGivenTF(
-                  name: _forgotPasswordMenu ? 'OTP' : 'Mobile Number',
-                  enable: enable,
-                  validate: _forgotPasswordMenu
-                      ? (value) {
+                  height: ScreenUtil().setHeight(20),
+                ),
+                Image.asset(
+                  "assets/images/logo.png",
+                  fit: BoxFit.contain,
+                  height: ScreenUtil().setHeight(130),
+                  width: ScreenUtil().setWidth(130),
+                ),
+                // if (_showSignup == true ||
+                //     _forgotPasswordMenu == true ||
+                //     _requirePassword == true)
+                //   SlideTransition(
+                //     position: _slideAnimation2,
+                //     child: Container(
+                //       alignment: Alignment.centerRight,
+                //       child: FlatButton(
+                //         onPressed: () {
+                //           setState(() {
+                //             enable = true;
+                //             _phoneController.clear();
+                //             _nameController.clear();
+                //             _passwordController.clear();
+                //             _requirePassword = false;
+                //             _buildForgetButton = false;
+                //             _isRegistered = false;
+                //             _showSignup = false;
+                //             _rememberMe = false;
+                //             _showPassword = false;
+                //             _showPasswordCheckBox = false;
+                //             _forgotPasswordMenu = false;
+                //             _screen = 0;
+                //           });
+                //         },
+                //         padding: EdgeInsets.only(right: 0.0),
+                //         child: Text(
+                //           'Edit',
+                //           style: kLabelStyle,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+
+                SizedBox(height: ScreenUtil().setHeight(30)),
+                if (_showSignup) ...[
+                  SlideTransition(
+                    position: _slideAnimation2,
+                    child: _buildGivenTF(
+                        name: 'Name',
+                        enable: true,
+                        validate: (value) {
                           if (value.isEmpty) {
-                            return "Enter OTP";
-                          } else if (value.length != 4) {
-                            return "OTP Should be of 4 digit";
-                          }
-                          return null;
-                        }
-                      : (value) {
-                          if (value.isEmpty) {
-                            return "Enter Phone Number";
-                          } else if (value.length != 10) {
-                            return "Incorrect Phone Number";
+                            return "Enter Full Name";
+                          } else if (value.length < 4) {
+                            return "Name Error";
                           }
                           return null;
                         },
-                  hint: _forgotPasswordMenu
-                      ? 'Check SMS on your Phone'
-                      : 'Enter 10 digits number',
-                  controller:
-                      _forgotPasswordMenu ? _nameController : _phoneController,
-                  inputType: TextInputType.phone,
-                  icon: Icons.phone_iphone),
+                        hint: 'Enter your full name',
+                        controller: _nameController,
+                        inputType: TextInputType.text,
+                        icon: Icons.person),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(10),
+                  )
+                ],
+                //if (!_isRegistered)
+                _buildGivenTF(
+                    name: _forgotPasswordMenu ? 'OTP' : 'Mobile Number',
+                    enable: enable,
+                    validate: _forgotPasswordMenu
+                        ? (value) {
+                            if (value.isEmpty) {
+                              return "Enter OTP";
+                            } else if (value.length != 4) {
+                              return "OTP Should be of 4 digit";
+                            }
+                            return null;
+                          }
+                        : (value) {
+                            if (value.isEmpty) {
+                              return "Enter Phone Number";
+                            } else if (value.length != 10) {
+                              return "Incorrect Phone Number";
+                            }
+                            return null;
+                          },
+                    hint: _forgotPasswordMenu
+                        ? 'Check SMS on your Phone'
+                        : 'Enter 10 digits number',
+                    controller: _forgotPasswordMenu
+                        ? _nameController
+                        : _phoneController,
+                    inputType: TextInputType.phone,
+                    icon: Icons.phone_iphone),
 
-              if (_requirePassword || _showSignup)
-                SlideTransition(
-                  position: _slideAnimation,
-                  child: FadeTransition(
-                      opacity: _opacityAnimation, child: _buildPasswordTF()),
-                ),
-              if (_buildForgetButton)
-                _buildForgotPasswordBtn(),
+                if (_requirePassword || _showSignup)
+                  SlideTransition(
+                    position: _slideAnimation,
+                    child: FadeTransition(
+                        opacity: _opacityAnimation, child: _buildPasswordTF()),
+                  ),
+                if (_buildForgetButton)
+                  _buildForgotPasswordBtn(),
 
-              _forgotPasswordMenu && _requirePassword == false
-                  ? Container(
-                      padding: EdgeInsets.only(left: 10),
-                      alignment: Alignment.centerRight,
-                      child: _resendMessageBtn(),
-                    )
-                  : _buildRememberMeCheckbox(),
+                _forgotPasswordMenu && _requirePassword == false
+                    ? Container(
+                        padding: EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerRight,
+                        child: _resendMessageBtn(),
+                      )
+                    : _buildRememberMeCheckbox(),
 
-              _forgotPasswordMenu && _requirePassword == false
-                  ? Container(
-                      padding: EdgeInsets.only(top: 20.0),
-                      width: double.infinity,
-                      child: RaisedButton(
-                        onPressed: () async {
-                          setState(() {
-                            isVerifyLoading = true;
-                          });
-                          bool b;
-                          try {
-                            b = await Provider.of<Auth>(context, listen: false)
-                                .checkOtp(
-                                    number: phoneNumber.toString(),
-                                    code: _nameController.text);
+                _forgotPasswordMenu && _requirePassword == false
+                    ? Container(
+                        padding: EdgeInsets.only(top: 20.0),
+                        width: double.infinity,
+                        child: RaisedButton(
+                          onPressed: () async {
                             setState(() {
-                              isVerifyLoading = false;
+                              isVerifyLoading = true;
                             });
+                            bool b;
+                            try {
+                              b = await Provider.of<Auth>(context,
+                                      listen: false)
+                                  .checkOtp(
+                                      number: phoneNumber.toString(),
+                                      code: _nameController.text);
+                              setState(() {
+                                isVerifyLoading = false;
+                              });
 
-                            if (b) {
-                              _forgotPasswordMenu = true;
-                              _requirePassword = true;
-                              next();
-                            } else {
-                              dataSelect(context, 'Wrong Otp', '', 'ok', () {
-                                Navigator.pop(context);
+                              if (b) {
+                                _forgotPasswordMenu = true;
+                                _requirePassword = true;
+                                next();
+                              } else {
+                                dataSelect(context, 'Wrong Otp', '', 'ok', () {
+                                  Navigator.pop(context);
+                                });
+                              }
+                            } catch (error) {
+                              _showDilog('Oops!', '$error');
+                            } finally {
+                              setState(() {
+                                isVerifyLoading = false;
                               });
                             }
-                          } catch (error) {
-                            _showDilog('Oops!', '$error');
-                          } finally {
-                            setState(() {
-                              isVerifyLoading = false;
-                            });
-                          }
-                        },
-                        elevation: 5.0,
-                        padding: EdgeInsets.all(15.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        color: Colors.white,
-                        child: _isLoading
-                            ? SizedBox(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3,
+                          },
+                          elevation: 5.0,
+                          padding: EdgeInsets.all(15.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          color: Colors.white,
+                          child: _isLoading
+                              ? SizedBox(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 3,
+                                  ),
+                                  height: ScreenUtil().setHeight(22),
+                                  width: ScreenUtil().setWidth(22),
+                                )
+                              : Text(
+                                  'Verify Otp',
+                                  style: TextStyle(
+                                    color: Color(0xFF527DAA),
+                                    letterSpacing: 1.5,
+                                    fontSize: ScreenUtil()
+                                        .setSp(18, allowFontScalingSelf: true),
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Gilroy Regular',
+                                  ),
                                 ),
-                                height: ScreenUtil().setHeight(22),
-                                width: ScreenUtil().setWidth(22),
-                              )
-                            : Text(
-                                'Verify Otp',
-                                style: TextStyle(
-                                  color: Color(0xFF527DAA),
-                                  letterSpacing: 1.5,
-                                  fontSize: ScreenUtil()
-                                      .setSp(18, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Gilroy Regular',
-                                ),
-                              ),
-                      ))
-                  : _buildNextBtn()
+                        ))
+                    : _buildNextBtn()
 
-              //_buildSignInWithText(),
-              //_buildSocialBtnRow(),
-              //_buildSignupBtn(),
-            ],
+                //_buildSignInWithText(),
+                //_buildSocialBtnRow(),
+                //_buildSignupBtn(),
+              ],
+            ),
           ),
         ),
       ),
