@@ -16,7 +16,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
   List<String> str = [
     'Processing',
     'Manufacturing',
-    'Certification© & Final Inspection',
+    'Certification & Final Inspection',
     'Delivery',
     'Completed',
   ];

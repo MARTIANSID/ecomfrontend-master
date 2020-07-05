@@ -5,6 +5,7 @@ import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/screens/my_order.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
@@ -306,6 +307,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   bool isLoadingSearch = false;
   Future<void> getSearch(query) async {
     try {
+      // Navigator.of(context).pop(Navigator.of(context).pop());
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyOrder()));
       setState(() {
         isLoadingSearch = true;
       });
@@ -405,7 +409,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                           widget.val
                               ? SizedBox(
                                   height:
-                                      ScreenUtil().setHeight(22 + 45 + 11 + 20),
+                                      ScreenUtil().setHeight(22 + 45 + 20 + 20),
                                 )
                               : SizedBox(
                                   height: ScreenUtil().setHeight(22),
@@ -927,7 +931,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                     width: ScreenUtil().setWidth(360),
                                     height: ScreenUtil().setHeight(45),
                                     margin: EdgeInsets.fromLTRB(
-                                        24, 11, 0, searchSelected ? 0 : 20),
+                                        24, 20, 0, searchSelected ? 0 : 20),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,

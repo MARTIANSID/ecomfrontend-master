@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
@@ -6,6 +7,8 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/testimony.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/screens/my_order.dart';
+import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/profile_screeen.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,7 @@ import './screens/auth_screen.dart';
 import './providers/products.dart';
 import './providers/auth.dart';
 import './screens/home.dart';
+import './providers/notifiaction.dart';
 //<uses-permission android:name="android.permission.INTERNET" />
 
 // void main() => runApp(MyApp());
@@ -132,6 +136,39 @@ Future<void> main() async {
 // }
 
 class MyApp extends StatelessWidget {
+//   OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) {
+//     // will be called whenever a notification is received
+// });
+
+// OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+//   // will be called whenever a notification is opened/button pressed.
+// });
+
+// OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
+//     // will be called whenever the permission changes
+//     // (ie. user taps Allow on the permission prompt in iOS)
+// });
+
+// OneSignal.shared.setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+//     // will be called whenever the subscription changes
+//     //(ie. user gets registered with OneSignal and gets a user ID)
+// });
+
+// OneSignal.shared.setEmailSubscriptionObserver((OSEmailSubscriptionStateChanges emailChanges) {
+//     // will be called whenever then user's email subscription changes
+//     // (ie. OneSignal.setEmail(email) is called and the user gets registered
+// });
+
+// For each of the above functions, you can also pass in a
+// reference to a function as well:
+
+  void _handleNotificationReceived(OSNotification notification) {}
+
+  void main() {
+    OneSignal.shared
+        .setNotificationReceivedHandler(_handleNotificationReceived);
+  }
+
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -144,11 +181,46 @@ class MyApp extends StatelessWidget {
       notification.payload.smallIcon = "ic_stat_onesignal_default.png";
       notification.payload.largeIcon = "ic_onesignal_large_icon_default.png";
       notification.payload.smallIconAccentColor = "FF32FFF3";
+      // print(notification.payload.title);
+      // print(notification.payload);
+      // print(notification.payload.additionalData['link']);
       // notification.payload.ledColor = "FF4267B2";
     });
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
+    // OneSignal.shared.setNotificationReceivedHandler((notification) {
+    //   final payload = json.decode(notification.payload.jsonRepresentation());
+    //   // .forEach((key, value) {
+    //   print(notification.payload);
+    //   // });
+
+    //   // String title = ;
+    //   // String body = ;
+    //   // print(notification.payload.title);
+    //   // print(notification.payload.body);
+    //
+
+    //   // Provider.of<Notif>(context, listen: false).notiAdd(
+    //   //   title: payload['title'],data: payload['custom']
+    //   // );
+    // });
+
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      // Map<String, dynamic> data =
+      // json.decode(result.notification.payload.jsonRepresentation());
+
+      // print(data);
+
+      // print(result.notification.payload.title);
+      // print(result.notification.payload.body);
+      // result.notification.payload.rawPayload.forEach((key, value) {
+      //   print("Key:$key" + value);
+      // });
+      print(result.notification.payload.additionalData['link']);
+      // a notification has been opened
+    });
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -162,6 +234,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Options()),
         ChangeNotifierProvider.value(value: Testimony()),
         ChangeNotifierProvider.value(value: Orders()),
+        ChangeNotifierProvider.value(value: Notif()),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, child) => MaterialApp(
@@ -171,18 +244,19 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: initScreen3 == 0 || initScreen3 == null ? "first" : "/",
           routes: {
-            '/': (context) =>
-                Provider.of<Auth>(context, listen: true).token != null
-                    ? Home()
-                    : FutureBuilder(
-                        future: auth.tryAutoLogin(context),
-                        builder: (ctx, authResultSnapshot) => authResultSnapshot
-                                    .connectionState ==
+            '/': (context) => auth.isAuth
+                ? Home()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(context),
+                    builder: (ctx, authResultSnapshot) =>
+                        authResultSnapshot.connectionState ==
                                 ConnectionState.waiting
                             ? SplashScreen()
                             : authResultSnapshot.data ? Home() : LoginScreen(),
-                      ),
+                  ),
             "first": (context) => OnboardingScreen(),
+            "order": (context) => MyOrder(),
+            "productDetail": (context) => ProductDetail()
           },
         ),
       ),

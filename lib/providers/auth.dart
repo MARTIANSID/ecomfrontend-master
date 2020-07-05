@@ -155,7 +155,7 @@ class Auth with ChangeNotifier {
           : responseData['token'];
       _number = number;
       _expiryDate = DateTime.now().add(
-        Duration(seconds: 60),
+        Duration(seconds: 5),
       );
       autoLogout();
       notifyListeners();
@@ -226,20 +226,23 @@ class Auth with ChangeNotifier {
       password = extractedUserData['password'];
 
       if (remeberMe) {
-        await authenticate(number, password, 'user/login');
+        await authenticate(_number, password, 'user/login');
+        print('jhghjgiugiuoyihiugiiug');
+        autoLogin = true;
         return true;
       } else {
         if (expiryDate.isBefore(DateTime.now())) {
           return false;
         }
+        if (remeberMe == false) {
+          _expiryDate = expiryDate;
 
-        _expiryDate = expiryDate;
+          autoLogin = true;
 
-        autoLogin = true;
-
-        autoLogout();
-        notifyListeners();
-        return true;
+          autoLogout();
+          notifyListeners();
+          return true;
+        }
       }
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -279,8 +282,14 @@ class Auth with ChangeNotifier {
     }
 
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-    _authTimer = Timer(Duration(seconds: timeToExpiry),
-        remeberMe ? null : () => logout(context: context));
+    _authTimer = Timer(
+        Duration(seconds: timeToExpiry),
+        remeberMe
+            ? () {
+                _token = null;
+                notifyListeners();
+              }
+            : () => logout(context: context));
 
     notifyListeners();
   }
