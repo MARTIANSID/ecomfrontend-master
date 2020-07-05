@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class AccountInfo extends StatefulWidget {
   final data;
@@ -116,7 +117,8 @@ class _AccountInfoState extends State<AccountInfo> {
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: FadeInDown(
+                      child: FadeInUI(
+                        delay: 0.0,
                         child: Text(
                           "Account Info",
                           style: TextStyle(
@@ -191,7 +193,8 @@ class _AccountInfoState extends State<AccountInfo> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 1.0,
                               child: Text(
                                 "Personal Details",
                                 style: TextStyle(
@@ -208,7 +211,8 @@ class _AccountInfoState extends State<AccountInfo> {
                             SizedBox(
                               height: ScreenUtil().setHeight(7.75),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 1.5,
                               child: RoundedInputField(
                                 controller: fullNameController,
                                 hintText: "Full Name",
@@ -233,7 +237,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: !editFields,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 1.75,
                               child: RoundedInputField(
                                 controller: phoneNumberController,
                                 hintText: "Enter Phone Number",
@@ -250,7 +255,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: true,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 2.0,
                               child: RoundedInputField(
                                 controller: emailIDController,
                                 hintText: "Email-id",
@@ -270,7 +276,8 @@ class _AccountInfoState extends State<AccountInfo> {
                             SizedBox(
                               height: ScreenUtil().setHeight(20),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 2.3,
                               child: Text(
                                 "Firm Details!",
                                 style: TextStyle(
@@ -285,7 +292,8 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             SizedBox(height: ScreenUtil().setHeight(7.75)),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 2.66,
                               child: RoundedInputField(
                                 controller: firmDetailController,
                                 hintText: "Firm Name",
@@ -307,7 +315,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: !editFields,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 3.0,
                               child: RoundedInputField(
                                 controller: gstValueController,
                                 hintText: "GST",
@@ -333,7 +342,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: !editFields,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 3.33,
                               child: RoundedInputField(
                                 controller: streetNameController,
                                 hintText: "Street",
@@ -355,7 +365,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: !editFields,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 3.66,
                               child: RoundedInputField(
                                 controller: cityNameController,
                                 hintText: "City",
@@ -378,7 +389,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: !editFields,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 4.0,
                               child: RoundedInputField(
                                 controller: stateNameController,
                                 hintText: "State",
@@ -403,7 +415,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 proceed: !editFields,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 4.33,
                               child: RoundedInputField(
                                 controller: pincodeController,
                                 hintText: "Pincode",
@@ -537,6 +550,36 @@ class _AccountInfoState extends State<AccountInfo> {
               height: 0.0,
               width: 0.0,
             ),
+    );
+  }
+}
+
+class FadeInUI extends StatelessWidget {
+  final double delay;
+  final Widget child;
+
+  FadeInUI({this.delay, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final tween = MultiTrackTween([
+      Track("opacity")
+          .add(Duration(milliseconds: 500), Tween(begin: 0.0, end: 1.0)),
+      Track("translateX").add(
+          Duration(milliseconds: 500), Tween(begin: 130.0, end: 0.0),
+          curve: Curves.easeOut)
+    ]);
+
+    return ControlledAnimation(
+      delay: Duration(milliseconds: (300 * delay).round()),
+      duration: tween.duration,
+      tween: tween,
+      child: child,
+      builderWithChild: (context, child, animation) => Opacity(
+        opacity: animation["opacity"],
+        child: Transform.translate(
+            offset: Offset(animation["translateX"], 0), child: child),
+      ),
     );
   }
 }
