@@ -155,7 +155,7 @@ class Auth with ChangeNotifier {
           : responseData['token'];
       _number = number;
       _expiryDate = DateTime.now().add(
-        Duration(seconds: 3600),
+        Duration(seconds: 60),
       );
       autoLogout();
       notifyListeners();
