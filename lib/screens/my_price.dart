@@ -621,30 +621,44 @@ class _MyPriceState extends State<MyPrice> {
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemBuilder: (context, index) {
-                                                return Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 5.0),
-                                                  child: Text(
-                                                    Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .certPrices
-                                                            .values
-                                                            .toList()[index]
-                                                            .toString()
-                                                            .toUpperCase() +
-                                                        ' ₹',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          'Gilroy Light',
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          14,
-                                                          allowFontScalingSelf:
-                                                              true),
+                                                if (Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .certPrices
+                                                        .keys
+                                                        .toList()[index]
+                                                        .toString()
+                                                        .toUpperCase() ==
+                                                    'NONE') {
+                                                  return Container(
+                                                    height: 0,
+                                                  );
+                                                } else {
+                                                  return Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 5.0),
+                                                    child: Text(
+                                                      Provider.of<Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .certPrices
+                                                              .values
+                                                              .toList()[index]
+                                                              .toString()
+                                                              .toUpperCase() +
+                                                          ' ₹',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               },
                                             ),
                                           ),

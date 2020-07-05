@@ -1,6 +1,7 @@
 import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/testimony.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -277,13 +278,17 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                               shape: BoxShape.circle,
                                             ),
                                             padding: EdgeInsets.all(2),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/userProfile.png'),
-                                                  fit: BoxFit.fill,
-                                                ),
+                                            child: Image(
+                                              image: AdvancedNetworkImage(
+                                                Provider.of<Testimony>(context,
+                                                            listen: true)
+                                                        .userTestimony
+                                                        .testimonies[index]
+                                                    ['profileImage'],
+                                                useDiskCache: true,
+                                                cacheRule: CacheRule(
+                                                    maxAge: const Duration(
+                                                        days: 3)),
                                               ),
                                             ),
                                           ),

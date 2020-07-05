@@ -958,48 +958,43 @@ class _CartScreenState extends State<CartScreen> {
                                                       //                 listen:
                                                       //                     true)
                                                       //             .cart[index]
-                                                      //             .color)
+                                                      // //             .color)
+                                                      // Image(
+                                                      //   height: ScreenUtil()
+                                                      //       .setHeight(79),
+                                                      //   width: ScreenUtil()
+                                                      //       .setWidth(76),
+                                                      // //   image: NetworkImage(
+                                                      // //     product
+                                                      // //         .imageUrl[Provider
+                                                      // //             .of<Cart>(
+                                                      // //                 context,
+                                                      // //                 listen:
+                                                      // //                     true)
+                                                      // //         .cart[index]
+                                                      // //         .color
+                                                      // //         .toLowerCase()],
+                                                      // //   ),
+                                                      // //   fit: BoxFit.fill,
+                                                      // // ),
+
                                                       Image(
                                                         height: ScreenUtil()
                                                             .setHeight(79),
                                                         width: ScreenUtil()
                                                             .setWidth(76),
-                                                        image: NetworkImage(
-                                                          product
-                                                              .imageUrl[Provider
-                                                                  .of<Cart>(
-                                                                      context,
-                                                                      listen:
-                                                                          true)
-                                                              .cart[index]
-                                                              .color
-                                                              .toLowerCase()],
+                                                        image:
+                                                            AdvancedNetworkImage(
+                                                          product.imageUrl[
+                                                              'yellow'],
+                                                          useDiskCache: true,
+                                                          cacheRule: CacheRule(
+                                                              maxAge:
+                                                                  const Duration(
+                                                                      days: 3)),
                                                         ),
                                                         fit: BoxFit.fill,
                                                       ),
-
-                                                      // : Image(
-                                                      //     height:
-                                                      //         ScreenUtil()
-                                                      //             .setHeight(
-                                                      //                 79),
-                                                      //     width:
-                                                      //         ScreenUtil()
-                                                      //             .setWidth(
-                                                      //                 76),
-                                                      //     image:
-                                                      //         AdvancedNetworkImage(
-                                                      //       product.imageUrl[
-                                                      //           'yellow'],
-                                                      //       useDiskCache:
-                                                      //           true,
-                                                      //       cacheRule: CacheRule(
-                                                      //           maxAge: const Duration(
-                                                      //               days:
-                                                      //                   3)),
-                                                      //     ),
-                                                      //     fit: BoxFit.fill,
-                                                      //   ),
                                                       SizedBox(
                                                         width: ScreenUtil()
                                                             .setWidth(2),
@@ -1109,7 +1104,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                         children: [
                                                                           TextSpan(
                                                                             text:
-                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert] + Provider.of<Pagination>(context, listen: true).buildPrices[Provider.of<Cart>(context, listen: true).cart[index].build]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
                                                                             style:
                                                                                 TextStyle(
                                                                               color: Colors.white,

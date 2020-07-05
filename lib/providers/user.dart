@@ -47,11 +47,29 @@ class UserInfo with ChangeNotifier {
   var firm;
   var pincode;
   var email;
+  String profileImage;
 
   final uurl = "https://alexa.gemstory.in/";
 
   Future<dynamic> getuser(context) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+        Navigator.popAndPushNamed(context, '/');
+      }
       final response = await http.get(uurl + '/user/details', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token
@@ -69,6 +87,8 @@ class UserInfo with ChangeNotifier {
         priced = responseData['user']['priced'];
         gst = responseData['user']['additionalDetails']['gst'];
         firm = responseData['user']['additionalDetails']['firm'];
+        profileImage = responseData['user']['profileImage'];
+
         pincode =
             responseData['user']['additionalDetails']['address']['pincode'];
         priced = responseData['user']['priced'];
@@ -90,7 +110,24 @@ class UserInfo with ChangeNotifier {
 
   Future<dynamic> patchuser(
       {context, fullname, gst, firm, city, street, pincode, state}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+        Navigator.popAndPushNamed(context, '/');
+      }
       final response = await http.patch(
         uurl + '/user',
         headers: {
@@ -133,7 +170,24 @@ class UserInfo with ChangeNotifier {
       state,
       reference,
       email}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     try {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+        Navigator.popAndPushNamed(context, '/');
+      }
       final response = await http.post(
         uurl + '/user/completesignup',
         headers: {
@@ -203,18 +257,42 @@ class UserInfo with ChangeNotifier {
       "Authorization":
           "Bearer " + Provider.of<Auth>(context, listen: false).token
     };
+    if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
+    try {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+        Navigator.popAndPushNamed(context, '/');
+      }
+      var request = new http.MultipartRequest("POST", uri);
+      var multipartFile = new http.MultipartFile('image', stream, length,
+          filename: basename(image.path),
+          contentType: new MediaType('image', 'png'));
 
-    var request = new http.MultipartRequest("POST", uri);
-    var multipartFile = new http.MultipartFile('image', stream, length,
-        filename: basename(image.path),
-        contentType: new MediaType('image', 'png'));
-
-    request.files.add(multipartFile);
-    request.headers.addAll(headers);
-    var response = await request.send();
-    print(response.statusCode);
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
-    });
+      request.files.add(multipartFile);
+      request.headers.addAll(headers);
+      var response = await request.send();
+      print(response);
+      print(response.statusCode);
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+      });
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
+      throw 'No Internet';
+    } catch (err) {
+      throw err;
+    }
   }
 }

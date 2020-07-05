@@ -1,3 +1,4 @@
+import 'package:Flutter/providers/auth.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/cart_screen.dart';
@@ -83,6 +84,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _isVisible = true;
+
+    // Provider.of<Auth>(context, listen: false).tryAutoLogin(context);
+
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
     heightAnimation = Tween(begin: 45.0, end: 0.0)

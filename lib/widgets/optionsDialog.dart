@@ -121,7 +121,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex1 = index;
                           });
-                          widget.valueChangeColor(index);
+                          // widget.valueChangeColor(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -227,7 +227,6 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex = index;
                           });
-                          widget.valueChangeBuild(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -332,7 +331,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex2 = index;
                           });
-                          widget.valueChangeCerti(index);
+                          // widget.valueChangeCerti(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -438,7 +437,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
                           setState(() {
                             _defaultChoiceIndex3 = index;
                           });
-                          widget.valueChangeDQ(index);
+                          // widget.valueChangeDQ(index);
                         },
                         child: Container(
                           // margin: EdgeInsets.only(right: 6.0),
@@ -526,6 +525,10 @@ class _OptionsDialogState extends State<OptionsDialog> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
+                        widget.valueChangeBuild(_defaultChoiceIndex);
+                        widget.valueChangeColor(_defaultChoiceIndex1);
+                        widget.valueChangeCerti(_defaultChoiceIndex2);
+                        widget.valueChangeDQ(_defaultChoiceIndex3);
                         Navigator.of(context).pop();
                       },
                       child: Container(

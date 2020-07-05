@@ -790,6 +790,7 @@ import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -828,6 +829,8 @@ class _UserPageState extends State<UserPage>
 
   bool storeCheckValue = false;
   int timerVal = 0;
+
+  bool isLoadingimage = false;
 
   @override
   void initState() {
@@ -1067,6 +1070,7 @@ class _UserPageState extends State<UserPage>
   }
 
   File image;
+  final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -1145,22 +1149,163 @@ class _UserPageState extends State<UserPage>
                                 padding: EdgeInsets.all(2),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    image = await ImagePicker.pickImage(
-                                        source: ImageSource.camera);
-                                    Provider.of<UserInfo>(context,
-                                            listen: false)
-                                        .changeImage(
-                                            image: image, context: context);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title:
+                                              Text('Alert Dialog Title Text.'),
+                                          content: Text(
+                                              "Are You Sure Want To Proceed ?"),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text("YES"),
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Column(children: <
+                                                        Widget>[
+                                                      GestureDetector(
+                                                          onTap: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                            final i = await picker
+                                                                .getImage(
+                                                                    source: ImageSource
+                                                                        .gallery);
+                                                            print(i.path);
+                                                            if (i != null) {
+                                                              setState(() {
+                                                                isLoadingimage =
+                                                                    true;
+                                                              });
+                                                              try {
+                                                                if (context !=
+                                                                    null)
+                                                                  await Provider.of<
+                                                                              UserInfo>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .changeImage(
+                                                                          image:
+                                                                              File(i.path));
+
+                                                                image = File(
+                                                                    i.path);
+                                                              } catch (err) {
+                                                                dataSelect(
+                                                                    context,
+                                                                    'Alert!',
+                                                                    '$err',
+                                                                    'Okay', () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                });
+                                                              } finally {
+                                                                setState(() {
+                                                                  isLoadingimage =
+                                                                      false;
+                                                                });
+                                                              }
+                                                            }
+                                                          },
+                                                          child:
+                                                              Text('Gallery')),
+                                                      GestureDetector(
+                                                          onTap: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                            final i = await picker
+                                                                .getImage(
+                                                                    source: ImageSource
+                                                                        .camera);
+
+                                                            if (i != null) {
+                                                              try {
+                                                                setState(() {
+                                                                  isLoadingimage =
+                                                                      true;
+                                                                });
+                                                                if (context !=
+                                                                    null)
+                                                                  await Provider.of<
+                                                                              UserInfo>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .changeImage(
+                                                                          image:
+                                                                              File(i.path));
+
+                                                                image = File(
+                                                                    i.path);
+                                                              } catch (err) {
+                                                                dataSelect(
+                                                                    context,
+                                                                    'Alert!',
+                                                                    '$err',
+                                                                    'Okay', () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                });
+                                                              } finally {
+                                                                setState(() {
+                                                                  isLoadingimage =
+                                                                      false;
+                                                                });
+                                                              }
+                                                            }
+                                                          },
+                                                          child: Text('Camera'))
+                                                    ]);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text("NO"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text("CANCEL"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/userProfile.png'),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
+                                  child: isLoadingimage
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: image == null
+                                                  ? AdvancedNetworkImage(
+                                                      Provider.of<UserInfo>(
+                                                              context,
+                                                              listen: true)
+                                                          .profileImage,
+                                                      useDiskCache: true,
+                                                      cacheRule: CacheRule(
+                                                          maxAge:
+                                                              const Duration(
+                                                                  days: 3)))
+                                                  : FileImage(image),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ),
                               SizedBox(

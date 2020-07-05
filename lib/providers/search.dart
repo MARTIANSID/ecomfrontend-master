@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'http_exception.dart';
@@ -18,8 +19,25 @@ class Searchh with ChangeNotifier {
   List<dynamic> searchResult;
 
   Future<void> getSearch({String query, context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
     final url = 'https://alexa.gemstory.in/product/search?query=$query';
     try {
+      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+        Navigator.popAndPushNamed(context, '/');
+      }
       final response = await http.get(
         url,
         headers: {

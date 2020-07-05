@@ -141,6 +141,10 @@ class AddToCartTState extends State<AddToCart> {
       certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
           Provider.of<Pagination>(context, listen: false)
               .cert[_defaultChoiceIndex2]];
+      buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
+          Provider.of<Pagination>(context, listen: false)
+              .build[_defaultChoiceIndex]];
+      print(buildPrice.toString() + 'shfo;eihf;owejf;oweiihf;oiwehfopiwehf');
     }
 
     return isLoading
@@ -264,7 +268,7 @@ class AddToCartTState extends State<AddToCart> {
                                                 listen: false)
                                             .isPriced
                                     ? Text(
-                                        '${int.parse(widget.product.prices[priceKey]) + certPrice} ₹',
+                                        '${(int.parse(widget.product.prices[priceKey]) + certPrice + buildPrice) * valueOfQuantity} ₹',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: ScreenUtil().setSp(18,
