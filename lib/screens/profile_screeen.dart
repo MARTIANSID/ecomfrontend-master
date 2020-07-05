@@ -832,7 +832,7 @@ class _UserPageState extends State<UserPage>
   bool storeCheckValue = false;
   int timerVal = 0;
 
-  bool isSwitched = false;
+  bool isSwitched;
 
   @override
   void initState() {
@@ -845,6 +845,7 @@ class _UserPageState extends State<UserPage>
       try {
         if (Provider.of<UserInfo>(context, listen: false).number == null) {
           await Provider.of<UserInfo>(context, listen: false).getuser(context);
+          isSwitched = Provider.of<UserInfo>(context, listen: false).noti;
         }
       } catch (err) {
         dataSelect(context, 'Alert!', '$err', 'Okay', () {
@@ -856,6 +857,11 @@ class _UserPageState extends State<UserPage>
         });
       }
     });
+  }
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isSwitched = Provider.of<UserInfo>(context, listen: false).noti;
   }
 
   void requestPrice() async {
@@ -1299,6 +1305,8 @@ class _UserPageState extends State<UserPage>
                                           child: CircularProgressIndicator(),
                                         )
                                       : Container(
+                                          height: ScreenUtil().setHeight(58),
+                                          width: ScreenUtil().setWidth(58),
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
@@ -2395,7 +2403,20 @@ class _UserPageState extends State<UserPage>
                                                           "Important!",
                                                           "Are you sure, you want to turn ${value ? "On" : "Off"} the Notification?",
                                                           " buttonText")
-                                                      .then((value) {
+                                                      .then((value) async {
+                                                    try {
+                                                      await Provider.of<
+                                                                  UserInfo>(
+                                                              context,
+                                                              listen: false)
+                                                          .notification(
+                                                              context: context);
+                                                    } catch (err) {
+                                                      dataSelect(context,
+                                                          '$err', '', 'OK', () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    }
                                                     setState(() {
                                                       value2 = value;
                                                     });

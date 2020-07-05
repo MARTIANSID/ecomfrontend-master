@@ -86,8 +86,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _isVisible = true;
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
-      reverseDuration: Duration(seconds: 2),
+      duration: Duration(milliseconds: 600),
+      reverseDuration: Duration(milliseconds: 600),
     );
     heightAnimation = Tween(begin: 45.0, end: 0.0)
         .animate(CurvedAnimation(curve: Curves.easeInOut, parent: controller));

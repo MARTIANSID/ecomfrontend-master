@@ -265,8 +265,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                             width: ScreenUtil().setWidth(10),
                                           ),
                                           Container(
-                                            height: ScreenUtil().setHeight(60),
-                                            width: ScreenUtil().setWidth(60),
+                                            height: ScreenUtil().setHeight(55),
+                                            width: ScreenUtil().setWidth(55),
                                             decoration: BoxDecoration(
                                               // borderRadius: BorderRadius.circular(37.5),
                                               // border: Border.all(
@@ -279,6 +279,9 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                             ),
                                             padding: EdgeInsets.all(2),
                                             child: Container(
+                                              height:
+                                                  ScreenUtil().setHeight(53),
+                                              width: ScreenUtil().setWidth(53),
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                   image: AdvancedNetworkImage(

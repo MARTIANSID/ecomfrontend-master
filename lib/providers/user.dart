@@ -47,6 +47,7 @@ class UserInfo with ChangeNotifier {
   var firm;
   var pincode;
   var email;
+  bool noti;
   String profileImage;
 
   final uurl = "https://alexa.gemstory.in/";
@@ -92,7 +93,7 @@ class UserInfo with ChangeNotifier {
         priced = responseData['user']['priced'];
         email = responseData['user']['email'];
       }
-
+      noti = responseData['user']['notification'];
       fullname = responseData['user']['fullName'];
       number = responseData['user']['number'];
       profileImage = responseData['user']['profileImage'];
@@ -265,7 +266,8 @@ class UserInfo with ChangeNotifier {
       "Authorization":
           "Bearer " + Provider.of<Auth>(context, listen: false).token
     };
-    if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
       return;
     } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -295,6 +297,36 @@ class UserInfo with ChangeNotifier {
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
       });
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
+      throw 'No Internet';
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<void> notification({context}) async {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
+      Navigator.popAndPushNamed(context, '/');
+      return;
+    } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == true) {
+      final prefs = await SharedPreferences.getInstance();
+      final extractedUserData =
+          json.decode(prefs.getString('userData')) as Map<String, Object>;
+      String number = extractedUserData['number'];
+      String password = extractedUserData['password'];
+      await Provider.of<Auth>(context, listen: false)
+          .authenticate(number, password, 'user/login');
+    }
+    try {
+      final response = await http.patch(uurl + 'user/notification', headers: {
+        'Authorization':
+            'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+      });
+      print(json.decode(response.body));
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {

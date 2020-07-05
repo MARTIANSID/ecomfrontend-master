@@ -982,7 +982,7 @@ class _CookiePageState extends State<CookiePage>
                                                 BorderRadius.circular(8),
                                             child: InkWell(
                                               splashColor: Colors.cyan[50]
-                                                  .withOpacity(0.2),
+                                                  .withOpacity(0.8),
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               onTap: () async {
@@ -1053,7 +1053,8 @@ class _CookiePageState extends State<CookiePage>
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             child: InkWell(
-                                              splashColor: Colors.cyan[50],
+                                              splashColor: Colors.cyan[50]
+                                                  .withOpacity(0.8),
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               onTap: () {

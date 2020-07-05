@@ -21,16 +21,13 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
 
-    if (Provider.of<Orders>(context, listen: false).orderProducts.isEmpty)
-      setState(() {
-        isLoading = true;
-      });
+    setState(() {
+      isLoading = true;
+    });
     Future.delayed(Duration(seconds: 0), () async {
       try {
-        if (Provider.of<Orders>(context, listen: false).orderProducts.isEmpty) {
-          await Provider.of<Orders>(context, listen: false)
-              .getOrders(context: context);
-        }
+        await Provider.of<Orders>(context, listen: false)
+            .getOrders(context: context);
       } catch (err) {
         dataSelect(context, 'Alert!', '$err', 'Okay', () {
           Navigator.pop(context);

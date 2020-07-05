@@ -48,7 +48,8 @@ final uurl = "https://alexa.gemstory.in/";
 class Orders with ChangeNotifier {
   List<dynamic> orderProducts = [];
   Future<void> getOrders({context}) async {
-    if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
       return;
     } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -97,7 +98,8 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> placeOrder({context}) async {
-    if (Provider.of<Auth>(context, listen: false).isAuth == false) {
+    if (Provider.of<Auth>(context, listen: false).isAuth == false &&
+        Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
       return;
     } else if (Provider.of<Auth>(context, listen: false).isAuth == false &&
