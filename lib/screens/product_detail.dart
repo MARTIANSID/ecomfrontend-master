@@ -87,6 +87,12 @@ class _ProductDetailState extends State<ProductDetail> {
   int _defaultChoiceIndex4;
 
   int page = 0;
+
+  int _defaultChoiceIndex1;
+  int _defaultChoiceIndex2;
+  int _defaultChoiceIndex3;
+  int _defaultChoiceIndex4;
+
   Future<void> getSearch(query) async {
     try {
       setState(() {
@@ -209,6 +215,23 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    _defaultChoiceIndex1 =
+        Provider.of<Options>(context, listen: false).build == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).build;
+    _defaultChoiceIndex2 =
+        Provider.of<Options>(context, listen: false).color == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).color;
+    _defaultChoiceIndex3 =
+        Provider.of<Options>(context, listen: false).certificate == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).certificate;
+    _defaultChoiceIndex4 =
+        Provider.of<Options>(context, listen: false).diamondQuality == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).diamondQuality;
+
     ScreenUtil.init(
       context,
       allowFontScaling: true,
