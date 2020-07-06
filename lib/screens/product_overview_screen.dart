@@ -308,8 +308,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   Future<void> getSearch(query) async {
     try {
       // Navigator.of(context).pop(Navigator.of(context).pop());
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyOrder()));
       setState(() {
         isLoadingSearch = true;
       });

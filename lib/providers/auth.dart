@@ -39,6 +39,7 @@ class Auth with ChangeNotifier {
   bool autoLogin = false;
   bool remeberMe = false;
   String password;
+  int once = 0;
 
   bool get isAuth {
     return token != null;
@@ -155,7 +156,7 @@ class Auth with ChangeNotifier {
           : responseData['token'];
       _number = number;
       _expiryDate = DateTime.now().add(
-        Duration(seconds: 5),
+        Duration(seconds: 20),
       );
       autoLogout();
       notifyListeners();
@@ -220,6 +221,9 @@ class Auth with ChangeNotifier {
       final extractedUserData =
           json.decode(prefs.getString('userData')) as Map<String, Object>;
       final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
+      if (prefs.get('remberMe') != null) {
+        remeberMe = prefs.get('remberMe');
+      }
       String password;
       _token = extractedUserData['token'];
       _number = extractedUserData['number'];
@@ -227,8 +231,11 @@ class Auth with ChangeNotifier {
 
       if (remeberMe) {
         await authenticate(_number, password, 'user/login');
-        print('jhghjgiugiuoyihiugiiug');
-        autoLogin = true;
+        if (once == 0) {
+          autoLogin = true;
+          once++;
+        }
+        autoLogout();
         return true;
       } else {
         if (expiryDate.isBefore(DateTime.now())) {
@@ -253,14 +260,13 @@ class Auth with ChangeNotifier {
     }
   }
 
-  void setRemeber(value) {
+  Future<void> setRemeber(value) async {
+    final prefs = await SharedPreferences.getInstance();
     remeberMe = value;
+    prefs.setBool('remberMe', value);
   }
 
   Future<void> logout({context}) async {
-    if (context != null) {
-      Navigator.popAndPushNamed(context, '/');
-    }
     _token = null;
     _number = null;
     _expiryDate = null;
@@ -274,6 +280,7 @@ class Auth with ChangeNotifier {
 
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('userData');
+    prefs.remove('remberMe');
   }
 
   void autoLogout({context}) {
@@ -287,7 +294,6 @@ class Auth with ChangeNotifier {
         remeberMe
             ? () {
                 _token = null;
-                notifyListeners();
               }
             : () => logout(context: context));
 

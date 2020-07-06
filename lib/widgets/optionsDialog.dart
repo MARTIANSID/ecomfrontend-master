@@ -16,6 +16,8 @@ class OptionsDialog extends StatefulWidget {
   final void Function(int) valueChangeColor;
   final void Function(int) valueChangeCerti;
   final void Function(int) valueChangeDQ;
+  final bool productDetail;
+  final changeProductDetail;
 
   const OptionsDialog(
       {Key key,
@@ -30,7 +32,9 @@ class OptionsDialog extends StatefulWidget {
       this.valueChangeBuild,
       this.valueChangeColor,
       this.valueChangeCerti,
-      this.valueChangeDQ})
+      this.valueChangeDQ,
+      this.productDetail,
+      this.changeProductDetail})
       : super(key: key);
 
   @override
@@ -530,6 +534,10 @@ class _OptionsDialogState extends State<OptionsDialog> {
                         widget.valueChangeColor(_defaultChoiceIndex1);
                         widget.valueChangeCerti(_defaultChoiceIndex2);
                         widget.valueChangeDQ(_defaultChoiceIndex3);
+                        if (widget.productDetail != null &&
+                            widget.productDetail == true) {
+                          widget.changeProductDetail();
+                        }
                         Navigator.of(context).pop();
                       },
                       child: Container(

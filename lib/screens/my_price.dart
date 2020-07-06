@@ -366,80 +366,43 @@ class _MyPriceState extends State<MyPrice> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VVS_EF'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VVS_FG'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VVS_VS_FG'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VS_FG'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'SI_HI'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
+                                                width:
+                                                    ScreenUtil().setWidth(140),
+                                                height:
+                                                    ScreenUtil().setHeight(100),
+                                                child: ListView.builder(
+                                                  itemCount:
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .diamondPrices
+                                                          .length,
+                                                  itemBuilder: (context, i) {
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 5.0),
+                                                      child: Text(
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .diamondPrices
+                                                            .keys
+                                                            .toList()[i]
+                                                            .toString()
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Gilroy Light',
+                                                          color: Colors.black,
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(14,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ))
                                           ],
                                         ),
                                       ),

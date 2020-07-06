@@ -76,6 +76,7 @@ class Pagination with ChangeNotifier {
   Map<dynamic, dynamic> buildPrices;
   Map<dynamic, dynamic> certPrices;
   List<dynamic> productDetailsForSearch = [];
+  Map<dynamic, dynamic> diamondPrices;
   int comm;
   var goldPrice;
 
@@ -192,6 +193,8 @@ class Pagination with ChangeNotifier {
       cert = extractedData["productOptions"]["certification"];
       goldPrice = extractedData['prices']['goldToday'];
       isVerified = extractedData['user']['verified'];
+      diamondPrices =
+          Map<dynamic, dynamic>.from(extractedData['prices']['diamond']);
 
       diamondQuality = extractedData["productOptions"]["diamondQuality"];
       buildPrices =
