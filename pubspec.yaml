@@ -49,7 +49,7 @@ dependencies:
   onesignal_flutter: ^2.5.0
   worm_indicator: 0.1.1
   image_picker: ^0.6.7+3
-  jwt_decoder: ^1.0.1jwt_decoder: ^1.0.1
+  jwt_decoder: ^1.0.1
   
   liquid_swipe:
     git:
