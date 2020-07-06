@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/user.dart';
@@ -80,6 +81,11 @@ class _ProductDetailState extends State<ProductDetail> {
   bool isLoadingSearch = false;
   GlobalKey globalKey = GlobalKey();
 
+  int _defaultChoiceIndex1;
+  int _defaultChoiceIndex2;
+  int _defaultChoiceIndex3;
+  int _defaultChoiceIndex4;
+
   int page = 0;
   Future<void> getSearch(query) async {
     try {
@@ -100,9 +106,15 @@ class _ProductDetailState extends State<ProductDetail> {
         });
       });
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: 'Okay',
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       isLoadingSearch = false;
     }
@@ -111,6 +123,45 @@ class _ProductDetailState extends State<ProductDetail> {
     // setState(() {
 
     // });
+  }
+
+  void _onValueChange(int value, [int index]) async {
+    await Provider.of<Options>(context, listen: false).setBuild(build: value);
+    setState(() {
+      // await Provider.of<Options>(context, listen: false).setBuild(build: value);
+      _defaultChoiceIndex1 = value;
+      print(value);
+    });
+  }
+
+  void _onValueChangeColor(int value, [int index]) async {
+    await Provider.of<Options>(context, listen: false).setColor(color: value);
+    setState(() {
+      _defaultChoiceIndex2 = value;
+      // _stringIndex = _stringIndex == null ? 0 : _stringIndex + 1;
+      // _characterCount = StepTween(begin: 0, end: 3)
+      //     .animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
+    });
+
+    // setState(() {
+    //   flag = 1;
+    //   _defaultChoiceIndex2 = value;
+    // });
+  }
+
+  void _onValueChangeCerti(int value, [int index]) async {
+    await Provider.of<Options>(context, listen: false).setCert(cert: value);
+    setState(() {
+      _defaultChoiceIndex3 = value;
+    });
+  }
+
+  void _onValueChangeDQ(int value, [int index]) async {
+    await Provider.of<Options>(context, listen: false)
+        .setDiamond(diamond: value);
+    setState(() {
+      _defaultChoiceIndex4 = value;
+    });
   }
 
   Widget _buildDot(int index) {
@@ -142,9 +193,15 @@ class _ProductDetailState extends State<ProductDetail> {
     try {
       await Provider.of<Pagination>(context).requestPrice(context: context);
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: 'Okay',
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       Navigator.of(context).pop();
     }
@@ -158,6 +215,22 @@ class _ProductDetailState extends State<ProductDetail> {
       width: 411.42857142857144,
       height: 774.8571428571429,
     );
+    _defaultChoiceIndex1 =
+        Provider.of<Options>(context, listen: false).build == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).build;
+    _defaultChoiceIndex2 =
+        Provider.of<Options>(context, listen: false).color == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).color;
+    _defaultChoiceIndex3 =
+        Provider.of<Options>(context, listen: false).certificate == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).certificate;
+    _defaultChoiceIndex4 =
+        Provider.of<Options>(context, listen: false).diamondQuality == null
+            ? 0
+            : Provider.of<Options>(context, listen: false).diamondQuality;
     List<String> info = [];
     return Scaffold(
       key: globalKey,
@@ -576,7 +649,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                               true
                                           ? Text(
                                               // '50000',
-                                              '${int.parse(widget.product.prices[widget.diamondKey]) + widget.certPrice} ₹',
+                                              '${int.parse(widget.product.prices[Provider.of<Pagination>(context, listen: false).diamondQuality[_defaultChoiceIndex4]]) + Provider.of<Pagination>(context, listen: false).certPrices[Provider.of<Pagination>(context, listen: false).cert[_defaultChoiceIndex3]] + Provider.of<Pagination>(context, listen: false).buildPrices[Provider.of<Pagination>(context, listen: false).build[_defaultChoiceIndex1]]} ₹',
                                               style: TextStyle(
                                                 fontFamily: 'Gilroy Medium',
                                                 color: Colors.white,
@@ -771,11 +844,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             listen: false)
                                                         .isVerified
                                                     ? dataSelect(
-                                                        context,
-                                                        'Important!',
-                                                        "To get complete access of the app, you need to first verify yourself!",
-                                                        'Complete SignUp',
-                                                        () async {
+                                                        context: context,
+                                                        titleText: 'Important!',
+                                                        contentText:
+                                                            "To get complete access of the app, you need to first verify yourself!",
+                                                        buttonText:
+                                                            'Complete SignUp',
+                                                        onPressed: () async {
                                                           Navigator.pop(
                                                               context);
                                                           String date =
@@ -804,13 +879,21 @@ class _ProductDetailState extends State<ProductDetail> {
                                                               );
                                                             } else {
                                                               dataSelect(
-                                                                  context,
-                                                                  'Alert!',
-                                                                  'Request has already been noted!',
-                                                                  'Okay', () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              });
+                                                                  context:
+                                                                      context,
+                                                                  titleText:
+                                                                      'Alert!',
+                                                                  contentText:
+                                                                      'Request has already been noted!',
+                                                                  buttonText:
+                                                                      'Okay',
+                                                                  gif:
+                                                                      "assets/images/alert.gif",
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  });
                                                             }
                                                           } else {
                                                             Navigator.push(
@@ -823,7 +906,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                                             );
                                                           }
                                                         },
-                                                      )
+                                                        gif:
+                                                            "assets/images/alert.gif")
                                                     : showDialog(
                                                         context: context,
                                                         child: AddToCart(
@@ -855,14 +939,14 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                       listen:
                                                                           false)
                                                                   .diamondQuality,
-                                                          defValue: widget
-                                                              .defaultIndex1,
-                                                          defValue1: widget
-                                                              .defaultIndex2,
-                                                          defValue2: widget
-                                                              .defaultIndex3,
-                                                          defValue3: widget
-                                                              .defaultIndex4,
+                                                          defValue:
+                                                              _defaultChoiceIndex1,
+                                                          defValue1:
+                                                              _defaultChoiceIndex2,
+                                                          defValue2:
+                                                              _defaultChoiceIndex3,
+                                                          defValue3:
+                                                              _defaultChoiceIndex4,
                                                           valueChangeBuild: widget
                                                               .valueChangeBuild,
                                                           valueChangeColor: widget
@@ -1005,14 +1089,14 @@ class _ProductDetailState extends State<ProductDetail> {
                                       context,
                                       listen: false)
                                   .diamondQuality,
-                              defValue: widget.defaultIndex1,
-                              defValue1: widget.defaultIndex2,
-                              defValue2: widget.defaultIndex3,
-                              defValue3: widget.defaultIndex4,
-                              valueChangeBuild: widget.valueChangeBuild1,
-                              valueChangeColor: widget.valueChangeColor1,
-                              valueChangeCerti: widget.valueChangeCerti1,
-                              valueChangeDQ: widget.valueChangeDQ1,
+                              defValue: _defaultChoiceIndex1,
+                              defValue1: _defaultChoiceIndex2,
+                              defValue2: _defaultChoiceIndex3,
+                              defValue3: _defaultChoiceIndex4,
+                              valueChangeBuild: _onValueChange,
+                              valueChangeColor: _onValueChangeColor,
+                              valueChangeCerti: _onValueChangeCerti,
+                              valueChangeDQ: _onValueChangeDQ,
                             ),
                           );
                         },
@@ -1217,10 +1301,15 @@ class _ProductDetailState extends State<ProductDetail> {
                                           await getSearch(
                                               searchValue.toUpperCase());
                                         } catch (err) {
-                                          dataSelect(context, '$err', '', 'OK',
-                                              () {
-                                            Navigator.pop(context);
-                                          });
+                                          dataSelect(
+                                              context: context,
+                                              titleText: 'Alert!',
+                                              buttonText: 'Okay',
+                                              contentText: err.toString(),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              gif: "assets/images/alert.gif");
                                         }
                                         // await getSearch(
                                         //     searchValue.toUpperCase());
@@ -1516,10 +1605,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   );
                                                 } catch (err) {
                                                   dataSelect(
-                                                      context, '$err', '', 'OK',
-                                                      () {
-                                                    Navigator.pop(context);
-                                                  });
+                                                      context: context,
+                                                      titleText: 'Alert!',
+                                                      buttonText: 'Okay',
+                                                      contentText:
+                                                          err.toString(),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      gif:
+                                                          "assets/images/alert.gif");
                                                 }
                                               },
                                               child: Container(

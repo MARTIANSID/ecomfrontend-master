@@ -5,6 +5,7 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:provider/provider.dart';
 
 void showFloatingFlushbar(BuildContext context, text, productName) {
@@ -51,35 +52,102 @@ void showFloatingFlushbar(BuildContext context, text, productName) {
   )..show(context);
 }
 
-void dataSelect(context, titleText, contentText, buttonText, onPressed) {
-  var alertDialog = AlertDialog(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    title: Text(
-      titleText,
-      style: TextStyle(
-        color: Colors.black,
-        fontFamily: 'Gilroy Black',
-        fontWeight: FontWeight.bold,
-        fontSize: ScreenUtil().setSp(
-          19,
-          allowFontScalingSelf: true,
-        ),
-      ),
-      textAlign: TextAlign.center,
-    ),
-    content: Container(
-      constraints: BoxConstraints(
-        minHeight: ScreenUtil().setHeight(50),
-        maxHeight: ScreenUtil().setHeight(150),
-      ),
-      // height: ScreenUtil().setHeight(150.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
+void dataSelect({
+  context,
+  titleText,
+  contentText,
+  buttonText,
+  onPressed,
+  gif,
+}) {
+  // var alertDialog = AlertDialog(
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadius.circular(20.0),
+  //   ),
+  //   title: Text(
+  //     titleText,
+  //     style: TextStyle(
+  //       color: Colors.black,
+  //       fontFamily: 'Gilroy Black',
+  //       fontWeight: FontWeight.bold,
+  //       fontSize: ScreenUtil().setSp(
+  //         19,
+  //         allowFontScalingSelf: true,
+  //       ),
+  //     ),
+  //     textAlign: TextAlign.center,
+  //   ),
+  //   content: Container(
+  //     constraints: BoxConstraints(
+  //       minHeight: ScreenUtil().setHeight(50),
+  //       maxHeight: ScreenUtil().setHeight(150),
+  //     ),
+  //     // height: ScreenUtil().setHeight(150.0),
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: <Widget>[
+  //         Text(
+  //           contentText,
+  //           style: TextStyle(
+  //             color: Colors.black,
+  //             fontFamily: 'Gilroy',
+  //             fontSize: ScreenUtil().setSp(
+  //               16,
+  //               allowFontScalingSelf: true,
+  //             ),
+  //           ),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         SizedBox(
+  //           height: ScreenUtil().setHeight(20),
+  //         ),
+  //         OutlineButton(
+  //           onPressed: onPressed,
+  //           child: Text(
+  //             buttonText,
+  //             style: TextStyle(
+  //                 color: Colors.black,
+  //                 fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true)),
+  //           ),
+  //           // color: kPrimaryLightColor,
+  //           borderSide: BorderSide(color: Colors.black, width: 1.0),
+  //           shape: RoundedRectangleBorder(
+  //               // side: BorderSide(color: kPrimaryColor, width: 1.0),
+  //               borderRadius: BorderRadius.circular(18.0)),
+  //         ),
+  //       ],
+  //     ),
+  //   ),
+  // );
+  if (context != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return alertDialog;
+        return AssetGiffyDialog(
+          // key: keys[5],
+          buttonRadius: 20,
+
+          image: Image.asset(
+            gif,
+            fit: BoxFit.cover,
+          ),
+          title: Text(
+            titleText,
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Gilroy Black',
+              fontWeight: FontWeight.bold,
+              fontSize: ScreenUtil().setSp(
+                19,
+                allowFontScalingSelf: true,
+              ),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          entryAnimation: EntryAnimation.BOTTOM_RIGHT,
+          description: Text(
             contentText,
             style: TextStyle(
               color: Colors.black,
@@ -91,32 +159,12 @@ void dataSelect(context, titleText, contentText, buttonText, onPressed) {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(
-            height: ScreenUtil().setHeight(20),
-          ),
-          OutlineButton(
-            onPressed: onPressed,
-            child: Text(
-              buttonText,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true)),
-            ),
-            // color: kPrimaryLightColor,
-            borderSide: BorderSide(color: Colors.black, width: 1.0),
-            shape: RoundedRectangleBorder(
-                // side: BorderSide(color: kPrimaryColor, width: 1.0),
-                borderRadius: BorderRadius.circular(18.0)),
-          ),
-        ],
-      ),
-    ),
-  );
-  if (context != null) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alertDialog;
+          onlyOkButton: true,
+          cornerRadius: 20,
+          onOkButtonPressed: onPressed,
+          buttonOkText: Text(buttonText),
+          buttonOkColor: Colors.cyan,
+        );
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:Flutter/constant/const.dart';
+import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
@@ -73,12 +74,21 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   int _stringIndex;
 
   AnimationController controller;
+  AnimationController controllerScroll;
+  Animation<double> heightAnimation;
 
   int flag = 0;
 
   @override
   void initState() {
     super.initState();
+    controllerScroll = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600),
+      reverseDuration: Duration(milliseconds: 600),
+    );
+    heightAnimation = Tween(begin: 45.0, end: 0.0).animate(
+        CurvedAnimation(curve: Curves.easeInOut, parent: controllerScroll));
     _tabController = TabController(
       length: 5,
       vsync: this,
@@ -149,6 +159,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     ];
     try {
       await Future.wait(futures);
+      await Provider.of<Cart>(context, listen: false).getCart(context: context);
       //  await Provider.of<Pagination>(context, listen: false).getProducts(
       //       page: 1, addition: false, select: 'fancyDiamond', context: context);
       if (Provider.of<Auth>(context, listen: false).isLogin &&
@@ -159,9 +170,15 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
           Provider.of<Auth>(context, listen: false).autoLogin)
         Provider.of<Auth>(context, listen: false).changeAuto();
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: "Okay",
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     }
   }
 
@@ -178,9 +195,15 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
           widget.loader(false);
         }
       } catch (err) {
-        dataSelect(context, '$err', '', 'OK', () {
-          Navigator.pop(context);
-        });
+        dataSelect(
+            context: context,
+            titleText: 'Alert!',
+            buttonText: "Okay",
+            contentText: err.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
       } finally {
         if (mounted)
           setState(() {
@@ -261,10 +284,19 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
           ),
         );
       } else {
-        dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay',
-            () {
-          Navigator.pop(context);
-        });
+        dataSelect(
+            context: context,
+            titleText: 'Alert!',
+            buttonText: "Okay",
+            contentText: 'Request has already been noted!',
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
+        // dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay',
+        //     () {
+        //   Navigator.pop(context);
+        // });
       }
     } else {
       Navigator.push(
@@ -327,9 +359,15 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
         });
       });
     } catch (err) {
-      dataSelect(context, "Alert!", '$err', 'Okay', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: "Okay",
+          contentText: 'Request has already been noted!',
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       isLoadingSearch = false;
     }
@@ -461,13 +499,22 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 _tabController.index = 1;
                                               });
                                               //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
+                                              // dataSelect(
+                                              //   context,
+                                              //   'Important!',
+                                              //   "To get complete access of the app, you need to first verify yourself!",
+                                              //   'Complete SignUp',
+                                              //   completeSignUp,
+                                              // );
                                               dataSelect(
-                                                context,
-                                                'Important!',
-                                                "To get complete access of the app, you need to first verify yourself!",
-                                                'Complete SignUp',
-                                                completeSignUp,
-                                              );
+                                                  context: context,
+                                                  titleText: 'Important!',
+                                                  buttonText: 'Complete SignUp',
+                                                  contentText:
+                                                      "To get complete access of the app, you need to first verify yourself!",
+                                                  onPressed: completeSignUp,
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                           },
                                           controller: _tabController,
@@ -781,6 +828,13 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                               : SizedBox(
                                   height: 0.0,
                                 ),
+                          !widget.val
+                              ? SizedBox(
+                                  height: ScreenUtil().setHeight(15),
+                                )
+                              : SizedBox(
+                                  height: 0.0,
+                                ),
                           Expanded(
                             child: TabBarView(
                               physics: Provider.of<Pagination>(context,
@@ -998,13 +1052,17 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 .toUpperCase());
                                                       } catch (err) {
                                                         dataSelect(
-                                                            context,
-                                                            '$err',
-                                                            '',
-                                                            'OK', () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
+                                                            context: context,
+                                                            titleText: 'Alert!',
+                                                            buttonText: 'Okay',
+                                                            contentText:
+                                                                err.toString(),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            gif:
+                                                                "assets/images/alert.gif");
                                                       }
                                                       // setState(() {
                                                       //   isLoadingSearch = false;
@@ -1299,13 +1357,21 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                               );
                                                             } catch (err) {
                                                               dataSelect(
-                                                                  context,
-                                                                  '$err',
-                                                                  '',
-                                                                  'OK', () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              });
+                                                                  context:
+                                                                      context,
+                                                                  titleText:
+                                                                      'Alert!',
+                                                                  buttonText:
+                                                                      'Okay',
+                                                                  contentText: err
+                                                                      .toString(),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  gif:
+                                                                      "assets/images/alert.gif");
                                                             }
                                                           },
                                                           child: Container(
@@ -1598,7 +1664,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       ),
                                     ),
                                     Positioned(
-                                      top: ScreenUtil().setHeight(82.5 + 22),
+                                      top:
+                                          ScreenUtil().setHeight(82.7 + 22 + 8),
                                       left: ScreenUtil().setWidth(27),
                                       child: FadeIn(
                                         child: Container(
@@ -1706,8 +1773,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       ),
                                     ),
                                     Positioned(
-                                      top: ScreenUtil().setHeight(19 + 22 + 6),
-                                      left: ScreenUtil().setWidth(360),
+                                      top: ScreenUtil().setHeight(20 + 22 + 10),
+                                      left: ScreenUtil().setWidth(354),
                                       child: GestureDetector(
                                         onTap: () {
                                           setState(() {
@@ -1716,8 +1783,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                         },
                                         child: SvgPicture.asset(
                                           'assets/icons/notificationIcon.svg',
-                                          height: ScreenUtil().setHeight(20),
-                                          width: ScreenUtil().setWidth(20),
+                                          height: ScreenUtil().setHeight(25),
+                                          width: ScreenUtil().setWidth(25),
                                           color: Colors.black,
                                         ),
                                       ),
@@ -1763,16 +1830,17 @@ class CurvePainter extends CustomPainter {
 
     var path = Path();
     path.moveTo(
-        ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22));
+        ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22 + 8));
     path.quadraticBezierTo(
         ScreenUtil().setWidth(349.33),
-        ScreenUtil().setHeight(81.45 + 22),
+        ScreenUtil().setHeight(81.45 + 22 + 8),
         ScreenUtil().setWidth(368),
-        ScreenUtil().setHeight(54 + 22));
+        ScreenUtil().setHeight(54 + 22 + 8));
     // path.lineTo(ScreenUtil().setWidth(368, 54);
-    path.lineTo(ScreenUtil().setWidth(368), ScreenUtil().setHeight(82.73 + 22));
     path.lineTo(
-        ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22));
+        ScreenUtil().setWidth(368), ScreenUtil().setHeight(82.73 + 22 + 8));
+    path.lineTo(
+        ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22 + 8));
     path.close();
 
     // TODO: Draw your path

@@ -256,9 +256,8 @@ class UserInfo with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> changeImage(
-      {File image, String description, String location, context}) async {
-    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
+  Future<void> changeImage({File image, context}) async {
+    var stream = http.ByteStream(DelegatingStream(image.openRead()));
     var length = await image.length();
 
     var uri = Uri.parse(uurl + '/user/profileimage');
@@ -281,13 +280,10 @@ class UserInfo with ChangeNotifier {
           .authenticate(number, password, 'user/login');
     }
     try {
-      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
-        Navigator.popAndPushNamed(context, '/');
-      }
-      var request = new http.MultipartRequest("POST", uri);
-      var multipartFile = new http.MultipartFile('image', stream, length,
+      var request = http.MultipartRequest("POST", uri);
+      var multipartFile = http.MultipartFile('image', stream, length,
           filename: basename(image.path),
-          contentType: new MediaType('image', 'png'));
+          contentType: MediaType('image', 'png'));
 
       request.files.add(multipartFile);
       request.headers.addAll(headers);

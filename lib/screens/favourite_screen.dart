@@ -113,9 +113,15 @@ class _FavouriteScreenState extends State<FavouriteScreen>
         });
       });
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: 'Okay',
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       setState(() {
         isLoadingSearch = false;
@@ -177,94 +183,103 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                 children: <Widget>[
                   widget.val
                       ? SizedBox(
-                          height: ScreenUtil().setHeight(22 + 45 + 11 + 20),
+                          height: ScreenUtil().setHeight(22 + 45 + 20 + 20),
                         )
                       : SizedBox(
-                          height: ScreenUtil().setHeight(22 + 20),
+                          height: ScreenUtil().setHeight(22),
                         ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 26, 0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9),
-                              Color(0xFF3685CB),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(
-                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                          ),
-                          child: Text(
-                            'FAVOURITES',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Gilroy Bold',
-                              fontSize: ScreenUtil()
-                                  .setSp(20, allowFontScalingSelf: true),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  child: SortPage(),
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 4.0),
-                                child: SvgPicture.asset(
-                                  'assets/icons/sortIcon.svg',
-                                  width: ScreenUtil().setWidth(24),
-                                  height: ScreenUtil().setHeight(24),
-                                  color: Colors.black,
+                  widget.val
+                      ? Padding(
+                          padding: EdgeInsets.fromLTRB(25, 0, 26, 0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              ShaderMask(
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9),
+                                    Color(0xFF3685CB),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                      0, 0, bounds.width, bounds.height),
+                                ),
+                                child: Text(
+                                  'FAVOURITES',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Gilroy Bold',
+                                    fontSize: ScreenUtil()
+                                        .setSp(20, allowFontScalingSelf: true),
+                                  ),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  child: OptionsDialog(
-                                    choicesBuild: _choices,
-                                    choiceColor: _choices1,
-                                    choiceCertification: _choices2,
-                                    choiceDiamondQuality: _choices3,
-                                    defValue: _defaultChoiceIndex1,
-                                    defValue1: _defaultChoiceIndex2,
-                                    defValue2: _defaultChoiceIndex3,
-                                    defValue3: _defaultChoiceIndex4,
-                                    valueChangeBuild: _onValueChange,
-                                    valueChangeColor: _onValueChangeColor,
-                                    valueChangeCerti: _onValueChangeCerti,
-                                    valueChangeDQ: _onValueChangeDQ,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        child: SortPage(),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 4.0),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/sortIcon.svg',
+                                        width: ScreenUtil().setWidth(24),
+                                        height: ScreenUtil().setHeight(24),
+                                        color: Colors.black,
+                                      ),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: SvgPicture.asset(
-                                'assets/icons/optionsIcon.svg',
-                                width: ScreenUtil().setWidth(24),
-                                height: ScreenUtil().setHeight(24),
-                                color: Colors.black,
-                              ),
-                            )
-                          ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        child: OptionsDialog(
+                                          choicesBuild: _choices,
+                                          choiceColor: _choices1,
+                                          choiceCertification: _choices2,
+                                          choiceDiamondQuality: _choices3,
+                                          defValue: _defaultChoiceIndex1,
+                                          defValue1: _defaultChoiceIndex2,
+                                          defValue2: _defaultChoiceIndex3,
+                                          defValue3: _defaultChoiceIndex4,
+                                          valueChangeBuild: _onValueChange,
+                                          valueChangeColor: _onValueChangeColor,
+                                          valueChangeCerti: _onValueChangeCerti,
+                                          valueChangeDQ: _onValueChangeDQ,
+                                        ),
+                                      );
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/icons/optionsIcon.svg',
+                                      width: ScreenUtil().setWidth(24),
+                                      height: ScreenUtil().setHeight(24),
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(20),
-                  ),
+                      : SizedBox(
+                          height: 0.0,
+                        ),
+                  widget.val
+                      ? SizedBox(
+                          height: ScreenUtil().setHeight(15),
+                        )
+                      : SizedBox(
+                          height: ScreenUtil().setHeight(20),
+                        ),
                   Expanded(
                     child: favProducts.length > 0
                         ? CookiePage(
@@ -339,7 +354,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                24, 11, 21, searchSelected ? 0 : 20),
+                                24, 20, 21, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -391,10 +406,15 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                   searchValue.toUpperCase());
                                             } catch (err) {
                                               dataSelect(
-                                                  context, '$err', '', 'OK',
-                                                  () {
-                                                Navigator.pop(context);
-                                              });
+                                                  context: context,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText: err.toString(),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                             // setState(() {
                                             //   isLoadingSearch = false;
@@ -633,10 +653,18 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                         ),
                                                       );
                                                     } catch (err) {
-                                                      dataSelect(context,
-                                                          '$err', '', 'OK', () {
-                                                        Navigator.pop(context);
-                                                      });
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              err.toString(),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif");
                                                     }
                                                   },
                                                   child: Container(

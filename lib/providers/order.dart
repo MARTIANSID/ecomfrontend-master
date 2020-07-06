@@ -84,7 +84,8 @@ class Orders with ChangeNotifier {
                       quantity: i['options']['quantity'],
                       build: i['options']['build'],
                       certificate: i['options']["certificate"],
-                      color: i['options']['diamondQuality']))
+                      color: i['options']['color'],
+                      diamondQuality: i['options']['diamondQuality']))
                   .toList()))
           .toList();
       print(orderProducts);

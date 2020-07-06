@@ -121,32 +121,43 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                                           true),
                                                   color: Colors.black),
                                             ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                // border: Border.all(
-                                                //   color: Colors.grey,
-                                                //   width: 1.0,
-                                                // ),
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
-                                                // color: Colors.grey[100],
-                                              ),
-                                              margin:
-                                                  EdgeInsets.only(top: 10.0),
-                                              padding: EdgeInsets.all(7.0),
-                                              width:
-                                                  ScreenUtil().setWidth(308.25),
-                                              child: Text(
-                                                strMessage[index],
-                                                // 'Each and every diamond is checked thoroughly to deliver quality products to our client.',
-                                                style: TextStyle(
-                                                  fontSize: ScreenUtil().setSp(
-                                                      13,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            )
+                                            Provider.of<Orders>(context,
+                                                            listen: false)
+                                                        .orderProducts[
+                                                            widget.index]
+                                                        .status ==
+                                                    index + 1
+                                                ? Container(
+                                                    decoration: BoxDecoration(
+                                                      // border: Border.all(
+                                                      //   color: Colors.grey,
+                                                      //   width: 1.0,
+                                                      // ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                      // color: Colors.grey[100],
+                                                    ),
+                                                    margin: EdgeInsets.only(
+                                                        top: 10.0),
+                                                    padding:
+                                                        EdgeInsets.all(7.0),
+                                                    width: ScreenUtil()
+                                                        .setWidth(308.25),
+                                                    child: Text(
+                                                      strMessage[index],
+                                                      // 'Each and every diamond is checked thoroughly to deliver quality products to our client.',
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(13,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : SizedBox(
+                                                    height: 0.0,
+                                                  ),
                                           ],
                                         ),
                                       ),
@@ -161,7 +172,12 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          index != 0
+                                          Provider.of<Orders>(context,
+                                                          listen: false)
+                                                      .orderProducts[
+                                                          widget.index]
+                                                      .status !=
+                                                  index + 1
                                               ? Container(
                                                   height:
                                                       ScreenUtil().setWidth(20),
@@ -213,44 +229,92 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                                   ),
                                                 ),
                                           index != 4
-                                              ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 8.0,
-                                                    top: 6.0,
-                                                    bottom: 6.0,
-                                                  ),
-                                                  child: RotatedBox(
-                                                    quarterTurns: 1,
-                                                    child: ShaderMask(
-                                                      shaderCallback:
-                                                          (bounds) =>
-                                                              LinearGradient(
-                                                        colors: [
-                                                          Color(0xFF34B0D9),
-                                                          Color(0xFF3685CB),
-                                                        ],
-                                                        begin:
-                                                            Alignment.topLeft,
-                                                        end: Alignment
-                                                            .bottomRight,
-                                                      ).createShader(
-                                                        Rect.fromLTWH(
-                                                            0,
-                                                            0,
-                                                            bounds.width,
-                                                            bounds.height),
+                                              ? Provider.of<Orders>(context,
+                                                              listen: false)
+                                                          .orderProducts[
+                                                              widget.index]
+                                                          .status ==
+                                                      index + 1
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 8.0,
+                                                        top: 6.0,
+                                                        bottom: 6.0,
                                                       ),
-                                                      child: Text(
-                                                        '................',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          letterSpacing: 2.0,
+                                                      child: RotatedBox(
+                                                        quarterTurns: 1,
+                                                        child: ShaderMask(
+                                                          shaderCallback:
+                                                              (bounds) =>
+                                                                  LinearGradient(
+                                                            colors: [
+                                                              Color(0xFF34B0D9),
+                                                              Color(0xFF3685CB),
+                                                            ],
+                                                            begin: Alignment
+                                                                .topLeft,
+                                                            end: Alignment
+                                                                .bottomRight,
+                                                          ).createShader(
+                                                            Rect.fromLTWH(
+                                                                0,
+                                                                0,
+                                                                bounds.width,
+                                                                bounds.height),
+                                                          ),
+                                                          child: Text(
+                                                            '................',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              letterSpacing:
+                                                                  2.0,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                )
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 8.0,
+                                                        top: 6.0,
+                                                        bottom: 6.0,
+                                                      ),
+                                                      child: RotatedBox(
+                                                        quarterTurns: 1,
+                                                        child: ShaderMask(
+                                                          shaderCallback:
+                                                              (bounds) =>
+                                                                  LinearGradient(
+                                                            colors: [
+                                                              Colors.grey,
+                                                              Colors.grey,
+                                                            ],
+                                                            begin: Alignment
+                                                                .topLeft,
+                                                            end: Alignment
+                                                                .bottomRight,
+                                                          ).createShader(
+                                                            Rect.fromLTWH(
+                                                                0,
+                                                                0,
+                                                                bounds.width,
+                                                                bounds.height),
+                                                          ),
+                                                          child: Text(
+                                                            '................',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              letterSpacing:
+                                                                  2.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
                                               : SizedBox(
                                                   height: 0.0,
                                                 ),

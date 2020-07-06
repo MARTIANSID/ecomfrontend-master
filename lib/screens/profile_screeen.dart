@@ -848,9 +848,15 @@ class _UserPageState extends State<UserPage>
           isSwitched = Provider.of<UserInfo>(context, listen: false).noti;
         }
       } catch (err) {
-        dataSelect(context, 'Alert!', '$err', 'Okay', () {
-          Navigator.pop(context);
-        });
+        dataSelect(
+            context: context,
+            titleText: 'Alert!',
+            buttonText: 'Okay',
+            contentText: err.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
       } finally {
         setState(() {
           isLoading = false;
@@ -1047,7 +1053,7 @@ class _UserPageState extends State<UserPage>
                       bottomRight: Radius.circular(15),
                     ),
                     child: InkWell(
-                      splashColor: Colors.cyan[50],
+                      splashColor: Colors.cyan[50].withOpacity(0.5),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15),
                         bottomRight: Radius.circular(15),
@@ -1183,102 +1189,216 @@ class _UserPageState extends State<UserPage>
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) {
-                                                    return Column(children: <
-                                                        Widget>[
-                                                      GestureDetector(
-                                                          onTap: () async {
-                                                            Navigator.pop(
-                                                                context);
-                                                            final i = await picker
-                                                                .getImage(
-                                                                    source: ImageSource
-                                                                        .gallery);
-                                                            print(i.path);
-                                                            if (i != null) {
-                                                              setState(() {
-                                                                isLoadingimage =
-                                                                    true;
-                                                              });
-                                                              try {
-                                                                if (context !=
-                                                                    null)
-                                                                  await Provider.of<
-                                                                              UserInfo>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .changeImage(
+                                                    return SimpleDialog(
+                                                      elevation: 100.0,
+                                                      contentPadding:
+                                                          EdgeInsets.all(0),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                      ),
+                                                      children: <Widget>[
+                                                        Container(
+                                                          width: ScreenUtil()
+                                                              .setWidth(250),
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        15.0),
+                                                                child: Text(
+                                                                  'Select Image from the following options available from below!',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "Gilroy Medium",
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        16,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height:
+                                                                    ScreenUtil()
+                                                                        .setHeight(
+                                                                            25),
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 0.8,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  final i = await picker
+                                                                      .getImage(
+                                                                          source:
+                                                                              ImageSource.gallery);
+                                                                  print(i.path);
+                                                                  if (i.path !=
+                                                                      null) {
+                                                                    setState(
+                                                                        () {
+                                                                      isLoadingimage =
+                                                                          true;
+                                                                    });
+                                                                    try {
+                                                                      if (context !=
+                                                                          null)
+                                                                        print(
+                                                                            "SDCD");
+                                                                      await Provider.of<UserInfo>(context, listen: false).changeImage(
+                                                                          context:
+                                                                              context,
                                                                           image:
                                                                               File(i.path));
+                                                                      await Provider.of<UserInfo>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .getuser(
+                                                                              context);
 
-                                                                image = File(
-                                                                    i.path);
-                                                              } catch (err) {
-                                                                dataSelect(
-                                                                    context,
-                                                                    'Alert!',
-                                                                    '$err',
-                                                                    'Okay', () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                });
-                                                              } finally {
-                                                                setState(() {
-                                                                  isLoadingimage =
-                                                                      false;
-                                                                });
-                                                              }
-                                                            }
-                                                          },
-                                                          child:
-                                                              Text('Gallery')),
-                                                      GestureDetector(
-                                                          onTap: () async {
-                                                            Navigator.pop(
-                                                                context);
-                                                            final i = await picker
-                                                                .getImage(
-                                                                    source: ImageSource
-                                                                        .camera);
+                                                                      // image = File(
+                                                                      //     i.path);
+                                                                    } catch (err) {
+                                                                      dataSelect(
+                                                                          context:
+                                                                              context,
+                                                                          titleText:
+                                                                              'Alert!',
+                                                                          buttonText:
+                                                                              'Okay',
+                                                                          contentText: err
+                                                                              .toString(),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          gif:
+                                                                              "assets/images/alert.gif");
+                                                                    } finally {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      setState(
+                                                                          () {
+                                                                        isLoadingimage =
+                                                                            false;
+                                                                      });
+                                                                    }
+                                                                  }
+                                                                },
+                                                                child: Text(
+                                                                  'Gallery',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "Gilroy Regular",
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        12,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 0.8,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  final i = await picker
+                                                                      .getImage(
+                                                                          source:
+                                                                              ImageSource.camera);
 
-                                                            if (i != null) {
-                                                              try {
-                                                                setState(() {
-                                                                  isLoadingimage =
-                                                                      true;
-                                                                });
-                                                                if (context !=
-                                                                    null)
-                                                                  await Provider.of<
-                                                                              UserInfo>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .changeImage(
-                                                                          image:
-                                                                              File(i.path));
+                                                                  if (i.path !=
+                                                                      null) {
+                                                                    try {
+                                                                      setState(
+                                                                          () {
+                                                                        isLoadingimage =
+                                                                            true;
+                                                                      });
+                                                                      if (context !=
+                                                                          null)
+                                                                        await Provider.of<UserInfo>(context, listen: false).changeImage(
+                                                                            context:
+                                                                                context,
+                                                                            image:
+                                                                                File(i.path));
+                                                                      await Provider.of<UserInfo>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .getuser(
+                                                                              context);
 
-                                                                image = File(
-                                                                    i.path);
-                                                              } catch (err) {
-                                                                dataSelect(
-                                                                    context,
-                                                                    'Alert!',
-                                                                    '$err',
-                                                                    'Okay', () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                });
-                                                              } finally {
-                                                                setState(() {
-                                                                  isLoadingimage =
-                                                                      false;
-                                                                });
-                                                              }
-                                                            }
-                                                          },
-                                                          child: Text('Camera'))
-                                                    ]);
+                                                                      image = File(
+                                                                          i.path);
+                                                                    } catch (err) {
+                                                                      dataSelect(
+                                                                          context:
+                                                                              context,
+                                                                          titleText:
+                                                                              'Alert!',
+                                                                          buttonText:
+                                                                              'Okay',
+                                                                          contentText: err
+                                                                              .toString(),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          gif:
+                                                                              "assets/images/alert.gif");
+                                                                    } finally {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      setState(
+                                                                          () {
+                                                                        isLoadingimage =
+                                                                            false;
+                                                                      });
+                                                                    }
+                                                                  }
+                                                                },
+                                                                child: Text(
+                                                                  'Camera',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "Gilroy Regular",
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        12,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height:
+                                                                    ScreenUtil()
+                                                                        .setHeight(
+                                                                            15),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
                                                   },
                                                 );
                                               },
@@ -1310,20 +1430,17 @@ class _UserPageState extends State<UserPage>
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
-                                              image: image == null
-                                                  ? AdvancedNetworkImage(
-                                                      Provider.of<UserInfo>(
-                                                              context,
-                                                              listen: true)
-                                                          .profileImage,
-                                                      useDiskCache: true,
-                                                      cacheRule: CacheRule(
-                                                        maxAge: const Duration(
-                                                            days: 3),
-                                                      ),
-                                                    )
-                                                  : FileImage(image),
                                               fit: BoxFit.fill,
+                                              image: AdvancedNetworkImage(
+                                                Provider.of<UserInfo>(context,
+                                                        listen: true)
+                                                    .profileImage,
+                                                useDiskCache: true,
+                                                cacheRule: CacheRule(
+                                                  maxAge:
+                                                      const Duration(days: 3),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -1420,35 +1537,49 @@ class _UserPageState extends State<UserPage>
                                                   .inDays;
                                               if (d >= 1) {
                                                 dataSelect(
-                                                  context,
-                                                  'Important!',
-                                                  "To see prices you must first request a quotation from Team Gemstory",
-                                                  'Request Prices',
-                                                  requestPrice,
-                                                );
+                                                    context: context,
+                                                    titleText: 'Important!',
+                                                    buttonText:
+                                                        'Request Prices',
+                                                    contentText:
+                                                        "To see prices you must first request a quotation from Team Gemstory",
+                                                    onPressed: requestPrice,
+                                                    gif:
+                                                        "assets/images/alert.gif");
                                               } else {
                                                 dataSelect(
-                                                    context,
-                                                    'Alert!',
-                                                    'Request has already been noted!',
-                                                    'Okay', () {
-                                                  Navigator.pop(context);
-                                                });
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    buttonText: 'Okay',
+                                                    contentText:
+                                                        'Request has already been noted!',
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    gif:
+                                                        "assets/images/alert.gif");
                                               }
                                             } else {
                                               dataSelect(
-                                                context,
-                                                'Important!',
-                                                "To see prices you must first request a quotation from Team Gemstory",
-                                                'Request Prices',
-                                                requestPrice,
-                                              );
+                                                  context: context,
+                                                  titleText: 'Important!',
+                                                  buttonText: 'Request Prices',
+                                                  contentText:
+                                                      "To see prices you must first request a quotation from Team Gemstory",
+                                                  onPressed: requestPrice,
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                           } catch (err) {
-                                            dataSelect(context, 'Alert!',
-                                                '$err', 'Okay', () {
-                                              Navigator.pop(context);
-                                            });
+                                            dataSelect(
+                                                context: context,
+                                                titleText: 'Alert!',
+                                                buttonText: 'Okay',
+                                                contentText: err.toString(),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gif: "assets/images/alert.gif");
                                           }
                                         } else {
                                           Navigator.push(
@@ -1520,12 +1651,16 @@ class _UserPageState extends State<UserPage>
                                               );
                                             } else {
                                               dataSelect(
-                                                  context,
-                                                  'Alert!',
-                                                  'Request has already been noted!',
-                                                  'Okay', () {
-                                                Navigator.pop(context);
-                                              });
+                                                  context: context,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText:
+                                                      'Request has already been noted!',
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                           } else {
                                             Navigator.push(
@@ -1553,35 +1688,49 @@ class _UserPageState extends State<UserPage>
                                                   .inDays;
                                               if (d >= 1) {
                                                 dataSelect(
-                                                  context,
-                                                  'Important!',
-                                                  "To see prices you must first request a quotation from Team Gemstory",
-                                                  'Request Prices',
-                                                  requestPrice,
-                                                );
+                                                    context: context,
+                                                    titleText: 'Important!',
+                                                    buttonText:
+                                                        'Request Prices',
+                                                    contentText:
+                                                        "To see prices you must first request a quotation from Team Gemstory",
+                                                    onPressed: requestPrice,
+                                                    gif:
+                                                        "assets/images/alert.gif");
                                               } else {
                                                 dataSelect(
-                                                    context,
-                                                    'Alert!',
-                                                    'Request has already been noted!',
-                                                    'Okay', () {
-                                                  Navigator.pop(context);
-                                                });
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    buttonText: 'Okay',
+                                                    contentText:
+                                                        'Request has already been noted!',
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    gif:
+                                                        "assets/images/alert.gif");
                                               }
                                             } else {
                                               dataSelect(
-                                                context,
-                                                'Important!',
-                                                "To see prices you must first request a quotation from Team Gemstory",
-                                                'Request Prices',
-                                                requestPrice,
-                                              );
+                                                  context: context,
+                                                  titleText: 'Important!',
+                                                  buttonText: 'Request Prices',
+                                                  contentText:
+                                                      "To see prices you must first request a quotation from Team Gemstory",
+                                                  onPressed: requestPrice,
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                           } catch (err) {
-                                            dataSelect(context, 'Alert!',
-                                                '$err', 'Okay', () {
-                                              Navigator.pop(context);
-                                            });
+                                            dataSelect(
+                                                context: context,
+                                                titleText: 'Alert!',
+                                                buttonText: 'Okay',
+                                                contentText: err.toString(),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gif: "assets/images/alert.gif");
                                           }
                                         } else {
                                           bool value2 = false;
@@ -1665,12 +1814,16 @@ class _UserPageState extends State<UserPage>
                                               );
                                             } else {
                                               dataSelect(
-                                                  context,
-                                                  'Alert!',
-                                                  'Request has already been noted!',
-                                                  'Okay', () {
-                                                Navigator.pop(context);
-                                              });
+                                                  context: context,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText:
+                                                      'Request has already been noted!',
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                           } else {
                                             Navigator.push(
@@ -1762,12 +1915,15 @@ class _UserPageState extends State<UserPage>
                                           );
                                         } else {
                                           dataSelect(
-                                              context,
-                                              'Alert!',
-                                              'Request has already been noted!',
-                                              'Okay', () {
-                                            Navigator.pop(context);
-                                          });
+                                              context: context,
+                                              titleText: 'Alert!',
+                                              buttonText: 'Okay',
+                                              contentText:
+                                                  'Request has already been noted!',
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              gif: "assets/images/alert.gif");
                                         }
                                       } else {
                                         Navigator.push(
@@ -1991,36 +2147,56 @@ class _UserPageState extends State<UserPage>
                                                 .inDays;
                                             if (d >= 1) {
                                               dataSelect(
-                                                context,
-                                                'Important!',
-                                                "To see prices you must first request a quotation from Team Gemstory",
-                                                'Request Prices',
-                                                requestPrice,
-                                              );
+                                                  context: context,
+                                                  titleText: 'Important!',
+                                                  buttonText: 'Request Prices',
+                                                  contentText:
+                                                      "To see prices you must first request a quotation from Team Gemstory",
+                                                  onPressed: requestPrice,
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             } else {
                                               dataSelect(
-                                                  context,
-                                                  'Alert!',
-                                                  'Request has already been noted!',
-                                                  'Okay', () {
-                                                Navigator.pop(context);
-                                              });
+                                                  context: context,
+                                                  titleText: 'Important!',
+                                                  buttonText: 'Request Prices',
+                                                  contentText:
+                                                      "To see prices you must first request a quotation from Team Gemstory",
+                                                  onPressed: requestPrice,
+                                                  gif:
+                                                      "assets/images/alert.gif");
+                                              dataSelect(
+                                                  context: context,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText:
+                                                      'Request has already been noted!',
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                           } else {
                                             dataSelect(
-                                              context,
-                                              'Important!',
-                                              "To see prices you must first request a quotation from Team Gemstory",
-                                              'Request Prices',
-                                              requestPrice,
-                                            );
+                                                context: context,
+                                                titleText: 'Important!',
+                                                buttonText: 'Request Prices',
+                                                contentText:
+                                                    "To see prices you must first request a quotation from Team Gemstory",
+                                                onPressed: requestPrice,
+                                                gif: "assets/images/alert.gif");
                                           }
                                         } catch (err) {
                                           dataSelect(
-                                              context, 'Alert!', '$err', 'Okay',
-                                              () {
-                                            Navigator.pop(context);
-                                          });
+                                              context: context,
+                                              titleText: 'Alert!',
+                                              buttonText: 'Okay',
+                                              contentText: err.toString(),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              gif: "assets/images/alert.gif");
                                         }
                                       } else {
                                         Navigator.push(
@@ -2412,10 +2588,18 @@ class _UserPageState extends State<UserPage>
                                                           .notification(
                                                               context: context);
                                                     } catch (err) {
-                                                      dataSelect(context,
-                                                          '$err', '', 'OK', () {
-                                                        Navigator.pop(context);
-                                                      });
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              err.toString(),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif");
                                                     }
                                                     setState(() {
                                                       value2 = value;

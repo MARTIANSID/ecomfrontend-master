@@ -521,38 +521,58 @@ class _OptionsDialogState extends State<OptionsDialog> {
                     }),
                   ),
                   SizedBox(
-                    height: ScreenUtil().setHeight(16),
+                    height: ScreenUtil().setHeight(25),
                   ),
                   Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        widget.valueChangeBuild(_defaultChoiceIndex);
-                        widget.valueChangeColor(_defaultChoiceIndex1);
-                        widget.valueChangeCerti(_defaultChoiceIndex2);
-                        widget.valueChangeDQ(_defaultChoiceIndex3);
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        width: ScreenUtil().setWidth(180),
-                        height: ScreenUtil().setHeight(43),
-                        // padding: EdgeInsets.all(20.0),
-                        child: Center(
-                          child: Text(
-                            'DONE',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy Bold',
-                              color: Colors.white,
-                              fontSize: ScreenUtil()
-                                  .setSp(18, allowFontScalingSelf: true),
-                              fontWeight: FontWeight.w500,
+                    child: Container(
+                      width: ScreenUtil().setWidth(180),
+                      height: ScreenUtil().setHeight(35),
+                      // padding: EdgeInsets.all(20.0),
+                      // padding: EdgeInsets.all(15.0),
+                      // width: ScreenUtil().setWidth(120),
+                      decoration: BoxDecoration(
+                        // image: DecorationImage(
+                        //   image: AssetImage('assets/images/vector17.png'),
+                        //   fit: BoxFit.contain,
+                        // ),
+                        borderRadius: BorderRadius.circular(30),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF34B0E9),
+                            Color(0xFF3685CB),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Material(
+                        type: MaterialType.transparency,
+                        elevation: 6.0,
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(30),
+                        child: InkWell(
+                          splashColor: Colors.cyan[100].withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(30),
+                          onTap: () {
+                            widget.valueChangeBuild(_defaultChoiceIndex);
+                            widget.valueChangeColor(_defaultChoiceIndex1);
+                            widget.valueChangeCerti(_defaultChoiceIndex2);
+                            widget.valueChangeDQ(_defaultChoiceIndex3);
+                            Navigator.of(context).pop();
+                          },
+                          child: Center(
+                            child: Text(
+                              'DONE',
+                              style: TextStyle(
+                                fontFamily: 'Gilroy Bold',
+                                color: Colors.white,
+                                fontSize: ScreenUtil()
+                                    .setSp(18, allowFontScalingSelf: true),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          image: AssetImage('assets/images/vector17.png'),
-                          fit: BoxFit.contain,
-                        )),
                       ),
                     ),
                   ),

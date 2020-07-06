@@ -120,9 +120,15 @@ class _MyPriceState extends State<MyPrice> {
         });
       });
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: 'Okay',
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       setState(() {
         isLoadingSearch = false;
@@ -248,6 +254,8 @@ class _MyPriceState extends State<MyPrice> {
                                             Container(
                                               width: ScreenUtil().setWidth(140),
                                               child: ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
                                                 itemCount:
                                                     Provider.of<Pagination>(
                                                             context,
@@ -295,6 +303,8 @@ class _MyPriceState extends State<MyPrice> {
                                           Container(
                                             width: ScreenUtil().setWidth(140),
                                             child: ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
                                               itemCount:
                                                   Provider.of<Pagination>(
                                                           context,
@@ -366,78 +376,43 @@ class _MyPriceState extends State<MyPrice> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VVS_EF'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VVS_FG'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VVS_VS_FG'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'VS_FG'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 5.0),
-                                              child: Text(
-                                                'SI_HI'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
+                                              width: ScreenUtil().setWidth(140),
+                                              child: ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount:
+                                                    Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .diamondPrices
+                                                        .length,
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                itemBuilder: (context, index) {
+                                                  return Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 5.0),
+                                                    child: Text(
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .diamondPrices
+                                                          .keys
+                                                          .toList()[index]
+                                                          .toString()
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             ),
                                           ],
@@ -450,68 +425,44 @@ class _MyPriceState extends State<MyPrice> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 5.0),
-                                            child: Text(
-                                              '606066 ₹',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Light',
-                                                color: Colors.black,
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 5.0),
-                                            child: Text(
-                                              '748748 ₹',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Light',
-                                                color: Colors.black,
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 5.0),
-                                            child: Text(
-                                              '507975 ₹',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Light',
-                                                color: Colors.black,
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 5.0),
-                                            child: Text(
-                                              '725474 ₹',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Light',
-                                                color: Colors.black,
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 5.0),
-                                            child: Text(
-                                              '940503 ₹',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Light',
-                                                color: Colors.black,
-                                                fontSize: ScreenUtil().setSp(14,
-                                                    allowFontScalingSelf: true),
-                                              ),
+                                            width: ScreenUtil().setWidth(140),
+                                            child: ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount:
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .diamondPrices
+                                                      .length,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.vertical,
+                                              itemBuilder: (context, index) {
+                                                return Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 5.0),
+                                                  child: Text(
+                                                    Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .diamondPrices
+                                                            .values
+                                                            .toList()[index]
+                                                            .toString()
+                                                            .toUpperCase() +
+                                                        ' ₹',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Gilroy Light',
+                                                      color: Colors.black,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          14,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],
@@ -551,6 +502,8 @@ class _MyPriceState extends State<MyPrice> {
                                             Container(
                                               width: ScreenUtil().setWidth(140),
                                               child: ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
                                                 itemCount:
                                                     Provider.of<Pagination>(
                                                             context,
@@ -612,6 +565,8 @@ class _MyPriceState extends State<MyPrice> {
                                           Container(
                                             width: ScreenUtil().setWidth(140),
                                             child: ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
                                               itemCount:
                                                   Provider.of<Pagination>(
                                                           context,
@@ -740,10 +695,18 @@ class _MyPriceState extends State<MyPrice> {
                                                                   value.toInt(),
                                                               context: context);
                                                     } catch (err) {
-                                                      dataSelect(context,
-                                                          '$err', '', 'OK', () {
-                                                        Navigator.pop(context);
-                                                      });
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              err.toString(),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif");
                                                     }
                                                   } else {
                                                     setState(() {
@@ -1089,9 +1052,10 @@ class _MyPriceState extends State<MyPrice> {
                                       ),
                                       child: suggestion.length > 0
                                           ? ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
-                                              physics: BouncingScrollPhysics(),
                                               itemCount: Provider.of<Searchh>(
                                                       context,
                                                       listen: false)
@@ -1179,10 +1143,18 @@ class _MyPriceState extends State<MyPrice> {
                                                         ),
                                                       );
                                                     } catch (err) {
-                                                      dataSelect(context,
-                                                          '$err', '', 'OK', () {
-                                                        Navigator.pop(context);
-                                                      });
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              err.toString(),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif");
                                                     }
                                                   },
                                                   child: Container(

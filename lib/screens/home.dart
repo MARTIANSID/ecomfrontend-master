@@ -1,3 +1,4 @@
+import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/cart_screen.dart';
@@ -62,10 +63,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         );
       } else {
-        dataSelect(context, 'Alert!', 'Request has already been noted!', 'Okay',
-            () {
-          Navigator.pop(context);
-        });
+        dataSelect(
+            context: context,
+            titleText: 'Alert!',
+            buttonText: 'Okay',
+            contentText: 'Request has already been noted!',
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
       }
     } else {
       Navigator.push(
@@ -89,7 +95,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       duration: Duration(milliseconds: 600),
       reverseDuration: Duration(milliseconds: 600),
     );
-    heightAnimation = Tween(begin: 45.0, end: 0.0)
+    heightAnimation = Tween(
+            begin: _isVisible ? 45.0 : 0.0, end: _isVisible ? 0.0 : 45.0)
         .animate(CurvedAnimation(curve: Curves.easeInOut, parent: controller));
     _hideButtonController = ScrollController();
     _hideButtonController.addListener(() {
@@ -122,6 +129,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   GlobalKey globalKey = GlobalKey();
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -476,12 +489,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                           listen: false)
                                       .isVerified) {
                                     dataSelect(
-                                      context,
-                                      'Important!',
-                                      "To get complete access of the app, you need to first verify yourself!",
-                                      'Complete SignUp',
-                                      completeSignUp,
-                                    );
+                                        context: context,
+                                        titleText: 'Important!',
+                                        buttonText: 'Complete SignUp',
+                                        contentText:
+                                            'To get complete access of the app, you need to first verify yourself!',
+                                        onPressed: completeSignUp,
+                                        gif: "assets/images/alert.gif");
                                   } else {
                                     pageController.jumpToPage(
                                       3,
@@ -491,7 +505,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               : null,
                           child: Container(
                             height: ScreenUtil().setHeight(39),
-                            padding: EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(_currentIndex != 3 &&
+                                    Provider.of<Cart>(context, listen: true)
+                                            .cart
+                                            .length >
+                                        0
+                                ? 2.0
+                                : 8.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: _currentIndex == 3
@@ -532,12 +552,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                       Rect.fromLTWH(
                                           0, 0, bounds.width, bounds.height),
                                     ),
-                              child: SvgPicture.asset(
-                                'assets/icons/cartIcon.svg',
-                                color: Colors.white,
-                                height: ScreenUtil().setHeight(25),
-                                width: ScreenUtil().setWidth(25),
-                              ),
+                              child: _currentIndex != 3 &&
+                                      Provider.of<Cart>(context, listen: true)
+                                              .cart
+                                              .length >
+                                          0
+                                  ? SvgPicture.asset(
+                                      'assets/icons/cartIconPulse.svg',
+                                      color: Colors.white,
+                                      height: ScreenUtil().setHeight(28),
+                                      width: ScreenUtil().setWidth(28),
+                                    )
+                                  : SvgPicture.asset(
+                                      'assets/icons/cartIcon.svg',
+                                      color: Colors.white,
+                                      height: ScreenUtil().setHeight(25),
+                                      width: ScreenUtil().setWidth(25),
+                                    ),
                             ),
                           ),
                         ),

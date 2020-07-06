@@ -168,9 +168,15 @@ class _CookiePageState extends State<CookiePage>
         try {
           await getMoreProducts();
         } catch (err) {
-          dataSelect(context, '$err', '', 'OK', () {
-            Navigator.pop(context);
-          });
+          dataSelect(
+              context: context,
+              titleText: 'Alert!',
+              buttonText: 'Okay',
+              contentText: err.toString(),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              gif: "assets/images/alert.gif");
         } finally {
           // if (mounted)
           //   setState(() {
@@ -805,30 +811,48 @@ class _CookiePageState extends State<CookiePage>
                                                               .inDays;
                                                           if (d >= 1) {
                                                             dataSelect(
-                                                              context,
-                                                              'Important!',
-                                                              "To see prices you must first request a quotation from Team Gemstory",
-                                                              'Request Prices',
-                                                              requestPrice,
-                                                            );
+                                                                context:
+                                                                    context,
+                                                                titleText:
+                                                                    'Important!',
+                                                                buttonText:
+                                                                    'Request Prices',
+                                                                contentText:
+                                                                    "To see prices you must first request a quotation from Team Gemstory",
+                                                                onPressed:
+                                                                    requestPrice,
+                                                                gif:
+                                                                    "assets/images/alert.gif");
                                                           } else {
                                                             dataSelect(
-                                                                context,
-                                                                'Alert!',
-                                                                'Request has already been noted!',
-                                                                'Okay', () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
+                                                                context:
+                                                                    context,
+                                                                titleText:
+                                                                    'Alert!',
+                                                                buttonText:
+                                                                    'Okay',
+                                                                contentText:
+                                                                    "Request has already been noted!",
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                gif:
+                                                                    "assets/images/alert.gif");
                                                           }
                                                         } else {
                                                           dataSelect(
-                                                            context,
-                                                            'Important!',
-                                                            "To see prices you must first request a quotation from Team Gemstory",
-                                                            'Request Prices',
-                                                            requestPrice,
-                                                          );
+                                                              context: context,
+                                                              titleText:
+                                                                  'Important!',
+                                                              buttonText:
+                                                                  'Request Prices',
+                                                              contentText:
+                                                                  "To see prices you must first request a quotation from Team Gemstory",
+                                                              onPressed:
+                                                                  requestPrice,
+                                                              gif:
+                                                                  "assets/images/alert.gif");
                                                         }
                                                       },
                                                       child: Container(
@@ -982,7 +1006,7 @@ class _CookiePageState extends State<CookiePage>
                                                 BorderRadius.circular(8),
                                             child: InkWell(
                                               splashColor: Colors.cyan[50]
-                                                  .withOpacity(0.8),
+                                                  .withOpacity(0.5),
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               onTap: () async {
@@ -1054,7 +1078,7 @@ class _CookiePageState extends State<CookiePage>
                                                 BorderRadius.circular(8),
                                             child: InkWell(
                                               splashColor: Colors.cyan[50]
-                                                  .withOpacity(0.8),
+                                                  .withOpacity(0.5),
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               onTap: () {
@@ -1063,11 +1087,13 @@ class _CookiePageState extends State<CookiePage>
                                                             listen: false)
                                                         .isVerified
                                                     ? dataSelect(
-                                                        context,
-                                                        'Important!',
-                                                        "To get complete access of the app, you need to first verify yourself!",
-                                                        'Complete SignUp',
-                                                        () async {
+                                                        context: context,
+                                                        titleText: 'Important!',
+                                                        buttonText:
+                                                            'Complete SignUp',
+                                                        contentText:
+                                                            "To get complete access of the app, you need to first verify yourself!",
+                                                        onPressed: () async {
                                                           Navigator.of(context)
                                                               .pop();
                                                           String date =
@@ -1096,13 +1122,21 @@ class _CookiePageState extends State<CookiePage>
                                                               );
                                                             } else {
                                                               dataSelect(
-                                                                  context,
-                                                                  'Alert!',
-                                                                  'Request has already been noted!',
-                                                                  'ok', () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              });
+                                                                  context:
+                                                                      context,
+                                                                  titleText:
+                                                                      'Alert!',
+                                                                  buttonText:
+                                                                      'Okay',
+                                                                  contentText:
+                                                                      "Request has already been noted!",
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  gif:
+                                                                      "assets/images/alert.gif");
                                                             }
                                                           } else {
                                                             Navigator.push(
@@ -1115,7 +1149,9 @@ class _CookiePageState extends State<CookiePage>
                                                             );
                                                           }
                                                         },
-                                                      )
+                                                        gif:
+                                                            "assets/images/alert.gif")
+                                                    // )
                                                     : showDialog(
                                                         context: widget
                                                             .globalKey

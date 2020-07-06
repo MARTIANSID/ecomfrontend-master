@@ -480,7 +480,7 @@ class _AccountInfoState extends State<AccountInfo> {
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
                 child: InkWell(
-                  splashColor: Colors.cyan[50],
+                  splashColor: Colors.cyan[50].withOpacity(0.5),
                   borderRadius: BorderRadius.circular(20),
                   onTap: () async {
                     if (_key.currentState.validate()) {

@@ -29,9 +29,15 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
         await Provider.of<Orders>(context, listen: false)
             .getOrders(context: context);
       } catch (err) {
-        dataSelect(context, 'Alert!', '$err', 'Okay', () {
-          Navigator.pop(context);
-        });
+        dataSelect(
+            context: context,
+            titleText: 'Alert!',
+            buttonText: 'Okay',
+            contentText: err.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
       } finally {
         setState(() {
           isLoading = false;

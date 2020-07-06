@@ -34,7 +34,7 @@ class _SortPageState extends State<SortPage> {
     setState(() {
       isLoading = true;
     });
-    var value = index==null?null:sortChoicesServer[index].toString();
+    var value = index == null ? null : sortChoicesServer[index].toString();
     Provider.of<Pagination>(context, listen: false).setCount(value);
     if (checked) {
       Provider.of<Pagination>(context, listen: false).setSort(1);
@@ -49,35 +49,45 @@ class _SortPageState extends State<SortPage> {
           addition: false,
           select: 'all',
           context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count==null?'styleNumber': Provider.of<Pagination>(context, listen: false).count,
+          sortby: Provider.of<Pagination>(context, listen: false).count == null
+              ? 'styleNumber'
+              : Provider.of<Pagination>(context, listen: false).count,
           sort: checked ? 1 : -1),
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
           select: 'featured',
           context: context,
-          sortby:  Provider.of<Pagination>(context, listen: false).count==null?'styleNumber': Provider.of<Pagination>(context, listen: false).count,
+          sortby: Provider.of<Pagination>(context, listen: false).count == null
+              ? 'styleNumber'
+              : Provider.of<Pagination>(context, listen: false).count,
           sort: checked ? 1 : -1),
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
           select: 'new',
           context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count==null?'styleNumber': Provider.of<Pagination>(context, listen: false).count,
+          sortby: Provider.of<Pagination>(context, listen: false).count == null
+              ? 'styleNumber'
+              : Provider.of<Pagination>(context, listen: false).count,
           sort: checked ? 1 : -1),
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
           select: 'highestSelling',
           context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count==null?'styleNumber': Provider.of<Pagination>(context, listen: false).count,
+          sortby: Provider.of<Pagination>(context, listen: false).count == null
+              ? 'styleNumber'
+              : Provider.of<Pagination>(context, listen: false).count,
           sort: checked ? 1 : -1),
       Provider.of<Pagination>(context, listen: false).getProducts(
           addition: false,
           page: 1,
           context: context,
           select: 'fancyDiamond',
-          sortby: Provider.of<Pagination>(context, listen: false).count==null?'styleNumber': Provider.of<Pagination>(context, listen: false).count,
+          sortby: Provider.of<Pagination>(context, listen: false).count == null
+              ? 'styleNumber'
+              : Provider.of<Pagination>(context, listen: false).count,
           sort: checked ? 1 : -1),
       Provider.of<Pagination>(context, listen: false).getFav(context)
     ];
@@ -86,9 +96,15 @@ class _SortPageState extends State<SortPage> {
       widget.scrollController
           .animateTo(0, duration: new Duration(seconds: 1), curve: Curves.ease);
     } catch (err) {
-      dataSelect(context, '$err', '', 'OK', () {
-        Navigator.pop(context);
-      });
+      dataSelect(
+          context: context,
+          titleText: 'Alert!',
+          buttonText: 'Okay',
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       setState(() {
         isLoading = false;
@@ -329,40 +345,63 @@ class _SortPageState extends State<SortPage> {
                               SizedBox(
                                 height: ScreenUtil().setHeight(17),
                               ),
-                              GestureDetector(
-                                onTap: () async {
-                                  try {
-                                    await sortIt(_selectedTab, _check);
-                                  } catch (err) {
-                                    dataSelect(context, '$err', '', 'OK', () {
-                                      Navigator.pop(context);
-                                    });
-                                  } finally {
-                                    Navigator.of(context).pop();
-                                  }
-                                },
-                                child: Container(
-                                  width: ScreenUtil().setWidth(180),
-                                  height: ScreenUtil().setHeight(43),
-                                  // padding: EdgeInsets.all(20.0),
-                                  child: Center(
-                                    child: Text(
-                                      'DONE',
-                                      style: TextStyle(
-                                        fontFamily: 'Gilroy Bold',
-                                        color: Colors.white,
-                                        fontSize: ScreenUtil().setSp(18,
-                                            allowFontScalingSelf: true),
-                                        fontWeight: FontWeight.w500,
+                              Container(
+                                width: ScreenUtil().setWidth(180),
+                                height: ScreenUtil().setHeight(35),
+                                decoration: BoxDecoration(
+                                  // image: DecorationImage(
+                                  //   image: AssetImage('assets/images/vector17.png'),
+                                  //   fit: BoxFit.contain,
+                                  // ),
+                                  borderRadius: BorderRadius.circular(30),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF34B0E9),
+                                      Color(0xFF3685CB),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
+                                child: Material(
+                                  type: MaterialType.transparency,
+                                  elevation: 6.0,
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: InkWell(
+                                    splashColor:
+                                        Colors.cyan[100].withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(30),
+                                    onTap: () async {
+                                      try {
+                                        await sortIt(_selectedTab, _check);
+                                      } catch (err) {
+                                        dataSelect(
+                                            context: context,
+                                            titleText: 'Alert!',
+                                            buttonText: 'Okay',
+                                            contentText: err.toString(),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            gif: "assets/images/alert.gif");
+                                      } finally {
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        'DONE',
+                                        style: TextStyle(
+                                          fontFamily: 'Gilroy Bold',
+                                          color: Colors.white,
+                                          fontSize: ScreenUtil().setSp(18,
+                                              allowFontScalingSelf: true),
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/vector17.png'),
-                                    fit: BoxFit.contain,
-                                  )),
                                 ),
                               ),
                             ],

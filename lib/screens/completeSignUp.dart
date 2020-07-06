@@ -447,9 +447,15 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                       street: streetName,
                     );
                   } catch (err) {
-                    dataSelect(context, 'Alert!', '$err', 'OK', () {
-                      Navigator.pop(context);
-                    });
+                    dataSelect(
+                        context: context,
+                        titleText: 'Alert!',
+                        buttonText: 'Okay',
+                        contentText: err.toString(),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        gif: "assets/images/alert.gif");
                   } finally {
                     setState(() {
                       isButtonLoading = false;

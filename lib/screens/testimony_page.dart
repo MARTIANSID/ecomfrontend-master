@@ -36,9 +36,15 @@ class _TestimonyPageState extends State<TestimonyPage> {
           await Provider.of<Testimony>(context, listen: false)
               .getTestimony(context: context);
       } catch (err) {
-        dataSelect(context, 'Alert!', '$err', 'Okay', () {
-          Navigator.pop(context);
-        });
+        dataSelect(
+            context: context,
+            titleText: 'Alert!',
+            buttonText: 'Okay',
+            contentText: err.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
       } finally {
         setState(() {
           isLoading = false;
@@ -615,7 +621,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
             bottomRight: Radius.circular(15),
           ),
           child: InkWell(
-            splashColor: Colors.cyan[100],
+            splashColor: Colors.cyan[100].withOpacity(0.8),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(15),
               bottomRight: Radius.circular(15),
@@ -744,10 +750,14 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                               .getTestimony(context: context);
                                         } catch (err) {
                                           dataSelect(
-                                              context, 'Alert!', '$err', 'OK',
-                                              () {
-                                            Navigator.pop(context);
-                                          });
+                                              context: context,
+                                              titleText: 'Alert!',
+                                              buttonText: 'Okay',
+                                              contentText: err.toString(),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              gif: "assets/images/alert.gif");
                                         } finally {
                                           setState(() {
                                             isLoading = false;

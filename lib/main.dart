@@ -12,7 +12,9 @@ import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/profile_screeen.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
@@ -103,19 +105,14 @@ Future<void> main() async {
 //     return Scaffold(
 //       floatingActionButton: FloatingActionButton(
 //         child: Icon(Icons.navigate_next),
-//         onPressed: () async {
-//           AnimationController controller = AnimationController(
-//             duration: const Duration(milliseconds: 4000),
-//             vsync: this,
-//           );
-//           setState(() {
-//             _stringIndex = _stringIndex == null ? 0 : _stringIndex + 1;
-//             _characterCount = StepTween(begin: 0, end: _currentString.length)
-//                 .animate(
-//                     CurvedAnimation(parent: controller, curve: Curves.easeIn));
-//           });
-//           await controller.forward();
-//           controller.dispose();
+//         onPressed: () {
+//           // Timer
+//           // print(DateTime(1594048939 * 1000));
+//           Map<String, dynamic> decodedToken = JwtDecoder.decode(
+//               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZiOTFiNThhNmEzODAyNTYwZTI3M2EiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiZnVsbE5hbWUiOiJTYW5qYXkgSmFpbiIsInZlcmlmaWVkIjp0cnVlLCJwcmljZWQiOnRydWUsInJvbGUiOiJVU0VSIiwiaWF0IjoxNTk0MDQ2NjE0LCJleHAiOjE1OTQwNTAyMTR9.nU49FsTMDGEx_cLYzMKzmwWxT1Br-5NO70825jif9_c');
+//           print(decodedToken['iat']);
+//           print(
+//               DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000));
 //         },
 //       ),
 //       body: Container(

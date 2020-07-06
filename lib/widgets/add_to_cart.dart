@@ -966,91 +966,115 @@ class AddToCartTState extends State<AddToCart> {
                         height: ScreenUtil().setHeight(16),
                       ),
                       Center(
-                        child: GestureDetector(
-                          onTap: () async {
-                            // await dataSelectConfirmMessage(
-                            //   widget.globalKey.currentContext,
-                            //   'Alert!',
-                            //   "Are you sure, You want to add ${widget.product.styleNumber} to Cart?",
-                            //   'Request Prices',
-                            // ).then((value) async {
-                            //   if (value) {
-                            //     value2 = value;
-                            //   }
-                            // });
-                            // print(value2);
-                            // if (value2) {
-                            try {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await Provider.of<Cart>(context, listen: false)
-                                  .addCart(
-                                context: context,
-                                product: widget.product,
-                                color: colorKey,
-                                cert: Provider.of<Pagination>(context,
-                                        listen: false)
-                                    .cert[_defaultChoiceIndex2],
-                                diamond: priceKey,
-                                build: Provider.of<Pagination>(context,
-                                        listen: false)
-                                    .build[_defaultChoiceIndex],
-                                quantity: valueOfQuantity,
-                                colorValue: _defaultChoiceIndex1,
-                                buildValue: _defaultChoiceIndex,
-                                diamondValue: _defaultChoiceIndex3,
-                                certvalue: _defaultChoiceIndex2,
-                                update: widget.updateCart ? true : false,
-                              );
-                            } catch (err) {
-                              dataSelect(context, '$err', '', 'OK', () {
-                                Navigator.pop(context);
-                              });
-                            } finally {
-                              Navigator.of(context).pop();
-                              setState(() {
-                                isLoading = false;
-                              });
-                            }
-                            // }
-                            // Navigator.of(context).pop();
-                            widget.updateCart
-                                ? showFloatingFlushbar(
-                                    widget.globalKey.currentContext,
-                                    'Your Cart data has been successfully Updated',
-                                    widget.product.styleNumber,
-                                  )
-                                : showFloatingFlushbar(
-                                    widget.globalKey.currentContext,
-                                    'Product has been added to your Cart"🛒"',
-                                    widget.product.styleNumber,
+                        child: Container(
+                          width: ScreenUtil().setWidth(180),
+                          height: ScreenUtil().setHeight(35),
+                          decoration: BoxDecoration(
+                            // image: DecorationImage(
+                            //   image: AssetImage('assets/images/vector17.png'),
+                            //   fit: BoxFit.contain,
+                            // ),
+                            borderRadius: BorderRadius.circular(30),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFF34B0E9),
+                                Color(0xFF3685CB),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            elevation: 6.0,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(30),
+                            child: InkWell(
+                              splashColor: Colors.cyan[100].withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(30),
+                              onTap: () async {
+                                // await dataSelectConfirmMessage(
+                                //   widget.globalKey.currentContext,
+                                //   'Alert!',
+                                //   "Are you sure, You want to add ${widget.product.styleNumber} to Cart?",
+                                //   'Request Prices',
+                                // ).then((value) async {
+                                //   if (value) {
+                                //     value2 = value;
+                                //   }
+                                // });
+                                // print(value2);
+                                // if (value2) {
+                                try {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  await Provider.of<Cart>(context,
+                                          listen: false)
+                                      .addCart(
+                                    context: context,
+                                    product: widget.product,
+                                    color: colorKey,
+                                    cert: Provider.of<Pagination>(context,
+                                            listen: false)
+                                        .cert[_defaultChoiceIndex2],
+                                    diamond: priceKey,
+                                    build: Provider.of<Pagination>(context,
+                                            listen: false)
+                                        .build[_defaultChoiceIndex],
+                                    quantity: valueOfQuantity,
+                                    colorValue: _defaultChoiceIndex1,
+                                    buildValue: _defaultChoiceIndex,
+                                    diamondValue: _defaultChoiceIndex3,
+                                    certvalue: _defaultChoiceIndex2,
+                                    update: widget.updateCart ? true : false,
                                   );
-                            // print(val);
-                          },
-                          child: Container(
-                            width: ScreenUtil().setWidth(180),
-                            height: ScreenUtil().setHeight(43),
-                            // padding: EdgeInsets.all(20.0),
-                            child: Center(
-                              child: Text(
-                                !widget.updateCart
-                                    ? 'ADD TO CART'
-                                    : 'UPDATE CART',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy Bold',
-                                  color: Colors.white,
-                                  fontSize: ScreenUtil()
-                                      .setSp(14, allowFontScalingSelf: true),
-                                  fontWeight: FontWeight.w500,
+                                } catch (err) {
+                                  dataSelect(
+                                      context: context,
+                                      titleText: 'Alert!',
+                                      buttonText: 'Okay',
+                                      contentText: err.toString(),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      gif: "assets/images/alert.gif");
+                                } finally {
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                                // }
+                                // Navigator.of(context).pop();
+                                widget.updateCart
+                                    ? showFloatingFlushbar(
+                                        widget.globalKey.currentContext,
+                                        'Your Cart data has been successfully Updated',
+                                        widget.product.styleNumber,
+                                      )
+                                    : showFloatingFlushbar(
+                                        widget.globalKey.currentContext,
+                                        'Product has been added to your Cart"🛒"',
+                                        widget.product.styleNumber,
+                                      );
+                                // print(val);
+                              },
+                              child: Center(
+                                child: Text(
+                                  !widget.updateCart
+                                      ? 'ADD TO CART'
+                                      : 'UPDATE CART',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy Bold',
+                                    color: Colors.white,
+                                    fontSize: ScreenUtil()
+                                        .setSp(14, allowFontScalingSelf: true),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                              image: AssetImage('assets/images/vector17.png'),
-                              fit: BoxFit.contain,
-                            )),
                           ),
                         ),
                       ),

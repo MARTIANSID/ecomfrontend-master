@@ -880,9 +880,15 @@ class _LoginScreenState extends State<LoginScreen>
                                 _requirePassword = true;
                                 next();
                               } else {
-                                dataSelect(context, 'Wrong Otp', '', 'ok', () {
-                                  Navigator.pop(context);
-                                });
+                                dataSelect(
+                                    context: context,
+                                    titleText: 'Invalid Otp',
+                                    buttonText: "Okay",
+                                    contentText: "Please Enter Correct OTP",
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    gif: "assets/images/alert.gif");
                               }
                             } catch (error) {
                               _showDilog('Oops!', '$error');
