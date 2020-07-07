@@ -732,7 +732,7 @@ class _LoginScreenState extends State<LoginScreen>
               children: <Widget>[
                 //SizedBox(height: deviceSize.height / 10),
                 Text(
-                  'Hello,',
+                  'Hello!',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Gilroy Regular',
