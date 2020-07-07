@@ -12,6 +12,7 @@ import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/profile_screeen.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -168,9 +169,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-
-    // ));
+    // precacheImage(AssetImage("images/logo_rienpa.png"), context);
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     OneSignal.shared.init(
       "83761a89-31cd-43d2-8aa5-76d81afa7709",
     );
@@ -479,7 +479,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Positioned(
               top: ScreenUtil().setHeight(40),
-              right: ScreenUtil().setWidth(10),
+              left: ScreenUtil().setWidth(20),
               // alignment: Alignment.topRight,
               child: GestureDetector(
                 onTap: () {

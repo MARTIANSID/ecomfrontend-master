@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen>
                   });
                 },
                 icon: Icon(
-                  _showPassword ? Icons.visibility_off : Icons.visibility,
+                  _showPassword ? Icons.visibility : Icons.visibility_off,
                   color: Colors.white,
                 ),
               )
@@ -457,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen>
       // height: ScreenUtil().setHeight(75.0),
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: next,
+        onPressed: _isLoading ? () {} : next,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -710,20 +710,20 @@ class _LoginScreenState extends State<LoginScreen>
           ),
         ),
         height: double.infinity,
-        child: Center(
-          child: AnimatedContainer(
-            padding: EdgeInsets.symmetric(horizontal: 40.0),
-            constraints: BoxConstraints(
-              minHeight: _requirePassword
-                  ? ScreenUtil().setHeight(700)
-                  : ScreenUtil().setHeight(700),
-              maxHeight: _requirePassword
-                  ? _showSignup
-                      ? ScreenUtil().setHeight(775)
-                      : ScreenUtil().setHeight(775)
-                  : ScreenUtil().setHeight(700),
-            ),
-            duration: Duration(milliseconds: 300),
+        child: AnimatedContainer(
+          padding: EdgeInsets.symmetric(horizontal: 40.0),
+          constraints: BoxConstraints(
+            minHeight: _requirePassword
+                ? ScreenUtil().setHeight(700)
+                : ScreenUtil().setHeight(700),
+            maxHeight: _requirePassword
+                ? _showSignup
+                    ? ScreenUtil().setHeight(775)
+                    : ScreenUtil().setHeight(775)
+                : ScreenUtil().setHeight(700),
+          ),
+          duration: Duration(milliseconds: 300),
+          child: Center(
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,

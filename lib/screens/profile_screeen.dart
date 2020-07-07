@@ -837,13 +837,13 @@ class _UserPageState extends State<UserPage>
   @override
   void initState() {
     super.initState();
-    if (Provider.of<UserInfo>(context, listen: false).number == null)
+    if (Provider.of<UserInfo>(context, listen: false).check == false)
       setState(() {
         isLoading = true;
       });
     Future.delayed(Duration(seconds: 0), () async {
       try {
-        if (Provider.of<UserInfo>(context, listen: false).number == null) {
+        if (Provider.of<UserInfo>(context, listen: false).check == false) {
           await Provider.of<UserInfo>(context, listen: false).getuser(context);
           isSwitched = Provider.of<UserInfo>(context, listen: false).noti;
         }
@@ -1557,7 +1557,7 @@ class _UserPageState extends State<UserPage>
                                                       Navigator.pop(context);
                                                     },
                                                     gif:
-                                                        "assets/images/alert.gif");
+                                                        "assets/images/identi.gif");
                                               }
                                             } else {
                                               dataSelect(
@@ -1660,7 +1660,7 @@ class _UserPageState extends State<UserPage>
                                                     Navigator.pop(context);
                                                   },
                                                   gif:
-                                                      "assets/images/alert.gif");
+                                                      "assets/images/identi.gif");
                                             }
                                           } else {
                                             Navigator.push(
@@ -1708,7 +1708,7 @@ class _UserPageState extends State<UserPage>
                                                       Navigator.pop(context);
                                                     },
                                                     gif:
-                                                        "assets/images/alert.gif");
+                                                        "assets/images/identi.gif");
                                               }
                                             } else {
                                               dataSelect(
@@ -1823,7 +1823,7 @@ class _UserPageState extends State<UserPage>
                                                     Navigator.pop(context);
                                                   },
                                                   gif:
-                                                      "assets/images/alert.gif");
+                                                      "assets/images/identi.gif");
                                             }
                                           } else {
                                             Navigator.push(
@@ -1923,7 +1923,8 @@ class _UserPageState extends State<UserPage>
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              gif: "assets/images/alert.gif");
+                                              gif:
+                                                  "assets/images/alert.identi");
                                         }
                                       } else {
                                         Navigator.push(
@@ -2007,10 +2008,11 @@ class _UserPageState extends State<UserPage>
                                     onTap: () async {
                                       bool value2 = false;
                                       await dataSelectConfirmMessage(
-                                        globalKey.currentContext,
-                                        'Alert!',
-                                        "Are you sure, You want to open Whatsapp?",
-                                        'Open Whatsapp',
+                                        context: globalKey.currentContext,
+                                        titleText: 'Alert!',
+                                        contentText:
+                                            "Are you sure, You want to open Whatsapp?",
+                                        gif: 'assets/images/whatsappGIF.gif',
                                       ).then((value) async {
                                         if (value) {
                                           value2 = value;
@@ -2175,7 +2177,7 @@ class _UserPageState extends State<UserPage>
                                                     Navigator.pop(context);
                                                   },
                                                   gif:
-                                                      "assets/images/alert.gif");
+                                                      "assets/images/identi.gif");
                                             }
                                           } else {
                                             dataSelect(
@@ -2313,10 +2315,11 @@ class _UserPageState extends State<UserPage>
                                     onTap: () async {
                                       bool value2 = false;
                                       await dataSelectConfirmMessage(
-                                        globalKey.currentContext,
-                                        'Alert!',
-                                        "Are you sure, You want to open Whatsapp?",
-                                        'Open Whatsapp',
+                                        context: globalKey.currentContext,
+                                        titleText: 'Alert!',
+                                        contentText:
+                                            "Are you sure, You want to open Whatsapp?",
+                                        gif: 'assets/images/whatsappGIF.gif',
                                       ).then((value) async {
                                         if (value) {
                                           value2 = value;
@@ -2575,11 +2578,14 @@ class _UserPageState extends State<UserPage>
                                                     print(isSwitched);
                                                   });
                                                   await dataSelectConfirmMessage(
-                                                          context,
-                                                          "Important!",
-                                                          "Are you sure, you want to turn ${value ? "On" : "Off"} the Notification?",
-                                                          " buttonText")
-                                                      .then((value) async {
+                                                    context: globalKey
+                                                        .currentContext,
+                                                    titleText: 'Alert!',
+                                                    contentText:
+                                                        "Are you sure, you want to turn ${value ? "On" : "Off"} the Notification?",
+                                                    gif:
+                                                        'assets/images/notification1.gif',
+                                                  ).then((value) async {
                                                     try {
                                                       await Provider.of<
                                                                   UserInfo>(
@@ -2693,10 +2699,12 @@ class _UserPageState extends State<UserPage>
                                         borderRadius: BorderRadius.circular(20),
                                         onTap: () async {
                                           await dataSelectConfirmMessage(
-                                            context,
-                                            'Alert!',
-                                            "Are you sure, You want to logout",
-                                            'Request Prices',
+                                            context: globalKey.currentContext,
+                                            titleText: 'Alert!',
+                                            contentText:
+                                                "Are you sure you want to logout?",
+                                            gif:
+                                                'assets/images/notification1.gif',
                                           ).then((value) async {
                                             if (value) {
                                               value2 = value;

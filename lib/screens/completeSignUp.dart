@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'accountinfo.dart';
 
 class CompleteSignUp extends StatefulWidget {
   @override
@@ -100,7 +101,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: FadeInDown(
+                      child: FadeInUI(
+                        delay: 0.0,
                         child: Text(
                           "Complete Sign-Up",
                           style: TextStyle(
@@ -108,7 +110,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             fontFamily: 'Gilroy Bold',
                             letterSpacing: 1.0,
                             fontSize: ScreenUtil()
-                                .setSp(34, allowFontScalingSelf: true),
+                                .setSp(28, allowFontScalingSelf: true),
                           ),
                         ),
                       ),
@@ -125,7 +127,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 0.33,
                               child: Text(
                                 "Personal Details",
                                 style: TextStyle(
@@ -142,7 +145,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             SizedBox(
                               height: ScreenUtil().setHeight(7.75),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 0.66,
                               child: RoundedInputField(
                                 hintText: "Full Name",
                                 controller: fullNameController,
@@ -167,7 +171,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 1.0,
                               child: RoundedInputField(
                                 hintText: "Enter Phone Number",
                                 controller: phoneNumberController,
@@ -180,7 +185,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 },
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 1.33,
                               child: RoundedInputField(
                                 hintText: "Email-id",
                                 validator: (value) {
@@ -204,7 +210,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 1.66,
                               child: RoundedInputField(
                                 hintText: "Reference",
                                 controller: referenceController,
@@ -227,7 +234,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             SizedBox(
                               height: ScreenUtil().setHeight(20),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 2.0,
                               child: Text(
                                 "Firm Details",
                                 style: TextStyle(
@@ -242,7 +250,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                               ),
                             ),
                             SizedBox(height: ScreenUtil().setHeight(7.75)),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 2.33,
                               child: RoundedInputField(
                                 hintText: "Firm Name",
                                 controller: firmDetailController,
@@ -263,7 +272,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 2.66,
                               child: RoundedInputField(
                                 hintText: "GST (OPTIONAL)",
                                 validator: (value) {
@@ -288,7 +298,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 3.0,
                               child: RoundedInputField(
                                 hintText: "Street",
                                 controller: streetNameController,
@@ -309,7 +320,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 3.33,
                               child: RoundedInputField(
                                 hintText: "City",
                                 controller: cityNameController,
@@ -329,7 +341,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 3.66,
                               child: RoundedInputField(
                                 hintText: "State",
                                 validator: (value) {
@@ -350,7 +363,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 proceed: false,
                               ),
                             ),
-                            FadeInDown(
+                            FadeInUI(
+                              delay: 4.0,
                               child: RoundedInputField(
                                 hintText: "Pincode",
                                 validator: (value) {

@@ -413,7 +413,6 @@ class Cart with ChangeNotifier {
                   prices: Map<dynamic, dynamic>.from(i['prices']),
                   styleNumber: i["styleNumber"])))
           .toList();
-
       notifyListeners();
     } on PlatformException {
       throw "Oops Something Went Wrong!";

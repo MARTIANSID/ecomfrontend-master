@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
-import 'package:Flutter/widgets/filterChipWidget.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -674,12 +672,14 @@ class _MyPriceState extends State<MyPrice> {
                                                   // });
                                                   bool value2 = false;
                                                   await dataSelectConfirmMessage(
-                                                          context,
-                                                          "Alert!",
-                                                          "Are you sure you want to change the Commission?",
-                                                          "")
-                                                      .then((value) =>
-                                                          value2 = value);
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    contentText:
+                                                        "Are you sure you want to change the Commission?",
+                                                    gif:
+                                                        'assets/images/commission.gif',
+                                                  ).then((value) =>
+                                                      value2 = value);
                                                   if (value2) {
                                                     try {
                                                       setState(() {

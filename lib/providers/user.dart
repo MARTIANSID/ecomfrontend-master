@@ -49,6 +49,7 @@ class UserInfo with ChangeNotifier {
   var email;
   bool noti;
   String profileImage;
+  bool check = false;
 
   final uurl = "https://alexa.gemstory.in/";
 
@@ -68,9 +69,6 @@ class UserInfo with ChangeNotifier {
           .authenticate(number, password, 'user/login');
     }
     try {
-      if (Provider.of<Auth>(context, listen: false).isAuth == false) {
-        Navigator.popAndPushNamed(context, '/');
-      }
       final response = await http.get(uurl + '/user/details', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token
@@ -79,6 +77,7 @@ class UserInfo with ChangeNotifier {
       if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
+      check = true;
       print(responseData);
       if (Provider.of<Pagination>(context, listen: false).isVerified) {
         street = responseData['user']['additionalDetails']['address']['street'];

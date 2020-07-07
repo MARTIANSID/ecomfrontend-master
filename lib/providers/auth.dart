@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -155,9 +156,13 @@ class Auth with ChangeNotifier {
           ? responseData['details']['token']
           : responseData['token'];
       _number = number;
-      _expiryDate = DateTime.now().add(
-        Duration(seconds: 20),
-      );
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token);
+      _expiryDate =
+          DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
+      // _expiryDate = DateTime.now().add(
+      //   Duration(seconds: 20),
+      // );
+
       autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();

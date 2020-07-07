@@ -71,7 +71,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             onPressed: () {
               Navigator.pop(context);
             },
-            gif: "assets/images/alert.gif");
+            gif: "assets/images/identi.gif");
       }
     } else {
       Navigator.push(
@@ -210,17 +210,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     // );
     return WillPopScope(
       onWillPop: () {
-        bool value2 = false;
-        dataSelectConfirmMessage(context, "Alert!",
-                "Are your sure you want to exit the App?", "buttonText")
-            .then((value) {
-          setState(() {
-            value2 = value;
-          });
-        });
-        if (value2) {
-          SystemNavigator.pop();
-        }
+        // bool value2 = false;
+        // dataSelectConfirmMessage(context, "Alert!",
+        //         "Are your sure you want to exit the App?", "buttonText")
+        //     .then((value) {
+        //   setState(() {
+        //     value2 = value;
+        //   });
+        // });
+        // if (value2) {
+        //   SystemNavigator.pop();
+        // }
       },
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -243,7 +243,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   cont: context,
                 ),
                 FavouriteScreen(
-                  scrollController: _hideButtonController,
+                  // scrollController: _hideButtonController,
                   onButtonTapped: _onTap,
                   val: _isVisible,
                   pageController: pageChanged,
@@ -577,10 +577,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               ? () async {
                                   bool value2 = false;
                                   await dataSelectConfirmMessage(
-                                    globalKey.currentContext,
-                                    'Alert!',
-                                    "Are you sure, You want to open Whatsapp?",
-                                    'Open Whatsapp',
+                                    context: globalKey.currentContext,
+                                    titleText: 'Alert!',
+                                    contentText:
+                                        "Are you sure, You want to open Whatsapp?",
+                                    gif: 'assets/images/whatsappGIF.gif',
                                   ).then((value) async {
                                     if (value) {
                                       value2 = value;

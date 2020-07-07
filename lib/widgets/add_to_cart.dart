@@ -994,10 +994,11 @@ class AddToCartTState extends State<AddToCart> {
                               borderRadius: BorderRadius.circular(30),
                               onTap: () async {
                                 // await dataSelectConfirmMessage(
-                                //   widget.globalKey.currentContext,
-                                //   'Alert!',
-                                //   "Are you sure, You want to add ${widget.product.styleNumber} to Cart?",
-                                //   'Request Prices',
+                                //   context: widget.globalKey.currentContext,
+                                //   titleText: 'Alert!',
+                                //   contentText:
+                                //       "Are you sure, You want to add ${widget.product.styleNumber} to Cart?",
+                                //   gif: 'assets/images/cartGIF1.gif',
                                 // ).then((value) async {
                                 //   if (value) {
                                 //     value2 = value;
@@ -1044,20 +1045,20 @@ class AddToCartTState extends State<AddToCart> {
                                   setState(() {
                                     isLoading = false;
                                   });
+                                  widget.updateCart
+                                      ? showFloatingFlushbar(
+                                          widget.globalKey.currentContext,
+                                          'Your Cart data has been successfully Updated',
+                                          widget.product.styleNumber,
+                                        )
+                                      : showFloatingFlushbar(
+                                          widget.globalKey.currentContext,
+                                          'Product has been added to your Cart"🛒"',
+                                          widget.product.styleNumber,
+                                        );
                                 }
                                 // }
                                 // Navigator.of(context).pop();
-                                widget.updateCart
-                                    ? showFloatingFlushbar(
-                                        widget.globalKey.currentContext,
-                                        'Your Cart data has been successfully Updated',
-                                        widget.product.styleNumber,
-                                      )
-                                    : showFloatingFlushbar(
-                                        widget.globalKey.currentContext,
-                                        'Product has been added to your Cart"🛒"',
-                                        widget.product.styleNumber,
-                                      );
                                 // print(val);
                               },
                               child: Center(

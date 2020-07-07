@@ -88,11 +88,6 @@ class _ProductDetailState extends State<ProductDetail> {
 
   int page = 0;
 
-  int _defaultChoiceIndex1;
-  int _defaultChoiceIndex2;
-  int _defaultChoiceIndex3;
-  int _defaultChoiceIndex4;
-
   Future<void> getSearch(query) async {
     try {
       setState(() {
@@ -1042,11 +1037,14 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                 bool value2 =
                                                                     false;
                                                                 await dataSelectConfirmMessage(
-                                                                  globalKey
+                                                                  context: globalKey
                                                                       .currentContext,
-                                                                  'Alert!',
-                                                                  "Are you sure, You want to open Whatsapp?",
-                                                                  'Open Whatsapp',
+                                                                  titleText:
+                                                                      'Alert!',
+                                                                  contentText:
+                                                                      "Are you sure, You want to open Whatsapp?",
+                                                                  gif:
+                                                                      'assets/images/whatsappGIF.gif',
                                                                 ).then(
                                                                     (value) async {
                                                                   if (value) {

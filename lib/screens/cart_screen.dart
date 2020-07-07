@@ -40,7 +40,7 @@ class _CartScreenState extends State<CartScreen> {
   bool searchSelected = false;
 
   String searchValue = "";
-
+  bool isCheckoutLoading = false;
   TextEditingController textEditingController = TextEditingController();
 
   bool searchSelectedDoneButton = false;
@@ -64,14 +64,14 @@ class _CartScreenState extends State<CartScreen> {
               .getCart(context: context);
       } catch (err) {
         dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
+            context: context,
+            titleText: 'Alert!',
+            buttonText: 'Okay',
+            contentText: err.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            gif: "assets/images/alert.gif");
       } finally {
         isCartLoading = false;
       }
@@ -136,14 +136,14 @@ class _CartScreenState extends State<CartScreen> {
       });
     } catch (err) {
       dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
+          context: context,
+          titleText: 'Alert!',
+          buttonText: 'Okay',
+          contentText: err.toString(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          gif: "assets/images/alert.gif");
     } finally {
       setState(() {
         isLoadingSearch = false;
@@ -242,478 +242,283 @@ class _CartScreenState extends State<CartScreen> {
                           height: ScreenUtil().setHeight(20),
                         ),
                         Expanded(
-                          child: Provider.of<Cart>(context, listen: true)
-                                      .cart
-                                      .length >
-                                  0
-                              ? isListLoading
-                                  ? Center(child: CircularProgressIndicator())
-                                  : ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      physics: BouncingScrollPhysics(),
-                                      itemCount: Provider.of<Cart>(context,
-                                              listen: true)
+                          child:
+                              Provider.of<Cart>(context, listen: true)
                                           .cart
-                                          .length,
-                                      itemBuilder: (context, index) {
-                                        final product = Provider.of<Cart>(
-                                                context,
-                                                listen: true)
-                                            .cart[index]
-                                            .product;
+                                          .length >
+                                      0
+                                  ? isListLoading
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          physics: BouncingScrollPhysics(),
+                                          itemCount: Provider.of<Cart>(context,
+                                                  listen: true)
+                                              .cart
+                                              .length,
+                                          itemBuilder: (context, index) {
+                                            final product = Provider.of<Cart>(
+                                                    context,
+                                                    listen: true)
+                                                .cart[index]
+                                                .product;
 
-                                        // _defaultChoiceIndex1 =
-                                        //     Provider.of<Cart>(context, listen: true)
-                                        //         .cart[index]
-                                        //         .buildValue;
-                                        // _defaultChoiceIndex2 =
-                                        //     Provider.of<Cart>(context, listen: true)
-                                        //         .cart[index]
-                                        //         .colorValue;
-                                        // _defaultChoiceIndex3 =
-                                        //     Provider.of<Cart>(context, listen: true)
-                                        //         .cart[index]
-                                        //         .certValue;
-                                        // _defaultChoiceIndex4 =
-                                        //     Provider.of<Cart>(context, listen: true)
-                                        //         .cart[index]
-                                        //         .diamondValue;
+                                            // _defaultChoiceIndex1 =
+                                            //     Provider.of<Cart>(context, listen: true)
+                                            //         .cart[index]
+                                            //         .buildValue;
+                                            // _defaultChoiceIndex2 =
+                                            //     Provider.of<Cart>(context, listen: true)
+                                            //         .cart[index]
+                                            //         .colorValue;
+                                            // _defaultChoiceIndex3 =
+                                            //     Provider.of<Cart>(context, listen: true)
+                                            //         .cart[index]
+                                            //         .certValue;
+                                            // _defaultChoiceIndex4 =
+                                            //     Provider.of<Cart>(context, listen: true)
+                                            //         .cart[index]
+                                            //         .diamondValue;
 
-                                        return Column(
-                                          children: <Widget>[
-                                            Dismissible(
-                                              direction:
-                                                  DismissDirection.startToEnd,
-                                              confirmDismiss: (DismissDirection
-                                                  direction) async {
-                                                return await dataSelectConfirmMessage(
-                                                  context,
-                                                  'Alert!',
-                                                  "Are you sure, You want to remove the item form the cart?",
-                                                  'Request Prices',
-                                                ).then((value) async {
-                                                  return value2 = value;
-                                                });
-                                              },
-                                              onDismissed: (DismissDirection
-                                                  direction) async {
-                                                // setState(() {
-                                                //   isListLoading=true;
-                                                // });
-                                                try {
-                                                  await Provider.of<Cart>(
-                                                          context,
-                                                          listen: false)
-                                                      .deleteCart(
-                                                          id: Provider.of<Cart>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cart[index]
-                                                              .id,
-                                                          context: context);
-                                                  if (mounted) setState(() {});
-                                                } catch (err) {
-                                                  dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
-                                                }
-                                              },
-                                              background: Container(
-                                                color: Colors.red,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(15),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Icon(Icons.delete,
-                                                          color: Colors.white),
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(5),
-                                                      ),
-                                                      Text(
-                                                        'Remove from Cart',
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              'Gilroy Regular',
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              key: UniqueKey(),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    child: AddToCart(
-                                                      product: product,
-                                                      productIndexInCart: index,
-                                                      updateCart: true,
-                                                      choicesBuild: Provider.of<
-                                                                  Pagination>(
+                                            return Column(
+                                              children: <Widget>[
+                                                Dismissible(
+                                                  direction: DismissDirection
+                                                      .startToEnd,
+                                                  confirmDismiss:
+                                                      (DismissDirection
+                                                          direction) async {
+                                                    return await dataSelectConfirmMessage(
+                                                      context: context,
+                                                      titleText: 'Alert!',
+                                                      contentText:
+                                                          "Are you sure, You want to remove ${product.styleNumber} from Cart?",
+                                                      gif:
+                                                          'assets/images/reversecartGIF.gif',
+                                                    ).then((value) async {
+                                                      return value2 = value;
+                                                    });
+                                                  },
+                                                  onDismissed: (DismissDirection
+                                                      direction) async {
+                                                    // setState(() {
+                                                    //   isListLoading=true;
+                                                    // });
+                                                    try {
+                                                      await Provider.of<Cart>(
                                                               context,
                                                               listen: false)
-                                                          .build,
-                                                      choiceColor: Provider.of<
-                                                                  Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .color,
-                                                      choiceCertification:
-                                                          Provider.of<Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cert,
-                                                      choiceDiamondQuality:
-                                                          Provider.of<Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .diamondQuality,
-                                                      defValue:
-                                                          Provider.of<Cart>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cart[index]
-                                                              .buildValue,
-                                                      defValue1:
-                                                          Provider.of<Cart>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cart[index]
-                                                              .colorValue,
-                                                      defValue2:
-                                                          Provider.of<Cart>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cart[index]
-                                                              .certValue,
-                                                      defValue3:
-                                                          Provider.of<Cart>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .cart[index]
-                                                              .diamondValue,
-                                                      valueChangeBuild:
-                                                          _onValueChange,
-                                                      valueChangeColor:
-                                                          _onValueChangeColor,
-                                                      valueChangeCerti:
-                                                          _onValueChangeCerti,
-                                                      valueChangeDQ:
-                                                          _onValueChangeDQ,
-                                                      globalKey: scaffoldKey,
+                                                          .deleteCart(
+                                                              id: Provider.of<
+                                                                          Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cart[index]
+                                                                  .id,
+                                                              context: context);
+                                                      if (mounted)
+                                                        setState(() {});
+                                                    } catch (err) {
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              err.toString(),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif");
+                                                    }
+                                                  },
+                                                  background: Container(
+                                                    color: Colors.red,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              15),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Icon(Icons.delete,
+                                                              color:
+                                                                  Colors.white),
+                                                          SizedBox(
+                                                            width: ScreenUtil()
+                                                                .setWidth(5),
+                                                          ),
+                                                          Text(
+                                                            'Remove from Cart',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Gilroy Regular',
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  height: ScreenUtil()
-                                                      .setHeight(94),
-                                                  width: ScreenUtil()
-                                                      .setWidth(390),
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      11.0, 0.0, 10.0, 5.0),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: Colors.white,
                                                   ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(4),
-                                                      ),
-                                                      Image(
-                                                        height: ScreenUtil()
-                                                            .setHeight(79),
-                                                        width: ScreenUtil()
-                                                            .setWidth(76),
-                                                        image:
-                                                            AdvancedNetworkImage(
-                                                          product.imageUrl[
-                                                              'yellow'],
-                                                          useDiskCache: true,
-                                                          cacheRule: CacheRule(
-                                                              maxAge:
-                                                                  const Duration(
-                                                                      days: 3)),
+                                                  key: UniqueKey(),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        child: AddToCart(
+                                                          product: product,
+                                                          productIndexInCart:
+                                                              index,
+                                                          updateCart: true,
+                                                          choicesBuild:
+                                                              Provider.of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .build,
+                                                          choiceColor: Provider
+                                                                  .of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                              .color,
+                                                          choiceCertification:
+                                                              Provider.of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cert,
+                                                          choiceDiamondQuality:
+                                                              Provider.of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .diamondQuality,
+                                                          defValue:
+                                                              Provider.of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cart[index]
+                                                                  .buildValue,
+                                                          defValue1:
+                                                              Provider.of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cart[index]
+                                                                  .colorValue,
+                                                          defValue2:
+                                                              Provider.of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cart[index]
+                                                                  .certValue,
+                                                          defValue3:
+                                                              Provider.of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cart[index]
+                                                                  .diamondValue,
+                                                          valueChangeBuild:
+                                                              _onValueChange,
+                                                          valueChangeColor:
+                                                              _onValueChangeColor,
+                                                          valueChangeCerti:
+                                                              _onValueChangeCerti,
+                                                          valueChangeDQ:
+                                                              _onValueChangeDQ,
+                                                          globalKey:
+                                                              scaffoldKey,
                                                         ),
-                                                        fit: BoxFit.fill,
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      height: ScreenUtil()
+                                                          .setHeight(94),
+                                                      width: ScreenUtil()
+                                                          .setWidth(390),
+                                                      margin:
+                                                          EdgeInsets.fromLTRB(
+                                                              11.0,
+                                                              0.0,
+                                                              10.0,
+                                                              5.0),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: Colors.white,
                                                       ),
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(2),
-                                                      ),
-                                                      Container(
-                                                        width: ScreenUtil()
-                                                            .setWidth(192),
-                                                        height: ScreenUtil()
-                                                            .setHeight(79),
-                                                        // color: Colors.amber,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: <Widget>[
-                                                            Text(
-                                                              '${product.styleNumber}',
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontFamily:
-                                                                    'Gilroy Bold',
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(18,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          SizedBox(
+                                                            width: ScreenUtil()
+                                                                .setWidth(4),
+                                                          ),
+                                                          Image(
+                                                            height: ScreenUtil()
+                                                                .setHeight(79),
+                                                            width: ScreenUtil()
+                                                                .setWidth(76),
+                                                            image:
+                                                                AdvancedNetworkImage(
+                                                              product.imageUrl[
+                                                                  'yellow'],
+                                                              useDiskCache:
+                                                                  true,
+                                                              cacheRule: CacheRule(
+                                                                  maxAge:
+                                                                      const Duration(
+                                                                          days:
+                                                                              3)),
                                                             ),
-                                                            SizedBox(
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setHeight(
-                                                                          6),
-                                                            ),
-                                                            Text(
-                                                              '${(Provider.of<Cart>(context, listen: true).cart[index].color).toUpperCase()} ${Provider.of<Cart>(context, listen: true).cart[index].diamond} ${Provider.of<Cart>(context, listen: true).cart[index].cert} ${Provider.of<Cart>(context, listen: true).cart[index].build}',
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontFamily:
-                                                                    'Gilroy Light',
-                                                                fontSize: ScreenUtil()
-                                                                    .setSp(12,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height:
-                                                                  ScreenUtil()
-                                                                      .setHeight(
-                                                                          4),
-                                                            ),
-                                                            ShaderMask(
-                                                              shaderCallback:
-                                                                  (bounds) =>
-                                                                      LinearGradient(
-                                                                colors: [
-                                                                  Color(
-                                                                      0xFF34B0D9),
-                                                                  Color(
-                                                                      0xFF3685CB),
-                                                                ],
-                                                                begin: Alignment
-                                                                    .topLeft,
-                                                                end: Alignment
-                                                                    .bottomRight,
-                                                              ).createShader(
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0,
-                                                                    bounds
-                                                                        .width,
-                                                                    bounds
-                                                                        .height),
-                                                              ),
-                                                              // child: Text(
-                                                              //   '5000 ₹',
-                                                              //   style: TextStyle(
-                                                              //     fontFamily: 'Gilroy Bold',
-                                                              //     color: Colors.white,
-                                                              //     fontSize: ScreenUtil().setSp(18,
-                                                              //         allowFontScalingSelf: true),
-                                                              //     fontWeight: FontWeight.w500,
-                                                              //   ),
-                                                              // ),
-                                                              child: product.prices.containsKey(Provider.of<Cart>(
-                                                                              context,
-                                                                              listen:
-                                                                                  true)
-                                                                          .cart[
-                                                                              index]
-                                                                          .diamond) &&
-                                                                      Provider.of<Pagination>(
-                                                                              context,
-                                                                              listen: false)
-                                                                          .isPriced
-                                                                  ? RichText(
-                                                                      text:
-                                                                          TextSpan(
-                                                                        children: [
-                                                                          TextSpan(
-                                                                            text:
-                                                                                '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert] + Provider.of<Pagination>(context, listen: true).buildPrices[Provider.of<Cart>(context, listen: true).cart[index].build]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
-                                                                            // '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
-                                                                              fontFamily: 'Gilroy Bold',
-                                                                            ),
-                                                                          ),
-                                                                          TextSpan(
-                                                                            text:
-                                                                                ' ₹',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
-                                                                              fontFamily: 'Roboto Medium',
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      // '${int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]}',
-                                                                      // style: TextStyle(
-                                                                      //   color: Colors.white,
-                                                                      //   fontSize: ScreenUtil()
-                                                                      //       .setSp(18,
-                                                                      //           allowFontScalingSelf:
-                                                                      //               true),
-                                                                      //   fontFamily:
-                                                                      //       'Gilroy Bold',
-                                                                      // ),
-                                                                    )
-                                                                  : Text(
-                                                                      'Prices not set',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize: ScreenUtil().setSp(
-                                                                            18,
-                                                                            allowFontScalingSelf:
-                                                                                true),
-                                                                        fontFamily:
-                                                                            'Gilroy Bold',
-                                                                      ),
-                                                                    ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(7),
-                                                      ),
-                                                      Container(
-                                                        width: ScreenUtil()
-                                                            .setWidth(93),
-                                                        height: ScreenUtil()
-                                                            .setHeight(80),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: <Widget>[
-                                                            GestureDetector(
-                                                              onTap: () async {
-                                                                if (Provider.of<Cart>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .cart[
-                                                                            index]
-                                                                        .quantity >
-                                                                    1) {
-                                                                  try {
-                                                                    await Provider.of<Cart>(context, listen: false).decQuantity(
-                                                                        context:
-                                                                            context,
-                                                                        product:
-                                                                            product,
-                                                                        update:
-                                                                            true,
-                                                                        build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
-                                                                            .cart[
-                                                                                index]
-                                                                            .buildValue],
-                                                                        color: Provider.of<Pagination>(context, listen: false)
-                                                                            .color[Provider.of<Cart>(context,
-                                                                                listen: false)
-                                                                            .cart[index]
-                                                                            .colorValue],
-                                                                        cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
-                                                                        diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
-                                                                        buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
-                                                                        colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
-                                                                        certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
-                                                                        diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                        index: index);
-                                                                  } catch (err) {
-                                                                    dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
-                                                                  }
-                                                                }
-                                                              },
-                                                              child: ShaderMask(
-                                                                shaderCallback:
-                                                                    (bounds) =>
-                                                                        LinearGradient(
-                                                                  colors: [
-                                                                    Colors
-                                                                        .black,
-                                                                    Colors
-                                                                        .black,
-                                                                  ],
-                                                                  begin: Alignment
-                                                                      .topLeft,
-                                                                  end: Alignment
-                                                                      .bottomRight,
-                                                                ).createShader(
-                                                                  Rect.fromLTWH(
-                                                                      0,
-                                                                      0,
-                                                                      bounds
-                                                                          .width,
-                                                                      bounds
-                                                                          .height),
-                                                                ),
-                                                                child: Text(
-                                                                  '-',
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                          SizedBox(
+                                                            width: ScreenUtil()
+                                                                .setWidth(2),
+                                                          ),
+                                                          Container(
+                                                            width: ScreenUtil()
+                                                                .setWidth(192),
+                                                            height: ScreenUtil()
+                                                                .setHeight(79),
+                                                            // color: Colors.amber,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: <
+                                                                  Widget>[
+                                                                Text(
+                                                                  '${product.styleNumber}',
                                                                   style:
                                                                       TextStyle(
-                                                                    fontFamily:
-                                                                        'Gilroy Bold',
                                                                     color: Colors
                                                                         .black,
+                                                                    fontFamily:
+                                                                        'Gilroy Bold',
                                                                     fontSize: ScreenUtil().setSp(
-                                                                        25,
+                                                                        18,
                                                                         allowFontScalingSelf:
                                                                             true),
                                                                     fontWeight:
@@ -721,30 +526,39 @@ class _CartScreenState extends State<CartScreen> {
                                                                             .w500,
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          5),
-                                                            ),
-                                                            Container(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          35),
-                                                              child: Center(
-                                                                child:
-                                                                    ShaderMask(
+                                                                SizedBox(
+                                                                  height: ScreenUtil()
+                                                                      .setHeight(
+                                                                          6),
+                                                                ),
+                                                                Text(
+                                                                  '${(Provider.of<Cart>(context, listen: true).cart[index].color).toUpperCase()} ${Provider.of<Cart>(context, listen: true).cart[index].diamond} ${Provider.of<Cart>(context, listen: true).cart[index].cert} ${Provider.of<Cart>(context, listen: true).cart[index].build}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontFamily:
+                                                                        'Gilroy Light',
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        12,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: ScreenUtil()
+                                                                      .setHeight(
+                                                                          4),
+                                                                ),
+                                                                ShaderMask(
                                                                   shaderCallback:
                                                                       (bounds) =>
                                                                           LinearGradient(
                                                                     colors: [
-                                                                      Colors
-                                                                          .black,
-                                                                      Colors
-                                                                          .black,
+                                                                      Color(
+                                                                          0xFF34B0D9),
+                                                                      Color(
+                                                                          0xFF3685CB),
                                                                     ],
                                                                     begin: Alignment
                                                                         .topLeft,
@@ -759,321 +573,622 @@ class _CartScreenState extends State<CartScreen> {
                                                                         bounds
                                                                             .height),
                                                                   ),
-                                                                  child: Text(
-                                                                    // '888',
-                                                                    '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontFamily:
-                                                                          'Gilroy Black',
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize: ScreenUtil().setSp(
-                                                                          20,
-                                                                          allowFontScalingSelf:
-                                                                              true),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
+                                                                  // child: Text(
+                                                                  //   '5000 ₹',
+                                                                  //   style: TextStyle(
+                                                                  //     fontFamily: 'Gilroy Bold',
+                                                                  //     color: Colors.white,
+                                                                  //     fontSize: ScreenUtil().setSp(18,
+                                                                  //         allowFontScalingSelf: true),
+                                                                  //     fontWeight: FontWeight.w500,
+                                                                  //   ),
+                                                                  // ),
+                                                                  child: product
+                                                                              .prices
+                                                                              .containsKey(Provider.of<Cart>(context, listen: true).cart[index].diamond) &&
+                                                                          Provider.of<Pagination>(context, listen: false).isPriced
+                                                                      ? RichText(
+                                                                          text:
+                                                                              TextSpan(
+                                                                            children: [
+                                                                              TextSpan(
+                                                                                text: '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert] + Provider.of<Pagination>(context, listen: true).buildPrices[Provider.of<Cart>(context, listen: true).cart[index].build]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                                // '${(int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]) * Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
+                                                                                  fontFamily: 'Gilroy Bold',
+                                                                                ),
+                                                                              ),
+                                                                              TextSpan(
+                                                                                text: ' ₹',
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
+                                                                                  fontFamily: 'Roboto Medium',
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          // '${int.parse(product.prices[Provider.of<Cart>(context, listen: true).cart[index].diamond]) + Provider.of<Pagination>(context, listen: true).certPrices[Provider.of<Cart>(context, listen: true).cart[index].cert]}',
+                                                                          // style: TextStyle(
+                                                                          //   color: Colors.white,
+                                                                          //   fontSize: ScreenUtil()
+                                                                          //       .setSp(18,
+                                                                          //           allowFontScalingSelf:
+                                                                          //               true),
+                                                                          //   fontFamily:
+                                                                          //       'Gilroy Bold',
+                                                                          // ),
+                                                                        )
+                                                                      : Text(
+                                                                          'Prices not set',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(18, allowFontScalingSelf: true),
+                                                                            fontFamily:
+                                                                                'Gilroy Bold',
+                                                                          ),
+                                                                        ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: ScreenUtil()
+                                                                .setWidth(7),
+                                                          ),
+                                                          Container(
+                                                            width: ScreenUtil()
+                                                                .setWidth(93),
+                                                            height: ScreenUtil()
+                                                                .setHeight(80),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: <
+                                                                  Widget>[
+                                                                Container(
+                                                                  width: ScreenUtil()
+                                                                      .setWidth(
+                                                                          15),
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap:
+                                                                        () async {
+                                                                      setState(
+                                                                          () {
+                                                                        isCheckoutLoading =
+                                                                            true;
+                                                                      });
+                                                                      if (Provider.of<Cart>(context, listen: false)
+                                                                              .cart[index]
+                                                                              .quantity >=
+                                                                          1) {
+                                                                        try {
+                                                                          if (Provider.of<Cart>(context, listen: false).cart[index].quantity ==
+                                                                              1) {
+                                                                            try {
+                                                                              await Provider.of<Cart>(context, listen: false).deleteCart(id: Provider.of<Cart>(context, listen: false).cart[index].id, context: context);
+                                                                              if (mounted) {
+                                                                                setState(() {});
+                                                                              }
+                                                                            } catch (err) {
+                                                                              dataSelect(
+                                                                                  context: context,
+                                                                                  titleText: 'Alert!',
+                                                                                  buttonText: 'Okay',
+                                                                                  contentText: err.toString(),
+                                                                                  onPressed: () {
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                  gif: "assets/images/alert.gif");
+                                                                            }
+                                                                          } else {
+                                                                            await Provider.of<Cart>(context, listen: false).decQuantity(
+                                                                                context: context,
+                                                                                product: product,
+                                                                                update: true,
+                                                                                build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false).cart[index].buildValue],
+                                                                                color: Provider.of<Pagination>(context, listen: false).color[Provider.of<Cart>(context, listen: false).cart[index].colorValue],
+                                                                                cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
+                                                                                diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
+                                                                                buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
+                                                                                colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
+                                                                                certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
+                                                                                diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
+                                                                                index: index);
+                                                                          }
+                                                                        } catch (err) {
+                                                                          dataSelect(
+                                                                              context: context,
+                                                                              titleText: 'Alert!',
+                                                                              buttonText: 'Okay',
+                                                                              contentText: err.toString(),
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              gif: "assets/images/alert.gif");
+                                                                        } finally {
+                                                                          setState(
+                                                                              () {
+                                                                            isCheckoutLoading =
+                                                                                false;
+                                                                          });
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    child:
+                                                                        ShaderMask(
+                                                                      shaderCallback:
+                                                                          (bounds) =>
+                                                                              LinearGradient(
+                                                                        colors: [
+                                                                          Colors
+                                                                              .black,
+                                                                          Colors
+                                                                              .black,
+                                                                        ],
+                                                                        begin: Alignment
+                                                                            .topLeft,
+                                                                        end: Alignment
+                                                                            .bottomRight,
+                                                                      ).createShader(
+                                                                        Rect.fromLTWH(
+                                                                            0,
+                                                                            0,
+                                                                            bounds.width,
+                                                                            bounds.height),
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        '-',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              'Gilroy Bold',
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              25,
+                                                                              allowFontScalingSelf: true),
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
+                                                                SizedBox(
+                                                                  width: ScreenUtil()
                                                                       .setWidth(
                                                                           5),
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () async {
-                                                                try {
-                                                                  await Provider.of<Cart>(context, listen: false).incQuantity(
-                                                                      context:
-                                                                          context,
-                                                                      product:
-                                                                          product,
-                                                                      update:
-                                                                          true,
-                                                                      build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
-                                                                          .cart[
-                                                                              index]
-                                                                          .buildValue],
-                                                                      color: Provider.of<Pagination>(context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .color[Provider.of<Cart>(
-                                                                              context,
-                                                                              listen: false)
-                                                                          .cart[index]
-                                                                          .colorValue],
-                                                                      cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
-                                                                      diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
-                                                                      buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
-                                                                      colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
-                                                                      certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
-                                                                      diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                      index: index);
-                                                                } catch (err) {
-                                                                  dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
-                                                                }
-                                                              },
-                                                              child: ShaderMask(
-                                                                shaderCallback:
-                                                                    (bounds) =>
-                                                                        LinearGradient(
-                                                                  colors: [
-                                                                    Color(
-                                                                        0xFF34B0D9),
-                                                                    Color(
-                                                                        0xFF3685CB),
-                                                                  ],
-                                                                  begin: Alignment
-                                                                      .topLeft,
-                                                                  end: Alignment
-                                                                      .bottomRight,
-                                                                ).createShader(
-                                                                  Rect.fromLTWH(
-                                                                      0,
-                                                                      0,
-                                                                      bounds
-                                                                          .width,
-                                                                      bounds
-                                                                          .height),
                                                                 ),
-                                                                child: Text(
-                                                                  '+',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        'Gilroy Bold',
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        25,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                GestureDetector(
+                                                                  onTap: () {},
+                                                                  child:
+                                                                      Container(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            35),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          ShaderMask(
+                                                                        shaderCallback:
+                                                                            (bounds) =>
+                                                                                LinearGradient(
+                                                                          colors: [
+                                                                            Colors.black,
+                                                                            Colors.black,
+                                                                          ],
+                                                                          begin:
+                                                                              Alignment.topLeft,
+                                                                          end: Alignment
+                                                                              .bottomRight,
+                                                                        ).createShader(
+                                                                          Rect.fromLTWH(
+                                                                              0,
+                                                                              0,
+                                                                              bounds.width,
+                                                                              bounds.height),
+                                                                        ),
+                                                                        child:
+                                                                            Text(
+                                                                          // '888',
+                                                                          '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                'Gilroy Black',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(20, allowFontScalingSelf: true),
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                 ),
+                                                                SizedBox(
+                                                                  width: ScreenUtil()
+                                                                      .setWidth(
+                                                                          5),
+                                                                ),
+                                                                Container(
+                                                                  width: ScreenUtil()
+                                                                      .setWidth(
+                                                                          15),
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap:
+                                                                        () async {
+                                                                      try {
+                                                                        setState(
+                                                                            () {
+                                                                          isCheckoutLoading =
+                                                                              true;
+                                                                        });
+                                                                        await Provider.of<Cart>(context, listen: false).incQuantity(
+                                                                            context:
+                                                                                context,
+                                                                            product:
+                                                                                product,
+                                                                            update:
+                                                                                true,
+                                                                            build:
+                                                                                Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false).cart[index].buildValue],
+                                                                            color: Provider.of<Pagination>(context, listen: false).color[Provider.of<Cart>(context, listen: false).cart[index].colorValue],
+                                                                            cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
+                                                                            diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
+                                                                            buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
+                                                                            colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
+                                                                            certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
+                                                                            diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
+                                                                            index: index);
+                                                                        // setState(() {
+                                                                        //   isCheckoutLoading=false;
+                                                                        // });
+                                                                      } catch (err) {
+                                                                        dataSelect(
+                                                                            context:
+                                                                                context,
+                                                                            titleText:
+                                                                                'Alert!',
+                                                                            buttonText:
+                                                                                'Okay',
+                                                                            contentText: err
+                                                                                .toString(),
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            gif:
+                                                                                "assets/images/alert.gif");
+                                                                      } finally {
+                                                                        setState(
+                                                                            () {
+                                                                          isCheckoutLoading =
+                                                                              false;
+                                                                        });
+                                                                      }
+                                                                    },
+                                                                    child:
+                                                                        ShaderMask(
+                                                                      shaderCallback:
+                                                                          (bounds) =>
+                                                                              LinearGradient(
+                                                                        colors: [
+                                                                          Color(
+                                                                              0xFF34B0D9),
+                                                                          Color(
+                                                                              0xFF3685CB),
+                                                                        ],
+                                                                        begin: Alignment
+                                                                            .topLeft,
+                                                                        end: Alignment
+                                                                            .bottomRight,
+                                                                      ).createShader(
+                                                                        Rect.fromLTWH(
+                                                                            0,
+                                                                            0,
+                                                                            bounds.width,
+                                                                            bounds.height),
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        '+',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              'Gilroy Bold',
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              25,
+                                                                              allowFontScalingSelf: true),
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image: AssetImage(
+                                                                    'assets/images/cartButtonShape.png'),
+                                                                fit: BoxFit
+                                                                    .contain,
                                                               ),
                                                             ),
-                                                          ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                index ==
+                                                        Provider.of<Cart>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .cart
+                                                                .length -
+                                                            1
+                                                    ? SizedBox(
+                                                        height: ScreenUtil()
+                                                            .setHeight(30),
+                                                      )
+                                                    : SizedBox(
+                                                        height: 0,
+                                                      ),
+                                                index ==
+                                                            Provider.of<Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cart
+                                                                    .length -
+                                                                1 &&
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isPriced
+                                                    ? Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(250),
+                                                        height: ScreenUtil()
+                                                            .setWidth(43),
+                                                        // padding: EdgeInsets.all(20.0),
+                                                        child: Material(
+                                                          type: MaterialType
+                                                              .transparency,
+                                                          elevation: 6.0,
+                                                          color: Colors
+                                                              .transparent,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(30),
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .cyan[100]
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        30),
+                                                            onTap: () async {
+                                                              bool value2 =
+                                                                  false;
+                                                              await dataSelectConfirmMessage(
+                                                                context:
+                                                                    context,
+                                                                titleText:
+                                                                    'Alert!',
+                                                                contentText:
+                                                                    "Do you want to place order?",
+                                                                gif:
+                                                                    'assets/images/cartGIF1.gif',
+                                                              ).then(
+                                                                  (value) async {
+                                                                if (value) {
+                                                                  value2 =
+                                                                      value;
+                                                                }
+                                                              });
+                                                              if (value2) {
+                                                                try {
+                                                                  await Provider.of<
+                                                                              Orders>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .placeOrder(
+                                                                          context:
+                                                                              context);
+                                                                  dataSelect(
+                                                                      context:
+                                                                          context,
+                                                                      titleText:
+                                                                          'Order Placed Succesfully!',
+                                                                      buttonText:
+                                                                          'Okay',
+                                                                      contentText:
+                                                                          "Your order has been placed successfully.",
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      gif:
+                                                                          "assets/images/success.gif");
+                                                                } catch (err) {
+                                                                  dataSelect(
+                                                                      context:
+                                                                          context,
+                                                                      titleText:
+                                                                          'Alert!',
+                                                                      buttonText:
+                                                                          'Okay',
+                                                                      contentText: err
+                                                                          .toString(),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      gif:
+                                                                          "assets/images/alert.gif");
+                                                                }
+                                                              }
+                                                            },
+                                                            child: Center(
+                                                              child: isCheckoutLoading
+                                                                  ? CircularProgressIndicator()
+                                                                  : Text(
+                                                                      'Checkout ${Provider.of<Cart>(context, listen: false).totalPrice} ₹',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Gilroy Bold',
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize: ScreenUtil().setSp(
+                                                                            18,
+                                                                            allowFontScalingSelf:
+                                                                                true),
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                    ),
+                                                            ),
+                                                          ),
                                                         ),
                                                         decoration:
                                                             BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/images/cartButtonShape.png'),
-                                                            fit: BoxFit.contain,
-                                                          ),
-                                                        ),
+                                                                image:
+                                                                    DecorationImage(
+                                                          image: AssetImage(
+                                                              'assets/images/vector17.png'),
+                                                          fit: BoxFit.contain,
+                                                        )),
+                                                      )
+                                                    : SizedBox(
+                                                        height: 0,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            index ==
-                                                    Provider.of<Cart>(context,
-                                                                listen: false)
-                                                            .cart
-                                                            .length -
-                                                        1
-                                                ? SizedBox(
-                                                    height: ScreenUtil()
-                                                        .setHeight(30),
-                                                  )
-                                                : SizedBox(
-                                                    height: 0,
-                                                  ),
-                                            index ==
-                                                        Provider.of<Cart>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .cart
-                                                                .length -
-                                                            1 &&
-                                                    Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isPriced
-                                                ? Container(
-                                                    width: ScreenUtil()
-                                                        .setWidth(250),
-                                                    height: ScreenUtil()
-                                                        .setWidth(43),
-                                                    // padding: EdgeInsets.all(20.0),
-                                                    child: Material(
-                                                      type: MaterialType
-                                                          .transparency,
-                                                      elevation: 6.0,
-                                                      color: Colors.transparent,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30),
-                                                      child: InkWell(
-                                                        splashColor: Colors
-                                                            .cyan[100]
-                                                            .withOpacity(0.5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(30),
-                                                        onTap: () async {
-                                                          bool value2 = false;
-                                                          await dataSelectConfirmMessage(
-                                                            scaffoldKey
-                                                                .currentContext,
-                                                            'Alert!',
-                                                            "Do you want to Place the Order?",
-                                                            '',
-                                                          ).then((value) async {
-                                                            if (value) {
-                                                              value2 = value;
-                                                            }
-                                                          });
-                                                          if (value2) {
-                                                            Provider.of<Orders>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .placeOrder(
-                                                                    context:
-                                                                        context);
-                                                          }
-                                                        },
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Checkout ${Provider.of<Cart>(context, listen: false).totalPrice} ₹',
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  'Gilroy Bold',
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(18,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'assets/images/vector17.png'),
-                                                      fit: BoxFit.contain,
-                                                    )),
-                                                  )
-                                                : SizedBox(
-                                                    height: 0,
-                                                  ),
-                                            index ==
-                                                        Provider.of<Cart>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .cart
-                                                                .length -
-                                                            1 &&
-                                                    Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isPriced
-                                                ? SizedBox(
-                                                    height: ScreenUtil()
-                                                        .setHeight(93),
-                                                  )
-                                                : SizedBox(
-                                                    height: 0,
-                                                  ),
-                                            index ==
-                                                        Provider.of<Cart>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .cart
-                                                                .length -
-                                                            1 &&
-                                                    Provider.of<Pagination>(
+                                                index ==
+                                                            Provider.of<Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cart
+                                                                    .length -
+                                                                1 &&
+                                                        Provider.of<Pagination>(
                                                                 context,
                                                                 listen: false)
-                                                            .isPriced ==
-                                                        false
-                                                ? GestureDetector(
-                                                    onTap: () {},
-                                                    child: Container(
-                                                      width: ScreenUtil()
-                                                          .setWidth(250),
-                                                      height: ScreenUtil()
-                                                          .setWidth(43),
-                                                      // padding: EdgeInsets.all(20.0),
-                                                      child: Center(
-                                                        child: Text(
-                                                          'Prices Not Set',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Gilroy Bold',
-                                                            color: Colors.white,
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(18,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
+                                                            .isPriced
+                                                    ? SizedBox(
+                                                        height: ScreenUtil()
+                                                            .setHeight(93),
+                                                      )
+                                                    : SizedBox(
+                                                        height: 0,
                                                       ),
-                                                      decoration: BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                        image: AssetImage(
-                                                            'assets/images/vector17.png'),
-                                                        fit: BoxFit.contain,
-                                                      )),
-                                                    ),
-                                                  )
-                                                : SizedBox(
-                                                    height: 0,
-                                                  ),
-                                          ],
-                                        );
-                                      },
-                                    )
-                              : Container(
-                                  width: ScreenUtil().setHeight(350),
-                                  child: Center(
-                                    child: Text(
-                                      "🛒 ➡ 🤷‍♂️ 'This means cart is empty!'",
-                                      style: TextStyle(
-                                        fontFamily: 'Gilory Regular',
-                                        // decoration: TextDecoration.underline,
-                                        color: Color(0xFFA49797),
-                                        fontSize: ScreenUtil().setSp(17,
-                                            allowFontScalingSelf: true),
-                                        // fontWeight: FontWeight.bold,
+                                                index ==
+                                                            Provider.of<Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cart
+                                                                    .length -
+                                                                1 &&
+                                                        Provider.of<Pagination>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isPriced ==
+                                                            false
+                                                    ? GestureDetector(
+                                                        onTap: () {},
+                                                        child: Container(
+                                                          width: ScreenUtil()
+                                                              .setWidth(250),
+                                                          height: ScreenUtil()
+                                                              .setWidth(43),
+                                                          // padding: EdgeInsets.all(20.0),
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Prices Not Set',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    'Gilroy Bold',
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(18,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  image:
+                                                                      DecorationImage(
+                                                            image: AssetImage(
+                                                                'assets/images/vector17.png'),
+                                                            fit: BoxFit.contain,
+                                                          )),
+                                                        ),
+                                                      )
+                                                    : SizedBox(
+                                                        height: 0,
+                                                      ),
+                                              ],
+                                            );
+                                          },
+                                        )
+                                  : Container(
+                                      width: ScreenUtil().setHeight(350),
+                                      child: Center(
+                                        child: Text(
+                                          "🛒 ➡ 🤷‍♂️ 'This means cart is empty!'",
+                                          style: TextStyle(
+                                            fontFamily: 'Gilory Regular',
+                                            // decoration: TextDecoration.underline,
+                                            color: Color(0xFFA49797),
+                                            fontSize: ScreenUtil().setSp(17,
+                                                allowFontScalingSelf: true),
+                                            // fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                ),
                         ),
                       ],
                     ),
@@ -1161,14 +1276,15 @@ class _CartScreenState extends State<CartScreen> {
                                                   searchValue.toUpperCase());
                                             } catch (err) {
                                               dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
+                                                  context: context,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText: err.toString(),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  gif:
+                                                      "assets/images/alert.gif");
                                             }
                                             // setState(() {
                                             //   isLoadingSearch = false;
@@ -1412,14 +1528,17 @@ class _CartScreenState extends State<CartScreen> {
                                                       );
                                                     } catch (err) {
                                                       dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              err.toString(),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif");
                                                     }
                                                   },
                                                   child: Container(
