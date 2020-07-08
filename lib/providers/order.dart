@@ -46,6 +46,7 @@ class Order {
 final uurl = "https://alexa.gemstory.in/";
 
 class Orders with ChangeNotifier {
+  List<dynamic> completedOrders = [];
   List<dynamic> orderProducts = [];
   Future<void> getOrders({context}) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -96,6 +97,11 @@ class Orders with ChangeNotifier {
     } catch (err) {
       throw err;
     }
+  }
+
+  void completeOrderSeperation() {
+    completedOrders = [...orderProducts];
+    completedOrders.retainWhere((element) => element.status == 5);
   }
 
   Future<void> placeOrder({context}) async {

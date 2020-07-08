@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:Flutter/providers/notifiaction.dart';
 import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
@@ -205,7 +206,7 @@ class _CartScreenState extends State<CartScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
-                          height: ScreenUtil().setHeight(22 + 11 + 20 + 40),
+                          height: ScreenUtil().setHeight(22 + 20 + 20 + 40),
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
@@ -1247,7 +1248,7 @@ class _CartScreenState extends State<CartScreen> {
                             width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                24, 11, 0, searchSelected ? 0 : 20),
+                                24, 20, 0, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1266,87 +1267,94 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
-                                      AnimatedContainer(
-                                        duration: Duration(milliseconds: 600),
-                                        width: ScreenUtil().setWidth(
-                                            searchSelected ? 305 : 360),
-                                        height: ScreenUtil().setHeight(40),
-                                        child: TextField(
-                                          controller: textEditingController,
-                                          onTap: () async {
-                                            setState(() {
-                                              searchSelected = true;
-                                            });
-                                            Timer(Duration(milliseconds: 700),
-                                                () {
+                                      Positioned(
+                                        top: 0.0,
+                                        left: 0.0,
+                                        // right: 0.0,
+                                        child: Container(
+                                          width: ScreenUtil().setWidth(
+                                              searchSelected ? 305 : 360),
+                                          height: ScreenUtil().setHeight(40),
+                                          child: TextField(
+                                            controller: textEditingController,
+                                            onTap: () async {
                                               setState(() {
-                                                searchSelectedDoneButton = true;
+                                                searchSelected = true;
                                               });
-                                            });
-                                          },
-                                          onChanged: (value) async {
-                                            setState(() {
-                                              // isLoadingSearch = true;
-                                              searchValue = value.toUpperCase();
-                                            });
-                                            // setState(() {
+                                              Timer(Duration(milliseconds: 700),
+                                                  () {
+                                                setState(() {
+                                                  searchSelectedDoneButton =
+                                                      true;
+                                                });
+                                              });
+                                            },
+                                            onChanged: (value) async {
+                                              setState(() {
+                                                // isLoadingSearch = true;
+                                                searchValue =
+                                                    value.toUpperCase();
+                                              });
+                                              // setState(() {
 
-                                            //   // info=styleNumber[].split(value);
-                                            //   // print(styleNumber[1].split(searchValue));
-                                            // });
-                                            try {
-                                              await getSearch(
-                                                  searchValue.toUpperCase());
-                                            } catch (err) {
-                                              dataSelect(
-                                                  context: context,
-                                                  titleText: 'Alert!',
-                                                  buttonText: 'Okay',
-                                                  contentText: err.toString(),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  gif:
-                                                      "assets/images/alert.gif");
-                                            }
-                                            // setState(() {
-                                            //   isLoadingSearch = false;
-                                            // });
-                                            // getSearchResult(value.toUpperCase());
-                                          },
-                                          decoration: InputDecoration(
-                                            // contentPadding: EdgeInsets.all(15.0),
-                                            // suffixIcon: searchSelected
-                                            //     ? GestureDetector(
-                                            //         onTap: () {
-                                            //           textEditingController
-                                            //               .clear();
-                                            //           setState(() {
-                                            //             searchValue = "";
-                                            //           });
-                                            //         },
-                                            //         child: Icon(Icons.clear),
-                                            //       )
-                                            //     : SizedBox(
-                                            //         height: 0.0,
-                                            //         width: 0.0,
-                                            //       ),
-                                            hintText: 'SEARCH GEMSTORY',
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'Gilroy Medium',
-                                              color: Color(0xFF595959),
-                                              fontSize: ScreenUtil().setSp(14,
-                                                  allowFontScalingSelf: true),
+                                              //   // info=styleNumber[].split(value);
+                                              //   // print(styleNumber[1].split(searchValue));
+                                              // });
+                                              try {
+                                                await getSearch(
+                                                    searchValue.toUpperCase());
+                                              } catch (err) {
+                                                dataSelect(
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    buttonText: 'Okay',
+                                                    contentText: err.toString(),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    gif:
+                                                        "assets/images/alert.gif");
+                                              }
+                                              // setState(() {
+                                              //   isLoadingSearch = false;
+                                              // });
+                                              // getSearchResult(value.toUpperCase());
+                                            },
+                                            decoration: InputDecoration(
+                                              // contentPadding: EdgeInsets.all(15.0),
+                                              // suffixIcon: searchSelected
+                                              //     ? GestureDetector(
+                                              //         onTap: () {
+                                              //           textEditingController
+                                              //               .clear();
+                                              //           setState(() {
+                                              //             searchValue = "";
+                                              //           });
+                                              //         },
+                                              //         child: Icon(Icons.clear),
+                                              //       )
+                                              //     : SizedBox(
+                                              //         height: 0.0,
+                                              //         width: 0.0,
+                                              //       ),
+                                              hintText: 'SEARCH GEMSTORY',
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Gilroy Medium',
+                                                color: Color(0xFF595959),
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf: true),
+                                              ),
+                                              border: InputBorder.none,
                                             ),
-                                            border: InputBorder.none,
+                                            textAlign: searchSelected
+                                                ? TextAlign.start
+                                                : TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'Gilroy Regular',
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf:
+                                                        true)),
                                           ),
-                                          textAlign: searchSelected
-                                              ? TextAlign.start
-                                              : TextAlign.center,
-                                          style: TextStyle(
-                                              fontFamily: 'Gilroy Regular',
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true)),
                                         ),
                                       ),
                                       AnimatedContainer(
@@ -1373,16 +1381,30 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ),
                                       ),
-                                      AnimatedContainer(
-                                        duration: Duration(milliseconds: 600),
-                                        margin: EdgeInsets.only(right: 6.0),
-                                        height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 25),
-                                        width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 25),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/notificationIcon.svg',
-                                          color: Colors.black,
+                                      GestureDetector(
+                                        onTap: () {
+                                          // setState(() {
+                                          //   tapNotication =
+                                          //       !tapNotication;
+                                          // });
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 600),
+                                          margin: EdgeInsets.only(right: 6.0),
+                                          height: ScreenUtil().setHeight(
+                                              searchSelected ? 0 : 25),
+                                          width: ScreenUtil().setWidth(
+                                              searchSelected ? 0 : 25),
+                                          child: SvgPicture.asset(
+                                            Provider.of<Notif>(context,
+                                                            listen: true)
+                                                        .notifications
+                                                        .length >
+                                                    0
+                                                ? 'assets/icons/notificationPulseIcon.svg'
+                                                : 'assets/icons/notificationIcon.svg',
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -1505,6 +1527,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           builder: (context) =>
                                                               ProductDetail(
                                                             colorKey: 'yellow',
+                                                            select: 'all',
                                                             diamondKey: Provider.of<
                                                                             Pagination>(
                                                                         context,
@@ -1523,6 +1546,12 @@ class _CartScreenState extends State<CartScreen> {
                                                                     listen:
                                                                         false)
                                                                 .cert[_defaultChoiceIndex3]],
+                                                            product: Provider.of<
+                                                                        Pagination>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .productDetailsForSearch[0],
                                                             defaultIndex1:
                                                                 _defaultChoiceIndex1,
                                                             defaultIndex2:
@@ -1531,13 +1560,6 @@ class _CartScreenState extends State<CartScreen> {
                                                                 _defaultChoiceIndex3,
                                                             defaultIndex4:
                                                                 _defaultChoiceIndex4,
-                                                            product: Provider.of<
-                                                                        Pagination>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .productDetailsForSearch[0],
-                                                            select: 'all',
                                                             valueChangeBuild:
                                                                 _onValueChange,
                                                             valueChangeColor:
@@ -1545,6 +1567,14 @@ class _CartScreenState extends State<CartScreen> {
                                                             valueChangeCerti:
                                                                 _onValueChangeCerti,
                                                             valueChangeDQ:
+                                                                _onValueChangeDQ,
+                                                            valueChangeBuild1:
+                                                                _onValueChange,
+                                                            valueChangeColor1:
+                                                                _onValueChangeColor,
+                                                            valueChangeCerti1:
+                                                                _onValueChangeCerti,
+                                                            valueChangeDQ1:
                                                                 _onValueChangeDQ,
                                                           ),
                                                         ),
@@ -1585,9 +1615,17 @@ class _CartScreenState extends State<CartScreen> {
                                                               .setWidth(90),
                                                           // color: Colors.amber,
                                                           child: Image(
-                                                            image: NetworkImage(
+                                                            image:
+                                                                AdvancedNetworkImage(
                                                               suggestion[index]
                                                                   .image,
+                                                              useDiskCache:
+                                                                  true,
+                                                              cacheRule: CacheRule(
+                                                                  maxAge:
+                                                                      const Duration(
+                                                                          days:
+                                                                              3)),
                                                             ),
                                                             fit: BoxFit.fill,
                                                           ),

@@ -1228,25 +1228,25 @@ class _UserPageState extends State<UserPage>
                               SizedBox(
                                 width: ScreenUtil().setWidth(51),
                               ),
-                              Hero(
-                                tag: 'tag2',
-                                child: Container(
-                                  width: ScreenUtil().setWidth(60),
-                                  height: ScreenUtil().setHeight(60),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.white,
-                                        Colors.white
-                                        // Color(0xFF34BDDD),
-                                        // Color(0xFF367DC8),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
+                              Container(
+                                width: ScreenUtil().setWidth(60),
+                                height: ScreenUtil().setHeight(60),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white
+                                      // Color(0xFF34BDDD),
+                                      // Color(0xFF367DC8),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
-                                  padding: EdgeInsets.all(2),
+                                ),
+                                padding: EdgeInsets.all(2),
+                                child: Hero(
+                                  tag: 'tag2',
                                   child: GestureDetector(
                                     onTap: () async {
                                       Navigator.push(

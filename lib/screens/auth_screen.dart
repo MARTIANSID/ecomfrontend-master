@@ -2,6 +2,7 @@ import 'package:Flutter/providers/auth.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/home.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
@@ -23,7 +24,8 @@ class _LoginScreenState extends State<LoginScreen>
   dispose() {
     _passwordController.dispose();
     _phoneController.dispose();
-    _nameController.dispose();
+    _fnameController.dispose();
+    _lnameController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -80,7 +82,8 @@ class _LoginScreenState extends State<LoginScreen>
   int timeCounter = 0;
 
   final _phoneController = TextEditingController();
-  final _nameController = TextEditingController();
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
   final _passwordController = TextEditingController();
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
@@ -107,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen>
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: ScreenUtil().setHeight(60),
+          // height: ScreenUtil().setHeight(60),
           child: Stack(
             alignment: Alignment.centerRight,
             children: <Widget>[
@@ -122,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
+                  contentPadding: EdgeInsets.only(top: 14.0, left: 15.0),
                   prefixIcon: Icon(
                     icon,
                     color: Colors.white,
@@ -163,7 +166,8 @@ class _LoginScreenState extends State<LoginScreen>
                           this.enable = true;
                           enable = true;
                           _phoneController.clear();
-                          _nameController.clear();
+                          _fnameController.clear();
+                          _lnameController.clear();
                           _passwordController.clear();
                           _requirePassword = false;
                           _buildForgetButton = false;
@@ -192,6 +196,88 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
+  Widget _buildGivenNameTF({
+    @required String name,
+    @required String hint,
+    @required TextEditingController controller,
+    @required TextInputType inputType,
+    @required IconData icon,
+    @required void Function(String) validate,
+    bool enable,
+  }) {
+    return Container(
+      width: ScreenUtil().setWidth(160),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            name,
+            style: kLabelStyle,
+          ),
+          SizedBox(height: ScreenUtil().setHeight(10)),
+          Container(
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            // height: ScreenUtil().setHeight(60),
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: <Widget>[
+                TextFormField(
+                  enabled: enable,
+                  validator: validate,
+                  controller: controller,
+                  keyboardType: inputType,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Gilroy Regular',
+                  ),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(top: 14.0, left: 15.0),
+                    prefixIcon: Icon(
+                      icon,
+                      color: Colors.white,
+                    ),
+                    // suffixIcon: !enable
+                    //     ? IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             enable = true;
+                    //             _phoneController.clear();
+                    //             _nameController.clear();
+                    //             _passwordController.clear();
+                    //             _requirePassword = false;
+                    //             _buildForgetButton = false;
+                    //             _isRegistered = false;
+                    //             _showSignup = false;
+                    //             _rememberMe = false;
+                    //             _showPassword = false;
+                    //             _showPasswordCheckBox = false;
+                    //             _forgotPasswordMenu = false;
+                    //             _screen = 0;
+                    //           });
+                    //         },
+                    //         icon: Icon(
+                    //           Icons.edit,
+                    //           color: Colors.white,
+                    //         ),
+                    //       )
+                    //     : SizedBox(height: 0.0),
+                    hintText: hint,
+                    hintStyle: kHintTextStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: ScreenUtil().setHeight(20),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPasswordTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen>
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: ScreenUtil().setHeight(60),
+          // height: ScreenUtil().setHeight(60),
           child: Stack(
             alignment: Alignment.centerRight,
             children: <Widget>[
@@ -228,7 +314,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
+                  contentPadding: EdgeInsets.only(top: 14.0, left: 15.0),
                   prefixIcon: Icon(
                     Icons.lock,
                     color: Colors.white,
@@ -376,7 +462,8 @@ class _LoginScreenState extends State<LoginScreen>
               onPressed: () => setState(() {
                 enable = true;
                 _phoneController.clear();
-                _nameController.clear();
+                _fnameController.clear();
+                _lnameController.clear();
                 _passwordController.clear();
                 Navigator.of(context).pop();
                 _requirePassword = false;
@@ -568,7 +655,7 @@ class _LoginScreenState extends State<LoginScreen>
           print('PP In first If part');
           try {
             await Provider.of<Auth>(context, listen: false).userSignup(
-                _nameController.text,
+                _fnameController.text + ' ' + _lnameController.text,
                 _phoneController.text,
                 _passwordController.text);
             Provider.of<Auth>(context, listen: false).changeLog();
@@ -635,7 +722,7 @@ class _LoginScreenState extends State<LoginScreen>
         print('PP in second else part: $_forgotPasswordMenu');
         print(_phoneController.text);
         phoneNumber = _phoneController.text;
-        print(_nameController.text);
+        print(_fnameController.text);
         print(_passwordController.text);
 
         // await Provider.of<Auth>(context, listen: false)
@@ -645,14 +732,15 @@ class _LoginScreenState extends State<LoginScreen>
           try {
             await Provider.of<Auth>(context, listen: false).resetPassword(
                 _phoneController.text,
-                _nameController.text,
+                _fnameController.text,
                 _passwordController.text);
           } catch (error) {
             _showDilog('Oops!', '$error');
           }
           _passwordController.clear();
           _phoneController.clear();
-          _nameController.clear();
+          _fnameController.clear();
+          _lnameController.clear();
           setState(() {
             enable = true;
             _requirePassword = false;
@@ -788,21 +876,45 @@ class _LoginScreenState extends State<LoginScreen>
                 if (_showSignup) ...[
                   SlideTransition(
                     position: _slideAnimation2,
-                    child: _buildGivenTF(
-                        name: 'Name',
-                        enable: true,
-                        validate: (value) {
-                          if (value.isEmpty) {
-                            return "Enter Full Name";
-                          } else if (value.length < 4) {
-                            return "Name Error";
-                          }
-                          return null;
-                        },
-                        hint: 'Enter your full name',
-                        controller: _nameController,
-                        inputType: TextInputType.text,
-                        icon: Icons.person),
+                    child: Row(
+                      children: <Widget>[
+                        _buildGivenNameTF(
+                          name: 'First Name',
+                          enable: true,
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return "Enter First Name";
+                            } else if (value.length < 3) {
+                              return "Name Error";
+                            }
+                            return null;
+                          },
+                          hint: 'First Name',
+                          controller: _fnameController,
+                          inputType: TextInputType.text,
+                          icon: Icons.person,
+                        ),
+                        SizedBox(
+                          width: ScreenUtil().setWidth(11),
+                        ),
+                        _buildGivenNameTF(
+                          name: 'Last Name',
+                          enable: true,
+                          validate: (value) {
+                            if (value.isEmpty) {
+                              return "Enter Last Name";
+                            } else if (value.length < 3) {
+                              return "Name Error";
+                            }
+                            return null;
+                          },
+                          hint: 'Last Name',
+                          controller: _lnameController,
+                          inputType: TextInputType.text,
+                          icon: Icons.person,
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: ScreenUtil().setHeight(10),
@@ -833,7 +945,7 @@ class _LoginScreenState extends State<LoginScreen>
                         ? 'Check SMS on your Phone'
                         : 'Enter 10 digits number',
                     controller: _forgotPasswordMenu
-                        ? _nameController
+                        ? _fnameController
                         : _phoneController,
                     inputType: TextInputType.phone,
                     icon: Icons.phone_iphone),
@@ -870,7 +982,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       listen: false)
                                   .checkOtp(
                                       number: phoneNumber.toString(),
-                                      code: _nameController.text);
+                                      code: _fnameController.text);
                               setState(() {
                                 isVerifyLoading = false;
                               });
@@ -924,8 +1036,61 @@ class _LoginScreenState extends State<LoginScreen>
                                   ),
                                 ),
                         ))
-                    : _buildNextBtn()
-
+                    : _buildNextBtn(),
+                if (_showSignup) ...[
+                  SizedBox(
+                    height: ScreenUtil().setHeight(10),
+                  ),
+                  SlideTransition(
+                    position: _slideAnimation,
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontFamily: 'Gilroy Medium',
+                          fontSize: ScreenUtil()
+                              .setSp(12, allowFontScalingSelf: true),
+                          color: Colors.white,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'By creating an account, you agree to the ',
+                          ),
+                          TextSpan(
+                            text: 'Terms of Service, ',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {},
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Privacy Policy, ',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {},
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'and Data Processing Terms.',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {},
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(10),
+                  )
+                ],
                 //_buildSignInWithText(),
                 //_buildSocialBtnRow(),
                 //_buildSignupBtn(),

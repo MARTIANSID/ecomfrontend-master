@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:Flutter/providers/notifiaction.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
@@ -354,7 +355,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                             width: ScreenUtil().setWidth(360),
                             height: ScreenUtil().setHeight(45),
                             margin: EdgeInsets.fromLTRB(
-                                24, 20, 21, searchSelected ? 0 : 20),
+                                24, 20, 0, searchSelected ? 0 : 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -373,86 +374,94 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                   child: Stack(
                                     alignment: Alignment.centerRight,
                                     children: <Widget>[
-                                      AnimatedContainer(
-                                        duration: Duration(milliseconds: 600),
-                                        width: ScreenUtil().setWidth(
-                                            searchSelected ? 305 : 360),
-                                        height: ScreenUtil().setHeight(40),
-                                        child: TextField(
-                                          controller: textEditingController,
-                                          onTap: () async {
-                                            setState(() {
-                                              searchSelected = true;
-                                            });
-                                            Timer(Duration(milliseconds: 700),
-                                                () {
+                                      Positioned(
+                                        top: 0.0,
+                                        left: 0.0,
+                                        // right: 0.0,
+                                        child: Container(
+                                          width: ScreenUtil().setWidth(
+                                              searchSelected ? 305 : 360),
+                                          height: ScreenUtil().setHeight(40),
+                                          child: TextField(
+                                            controller: textEditingController,
+                                            onTap: () async {
                                               setState(() {
-                                                searchSelectedDoneButton = true;
+                                                searchSelected = true;
                                               });
-                                            });
-                                          },
-                                          onChanged: (value) async {
-                                            setState(() {
-                                              // isLoadingSearch = true;
-                                              searchValue = value.toUpperCase();
-                                            });
-                                            // setState(() {
+                                              Timer(Duration(milliseconds: 700),
+                                                  () {
+                                                setState(() {
+                                                  searchSelectedDoneButton =
+                                                      true;
+                                                });
+                                              });
+                                            },
+                                            onChanged: (value) async {
+                                              setState(() {
+                                                // isLoadingSearch = true;
+                                                searchValue =
+                                                    value.toUpperCase();
+                                              });
+                                              // setState(() {
 
-                                            //   // info=styleNumber[].split(value);
-                                            //   // print(styleNumber[1].split(searchValue));
-                                            // });
-                                            try {
-                                              await getSearch(
-                                                  searchValue.toUpperCase());
-                                            } catch (err) {
-                                              dataSelect(
-                                                  context: context,
-                                                  titleText: 'Alert!',
-                                                  buttonText: 'Okay',
-                                                  contentText: err.toString(),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  gif:
-                                                      "assets/images/alert.gif");
-                                            }
-                                            // setState(() {
-                                            //   isLoadingSearch = false;
-                                            // });
-                                            // getSearchResult(value.toUpperCase());
-                                          },
-                                          decoration: InputDecoration(
-                                            // contentPadding: EdgeInsets.all(15.0),
-                                            // suffixIcon: searchSelected
-                                            //     ? GestureDetector(
-                                            //         onTap: () {
-                                            //           textEditingController.clear();
-                                            //           setState(() {
-                                            //             searchValue = "";
-                                            //           });
-                                            //         },
-                                            //         child: Icon(Icons.clear),
-                                            //       )
-                                            //     : SizedBox(
-                                            //         height: 0.0,
-                                            //         width: 0.0,
-                                            //       ),
-                                            hintText: 'SEARCH GEMSTORY',
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'Gilroy Medium',
-                                              color: Color(0xFF595959),
-                                              fontSize: ScreenUtil().setSp(14,
-                                                  allowFontScalingSelf: true),
+                                              //   // info=styleNumber[].split(value);
+                                              //   // print(styleNumber[1].split(searchValue));
+                                              // });
+                                              try {
+                                                await getSearch(
+                                                    searchValue.toUpperCase());
+                                              } catch (err) {
+                                                dataSelect(
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    buttonText: 'Okay',
+                                                    contentText: err.toString(),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    gif:
+                                                        "assets/images/alert.gif");
+                                              }
+                                              // setState(() {
+                                              //   isLoadingSearch = false;
+                                              // });
+                                              // getSearchResult(value.toUpperCase());
+                                            },
+                                            decoration: InputDecoration(
+                                              // contentPadding: EdgeInsets.all(15.0),
+                                              // suffixIcon: searchSelected
+                                              //     ? GestureDetector(
+                                              //         onTap: () {
+                                              //           textEditingController
+                                              //               .clear();
+                                              //           setState(() {
+                                              //             searchValue = "";
+                                              //           });
+                                              //         },
+                                              //         child: Icon(Icons.clear),
+                                              //       )
+                                              //     : SizedBox(
+                                              //         height: 0.0,
+                                              //         width: 0.0,
+                                              //       ),
+                                              hintText: 'SEARCH GEMSTORY',
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Gilroy Medium',
+                                                color: Color(0xFF595959),
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf: true),
+                                              ),
+                                              border: InputBorder.none,
                                             ),
-                                            border: InputBorder.none,
+                                            textAlign: searchSelected
+                                                ? TextAlign.start
+                                                : TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'Gilroy Regular',
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf:
+                                                        true)),
                                           ),
-                                          textAlign: searchSelected
-                                              ? TextAlign.start
-                                              : TextAlign.center,
-                                          style: TextStyle(
-                                              fontFamily: 'Gilroy Regular',
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true)),
                                         ),
                                       ),
                                       AnimatedContainer(
@@ -472,22 +481,39 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                           child: Icon(
                                             Icons.clear,
                                             color: Colors.black,
-                                            size: searchSelected ? 25 : 0,
+                                            size: searchSelected
+                                                ? ScreenUtil().setSp(25,
+                                                    allowFontScalingSelf: true)
+                                                : 0,
                                           ),
                                         ),
                                       ),
-                                      AnimatedContainer(
-                                        duration: Duration(milliseconds: 600),
-                                        margin: EdgeInsets.only(right: 6.0),
-                                        height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 25),
-                                        width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 25),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/notificationIcon.svg',
-                                          color: Colors.black,
+                                      GestureDetector(
+                                        onTap: () {
+                                          // setState(() {
+                                          //   tapNotication =
+                                          //       !tapNotication;
+                                          // });
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 600),
+                                          margin: EdgeInsets.only(right: 6.0),
+                                          height: ScreenUtil().setHeight(
+                                              searchSelected ? 0 : 25),
+                                          width: ScreenUtil().setWidth(
+                                              searchSelected ? 0 : 25),
+                                          child: SvgPicture.asset(
+                                            Provider.of<Notif>(context,
+                                                            listen: true)
+                                                        .notifications
+                                                        .length >
+                                                    0
+                                                ? 'assets/icons/notificationPulseIcon.svg'
+                                                : 'assets/icons/notificationIcon.svg',
+                                            color: Colors.black,
+                                          ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -648,6 +674,14 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                             valueChangeCerti:
                                                                 _onValueChangeCerti,
                                                             valueChangeDQ:
+                                                                _onValueChangeDQ,
+                                                            valueChangeBuild1:
+                                                                _onValueChange,
+                                                            valueChangeColor1:
+                                                                _onValueChangeColor,
+                                                            valueChangeCerti1:
+                                                                _onValueChangeCerti,
+                                                            valueChangeDQ1:
                                                                 _onValueChangeDQ,
                                                           ),
                                                         ),

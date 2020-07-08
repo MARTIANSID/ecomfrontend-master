@@ -512,7 +512,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             Positioned(
-              bottom: ScreenUtil().setHeight(20),
+              bottom: ScreenUtil().setHeight(10),
               right: ScreenUtil().setWidth(20),
               // alignment: Alignment.topRight,
               child: GestureDetector(

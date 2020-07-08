@@ -278,7 +278,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                               //   style: BorderStyle.solid,
                                               //   width: 3.0,
                                               // ),
-                                              color: Colors.black,
+                                              color: Colors.white,
                                               shape: BoxShape.circle,
                                             ),
                                             padding: EdgeInsets.all(2),
@@ -593,8 +593,9 @@ class _TestimonyPageState extends State<TestimonyPage> {
               ),
             ),
       floatingActionButton: Container(
-        padding: EdgeInsets.all(15.0),
+        // padding: EdgeInsets.all(15.0),
         width: ScreenUtil().setWidth(120),
+        height: ScreenUtil().setHeight(50),
         decoration: BoxDecoration(
           // image: DecorationImage(
           //   image: AssetImage('assets/images/vector17.png'),
@@ -614,16 +615,10 @@ class _TestimonyPageState extends State<TestimonyPage> {
           type: MaterialType.transparency,
           elevation: 6.0,
           color: Colors.transparent,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
+          borderRadius: BorderRadius.circular(30),
           child: InkWell(
             splashColor: Colors.cyan[100].withOpacity(0.8),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15),
-            ),
+            borderRadius: BorderRadius.circular(30),
             onTap: () {
               showDialog(
                 context: context,
@@ -718,16 +713,31 @@ class _TestimonyPageState extends State<TestimonyPage> {
                               ),
                               Container(
                                 width: ScreenUtil().setWidth(180),
-                                height: ScreenUtil().setHeight(43),
+                                height: ScreenUtil().setHeight(35),
                                 // padding: EdgeInsets.all(20.0),
+                                decoration: BoxDecoration(
+                                  // image: DecorationImage(
+                                  //   image: AssetImage('assets/images/vector17.png'),
+                                  //   fit: BoxFit.contain,
+                                  // ),
+                                  borderRadius: BorderRadius.circular(30),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF34B0E9),
+                                      Color(0xFF3685CB),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
                                 child: Material(
                                   type: MaterialType.transparency,
                                   elevation: 6.0,
                                   color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(30),
                                   child: InkWell(
                                     splashColor: Colors.cyan[50],
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(30),
                                     onTap: () async {
                                       if (_key.currentState.validate()) {
                                         _key.currentState.save();
@@ -779,12 +789,6 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                     ),
                                   ),
                                 ),
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/vector17.png'),
-                                  fit: BoxFit.contain,
-                                )),
                               ),
                             ],
                           ),
@@ -805,16 +809,13 @@ class _TestimonyPageState extends State<TestimonyPage> {
                   width: ScreenUtil().setWidth(20),
                   color: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Text(
-                    'WRITE',
-                    style: TextStyle(
-                      fontFamily: 'Gilroy Medium',
-                      color: Colors.white,
-                      fontSize:
-                          ScreenUtil().setSp(17, allowFontScalingSelf: true),
-                    ),
+                Text(
+                  'WRITE',
+                  style: TextStyle(
+                    fontFamily: 'Gilroy Medium',
+                    color: Colors.white,
+                    fontSize:
+                        ScreenUtil().setSp(17, allowFontScalingSelf: true),
                   ),
                 )
               ],

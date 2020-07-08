@@ -30,26 +30,39 @@ class _ProfileImageState extends State<ProfileImage> {
   void _settingModalBottomSheet(context) {
     showModalBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24), topRight: Radius.circular(24))),
         builder: (BuildContext bc) {
           return Container(
-            height: 100,
-            color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+            ),
+            height: ScreenUtil().setHeight(90),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  width: 10,
+                  width: ScreenUtil().setWidth(10),
                 ),
                 Container(
                     padding: EdgeInsets.all(10.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
                           Icons.delete,
                           color: Colors.red,
                         ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(10),
+                        ),
                         Text(
-                          'Remvoe Photo',
+                          'Remove',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: "Gilroy Medium",
                             fontSize: ScreenUtil()
@@ -65,48 +78,52 @@ class _ProfileImageState extends State<ProfileImage> {
                 Container(
                     padding: EdgeInsets.all(10.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         GestureDetector(
-                            onTap: () async {
-                              final i = await picker.getImage(
-                                  source: ImageSource.camera);
-                              print(i.path);
-                              if (i.path != null) {
-                                setState(() {
-                                  isLoadingimage = true;
-                                });
-                                try {
-                                  if (context != null) print("SDCD");
-                                  await Provider.of<UserInfo>(context,
-                                          listen: false)
-                                      .changeImage(
-                                          context: context,
-                                          image: File(i.path));
-                                  await Provider.of<UserInfo>(context,
-                                          listen: false)
-                                      .getuser(context);
+                          onTap: () async {
+                            final i = await picker.getImage(
+                                source: ImageSource.camera);
+                            print(i.path);
+                            if (i.path != null) {
+                              setState(() {
+                                isLoadingimage = true;
+                              });
+                              try {
+                                if (context != null) print("SDCD");
+                                await Provider.of<UserInfo>(context,
+                                        listen: false)
+                                    .changeImage(
+                                        context: context, image: File(i.path));
+                                await Provider.of<UserInfo>(context,
+                                        listen: false)
+                                    .getuser(context);
 
-                                  // image = File(
-                                  //     i.path);
-                                } catch (err) {
-                                  dataSelect(
-                                      context: context,
-                                      titleText: 'Alert!',
-                                      buttonText: 'Okay',
-                                      contentText: err.toString(),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      gif: "assets/images/alert.gif");
-                                } finally {
-                                  Navigator.pop(context);
-                                  setState(() {
-                                    isLoadingimage = false;
-                                  });
-                                }
+                                // image = File(
+                                //     i.path);
+                              } catch (err) {
+                                dataSelect(
+                                    context: context,
+                                    titleText: 'Alert!',
+                                    buttonText: 'Okay',
+                                    contentText: err.toString(),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    gif: "assets/images/alert.gif");
+                              } finally {
+                                Navigator.pop(context);
+                                setState(() {
+                                  isLoadingimage = false;
+                                });
                               }
-                            },
-                            child: Icon(Icons.camera)),
+                            }
+                          },
+                          child: Icon(Icons.camera_alt),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(10),
+                        ),
                         Text(
                           'Camera',
                           style: TextStyle(
@@ -118,53 +135,57 @@ class _ProfileImageState extends State<ProfileImage> {
                       ],
                     )),
                 SizedBox(
-                  width: 10,
+                  width: ScreenUtil().setWidth(10),
                 ),
                 Container(
                     padding: EdgeInsets.all(10.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         GestureDetector(
-                            onTap: () async {
-                              final i = await picker.getImage(
-                                  source: ImageSource.gallery);
-                              print(i.path);
-                              if (i.path != null) {
-                                setState(() {
-                                  isLoadingimage = true;
-                                });
-                                try {
-                                  if (context != null) print("SDCD");
-                                  await Provider.of<UserInfo>(context,
-                                          listen: false)
-                                      .changeImage(
-                                          context: context,
-                                          image: File(i.path));
-                                  await Provider.of<UserInfo>(context,
-                                          listen: false)
-                                      .getuser(context);
+                          onTap: () async {
+                            final i = await picker.getImage(
+                                source: ImageSource.gallery);
+                            print(i.path);
+                            if (i.path != null) {
+                              setState(() {
+                                isLoadingimage = true;
+                              });
+                              try {
+                                if (context != null) print("SDCD");
+                                await Provider.of<UserInfo>(context,
+                                        listen: false)
+                                    .changeImage(
+                                        context: context, image: File(i.path));
+                                await Provider.of<UserInfo>(context,
+                                        listen: false)
+                                    .getuser(context);
 
-                                  // image = File(
-                                  //     i.path);
-                                } catch (err) {
-                                  dataSelect(
-                                      context: context,
-                                      titleText: 'Alert!',
-                                      buttonText: 'Okay',
-                                      contentText: err.toString(),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      gif: "assets/images/alert.gif");
-                                } finally {
-                                  Navigator.pop(context);
-                                  setState(() {
-                                    isLoadingimage = false;
-                                  });
-                                }
+                                // image = File(
+                                //     i.path);
+                              } catch (err) {
+                                dataSelect(
+                                    context: context,
+                                    titleText: 'Alert!',
+                                    buttonText: 'Okay',
+                                    contentText: err.toString(),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    gif: "assets/images/alert.gif");
+                              } finally {
+                                Navigator.pop(context);
+                                setState(() {
+                                  isLoadingimage = false;
+                                });
                               }
-                            },
-                            child: Icon(Icons.photo)),
+                            }
+                          },
+                          child: Icon(Icons.photo_library),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil().setHeight(10),
+                        ),
                         Text(
                           'Gallery',
                           style: TextStyle(

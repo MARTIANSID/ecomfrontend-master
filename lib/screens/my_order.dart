@@ -19,7 +19,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 1);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
 
     setState(() {
       isLoading = true;
@@ -28,6 +28,10 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
       try {
         await Provider.of<Orders>(context, listen: false)
             .getOrders(context: context);
+        Provider.of<Orders>(context, listen: false).completeOrderSeperation();
+        print(
+            Provider.of<Orders>(context, listen: false).completedOrders.length);
+        print(Provider.of<Orders>(context, listen: false).orderProducts.length);
       } catch (err) {
         dataSelect(
             context: context,
@@ -46,7 +50,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
     });
   }
 
-  Widget closeApp(BuildContext context) {
+  Widget closeApp(BuildContext context, orderProducts) {
     var size = MediaQuery.of(context).size;
     ScreenUtil.init(
       context,
@@ -58,8 +62,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount:
-          Provider.of<Orders>(context, listen: false).orderProducts.length,
+      itemCount: orderProducts.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
@@ -67,10 +70,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
               context,
               MaterialPageRoute(
                   builder: (context) => MyOrderDetailPage(
-                      products: Provider.of<Orders>(context, listen: false)
-                          .orderProducts[index]
-                          .products,
-                      index: index)),
+                      products: orderProducts[index].products, index: index)),
             );
           },
           child: Container(
@@ -94,22 +94,14 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      '#' +
-                          Provider.of<Orders>(context, listen: false)
-                              .orderProducts[index]
-                              .orderNumber
-                              .toString(),
+                      '#' + orderProducts[index].orderNumber.toString(),
                       style: TextStyle(
                           fontFamily: 'Gilroy Medium',
                           fontSize: ScreenUtil()
                               .setSp(27, allowFontScalingSelf: true)),
                     ),
                     Text(
-                      Provider.of<Orders>(context, listen: false)
-                          .orderProducts[index]
-                          .products
-                          .length
-                          .toString(),
+                      orderProducts[index].products.length.toString(),
                       style: TextStyle(
                         color: Colors.grey[400],
                         fontSize:
@@ -185,9 +177,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                                     0, 0, bounds.width, bounds.height),
                               ),
                               child: Text(
-                                Provider.of<Orders>(context, listen: false)
-                                    .orderProducts[index]
-                                    .datePlaced,
+                                orderProducts[index].datePlaced,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Gilroy Regular',
@@ -333,8 +323,14 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                             child: TabBarView(
                               controller: _tabController,
                               children: [
-                                closeApp(context),
-                                closeApp(context),
+                                closeApp(
+                                    context,
+                                    Provider.of<Orders>(context, listen: false)
+                                        .orderProducts),
+                                closeApp(
+                                    context,
+                                    Provider.of<Orders>(context, listen: false)
+                                        .completedOrders),
                               ],
                             ),
                           ),
