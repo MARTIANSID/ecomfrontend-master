@@ -31,10 +31,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
       //   isLoading = true;
       // });
       try {
-        if (Provider.of<Testimony>(context, listen: false).userTestimony ==
-            null)
-          await Provider.of<Testimony>(context, listen: false)
-              .getTestimony(context: context);
+        await Provider.of<Testimony>(context, listen: false)
+            .getTestimony(context: context);
       } catch (err) {
         dataSelect(
             context: context,

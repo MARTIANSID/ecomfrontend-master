@@ -3,14 +3,22 @@ import 'package:flutter/cupertino.dart';
 class Noti {
   String title;
   String body;
-  var data;
-  Noti({this.body, this.data, this.title});
+  String link;
+  var id;
+  Noti({this.body, this.link, this.title, this.id});
 }
 
 class Notif with ChangeNotifier {
   List<Noti> notifications = [];
 
-  void notiAdd({title, body, data}) {
-    notifications.add(Noti(body: body, title: title, data: data));
+  void notiAdd({title, body, link, id}) {
+    notifications.add(Noti(body: body, title: title, link: link, id: id));
+    print(notifications);
+    notifyListeners();
+  }
+
+  void notiDelete({id}) {
+    notifications.removeWhere((element) => element.id == id);
+    notifyListeners();
   }
 }

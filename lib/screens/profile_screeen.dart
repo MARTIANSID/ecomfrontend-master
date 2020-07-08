@@ -787,6 +787,7 @@ import 'dart:io';
 import 'package:Flutter/providers/auth.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
+import 'package:Flutter/screens/profileImage.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -1092,6 +1093,80 @@ class _UserPageState extends State<UserPage>
     return value2;
   }
 
+  void _settingModalBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            height: 100,
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        Text(
+                          'Remvoe Photo',
+                          style: TextStyle(
+                            fontFamily: "Gilroy Medium",
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                          ),
+                          softWrap: true,
+                        )
+                      ],
+                    )),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Icon(Icons.camera),
+                        Text(
+                          'Camera',
+                          style: TextStyle(
+                            fontFamily: "Gilroy Medium",
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                          ),
+                        )
+                      ],
+                    )),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Icon(Icons.photo),
+                        Text(
+                          'Gallery',
+                          style: TextStyle(
+                            fontFamily: "Gilroy Medium",
+                            fontSize: ScreenUtil()
+                                .setSp(16, allowFontScalingSelf: true),
+                          ),
+                        )
+                      ],
+                    )),
+              ],
+            ),
+          );
+        });
+  }
+
   File image;
   final picker = ImagePicker();
 
@@ -1153,297 +1228,309 @@ class _UserPageState extends State<UserPage>
                               SizedBox(
                                 width: ScreenUtil().setWidth(51),
                               ),
-                              Container(
-                                width: ScreenUtil().setWidth(60),
-                                height: ScreenUtil().setHeight(60),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.white,
-                                      Colors.white
-                                      // Color(0xFF34BDDD),
-                                      // Color(0xFF367DC8),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                              Hero(
+                                tag: 'tag2',
+                                child: Container(
+                                  width: ScreenUtil().setWidth(60),
+                                  height: ScreenUtil().setHeight(60),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.white,
+                                        Colors.white
+                                        // Color(0xFF34BDDD),
+                                        // Color(0xFF367DC8),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
                                   ),
-                                ),
-                                padding: EdgeInsets.all(2),
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title:
-                                              Text('Alert Dialog Title Text.'),
-                                          content: Text(
-                                              "Are You Sure Want To Proceed ?"),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: Text("YES"),
-                                              onPressed: () async {
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return SimpleDialog(
-                                                      elevation: 100.0,
-                                                      contentPadding:
-                                                          EdgeInsets.all(0),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                      ),
-                                                      children: <Widget>[
-                                                        Container(
-                                                          width: ScreenUtil()
-                                                              .setWidth(250),
-                                                          child: Column(
-                                                            children: <Widget>[
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        15.0),
-                                                                child: Text(
-                                                                  'Select Image from the following options available from below!',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        "Gilroy Medium",
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        16,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setHeight(
-                                                                            25),
-                                                              ),
-                                                              Divider(
-                                                                color: Colors
-                                                                    .black,
-                                                                thickness: 0.8,
-                                                              ),
-                                                              GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  final i = await picker
-                                                                      .getImage(
-                                                                          source:
-                                                                              ImageSource.gallery);
-                                                                  print(i.path);
-                                                                  if (i.path !=
-                                                                      null) {
-                                                                    setState(
-                                                                        () {
-                                                                      isLoadingimage =
-                                                                          true;
-                                                                    });
-                                                                    try {
-                                                                      if (context !=
-                                                                          null)
-                                                                        print(
-                                                                            "SDCD");
-                                                                      await Provider.of<UserInfo>(context, listen: false).changeImage(
-                                                                          context:
-                                                                              context,
-                                                                          image:
-                                                                              File(i.path));
-                                                                      await Provider.of<UserInfo>(
-                                                                              context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .getuser(
-                                                                              context);
+                                  padding: EdgeInsets.all(2),
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProfileImage(
+                                                  url: Provider.of<UserInfo>(
+                                                          context,
+                                                          listen: true)
+                                                      .profileImage,
+                                                )),
+                                      );
+                                      // showDialog(
+                                      //   context: context,
+                                      //   builder: (BuildContext context) {
+                                      //     return AlertDialog(
+                                      //       title: Text('Alert'),
+                                      //       content: Text(
+                                      //           "Are You Sure Want To Process ?"),
+                                      //       actions: <Widget>[
+                                      //         FlatButton(
+                                      //           child: Text("YES"),
+                                      //           onPressed: () async {
+                                      // Navigator.of(context).pop();
+                                      // showDialog(
+                                      //   context: context,
+                                      //   builder:
+                                      //       (BuildContext context) {
+                                      //     return SimpleDialog(
+                                      //       elevation: 100.0,
+                                      //       contentPadding:
+                                      //           EdgeInsets.all(0),
+                                      //       shape:
+                                      //           RoundedRectangleBorder(
+                                      //         borderRadius:
+                                      //             BorderRadius
+                                      //                 .circular(20),
+                                      //       ),
+                                      //       children: <Widget>[
+                                      //         Container(
+                                      //           width: ScreenUtil()
+                                      //               .setWidth(250),
+                                      //           child: Column(
+                                      //             children: <Widget>[
+                                      //               Padding(
+                                      //                 padding:
+                                      //                     const EdgeInsets
+                                      //                             .all(
+                                      //                         15.0),
+                                      //                 child: Text(
+                                      //                   'Select Image from the following options available from below!',
+                                      //                   textAlign:
+                                      //                       TextAlign
+                                      //                           .center,
+                                      //                   style:
+                                      //                       TextStyle(
+                                      //                     fontFamily:
+                                      //                         "Gilroy Medium",
+                                      //                     fontSize: ScreenUtil().setSp(
+                                      //                         16,
+                                      //                         allowFontScalingSelf:
+                                      //                             true),
+                                      //                   ),
+                                      //                 ),
+                                      //               ),
+                                      //               SizedBox(
+                                      //                 height:
+                                      //                     ScreenUtil()
+                                      //                         .setHeight(
+                                      //                             25),
+                                      //               ),
+                                      //               Divider(
+                                      //                 color: Colors
+                                      //                     .black,
+                                      //                 thickness: 0.8,
+                                      //               ),
+                                      //               GestureDetector(
+                                      //                 onTap:
+                                      //                     () async {
+                                      //                   final i = await picker
+                                      //                       .getImage(
+                                      //                           source:
+                                      //                               ImageSource.gallery);
+                                      //                   print(i.path);
+                                      //                   if (i.path !=
+                                      //                       null) {
+                                      //                     setState(
+                                      //                         () {
+                                      //                       isLoadingimage =
+                                      //                           true;
+                                      //                     });
+                                      //                     try {
+                                      //                       if (context !=
+                                      //                           null)
+                                      //                         print(
+                                      //                             "SDCD");
+                                      //                       await Provider.of<UserInfo>(context, listen: false).changeImage(
+                                      //                           context:
+                                      //                               context,
+                                      //                           image:
+                                      //                               File(i.path));
+                                      //                       await Provider.of<UserInfo>(
+                                      //                               context,
+                                      //                               listen:
+                                      //                                   false)
+                                      //                           .getuser(
+                                      //                               context);
 
-                                                                      // image = File(
-                                                                      //     i.path);
-                                                                    } catch (err) {
-                                                                      dataSelect(
-                                                                          context:
-                                                                              context,
-                                                                          titleText:
-                                                                              'Alert!',
-                                                                          buttonText:
-                                                                              'Okay',
-                                                                          contentText: err
-                                                                              .toString(),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          gif:
-                                                                              "assets/images/alert.gif");
-                                                                    } finally {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      setState(
-                                                                          () {
-                                                                        isLoadingimage =
-                                                                            false;
-                                                                      });
-                                                                    }
-                                                                  }
-                                                                },
-                                                                child: Text(
-                                                                  'Gallery',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        "Gilroy Regular",
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        12,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Divider(
-                                                                color: Colors
-                                                                    .black,
-                                                                thickness: 0.8,
-                                                              ),
-                                                              GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  final i = await picker
-                                                                      .getImage(
-                                                                          source:
-                                                                              ImageSource.camera);
+                                      //                       // image = File(
+                                      //                       //     i.path);
+                                      //                     } catch (err) {
+                                      //                       dataSelect(
+                                      //                           context:
+                                      //                               context,
+                                      //                           titleText:
+                                      //                               'Alert!',
+                                      //                           buttonText:
+                                      //                               'Okay',
+                                      //                           contentText: err
+                                      //                               .toString(),
+                                      //                           onPressed:
+                                      //                               () {
+                                      //                             Navigator.pop(context);
+                                      //                           },
+                                      //                           gif:
+                                      //                               "assets/images/alert.gif");
+                                      //                     } finally {
+                                      //                       Navigator.pop(
+                                      //                           context);
+                                      //                       setState(
+                                      //                           () {
+                                      //                         isLoadingimage =
+                                      //                             false;
+                                      //                       });
+                                      //                     }
+                                      //                   }
+                                      //                 },
+                                      //                 child: Text(
+                                      //                   'Gallery',
+                                      //                   style:
+                                      //                       TextStyle(
+                                      //                     fontFamily:
+                                      //                         "Gilroy Regular",
+                                      //                     fontSize: ScreenUtil().setSp(
+                                      //                         12,
+                                      //                         allowFontScalingSelf:
+                                      //                             true),
+                                      //                   ),
+                                      //                 ),
+                                      //               ),
+                                      //               Divider(
+                                      //                 color: Colors
+                                      //                     .black,
+                                      //                 thickness: 0.8,
+                                      //               ),
+                                      //               GestureDetector(
+                                      //                 onTap:
+                                      //                     () async {
+                                      //                   final i = await picker
+                                      //                       .getImage(
+                                      //                           source:
+                                      //                               ImageSource.camera);
 
-                                                                  if (i.path !=
-                                                                      null) {
-                                                                    try {
-                                                                      setState(
-                                                                          () {
-                                                                        isLoadingimage =
-                                                                            true;
-                                                                      });
-                                                                      if (context !=
-                                                                          null)
-                                                                        await Provider.of<UserInfo>(context, listen: false).changeImage(
-                                                                            context:
-                                                                                context,
-                                                                            image:
-                                                                                File(i.path));
-                                                                      await Provider.of<UserInfo>(
-                                                                              context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .getuser(
-                                                                              context);
+                                      //                   if (i.path !=
+                                      //                       null) {
+                                      //                     try {
+                                      //                       setState(
+                                      //                           () {
+                                      //                         isLoadingimage =
+                                      //                             true;
+                                      //                       });
+                                      //                       if (context !=
+                                      //                           null)
+                                      //                         await Provider.of<UserInfo>(context, listen: false).changeImage(
+                                      //                             context:
+                                      //                                 context,
+                                      //                             image:
+                                      //                                 File(i.path));
+                                      //                       await Provider.of<UserInfo>(
+                                      //                               context,
+                                      //                               listen:
+                                      //                                   false)
+                                      //                           .getuser(
+                                      //                               context);
 
-                                                                      image = File(
-                                                                          i.path);
-                                                                    } catch (err) {
-                                                                      dataSelect(
-                                                                          context:
-                                                                              context,
-                                                                          titleText:
-                                                                              'Alert!',
-                                                                          buttonText:
-                                                                              'Okay',
-                                                                          contentText: err
-                                                                              .toString(),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          gif:
-                                                                              "assets/images/alert.gif");
-                                                                    } finally {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                      setState(
-                                                                          () {
-                                                                        isLoadingimage =
-                                                                            false;
-                                                                      });
-                                                                    }
-                                                                  }
-                                                                },
-                                                                child: Text(
-                                                                  'Camera',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        "Gilroy Regular",
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        12,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setHeight(
-                                                                            15),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: Text("NO"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: Text("CANCEL"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: isLoadingimage
-                                      ? Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                      : Container(
-                                          height: ScreenUtil().setHeight(58),
-                                          width: ScreenUtil().setWidth(58),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: AdvancedNetworkImage(
-                                                Provider.of<UserInfo>(context,
-                                                        listen: true)
-                                                    .profileImage,
-                                                useDiskCache: true,
-                                                cacheRule: CacheRule(
-                                                  maxAge:
-                                                      const Duration(days: 3),
+                                      //                       image = File(
+                                      //                           i.path);
+                                      //                     } catch (err) {
+                                      //                       dataSelect(
+                                      //                           context:
+                                      //                               context,
+                                      //                           titleText:
+                                      //                               'Alert!',
+                                      //                           buttonText:
+                                      //                               'Okay',
+                                      //                           contentText: err
+                                      //                               .toString(),
+                                      //                           onPressed:
+                                      //                               () {
+                                      //                             Navigator.pop(context);
+                                      //                           },
+                                      //                           gif:
+                                      //                               "assets/images/alert.gif");
+                                      //                     } finally {
+                                      //                       Navigator.pop(
+                                      //                           context);
+                                      //                       setState(
+                                      //                           () {
+                                      //                         isLoadingimage =
+                                      //                             false;
+                                      //                       });
+                                      //                     }
+                                      //                   }
+                                      //                 },
+                                      //                 child: Text(
+                                      //                   'Camera',
+                                      //                   style:
+                                      //                       TextStyle(
+                                      //                     fontFamily:
+                                      //                         "Gilroy Regular",
+                                      //                     fontSize: ScreenUtil().setSp(
+                                      //                         12,
+                                      //                         allowFontScalingSelf:
+                                      //                             true),
+                                      //                   ),
+                                      //                 ),
+                                      //               ),
+                                      //               SizedBox(
+                                      //                 height:
+                                      //                     ScreenUtil()
+                                      //                         .setHeight(
+                                      //                             15),
+                                      //               ),
+                                      //             ],
+                                      //           ),
+                                      //         ),
+                                      //       ],
+                                      //     );
+                                      //   },
+                                      //             // );
+                                      //           },
+                                      //         ),
+                                      //         FlatButton(
+                                      //           child: Text("NO"),
+                                      //           onPressed: () {
+                                      //             Navigator.of(context).pop();
+                                      //           },
+                                      //         ),
+                                      //         FlatButton(
+                                      //           child: Text("CANCEL"),
+                                      //           onPressed: () {
+                                      //             Navigator.of(context).pop();
+                                      //           },
+                                      //         ),
+                                      //       ],
+                                      //     );
+                                      //   },
+                                      // );
+                                    },
+                                    child: isLoadingimage
+                                        ? Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : Container(
+                                            height: ScreenUtil().setHeight(58),
+                                            width: ScreenUtil().setWidth(58),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: AdvancedNetworkImage(
+                                                  Provider.of<UserInfo>(context,
+                                                          listen: true)
+                                                      .profileImage,
+                                                  useDiskCache: true,
+                                                  cacheRule: CacheRule(
+                                                    maxAge:
+                                                        const Duration(days: 3),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                  ),
                                 ),
                               ),
                               SizedBox(

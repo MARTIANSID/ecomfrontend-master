@@ -673,30 +673,36 @@ class _CartScreenState extends State<CartScreen> {
                                                                             .cart[index]
                                                                             .quantity ==
                                                                         1) {
-                                                                      try {
-                                                                        await Provider.of<Cart>(context, listen: false).deleteCart(
-                                                                            id: Provider.of<Cart>(context, listen: false).cart[index].id,
-                                                                            context: context);
-                                                                        if (mounted) {
-                                                                          setState(
-                                                                              () {});
+                                                                      final v =
+                                                                          await dataSelectConfirmMessage(
+                                                                        context:
+                                                                            context,
+                                                                        titleText:
+                                                                            'Alert!',
+                                                                        contentText:
+                                                                            "Are you sure, You want to remove ${product.styleNumber} from Cart?",
+                                                                        gif:
+                                                                            'assets/images/reversecartGIF.gif',
+                                                                      );
+                                                                      if (v) {
+                                                                        try {
+                                                                          await Provider.of<Cart>(context, listen: false).deleteCart(
+                                                                              id: Provider.of<Cart>(context, listen: false).cart[index].id,
+                                                                              context: context);
+                                                                          if (mounted) {
+                                                                            setState(() {});
+                                                                          }
+                                                                        } catch (err) {
+                                                                          dataSelect(
+                                                                              context: context,
+                                                                              titleText: 'Alert!',
+                                                                              buttonText: 'Okay',
+                                                                              contentText: err.toString(),
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              gif: "assets/images/alert.gif");
                                                                         }
-                                                                      } catch (err) {
-                                                                        dataSelect(
-                                                                            context:
-                                                                                context,
-                                                                            titleText:
-                                                                                'Alert!',
-                                                                            buttonText:
-                                                                                'Okay',
-                                                                            contentText: err
-                                                                                .toString(),
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                            gif:
-                                                                                "assets/images/alert.gif");
                                                                       }
                                                                     } else {
                                                                       await Provider.of<Cart>(context, listen: false).decQuantity(

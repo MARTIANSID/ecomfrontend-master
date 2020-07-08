@@ -23,6 +23,7 @@ import '../constant/const.dart';
 import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../providers/notifiaction.dart';
 
 import 'completeSignUp.dart';
 
@@ -1115,7 +1116,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   width: ScreenUtil().setWidth(
                                                       searchSelected ? 0 : 25),
                                                   child: SvgPicture.asset(
-                                                    'assets/icons/notificationIcon.svg',
+                                                    Provider.of<Notif>(context,
+                                                                    listen:
+                                                                        true)
+                                                                .notifications
+                                                                .length >
+                                                            0
+                                                        ? 'assets/icons/notificationPulseIcon.svg'
+                                                        : 'assets/icons/notificationIcon.svg',
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -1637,7 +1645,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           padding: EdgeInsets.all(25),
                                           child: ListView.builder(
                                             physics: BouncingScrollPhysics(),
-                                            itemCount: 15,
+                                            itemCount: Provider.of<Notif>(
+                                                    context,
+                                                    listen: true)
+                                                .notifications
+                                                .length,
                                             itemBuilder: (context, index) {
                                               return Container(
                                                 margin:
@@ -1691,7 +1703,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 .start,
                                                         children: <Widget>[
                                                           Text(
-                                                            "Order Update",
+                                                            // "Order Update",
+                                                            Provider.of<Notif>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .notifications[
+                                                                    index]
+                                                                .title,
                                                             style: TextStyle(
                                                               fontFamily:
                                                                   "Gilroy Light",
@@ -1706,7 +1725,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 .setHeight(4),
                                                           ),
                                                           Text(
-                                                            "Your order has been processed",
+                                                            Provider.of<Notif>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .notifications[
+                                                                    index]
+                                                                .body,
+                                                            // "Your order has been processed",
                                                             style: TextStyle(
                                                               fontFamily:
                                                                   "Gilroy Light",

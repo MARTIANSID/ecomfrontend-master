@@ -579,8 +579,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   await dataSelectConfirmMessage(
                                     context: globalKey.currentContext,
                                     titleText: 'Alert!',
-                                    contentText:
-                                        "Are you sure, You want to open Whatsapp?",
+                                    contentText: "we are you to your whatsapp",
                                     gif: 'assets/images/whatsappGIF.gif',
                                   ).then((value) async {
                                     if (value) {

@@ -133,7 +133,9 @@ Future<void> main() async {
 //   }
 // }
 
-class MyApp extends StatelessWidget {
+List<dynamic> notifications;
+
+class MyApp extends StatefulWidget {
 //   OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) {
 //     // will be called whenever a notification is received
 // });
@@ -160,13 +162,18 @@ class MyApp extends StatelessWidget {
 // For each of the above functions, you can also pass in a
 // reference to a function as well:
 
-  void _handleNotificationReceived(OSNotification notification) {}
+  // void _handleNotificationReceived(OSNotification notification) {}
 
-  void main() {
-    OneSignal.shared
-        .setNotificationReceivedHandler(_handleNotificationReceived);
-  }
+  // void main() {
+  //   OneSignal.shared
+  //       .setNotificationReceivedHandler(_handleNotificationReceived);
+  // }
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     // precacheImage(AssetImage("images/logo_rienpa.png"), context);
@@ -178,9 +185,24 @@ class MyApp extends StatelessWidget {
       notification.payload.smallIcon = "ic_stat_onesignal_default.png";
       notification.payload.largeIcon = "ic_onesignal_large_icon_default.png";
       notification.payload.smallIconAccentColor = "FF32FFF3";
-      // print(notification.payload.title);
-      // print(notification.payload);
-      // print(notification.payload.additionalData['link']);
+      print(notification.jsonRepresentation());
+      String title = notification.payload.rawPayload['payload']['title'];
+      String body = notification.payload.rawPayload['payload']['alert'];
+      String link =
+          notification.payload.rawPayload['payload']['custom']['a']['link'];
+      String id =
+          notification.payload.rawPayload['payload']['androidNotificationId'];
+      notifications.add(Noti(body: body, title: title, link: link, id: id));
+      print(notifications.length.toString());
+
+      // print(notification.payload.rawPayload);
+
+      // Provider.of<Notif>(context, listen: false).notiAdd(
+      //     title: notification.payload.title,
+      //     body: notification.payload.body,
+      //     link: notification.payload.additionalData['link'],
+      //     id: notification.androidNotificationId);
+      // print(Provider.of<Notif>(context, listen: false).notifications.length);
       // notification.payload.ledColor = "FF4267B2";
     });
     OneSignal.shared
@@ -205,19 +227,31 @@ class MyApp extends StatelessWidget {
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      // Map<String, dynamic> data =
-      // json.decode(result.notification.payload.jsonRepresentation());
+      String title = result.notification.payload.title;
+      String body = result.notification.payload.body;
+      String link = result.notification.payload.additionalData['link'];
+      String id = result.notification.androidNotificationId.toString();
+      notifications.add(Noti(body: body, title: title, link: link, id: id));
+      print(notifications);
 
-      // print(data);
-
-      // print(result.notification.payload.title);
-      // print(result.notification.payload.body);
-      // result.notification.payload.rawPayload.forEach((key, value) {
-      //   print("Key:$key" + value);
-      // });
-      print(result.notification.payload.additionalData['link']);
-      // a notification has been opened
+      // Provider.of<Notif>(context, listen: false)
+      //     .notiDelete(id: result.notification.androidNotificationId.toString());
+      // notification.payload.ledColor = "FF4267B2";
     });
+
+    // Map<String, dynamic> data =
+    // json.decode(result.notification.payload.jsonRepresentation());
+
+    // print(data);
+
+    // print(result.notification.payload.title);
+    // print(result.notification.payload.body);
+    // result.notification.payload.rawPayload.forEach((key, value) {
+    //   print("Key:$key" + value);
+    // });
+
+    // a notification has been opened
+    // });
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
