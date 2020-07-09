@@ -2673,6 +2673,17 @@ class _UserPageState extends State<UserPage>
                                                     gif:
                                                         'assets/images/notification1.gif',
                                                   ).then((value) async {
+                                                    setState(() {
+                                                      value2 = value;
+                                                    });
+                                                  });
+                                                  // }
+                                                  if (!value2) {
+                                                    setState(() {
+                                                      isSwitched = !value;
+                                                      print(isSwitched);
+                                                    });
+                                                  } else {
                                                     try {
                                                       await Provider.of<
                                                                   UserInfo>(
@@ -2694,16 +2705,6 @@ class _UserPageState extends State<UserPage>
                                                           gif:
                                                               "assets/images/alert.gif");
                                                     }
-                                                    setState(() {
-                                                      value2 = value;
-                                                    });
-                                                  });
-                                                  // }
-                                                  if (!value2) {
-                                                    setState(() {
-                                                      isSwitched = !value;
-                                                      print(isSwitched);
-                                                    });
                                                   }
                                                 },
                                                 activeTrackColor:
