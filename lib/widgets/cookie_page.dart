@@ -476,9 +476,13 @@ class _CookiePageState extends State<CookiePage>
                               return Stack(
                                 // alignment: Alignment.bottomRight,
                                 children: <Widget>[
-                                  Container(
+                                  AnimatedContainer(
+                                    duration: Duration(seconds: 1),
                                     width: ScreenUtil().setWidth(159),
-                                    height: ScreenUtil().setHeight(150),
+                                    height: ScreenUtil().setHeight(
+                                        widget.select == 'fav'
+                                            ? widget.products[i].height
+                                            : 150),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
                                       color: Colors.white,

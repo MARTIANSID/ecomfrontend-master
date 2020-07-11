@@ -53,10 +53,38 @@ class _ProfileImageState extends State<ProfileImage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
+                        GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                isLoadingimage = true;
+                              });
+                              try {
+                                await Provider.of<UserInfo>(context,
+                                        listen: false)
+                                    .deleteImage(context: context);
+                                await Provider.of<UserInfo>(context,
+                                        listen: false)
+                                    .getuser(context);
+                              } catch (err) {
+                                dataSelect(
+                                    context: context,
+                                    titleText: 'Alert!',
+                                    buttonText: 'Okay',
+                                    contentText: err.toString(),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    gif: "assets/images/alert.gif");
+                              } finally {
+                                setState(() {
+                                  isLoadingimage = false;
+                                });
+                              }
+                            },
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            )),
                         SizedBox(
                           height: ScreenUtil().setHeight(10),
                         ),

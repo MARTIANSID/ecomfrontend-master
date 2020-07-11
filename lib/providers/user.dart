@@ -330,4 +330,19 @@ class UserInfo with ChangeNotifier {
       throw err;
     }
   }
+
+  Future<void> deleteImage({context}) async {
+    try {
+      final response = await http.delete(uurl + '/user/profileimage', headers: {
+        'Authorization':
+            'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+      });
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != false) {
+        throw HttpException(responseData['details']['message']);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }

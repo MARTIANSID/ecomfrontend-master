@@ -85,6 +85,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   AnimationController controller;
   Animation<double> heightAnimation;
+  Animation<double> opacity;
 
   @override
   void initState() {
@@ -95,18 +96,40 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       duration: Duration(milliseconds: 600),
       reverseDuration: Duration(milliseconds: 600),
     );
-    heightAnimation = Tween(
-            begin: _isVisible ? 45.0 : 0.0, end: _isVisible ? 0.0 : 45.0)
-        .animate(CurvedAnimation(curve: Curves.easeInOut, parent: controller));
+
+    opacity = Tween<double>(
+      end: 0.0,
+      begin: 1.0,
+    ).animate(CurvedAnimation(
+        curve: Curves.easeIn,
+        parent: controller,
+        reverseCurve: Curves.easeOut));
+    heightAnimation =
+        Tween(begin: _isVisible ? 45.0 : 0.0, end: _isVisible ? 0.0 : 45.0)
+            .animate(CurvedAnimation(
+                curve: Curves.easeIn,
+                parent: controller,
+                reverseCurve: Curves.easeOut));
     _hideButtonController = ScrollController();
     _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.idle) {
+        setState(() {
+          _isVisible = true;
+          print("**** $_isVisible down");
+          controller.reverse();
+          // controller.animateTo(0.0);
+        });
+      }
       if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.reverse) {
         if (_isVisible)
           setState(() {
             _isVisible = false;
+
             print("**** $_isVisible up");
-            controller.forward();
+            controller.forward(from: 0.0);
+            // controller.animateTo(1);
           });
       }
       if (_hideButtonController.position.userScrollDirection ==
@@ -116,6 +139,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             _isVisible = true;
             print("**** $_isVisible down");
             controller.reverse();
+            // controller.animateTo(0.0);
           });
       }
     });
@@ -134,6 +158,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void dispose() {
     super.dispose();
     controller.dispose();
+    _hideButtonController.dispose();
   }
 
   @override
@@ -209,7 +234,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     //         ),
     // );
     return WillPopScope(
-      onWillPop: () {
+      onWillPop: () async {
         // bool value2 = false;
         // dataSelectConfirmMessage(context, "Alert!",
         //         "Are your sure you want to exit the App?", "buttonText")
@@ -219,7 +244,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         //   });
         // });
         // if (value2) {
-        //   SystemNavigator.pop();
+        await dataSelectConfirmMessage1(
+          context: globalKey.currentContext,
+          titleText: 'Alert!',
+          contentText: "Are you sure you want to exit the app?",
+          // gif:
+          //     'assets/images/notification1.gif',
+        ).then((value) async {
+          if (value) {
+            SystemNavigator.pop();
+          }
+        });
         // }
       },
       child: Stack(
@@ -251,6 +286,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 ProductOverViewScreen(
                   scrollController: _hideButtonController,
+                  opacityAnimation: opacity,
                   onButtonTapped: _onTap,
                   val: _isVisible,
                   loader: loade,
@@ -560,8 +596,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   ? SvgPicture.asset(
                                       'assets/icons/cartIconPulse.svg',
                                       color: Colors.white,
-                                      height: ScreenUtil().setHeight(28),
-                                      width: ScreenUtil().setWidth(28),
+                                      height: ScreenUtil().setHeight(25),
+                                      width: ScreenUtil().setWidth(25),
                                     )
                                   : SvgPicture.asset(
                                       'assets/icons/cartIcon.svg',

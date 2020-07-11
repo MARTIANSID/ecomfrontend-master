@@ -76,7 +76,11 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
           child: Container(
             width: ScreenUtil().setWidth(330),
             height: ScreenUtil().setHeight(155),
-            margin: EdgeInsets.only(bottom: 20.0),
+            margin: EdgeInsets.only(
+              bottom: 20.0,
+              left: 5.0,
+              right: 5.0,
+            ),
             padding: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               // color: Colors.amber,

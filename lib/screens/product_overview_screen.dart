@@ -32,10 +32,12 @@ class ProductOverViewScreen extends StatefulWidget {
   final void Function(int) onButtonTapped;
   final bool val;
   final void Function(bool) loader;
+  final Animation<double> opacityAnimation;
 
   const ProductOverViewScreen(
       {Key key,
       this.scrollController,
+      this.opacityAnimation,
       this.onButtonTapped,
       this.val,
       this.loader})
@@ -439,353 +441,405 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 600),
-                            height: ScreenUtil()
-                                .setHeight(widget.val ? 22 + 45 + 20 + 20 : 22),
-                          ),
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 600),
-                            width: ScreenUtil().setWidth(widget.val ? 357 : 0),
-                            margin: EdgeInsets.fromLTRB(
-                                24, 0, 0, widget.val ? 15 : 0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                // ShaderMask(
-                                // shaderCallback: (bounds) => LinearGradient(
-                                //   colors: [
-                                //     Color(0xFF34B0D9),
-                                //     Color(0xFF3685CB),
-                                //   ],
-                                //   begin: Alignment.topLeft,
-                                //   end: Alignment.bottomRight,
-                                // ).createShader(
-                                //   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                                // ),
-                                //   child: Text(
-                                //     'CART',
-                                //     style: TextStyle(
-                                //       color: Colors.white,
-                                //       fontFamily: 'Gilroy Black',
-                                //       fontSize: ScreenUtil()
-                                //           .setSp(20, allowFontScalingSelf: true),
-                                //     ),
-                                //   ),
-                                // ),
-                                Container(
-                                  height: ScreenUtil().setHeight(20),
-                                  width: ScreenUtil().setWidth(265),
-                                  child: TabBar(
-                                    onTap: (value) {
-                                      // setState(() {
-                                      //   _tabController.index = 1;
-                                      // });
-                                      if (Provider.of<Pagination>(context,
-                                                  listen: false)
-                                              .isVerified ==
-                                          false) {
-                                        setState(() {
-                                          _tabController.index = 1;
-                                        });
-                                        //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
-                                        // dataSelect(
-                                        //   context,
-                                        //   'Important!',
-                                        //   "To get complete access of the app, you need to first verify yourself!",
-                                        //   'Complete SignUp',
-                                        //   completeSignUp,
-                                        // );
-                                        dataSelect(
-                                            context: context,
-                                            titleText: 'Important!',
-                                            buttonText: 'Complete SignUp',
-                                            contentText:
-                                                "To get complete access of the app, you need to first verify yourself!",
-                                            onPressed: completeSignUp,
-                                            gif: "assets/images/alert.gif");
-                                      }
-                                    },
-                                    controller: _tabController,
-                                    // indicatorColor: kPrimaryColor,
-                                    // labelColor: Colors.black,
-                                    labelStyle: TextStyle(
-                                      fontFamily: 'Gilroy Bold',
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil().setSp(16,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    unselectedLabelStyle: TextStyle(
-                                      fontFamily: 'Gilroy Regular',
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil().setSp(14,
-                                          allowFontScalingSelf: true),
-                                    ),
-                                    // indicatorPadding: EdgeInsets.only(left: 8.0, right: 8.0),
-                                    labelPadding:
-                                        EdgeInsets.only(left: 5.0, right: 5.0),
-                                    isScrollable: true,
-                                    indicator: BoxDecoration(),
-                                    tabs: [
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 0
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'ALL',
-                                            style: TextStyle(
-                                              // color: Colors.black,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 1
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'FEATURED',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 2
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'NEW',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              // _tabController.index == 3
-                                              // ?
-                                              LinearGradient(
-                                            colors: [
-                                              Color(0xFF34B0D9),
-                                              Color(0xFF3685CB),
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0, 0, bounds.width,
-                                                bounds.height),
-                                          ),
-                                          // : LinearGradient(
-                                          //     colors: [
-                                          //       Color(0xFFA49797),
-                                          //       Color(0xFFA49797),
-                                          //     ],
-                                          //     begin: Alignment.topLeft,
-                                          //     end:
-                                          //         Alignment.bottomRight,
-                                          //   ).createShader(
-                                          //     Rect.fromLTWH(
-                                          //         0,
-                                          //         0,
-                                          //         bounds.width,
-                                          //         bounds.height),
-                                          //   ),
-                                          child: Text(
-                                            'HIGHEST SELLING',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                          child: ShaderMask(
-                                        shaderCallback: (bounds) =>
-                                            // _tabController.index == 4
-                                            //     ?
-                                            LinearGradient(
-                                          colors: [
-                                            Color(0xFF34B0D9),
-                                            Color(0xFF3685CB),
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ).createShader(
-                                          Rect.fromLTWH(0, 0, bounds.width,
-                                              bounds.height),
-                                        ),
-                                        // : LinearGradient(
-                                        //     colors: [
-                                        //       Color(0xFFA49797),
-                                        //       Color(0xFFA49797),
-                                        //     ],
-                                        //     begin: Alignment.topLeft,
-                                        //     end: Alignment.bottomRight,
-                                        //   ).createShader(
-                                        //     Rect.fromLTWH(
-                                        //         0,
-                                        //         0,
-                                        //         bounds.width,
-                                        //         bounds.height),
-                                        //   ),
-                                        child: Text(
-                                          'FANCY DIAMOND',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      )),
-                                    ],
+                          widget.val
+                              ? FadeTransition(
+                                  opacity: widget.opacityAnimation,
+                                  child: SizedBox(
+                                    height: ScreenUtil()
+                                        .setHeight(22 + 45 + 20 + 20),
+                                  ),
+                                )
+                              : FadeTransition(
+                                  opacity: widget.opacityAnimation,
+                                  child: SizedBox(
+                                    height: ScreenUtil().setHeight(22),
                                   ),
                                 ),
-                                // SizedBox(
-                                //   width: ScreenUtil().setWidth(30),
-                                // ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          child: SortPage(
-                                            scrollController:
-                                                widget.scrollController,
+                          widget.val
+                              ? FadeTransition(
+                                  opacity: widget.opacityAnimation,
+                                  child: Container(
+                                    width: ScreenUtil().setWidth(357),
+                                    margin: EdgeInsets.fromLTRB(24, 0, 0, 15),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        // ShaderMask(
+                                        // shaderCallback: (bounds) => LinearGradient(
+                                        //   colors: [
+                                        //     Color(0xFF34B0D9),
+                                        //     Color(0xFF3685CB),
+                                        //   ],
+                                        //   begin: Alignment.topLeft,
+                                        //   end: Alignment.bottomRight,
+                                        // ).createShader(
+                                        //   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                                        // ),
+                                        //   child: Text(
+                                        //     'CART',
+                                        //     style: TextStyle(
+                                        //       color: Colors.white,
+                                        //       fontFamily: 'Gilroy Black',
+                                        //       fontSize: ScreenUtil()
+                                        //           .setSp(20, allowFontScalingSelf: true),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Container(
+                                          height: ScreenUtil().setHeight(20),
+                                          width: ScreenUtil().setWidth(265),
+                                          child: TabBar(
+                                            onTap: (value) {
+                                              // setState(() {
+                                              //   _tabController.index = 1;
+                                              // });
+                                              if (Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .isVerified ==
+                                                  false) {
+                                                setState(() {
+                                                  _tabController.index = 1;
+                                                });
+                                                //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
+                                                // dataSelect(
+                                                //   context,
+                                                //   'Important!',
+                                                //   "To get complete access of the app, you need to first verify yourself!",
+                                                //   'Complete SignUp',
+                                                //   completeSignUp,
+                                                // );
+                                                dataSelect(
+                                                    context: context,
+                                                    titleText: 'Important!',
+                                                    buttonText:
+                                                        'Complete SignUp',
+                                                    contentText:
+                                                        "To get complete access of the app, you need to first verify yourself!",
+                                                    onPressed: completeSignUp,
+                                                    gif:
+                                                        "assets/images/alert.gif");
+                                              }
+                                            },
+                                            controller: _tabController,
+                                            // indicatorColor: kPrimaryColor,
+                                            // labelColor: Colors.black,
+                                            labelStyle: TextStyle(
+                                              fontFamily: 'Gilroy Bold',
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(16,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            unselectedLabelStyle: TextStyle(
+                                              fontFamily: 'Gilroy Regular',
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(14,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            // indicatorPadding: EdgeInsets.only(left: 8.0, right: 8.0),
+                                            labelPadding: EdgeInsets.only(
+                                                left: 5.0, right: 5.0),
+                                            isScrollable: true,
+                                            indicator: BoxDecoration(),
+                                            tabs: [
+                                              Tab(
+                                                child: ShaderMask(
+                                                  shaderCallback: (bounds) =>
+                                                      // _tabController.index == 0
+                                                      // ?
+                                                      LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                                  // : LinearGradient(
+                                                  //     colors: [
+                                                  //       Color(0xFFA49797),
+                                                  //       Color(0xFFA49797),
+                                                  //     ],
+                                                  //     begin: Alignment.topLeft,
+                                                  //     end:
+                                                  //         Alignment.bottomRight,
+                                                  //   ).createShader(
+                                                  //     Rect.fromLTWH(
+                                                  //         0,
+                                                  //         0,
+                                                  //         bounds.width,
+                                                  //         bounds.height),
+                                                  //   ),
+                                                  child: Text(
+                                                    'ALL',
+                                                    style: TextStyle(
+                                                      // color: Colors.black,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Tab(
+                                                child: ShaderMask(
+                                                  shaderCallback: (bounds) =>
+                                                      // _tabController.index == 1
+                                                      // ?
+                                                      LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                                  // : LinearGradient(
+                                                  //     colors: [
+                                                  //       Color(0xFFA49797),
+                                                  //       Color(0xFFA49797),
+                                                  //     ],
+                                                  //     begin: Alignment.topLeft,
+                                                  //     end:
+                                                  //         Alignment.bottomRight,
+                                                  //   ).createShader(
+                                                  //     Rect.fromLTWH(
+                                                  //         0,
+                                                  //         0,
+                                                  //         bounds.width,
+                                                  //         bounds.height),
+                                                  //   ),
+                                                  child: Text(
+                                                    'FEATURED',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Tab(
+                                                child: ShaderMask(
+                                                  shaderCallback: (bounds) =>
+                                                      // _tabController.index == 2
+                                                      // ?
+                                                      LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                                  // : LinearGradient(
+                                                  //     colors: [
+                                                  //       Color(0xFFA49797),
+                                                  //       Color(0xFFA49797),
+                                                  //     ],
+                                                  //     begin: Alignment.topLeft,
+                                                  //     end:
+                                                  //         Alignment.bottomRight,
+                                                  //   ).createShader(
+                                                  //     Rect.fromLTWH(
+                                                  //         0,
+                                                  //         0,
+                                                  //         bounds.width,
+                                                  //         bounds.height),
+                                                  //   ),
+                                                  child: Text(
+                                                    'NEW',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Tab(
+                                                child: ShaderMask(
+                                                  shaderCallback: (bounds) =>
+                                                      // _tabController.index == 3
+                                                      // ?
+                                                      LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34B0D9),
+                                                      Color(0xFF3685CB),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ).createShader(
+                                                    Rect.fromLTWH(
+                                                        0,
+                                                        0,
+                                                        bounds.width,
+                                                        bounds.height),
+                                                  ),
+                                                  // : LinearGradient(
+                                                  //     colors: [
+                                                  //       Color(0xFFA49797),
+                                                  //       Color(0xFFA49797),
+                                                  //     ],
+                                                  //     begin: Alignment.topLeft,
+                                                  //     end:
+                                                  //         Alignment.bottomRight,
+                                                  //   ).createShader(
+                                                  //     Rect.fromLTWH(
+                                                  //         0,
+                                                  //         0,
+                                                  //         bounds.width,
+                                                  //         bounds.height),
+                                                  //   ),
+                                                  child: Text(
+                                                    'HIGHEST SELLING',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Tab(
+                                                  child: ShaderMask(
+                                                shaderCallback: (bounds) =>
+                                                    // _tabController.index == 4
+                                                    //     ?
+                                                    LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF34B0D9),
+                                                    Color(0xFF3685CB),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ).createShader(
+                                                  Rect.fromLTWH(
+                                                      0,
+                                                      0,
+                                                      bounds.width,
+                                                      bounds.height),
+                                                ),
+                                                // : LinearGradient(
+                                                //     colors: [
+                                                //       Color(0xFFA49797),
+                                                //       Color(0xFFA49797),
+                                                //     ],
+                                                //     begin: Alignment.topLeft,
+                                                //     end: Alignment.bottomRight,
+                                                //   ).createShader(
+                                                //     Rect.fromLTWH(
+                                                //         0,
+                                                //         0,
+                                                //         bounds.width,
+                                                //         bounds.height),
+                                                //   ),
+                                                child: Text(
+                                                  'FANCY DIAMOND',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 8.0),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/sortIcon.svg',
-                                          width: ScreenUtil().setWidth(24),
-                                          height: ScreenUtil().setHeight(24),
-                                          color: Colors.black,
                                         ),
-                                      ),
+                                        // SizedBox(
+                                        //   width: ScreenUtil().setWidth(30),
+                                        // ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  child: SortPage(
+                                                    scrollController:
+                                                        widget.scrollController,
+                                                  ),
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    EdgeInsets.only(right: 8.0),
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/sortIcon.svg',
+                                                  width:
+                                                      ScreenUtil().setWidth(24),
+                                                  height: ScreenUtil()
+                                                      .setHeight(24),
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  child: OptionsDialog(
+                                                    choicesBuild: _choices,
+                                                    choiceColor: _choices1,
+                                                    choiceCertification:
+                                                        _choices2,
+                                                    choiceDiamondQuality:
+                                                        _choices3,
+                                                    defValue:
+                                                        _defaultChoiceIndex1,
+                                                    defValue1:
+                                                        _defaultChoiceIndex2,
+                                                    defValue2:
+                                                        _defaultChoiceIndex3,
+                                                    defValue3:
+                                                        _defaultChoiceIndex4,
+                                                    valueChangeBuild:
+                                                        _onValueChange,
+                                                    valueChangeColor:
+                                                        _onValueChangeColor,
+                                                    valueChangeCerti:
+                                                        _onValueChangeCerti,
+                                                    valueChangeDQ:
+                                                        _onValueChangeDQ,
+                                                  ),
+                                                );
+                                              },
+                                              child: SvgPicture.asset(
+                                                'assets/icons/optionsIcon.svg',
+                                                width:
+                                                    ScreenUtil().setWidth(24),
+                                                height:
+                                                    ScreenUtil().setHeight(24),
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          child: OptionsDialog(
-                                            choicesBuild: _choices,
-                                            choiceColor: _choices1,
-                                            choiceCertification: _choices2,
-                                            choiceDiamondQuality: _choices3,
-                                            defValue: _defaultChoiceIndex1,
-                                            defValue1: _defaultChoiceIndex2,
-                                            defValue2: _defaultChoiceIndex3,
-                                            defValue3: _defaultChoiceIndex4,
-                                            valueChangeBuild: _onValueChange,
-                                            valueChangeColor:
-                                                _onValueChangeColor,
-                                            valueChangeCerti:
-                                                _onValueChangeCerti,
-                                            valueChangeDQ: _onValueChangeDQ,
-                                          ),
-                                        );
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/icons/optionsIcon.svg',
-                                        width: ScreenUtil().setWidth(24),
-                                        height: ScreenUtil().setHeight(24),
-                                        color: Colors.black,
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 )
-                              ],
-                            ),
-                          ),
+                              : FadeTransition(
+                                  opacity: widget.opacityAnimation,
+                                  child: SizedBox(
+                                    height: ScreenUtil().setHeight(15),
+                                  ),
+                                ),
                           AnimatedContainer(
                             duration: Duration(milliseconds: 600),
                             height:
@@ -926,474 +980,493 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                               ),
                             ),
                           ),
-                    widget.val
-                        ? Container(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                  sigmaX: searchSelected ? 5 : 0,
-                                  sigmaY: searchSelected ? 5 : 0),
-                              child: Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: ScreenUtil().setHeight(22),
-                                  ),
-                                  Container(
-                                    width: ScreenUtil().setWidth(360),
-                                    height: ScreenUtil().setHeight(45),
-                                    margin: EdgeInsets.fromLTRB(
-                                        24, 20, 0, searchSelected ? 0 : 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        AnimatedContainer(
-                                          duration: Duration(milliseconds: 600),
-                                          curve: Curves.easeInOut,
-                                          padding: EdgeInsets.only(left: 10.0),
-                                          width: ScreenUtil().setWidth(
-                                              searchSelected ? 305 : 360),
-                                          height: ScreenUtil().setHeight(45),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            color: Colors.white,
-                                          ),
-                                          child: Stack(
-                                            alignment: Alignment.centerRight,
-                                            children: <Widget>[
-                                              Positioned(
-                                                top: 0.0,
-                                                left: 0.0,
-                                                // right: 0.0,
-                                                child: Container(
-                                                  width: ScreenUtil().setWidth(
-                                                      searchSelected
-                                                          ? 305
-                                                          : 360),
-                                                  height: ScreenUtil()
-                                                      .setHeight(40),
-                                                  child: TextField(
-                                                    controller:
-                                                        textEditingController,
-                                                    onTap: () async {
-                                                      setState(() {
-                                                        searchSelected = true;
-                                                      });
-                                                      Timer(
-                                                          Duration(
-                                                              milliseconds:
-                                                                  700), () {
-                                                        setState(() {
-                                                          searchSelectedDoneButton =
-                                                              true;
-                                                        });
-                                                      });
-                                                    },
-                                                    onChanged: (value) async {
-                                                      setState(() {
-                                                        // isLoadingSearch = true;
-                                                        searchValue =
-                                                            value.toUpperCase();
-                                                      });
-                                                      // setState(() {
 
-                                                      //   // info=styleNumber[].split(value);
-                                                      //   // print(styleNumber[1].split(searchValue));
-                                                      // });
-                                                      try {
-                                                        await getSearch(
-                                                            searchValue
-                                                                .toUpperCase());
-                                                      } catch (err) {
-                                                        dataSelect(
-                                                            context: context,
-                                                            titleText: 'Alert!',
-                                                            buttonText: 'Okay',
-                                                            contentText:
-                                                                err.toString(),
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            gif:
-                                                                "assets/images/alert.gif");
-                                                      }
-                                                      // setState(() {
-                                                      //   isLoadingSearch = false;
-                                                      // });
-                                                      // getSearchResult(value.toUpperCase());
-                                                    },
-                                                    decoration: InputDecoration(
-                                                      // contentPadding: EdgeInsets.all(15.0),
-                                                      // suffixIcon: searchSelected
-                                                      //     ? GestureDetector(
-                                                      //         onTap: () {
-                                                      //           textEditingController
-                                                      //               .clear();
-                                                      //           setState(() {
-                                                      //             searchValue = "";
-                                                      //           });
-                                                      //         },
-                                                      //         child: Icon(Icons.clear),
-                                                      //       )
-                                                      //     : SizedBox(
-                                                      //         height: 0.0,
-                                                      //         width: 0.0,
-                                                      //       ),
-                                                      hintText:
-                                                          'SEARCH GEMSTORY',
-                                                      hintStyle: TextStyle(
-                                                        fontFamily:
-                                                            'Gilroy Medium',
-                                                        color:
-                                                            Color(0xFF595959),
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14,
-                                                                allowFontScalingSelf:
-                                                                    true),
-                                                      ),
-                                                      border: InputBorder.none,
-                                                    ),
-                                                    textAlign: searchSelected
-                                                        ? TextAlign.start
-                                                        : TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'Gilroy Regular',
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(16,
-                                                                allowFontScalingSelf:
-                                                                    true)),
-                                                  ),
-                                                ),
-                                              ),
-                                              AnimatedContainer(
-                                                duration:
-                                                    Duration(milliseconds: 600),
-                                                margin:
-                                                    EdgeInsets.only(right: 6.0),
-                                                height: ScreenUtil().setHeight(
-                                                    searchSelected ? 27 : 0),
-                                                width: ScreenUtil().setWidth(
-                                                    searchSelected ? 27 : 0),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    textEditingController
-                                                        .clear();
-                                                    setState(() {
-                                                      searchValue = "";
-                                                    });
-                                                  },
-                                                  child: Icon(
-                                                    Icons.clear,
-                                                    color: Colors.black,
-                                                    size: searchSelected
-                                                        ? ScreenUtil().setSp(25,
-                                                            allowFontScalingSelf:
-                                                                true)
-                                                        : 0,
-                                                  ),
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
+                    FadeTransition(
+                      opacity: widget.opacityAnimation,
+                      child: Container(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                              sigmaX: searchSelected ? 5 : 0,
+                              sigmaY: searchSelected ? 5 : 0),
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: ScreenUtil().setHeight(22),
+                              ),
+                              Container(
+                                width: ScreenUtil().setWidth(360),
+                                height: ScreenUtil().setHeight(45),
+                                margin: EdgeInsets.fromLTRB(
+                                    24, 20, 0, searchSelected ? 0 : 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    AnimatedContainer(
+                                      duration: Duration(milliseconds: 600),
+                                      curve: Curves.easeInOut,
+                                      padding: EdgeInsets.only(left: 10.0),
+                                      width: ScreenUtil()
+                                          .setWidth(searchSelected ? 305 : 360),
+                                      height: ScreenUtil().setHeight(45),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        color: Colors.white,
+                                      ),
+                                      child: Stack(
+                                        alignment: Alignment.centerRight,
+                                        children: <Widget>[
+                                          Positioned(
+                                            top: 0.0,
+                                            left: 0.0,
+                                            // right: 0.0,
+                                            child: Container(
+                                              width: ScreenUtil().setWidth(
+                                                  searchSelected ? 305 : 360),
+                                              height:
+                                                  ScreenUtil().setHeight(40),
+                                              child: TextField(
+                                                enabled:
+                                                    !widget.val ? false : true,
+                                                controller:
+                                                    textEditingController,
+                                                onTap: () async {
                                                   setState(() {
-                                                    tapNotication =
-                                                        !tapNotication;
+                                                    searchSelected = true;
+                                                  });
+                                                  Timer(
+                                                      Duration(
+                                                          milliseconds: 700),
+                                                      () {
+                                                    setState(() {
+                                                      searchSelectedDoneButton =
+                                                          true;
+                                                    });
                                                   });
                                                 },
-                                                child: AnimatedContainer(
-                                                  duration: Duration(
-                                                      milliseconds: 600),
-                                                  margin: EdgeInsets.only(
-                                                      right: 6.0),
-                                                  height: ScreenUtil()
-                                                      .setHeight(searchSelected
-                                                          ? 0
-                                                          : 25),
-                                                  width: ScreenUtil().setWidth(
-                                                      searchSelected ? 0 : 25),
-                                                  child: SvgPicture.asset(
-                                                    Provider.of<Notif>(context,
-                                                                    listen:
-                                                                        true)
-                                                                .notifications
-                                                                .length >
-                                                            0
-                                                        ? 'assets/icons/notificationPulseIcon.svg'
-                                                        : 'assets/icons/notificationIcon.svg',
-                                                    color: Colors.black,
+                                                onChanged: (value) async {
+                                                  setState(() {
+                                                    // isLoadingSearch = true;
+                                                    searchValue =
+                                                        value.toUpperCase();
+                                                  });
+                                                  // setState(() {
+
+                                                  //   // info=styleNumber[].split(value);
+                                                  //   // print(styleNumber[1].split(searchValue));
+                                                  // });
+                                                  try {
+                                                    await getSearch(searchValue
+                                                        .toUpperCase());
+                                                  } catch (err) {
+                                                    dataSelect(
+                                                        context: context,
+                                                        titleText: 'Alert!',
+                                                        buttonText: 'Okay',
+                                                        contentText:
+                                                            err.toString(),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        gif:
+                                                            "assets/images/alert.gif");
+                                                  }
+                                                  // setState(() {
+                                                  //   isLoadingSearch = false;
+                                                  // });
+                                                  // getSearchResult(value.toUpperCase());
+                                                },
+                                                decoration: InputDecoration(
+                                                  // contentPadding: EdgeInsets.all(15.0),
+                                                  // suffixIcon: searchSelected
+                                                  //     ? GestureDetector(
+                                                  //         onTap: () {
+                                                  //           textEditingController
+                                                  //               .clear();
+                                                  //           setState(() {
+                                                  //             searchValue = "";
+                                                  //           });
+                                                  //         },
+                                                  //         child: Icon(Icons.clear),
+                                                  //       )
+                                                  //     : SizedBox(
+                                                  //         height: 0.0,
+                                                  //         width: 0.0,
+                                                  //       ),
+                                                  hintText: 'SEARCH GEMSTORY',
+                                                  hintStyle: TextStyle(
+                                                    fontFamily: 'Gilroy Medium',
+                                                    color: Color(0xFF595959),
+                                                    fontSize: ScreenUtil().setSp(
+                                                        14,
+                                                        allowFontScalingSelf:
+                                                            true),
                                                   ),
+                                                  border: InputBorder.none,
                                                 ),
+                                                textAlign: searchSelected
+                                                    ? TextAlign.start
+                                                    : TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        'Gilroy Regular',
+                                                    fontSize: ScreenUtil().setSp(
+                                                        16,
+                                                        allowFontScalingSelf:
+                                                            true)),
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                        searchSelectedDoneButton
-                                            ? SizedBox(
-                                                width:
-                                                    ScreenUtil().setWidth(10),
-                                              )
-                                            : SizedBox(
-                                                width: 0,
+                                          AnimatedContainer(
+                                            duration:
+                                                Duration(milliseconds: 600),
+                                            margin: EdgeInsets.only(right: 6.0),
+                                            height: ScreenUtil().setHeight(
+                                                searchSelected ? 27 : 0),
+                                            width: ScreenUtil().setWidth(
+                                                searchSelected ? 27 : 0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                textEditingController.clear();
+                                                setState(() {
+                                                  searchValue = "";
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.clear,
+                                                color: Colors.black,
+                                                size: searchSelected
+                                                    ? ScreenUtil().setSp(25,
+                                                        allowFontScalingSelf:
+                                                            true)
+                                                    : 0,
                                               ),
-                                        searchSelectedDoneButton
-                                            ? Container(
-                                                height:
-                                                    ScreenUtil().setHeight(22),
-                                                width:
-                                                    ScreenUtil().setWidth(45),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    FocusScopeNode
-                                                        currentFocus =
-                                                        FocusScope.of(context);
-                                                    currentFocus.unfocus();
-                                                    textEditingController
-                                                        .clear();
-                                                    setState(() {
-                                                      searchValue = "";
-                                                      searchSelected = false;
-                                                      searchSelectedDoneButton =
-                                                          false;
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    'Done',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Gilroy Bold',
-                                                      color: Colors.black,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          16,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            : SizedBox(
-                                                width: 0,
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                tapNotication = !tapNotication;
+                                              });
+                                            },
+                                            child: AnimatedContainer(
+                                              duration:
+                                                  Duration(milliseconds: 600),
+                                              margin:
+                                                  EdgeInsets.only(right: 6.0),
+                                              height: ScreenUtil().setHeight(
+                                                  searchSelected ? 0 : 25),
+                                              width: ScreenUtil().setWidth(
+                                                  searchSelected ? 0 : 25),
+                                              child: SvgPicture.asset(
+                                                Provider.of<Notif>(context,
+                                                                listen: true)
+                                                            .notifications
+                                                            .length >
+                                                        0
+                                                    ? 'assets/icons/notificationPulseIcon.svg'
+                                                    : 'assets/icons/notificationIcon.svg',
+                                                color: Colors.black,
                                               ),
-                                      ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  !searchSelected
-                                      ? SizedBox(
-                                          height: 0.0,
-                                          width: 0.0,
-                                        )
-                                      : Divider(
-                                          color: Colors.grey[300],
-                                          endIndent: 70.0,
-                                          indent: 70.0,
-                                        ),
-                                  searchValue.isEmpty
-                                      ? SizedBox(
-                                          height: 0.0,
-                                          width: 0.0,
-                                        )
-                                      : isLoadingSearch
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : Container(
-                                              height:
-                                                  ScreenUtil().setHeight(600.0),
-                                              width:
-                                                  ScreenUtil().setHeight(360),
-                                              margin: EdgeInsets.fromLTRB(
-                                                  25, 0, 26, 20),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(15.0),
+                                    searchSelectedDoneButton
+                                        ? SizedBox(
+                                            width: ScreenUtil().setWidth(10),
+                                          )
+                                        : SizedBox(
+                                            width: 0,
+                                          ),
+                                    searchSelectedDoneButton
+                                        ? Container(
+                                            height: ScreenUtil().setHeight(22),
+                                            width: ScreenUtil().setWidth(45),
+                                            child: GestureDetector(
+                                              onTap: !widget.val
+                                                  ? null
+                                                  : () {
+                                                      FocusScopeNode
+                                                          currentFocus =
+                                                          FocusScope.of(
+                                                              context);
+                                                      currentFocus.unfocus();
+                                                      textEditingController
+                                                          .clear();
+                                                      setState(() {
+                                                        searchValue = "";
+                                                        searchSelected = false;
+                                                        searchSelectedDoneButton =
+                                                            false;
+                                                      });
+                                                    },
+                                              child: Text(
+                                                'Done',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Bold',
+                                                  color: Colors.black,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
-                                              child: suggestion.length > 0
-                                                  ? ListView.builder(
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.vertical,
-                                                      physics:
-                                                          BouncingScrollPhysics(),
-                                                      itemCount:
-                                                          Provider.of<Searchh>(
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            width: 0,
+                                          ),
+                                  ],
+                                ),
+                              ),
+                              !searchSelected
+                                  ? SizedBox(
+                                      height: 0.0,
+                                      width: 0.0,
+                                    )
+                                  : Divider(
+                                      color: Colors.grey[300],
+                                      endIndent: 70.0,
+                                      indent: 70.0,
+                                    ),
+                              searchValue.isEmpty
+                                  ? SizedBox(
+                                      height: 0.0,
+                                      width: 0.0,
+                                    )
+                                  : isLoadingSearch
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Container(
+                                          height: ScreenUtil().setHeight(600.0),
+                                          width: ScreenUtil().setHeight(360),
+                                          margin: EdgeInsets.fromLTRB(
+                                              25, 0, 26, 20),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          child: suggestion.length > 0
+                                              ? ListView.builder(
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  itemCount:
+                                                      Provider.of<Searchh>(
+                                                              context,
+                                                              listen: false)
+                                                          .searchResult
+                                                          .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    info = suggestion[index]
+                                                        .styleNumber
+                                                        .split(searchValue);
+                                                    print(info);
+                                                    return GestureDetector(
+                                                      onTap: () async {
+                                                        try {
+                                                          await Provider.of<
+                                                                      Pagination>(
                                                                   context,
                                                                   listen: false)
-                                                              .searchResult
-                                                              .length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        info = suggestion[index]
-                                                            .styleNumber
-                                                            .split(searchValue);
-                                                        print(info);
-                                                        return GestureDetector(
-                                                          onTap: () async {
-                                                            try {
-                                                              await Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .getProductDetail(
-                                                                      context:
-                                                                          context,
-                                                                      styleNumber:
-                                                                          suggestion[index]
-                                                                              .styleNumber);
-                                                              FocusScopeNode
-                                                                  currentFocus =
-                                                                  FocusScope.of(
-                                                                      context);
-                                                              currentFocus
-                                                                  .unfocus();
-                                                              textEditingController
-                                                                  .clear();
-                                                              setState(() {
-                                                                searchValue =
-                                                                    "";
-                                                                searchSelected =
-                                                                    false;
-                                                                searchSelectedDoneButton =
-                                                                    false;
-                                                              });
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          ProductDetail(
-                                                                    colorKey:
-                                                                        'yellow',
-                                                                    select:
-                                                                        'all',
-                                                                    diamondKey: Provider.of<Pagination>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .diamondQuality[_defaultChoiceIndex4],
-                                                                    certPrice: Provider.of<Pagination>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .certPrices[Provider.of<Pagination>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .cert[_defaultChoiceIndex3]],
-                                                                    product: Provider.of<Pagination>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .productDetailsForSearch[0],
-                                                                    defaultIndex1:
-                                                                        _defaultChoiceIndex1,
-                                                                    defaultIndex2:
-                                                                        _defaultChoiceIndex2,
-                                                                    defaultIndex3:
-                                                                        _defaultChoiceIndex3,
-                                                                    defaultIndex4:
-                                                                        _defaultChoiceIndex4,
-                                                                    valueChangeBuild:
-                                                                        _onValueChange,
-                                                                    valueChangeColor:
-                                                                        _onValueChangeColor,
-                                                                    valueChangeCerti:
-                                                                        _onValueChangeCerti,
-                                                                    valueChangeDQ:
-                                                                        _onValueChangeDQ,
-                                                                    valueChangeBuild1:
-                                                                        _onValueChange,
-                                                                    valueChangeColor1:
-                                                                        _onValueChangeColor,
-                                                                    valueChangeCerti1:
-                                                                        _onValueChangeCerti,
-                                                                    valueChangeDQ1:
-                                                                        _onValueChangeDQ,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            } catch (err) {
-                                                              dataSelect(
+                                                              .getProductDetail(
                                                                   context:
                                                                       context,
-                                                                  titleText:
-                                                                      'Alert!',
-                                                                  buttonText:
-                                                                      'Okay',
-                                                                  contentText: err
-                                                                      .toString(),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  gif:
-                                                                      "assets/images/alert.gif");
-                                                            }
-                                                          },
-                                                          child: Container(
-                                                            color: Colors
-                                                                .transparent,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 20.0,
-                                                                    right:
-                                                                        20.0),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: <
-                                                                  Widget>[
-                                                                Container(
-                                                                  height: ScreenUtil()
-                                                                      .setHeight(
-                                                                          90),
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          90),
-                                                                  // color: Colors.amber,
-                                                                  child: Image(
-                                                                    image:
-                                                                        AdvancedNetworkImage(
+                                                                  styleNumber:
                                                                       suggestion[
                                                                               index]
-                                                                          .image,
-                                                                      useDiskCache:
-                                                                          true,
-                                                                      cacheRule:
-                                                                          CacheRule(
-                                                                              maxAge: const Duration(days: 3)),
-                                                                    ),
-                                                                    fit: BoxFit
-                                                                        .fill,
-                                                                  ),
+                                                                          .styleNumber);
+                                                          FocusScopeNode
+                                                              currentFocus =
+                                                              FocusScope.of(
+                                                                  context);
+                                                          currentFocus
+                                                              .unfocus();
+                                                          textEditingController
+                                                              .clear();
+                                                          setState(() {
+                                                            searchValue = "";
+                                                            searchSelected =
+                                                                false;
+                                                            searchSelectedDoneButton =
+                                                                false;
+                                                          });
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetail(
+                                                                colorKey:
+                                                                    'yellow',
+                                                                select: 'all',
+                                                                diamondKey: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .diamondQuality[_defaultChoiceIndex4],
+                                                                certPrice: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .certPrices[Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cert[_defaultChoiceIndex3]],
+                                                                product: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .productDetailsForSearch[0],
+                                                                defaultIndex1:
+                                                                    _defaultChoiceIndex1,
+                                                                defaultIndex2:
+                                                                    _defaultChoiceIndex2,
+                                                                defaultIndex3:
+                                                                    _defaultChoiceIndex3,
+                                                                defaultIndex4:
+                                                                    _defaultChoiceIndex4,
+                                                                valueChangeBuild:
+                                                                    _onValueChange,
+                                                                valueChangeColor:
+                                                                    _onValueChangeColor,
+                                                                valueChangeCerti:
+                                                                    _onValueChangeCerti,
+                                                                valueChangeDQ:
+                                                                    _onValueChangeDQ,
+                                                                valueChangeBuild1:
+                                                                    _onValueChange,
+                                                                valueChangeColor1:
+                                                                    _onValueChangeColor,
+                                                                valueChangeCerti1:
+                                                                    _onValueChangeCerti,
+                                                                valueChangeDQ1:
+                                                                    _onValueChangeDQ,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        } catch (err) {
+                                                          dataSelect(
+                                                              context: context,
+                                                              titleText:
+                                                                  'Alert!',
+                                                              buttonText:
+                                                                  'Okay',
+                                                              contentText: err
+                                                                  .toString(),
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              gif:
+                                                                  "assets/images/alert.gif");
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        color:
+                                                            Colors.transparent,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 20.0,
+                                                                right: 20.0),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: <Widget>[
+                                                            Container(
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setHeight(
+                                                                          90),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          90),
+                                                              // color: Colors.amber,
+                                                              child: Image(
+                                                                image:
+                                                                    AdvancedNetworkImage(
+                                                                  suggestion[
+                                                                          index]
+                                                                      .image,
+                                                                  useDiskCache:
+                                                                      true,
+                                                                  cacheRule: CacheRule(
+                                                                      maxAge: const Duration(
+                                                                          days:
+                                                                              3)),
                                                                 ),
-                                                                // Text(
-                                                                //   styleNumber[index],
-                                                                //   style: TextStyle(
-                                                                //     fontFamily: 'Gilroy Medium',
-                                                                //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
-                                                                //   ),
-                                                                // )
-                                                                RichText(
-                                                                  text:
-                                                                      TextSpan(
-                                                                    // text: suggestion[index].substring(
-                                                                    //   suggestion[index].indexOf(
-                                                                    //       searchValue),
-                                                                    //   searchValue.length,
-                                                                    // ),
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                              ),
+                                                            ),
+                                                            // Text(
+                                                            //   styleNumber[index],
+                                                            //   style: TextStyle(
+                                                            //     fontFamily: 'Gilroy Medium',
+                                                            //     fontSize: ScreenUtil().setSp(21,allowFontScalingSelf: true),
+                                                            //   ),
+                                                            // )
+                                                            RichText(
+                                                              text: TextSpan(
+                                                                // text: suggestion[index].substring(
+                                                                //   suggestion[index].indexOf(
+                                                                //       searchValue),
+                                                                //   searchValue.length,
+                                                                // ),
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontFamily:
+                                                                      'Gilroy Medium',
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      21,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                ),
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text:
+                                                                        info[0],
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      // fontWeight: FontWeight.bold,
+                                                                      fontFamily:
+                                                                          'Gilroy Medium',
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          21,
+                                                                          allowFontScalingSelf:
+                                                                              true),
+                                                                    ),
+                                                                  ),
+                                                                  TextSpan(
+                                                                    text:
+                                                                        searchValue,
                                                                     style:
                                                                         TextStyle(
                                                                       color: Colors
@@ -1408,75 +1481,49 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                           allowFontScalingSelf:
                                                                               true),
                                                                     ),
-                                                                    children: [
-                                                                      TextSpan(
-                                                                        text: info[
-                                                                            0],
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          fontFamily:
-                                                                              'Gilroy Medium',
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              21,
-                                                                              allowFontScalingSelf: true),
-                                                                        ),
-                                                                      ),
-                                                                      TextSpan(
-                                                                        text:
-                                                                            searchValue,
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontFamily:
-                                                                              'Gilroy Medium',
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              21,
-                                                                              allowFontScalingSelf: true),
-                                                                        ),
-                                                                      ),
-                                                                      TextSpan(
-                                                                        text: info[
-                                                                            1],
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          fontFamily:
-                                                                              'Gilroy Medium',
-                                                                          fontSize: ScreenUtil().setSp(
-                                                                              21,
-                                                                              allowFontScalingSelf: true),
-                                                                        ),
-                                                                      ),
-                                                                    ],
                                                                   ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    )
-                                                  : Center(
-                                                      child: Text(
-                                                        'No Products Found',
+                                                                  TextSpan(
+                                                                    text:
+                                                                        info[1],
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .grey,
+                                                                      // fontWeight: FontWeight.bold,
+                                                                      fontFamily:
+                                                                          'Gilroy Medium',
+                                                                      fontSize: ScreenUtil().setSp(
+                                                                          21,
+                                                                          allowFontScalingSelf:
+                                                                              true),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                            )
-                                ],
-                              ),
-                            ),
-                          )
-                        : SizedBox(
-                            height: 0.0,
+                                                    );
+                                                  },
+                                                )
+                                              : Center(
+                                                  child: Text(
+                                                    'No Products Found',
+                                                  ),
+                                                ),
+                                        )
+                            ],
                           ),
+                        ),
+                      ),
+                    ),
+                    // : FadeTransition(
+                    //     opacity: widget.opacityAnimation,
+                    //     child: SizedBox(
+                    //       height: 0.0,
+                    //     ),
+                    //   ),
                     // Positioned(
                     //   left: ScreenUtil().setWidth(37),
                     //   top: ScreenUtil().setHeight(110),

@@ -2786,13 +2786,13 @@ class _UserPageState extends State<UserPage>
                                         splashColor: Colors.cyan[50],
                                         borderRadius: BorderRadius.circular(20),
                                         onTap: () async {
-                                          await dataSelectConfirmMessage(
+                                          await dataSelectConfirmMessage1(
                                             context: globalKey.currentContext,
                                             titleText: 'Alert!',
                                             contentText:
                                                 "Are you sure you want to logout?",
-                                            gif:
-                                                'assets/images/notification1.gif',
+                                            // gif:
+                                            //     'assets/images/notification1.gif',
                                           ).then((value) async {
                                             if (value) {
                                               value2 = value;

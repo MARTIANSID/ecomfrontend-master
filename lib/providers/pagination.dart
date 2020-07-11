@@ -18,23 +18,14 @@ class Product {
   var diamondCount;
   Map<String, bool> designDetails;
   var designDimensions;
-
   bool isFavourite;
-  // String vVS_EF;
-  // String vVS_FG;
-  // String vVS_VS_FG;
-  // String vS_FG;
-  // String sI_HI;
-
   Map<dynamic, dynamic> imageUrl;
   Map<dynamic, dynamic> prices;
-  // List<String> imgUrls;
-
   bool count = false;
   bool weight = false;
   bool gWeight = false;
-
   int quantity = 0;
+  int height = 150;
 
   Product(
       {this.styleNumber,
@@ -45,7 +36,8 @@ class Product {
       this.prices,
       this.designDetails,
       this.imageUrl,
-      this.designDimensions});
+      this.designDimensions,
+      this.height = 150});
 }
 
 class Pagination with ChangeNotifier {
@@ -412,6 +404,7 @@ class Pagination with ChangeNotifier {
       {String styleNumber, context, select, product}) async {
     int index;
     int check = 0;
+    bool k = false;
     if (allProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
         0) {
@@ -496,9 +489,12 @@ class Pagination with ChangeNotifier {
     if (favProducts
             .indexWhere((element) => element.styleNumber == styleNumber) >=
         0) {
+      k = true;
+
       index = favProducts
           .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts.remove(favProducts[index]);
+      favProducts[index].height = 0;
+      // favProducts.remove(favProducts[index]);
     } else {
       favProducts.add(product);
     }
@@ -509,6 +505,12 @@ class Pagination with ChangeNotifier {
       }
     }
     notifyListeners();
+    if (k) {
+      index = favProducts
+          .indexWhere((element) => element.styleNumber == styleNumber);
+      favProducts.remove(favProducts[index]);
+      favProducts[index].height = 0;
+    }
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');

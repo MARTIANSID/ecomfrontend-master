@@ -118,7 +118,7 @@ class _AccountInfoState extends State<AccountInfo> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: FadeInUI(
-                        delay: 0.0,
+                        delay: 2.0,
                         child: Text(
                           "Account Info",
                           style: TextStyle(
@@ -194,7 +194,7 @@ class _AccountInfoState extends State<AccountInfo> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             FadeInUI(
-                              delay: 1.0,
+                              delay: 2.0,
                               child: Text(
                                 "Personal Details",
                                 style: TextStyle(
@@ -212,7 +212,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               height: ScreenUtil().setHeight(7.75),
                             ),
                             FadeInUI(
-                              delay: 1.5,
+                              delay: 2.1,
                               child: RoundedInputField(
                                 controller: fullNameController,
                                 hintText: "Full Name",
@@ -238,7 +238,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 1.75,
+                              delay: 2.2,
                               child: RoundedInputField(
                                 controller: phoneNumberController,
                                 hintText: "Enter Phone Number",
@@ -256,7 +256,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 2.0,
+                              delay: 2.3,
                               child: RoundedInputField(
                                 controller: emailIDController,
                                 hintText: "Email-id",
@@ -277,7 +277,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               height: ScreenUtil().setHeight(20),
                             ),
                             FadeInUI(
-                              delay: 2.3,
+                              delay: 2.4,
                               child: Text(
                                 "Firm Details!",
                                 style: TextStyle(
@@ -293,7 +293,7 @@ class _AccountInfoState extends State<AccountInfo> {
                             ),
                             SizedBox(height: ScreenUtil().setHeight(7.75)),
                             FadeInUI(
-                              delay: 2.66,
+                              delay: 2.5,
                               child: RoundedInputField(
                                 controller: firmDetailController,
                                 hintText: "Firm Name",
@@ -316,7 +316,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 3.0,
+                              delay: 2.6,
                               child: RoundedInputField(
                                 controller: gstValueController,
                                 hintText: "GST",
@@ -343,7 +343,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 3.33,
+                              delay: 2.7,
                               child: RoundedInputField(
                                 controller: streetNameController,
                                 hintText: "Street",
@@ -366,7 +366,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 3.66,
+                              delay: 2.8,
                               child: RoundedInputField(
                                 controller: cityNameController,
                                 hintText: "City",
@@ -390,7 +390,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 4.0,
+                              delay: 2.9,
                               child: RoundedInputField(
                                 controller: stateNameController,
                                 hintText: "State",
@@ -416,7 +416,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               ),
                             ),
                             FadeInUI(
-                              delay: 4.33,
+                              delay: 3.0,
                               child: RoundedInputField(
                                 controller: pincodeController,
                                 hintText: "Pincode",
@@ -565,20 +565,20 @@ class FadeInUI extends StatelessWidget {
     final tween = MultiTrackTween([
       Track("opacity")
           .add(Duration(milliseconds: 500), Tween(begin: 0.0, end: 1.0)),
-      Track("translateX").add(
-          Duration(milliseconds: 500), Tween(begin: 130.0, end: 0.0),
+      Track("translateY").add(
+          Duration(milliseconds: 500), Tween(begin: -30.0, end: 0.0),
           curve: Curves.easeOut)
     ]);
 
     return ControlledAnimation(
-      delay: Duration(milliseconds: (300 * delay).round()),
+      delay: Duration(milliseconds: (500 * delay).round()),
       duration: tween.duration,
       tween: tween,
       child: child,
       builderWithChild: (context, child, animation) => Opacity(
         opacity: animation["opacity"],
         child: Transform.translate(
-            offset: Offset(animation["translateX"], 0), child: child),
+            offset: Offset(0, animation["translateY"]), child: child),
       ),
     );
   }

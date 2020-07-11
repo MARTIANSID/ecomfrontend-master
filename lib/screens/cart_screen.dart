@@ -1066,8 +1066,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       "Your order has been placed successfully.",
                                                                   onPressed:
                                                                       () {
-                                                                    Navigator.pop(
-                                                                        context);
+                                                                    Navigator.of(context).pop();
                                                                   },
                                                                   gif:
                                                                       "assets/images/success.gif");

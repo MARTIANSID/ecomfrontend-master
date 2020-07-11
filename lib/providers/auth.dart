@@ -144,7 +144,7 @@ class Auth with ChangeNotifier {
                 "fullName": name,
                 "number": number,
                 "password": password,
-                "notifid": playerId
+                "notifid": playerId == null ? "" : playerId
               }
             : {"number": number, "password": password, "notifid": playerId},
       );

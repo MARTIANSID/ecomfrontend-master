@@ -440,3 +440,143 @@ Future<bool> dataSelectConfirmMessage(
   return value1;
   // return false;
 }
+
+Future<bool> dataSelectConfirmMessage1(
+    {context, titleText, contentText, gif}) async {
+  bool value1 = false;
+  // var alertDialog =
+  value1 = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return AssetGiffyDialog(
+      //   // key: keys[5],
+      //   buttonRadius: 20,
+      //   image: Image.asset(
+      //     gif,
+      //     fit: BoxFit.cover,
+      //   ),
+      //   title: Text(
+      //     titleText,
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontFamily: 'Gilroy Black',
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: ScreenUtil().setSp(
+      //         19,
+      //         allowFontScalingSelf: true,
+      //       ),
+      //     ),
+      //     textAlign: TextAlign.center,
+      //   ),
+      //   entryAnimation: EntryAnimation.BOTTOM_RIGHT,
+      //   description: Text(
+      //     contentText,
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontFamily: 'Gilroy Regular',
+      //       fontSize: ScreenUtil().setSp(
+      //         16,
+      //         allowFontScalingSelf: true,
+      //       ),
+      //     ),
+      //     textAlign: TextAlign.center,
+      //   ),
+      //   buttonCancelColor: Colors.cyan,
+      //   // onlyOkButton: true,
+      //   cornerRadius: 20,
+      //   onCancelButtonPressed: () {
+      //     Navigator.pop(context, false);
+      //     // Navigator.of(context).pop();
+      //     value1 = false;
+      //     return false;
+      //   },
+      //   onOkButtonPressed: () {
+      //     Navigator.pop(context, true);
+      //     // Navigator.of(context).pop();
+      //     value1 = true;
+      //     return true;
+      //   },
+      //   buttonOkText: Text(
+      //     "Yes",
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontFamily: 'Gilroy Regular',
+      //     ),
+      //   ),
+      //   buttonCancelText: Text(
+      //     "No",
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontFamily: 'Gilroy Regular',
+      //     ),
+      //   ),
+      //   buttonOkColor: Colors.cyan,
+      // );
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: Text(
+          titleText,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Gilroy Black',
+            fontWeight: FontWeight.bold,
+            fontSize: ScreenUtil().setSp(
+              19,
+              allowFontScalingSelf: true,
+            ),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          contentText,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Gilroy Medium',
+            fontSize: ScreenUtil().setSp(
+              16,
+              allowFontScalingSelf: true,
+            ),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context, false);
+              // Navigator.of(context).pop();
+              value1 = false;
+              return false;
+            },
+            child: Text("No",
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(
+                      16,
+                      allowFontScalingSelf: true,
+                    ),
+                    color: Colors.black,
+                    fontFamily: 'Gilroy Medium')),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+              value1 = true;
+              return true;
+            },
+            child: Text("Yes",
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(
+                      16,
+                      allowFontScalingSelf: true,
+                    ),
+                    color: Colors.black,
+                    fontFamily: 'Gilroy Medium')),
+          )
+        ],
+      );
+    },
+  );
+  return value1;
+  // return false;
+}
