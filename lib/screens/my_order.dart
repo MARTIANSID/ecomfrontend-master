@@ -1,4 +1,3 @@
-import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +28,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
         await Provider.of<Orders>(context, listen: false)
             .getOrders(context: context);
         Provider.of<Orders>(context, listen: false).completeOrderSeperation();
-        print(
-            Provider.of<Orders>(context, listen: false).completedOrders.length);
-        print(Provider.of<Orders>(context, listen: false).orderProducts.length);
+        // print(
+        // Provider.of<Orders>(context, listen: false).completedOrders.length);
+        // print(Provider.of<Orders>(context, listen: false).orderProducts.length);
       } catch (err) {
         dataSelect(
             context: context,
@@ -207,8 +206,8 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    print(size.width);
-    print(size.height);
+    // print(size.width);
+    // print(size.height);
     ScreenUtil.init(
       context,
       width: 411.42857142857144,
@@ -239,7 +238,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                                   IconButton(
                                     icon: Icon(Icons.arrow_back_ios),
                                     onPressed: () {
-                                      print(MediaQuery.of(context).padding.top);
+                                      // print(MediaQuery.of(context).padding.top);
                                       Navigator.of(context).pop();
                                     },
                                     color: Colors.black,

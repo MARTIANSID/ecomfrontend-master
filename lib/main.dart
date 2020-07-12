@@ -181,66 +181,43 @@ class _MyAppState extends State<MyApp> {
     OneSignal.shared.init(
       "83761a89-31cd-43d2-8aa5-76d81afa7709",
     );
-    OneSignal.shared.setNotificationReceivedHandler((notification) {
+    OneSignal.shared.setNotificationReceivedHandler((notification) async {
       notification.payload.smallIcon = "ic_stat_onesignal_default.png";
       notification.payload.largeIcon = "ic_onesignal_large_icon_default.png";
       notification.payload.smallIconAccentColor = "FF32FFF3";
-      print(notification.jsonRepresentation());
-      String title = notification.payload.rawPayload['payload']['title'];
-      String body = notification.payload.rawPayload['payload']['alert'];
-      String link =
-          notification.payload.rawPayload['payload']['custom']['a']['link'];
-      String id =
-          notification.payload.rawPayload['payload']['androidNotificationId'];
-      notifications.add(Noti(body: body, title: title, link: link, id: id));
-      print(notifications.length.toString());
-
-      // print(notification.payload.rawPayload);
-
-      // Provider.of<Notif>(context, listen: false).notiAdd(
-      //     title: notification.payload.title,
-      //     body: notification.payload.body,
-      //     link: notification.payload.additionalData['link'],
-      //     id: notification.androidNotificationId);
-      // print(Provider.of<Notif>(context, listen: false).notifications.length);
-      // notification.payload.ledColor = "FF4267B2";
+      // await Provider.of<Notif>(context, listen: false)
+      //     .getNotification(context: context);
     });
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
-    // OneSignal.shared.setNotificationReceivedHandler((notification) {
-    //   final payload = json.decode(notification.payload.jsonRepresentation());
-    //   // .forEach((key, value) {
-    //   print(notification.payload);
-    //   // });
-
-    //   // String title = ;
-    //   // String body = ;
-    //   // print(notification.payload.title);
-    //   // print(notification.payload.body);
-    //
-
-    //   // Provider.of<Notif>(context, listen: false).notiAdd(
-    //   //   title: payload['title'],data: payload['custom']
-    //   // );
-    // });
-
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      String title = result.notification.payload.title;
-      String body = result.notification.payload.body;
-      String link = result.notification.payload.additionalData['link'];
+    OneSignal.shared.setNotificationOpenedHandler(
+        (OSNotificationOpenedResult result) async {
       String id = result.notification.androidNotificationId.toString();
-      notifications.add(Noti(body: body, title: title, link: link, id: id));
-      print(notifications);
 
-      // Provider.of<Notif>(context, listen: false)
-      //     .notiDelete(id: result.notification.androidNotificationId.toString());
-      // notification.payload.ledColor = "FF4267B2";
+      await Future.delayed(Duration.zero, () async {
+        await Provider.of<Notif>(context, listen: false)
+            .readNNotification(context: context, id: id);
+      });
+
+      // try {
+      //   final response = await http.get(
+      //     uurl + '/notification',
+      //     headers: {
+      //       'Authorization':
+      //           'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+      //     },
+      //   );
+      //   if (response.statusCode == 200) {
+      //     int index = notifications.indexWhere((element) => element.id == id);
+      //     notifications[index].read = !notifications[index].read;
+      //   }
+      // } catch (err) {
+      //   throw err;
+      // }
     });
 
-    // Map<String, dynamic> data =
-    // json.decode(result.notification.payload.jsonRepresentation());
+    // Map<String, dynamic> data =1esentation());
 
     // print(data);
 

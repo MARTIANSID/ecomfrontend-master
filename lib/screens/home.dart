@@ -116,7 +116,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ScrollDirection.idle) {
         setState(() {
           _isVisible = true;
-          print("**** $_isVisible down");
+          // print("**** $_isVisible down");
           controller.reverse();
           // controller.animateTo(0.0);
         });
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           setState(() {
             _isVisible = false;
 
-            print("**** $_isVisible up");
+            // print("**** $_isVisible up");
             controller.forward(from: 0.0);
             // controller.animateTo(1);
           });
@@ -137,7 +137,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         if (!_isVisible)
           setState(() {
             _isVisible = true;
-            print("**** $_isVisible down");
+            // print("**** $_isVisible down");
             controller.reverse();
             // controller.animateTo(0.0);
           });

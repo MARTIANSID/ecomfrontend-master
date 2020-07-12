@@ -78,7 +78,7 @@ class UserInfo with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
       check = true;
-      print(responseData);
+      // print(responseData);
       if (Provider.of<Pagination>(context, listen: false).isVerified) {
         street = responseData['user']['additionalDetails']['address']['street'];
         city = responseData['user']['additionalDetails']['address']['city'];
@@ -287,10 +287,10 @@ class UserInfo with ChangeNotifier {
       request.files.add(multipartFile);
       request.headers.addAll(headers);
       var response = await request.send();
-      print(response);
-      print(response.statusCode);
+      // print(response);
+      // print(response.statusCode);
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
+        // print(value);
       });
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -321,7 +321,7 @@ class UserInfo with ChangeNotifier {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token,
       });
-      print(json.decode(response.body));
+      // print(json.decode(response.body));
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {

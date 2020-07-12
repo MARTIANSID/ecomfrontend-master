@@ -3,7 +3,6 @@ import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'accountinfo.dart';
@@ -156,7 +155,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     fullName = value;
-                                    print(fullName);
+                                    // print(fullName);
                                   });
                                 },
                                 validator: (value) {
@@ -180,7 +179,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     phoneNumber = value;
-                                    print(phoneNumber);
+                                    // print(phoneNumber);
                                   });
                                 },
                               ),
@@ -203,7 +202,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     emailID = value;
-                                    print(emailID);
+                                    // print(emailID);
                                   });
                                 },
                                 icon: Icons.mail_outline,
@@ -224,7 +223,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     reference = value;
-                                    print(reference);
+                                    // print(reference);
                                   });
                                 },
                                 icon: Icons.people_outline,
@@ -264,7 +263,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     firmDetail = value;
-                                    print(firmDetail);
+                                    // print(firmDetail);
                                   });
                                 },
                                 svgOrIcon: false,
@@ -290,7 +289,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     gstValue = value;
-                                    print(gstValue);
+                                    // print(gstValue);
                                   });
                                 },
                                 svgOrIcon: false,
@@ -312,7 +311,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     streetName = value;
-                                    print(streetName);
+                                    // print(streetName);
                                   });
                                 },
                                 svgOrIcon: false,
@@ -333,7 +332,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 },
                                 onSubmitted: (value) {
                                   setState(() {
-                                    print(cityName);
+                                    // print(cityName);
                                     cityName = value;
                                   });
                                 },
@@ -355,7 +354,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     stateName = value;
-                                    print(stateName);
+                                    // print(stateName);
                                   });
                                 },
                                 svg: "assets/icons/realEstate.svg",
@@ -379,7 +378,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     pincode = value;
-                                    print(pincode);
+                                    // print(pincode);
                                   });
                                 },
                                 icon: Icons.person_pin,

@@ -112,13 +112,13 @@ class _ProfileImageState extends State<ProfileImage> {
                           onTap: () async {
                             final i = await picker.getImage(
                                 source: ImageSource.camera);
-                            print(i.path);
+                            // print(i.path);
                             if (i.path != null) {
                               setState(() {
                                 isLoadingimage = true;
                               });
                               try {
-                                if (context != null) print("SDCD");
+                                // if (context != null) print("SDCD");
                                 await Provider.of<UserInfo>(context,
                                         listen: false)
                                     .changeImage(
@@ -174,13 +174,13 @@ class _ProfileImageState extends State<ProfileImage> {
                           onTap: () async {
                             final i = await picker.getImage(
                                 source: ImageSource.gallery);
-                            print(i.path);
+                            // print(i.path);
                             if (i.path != null) {
                               setState(() {
                                 isLoadingimage = true;
                               });
                               try {
-                                if (context != null) print("SDCD");
+                                // if (context != null) print("SDCD");
                                 await Provider.of<UserInfo>(context,
                                         listen: false)
                                     .changeImage(

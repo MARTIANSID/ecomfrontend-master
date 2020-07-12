@@ -1089,7 +1089,7 @@ class _UserPageState extends State<UserPage>
         );
       },
     );
-    print(value2);
+    // print(value2);
     return value2;
   }
 
@@ -1330,7 +1330,7 @@ class _UserPageState extends State<UserPage>
                                       //                       .getImage(
                                       //                           source:
                                       //                               ImageSource.gallery);
-                                      //                   print(i.path);
+                                      // print(i.path);
                                       //                   if (i.path !=
                                       //                       null) {
                                       //                     setState(
@@ -1341,7 +1341,7 @@ class _UserPageState extends State<UserPage>
                                       //                     try {
                                       //                       if (context !=
                                       //                           null)
-                                      //                         print(
+                                      // print(
                                       //                             "SDCD");
                                       //                       await Provider.of<UserInfo>(context, listen: false).changeImage(
                                       //                           context:
@@ -2662,7 +2662,7 @@ class _UserPageState extends State<UserPage>
                                                   // if (value2) {
                                                   setState(() {
                                                     isSwitched = value;
-                                                    print(isSwitched);
+                                                    // print(isSwitched);
                                                   });
                                                   await dataSelectConfirmMessage(
                                                     context: globalKey
@@ -2681,7 +2681,7 @@ class _UserPageState extends State<UserPage>
                                                   if (!value2) {
                                                     setState(() {
                                                       isSwitched = !value;
-                                                      print(isSwitched);
+                                                      // print(isSwitched);
                                                     });
                                                   } else {
                                                     try {
@@ -2913,3 +2913,8 @@ class _UserPageState extends State<UserPage>
     );
   }
 }
+// /notification get 
+// delete 
+// notifId
+// /notification/read get 
+// notidId

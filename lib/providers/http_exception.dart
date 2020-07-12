@@ -1,6 +1,4 @@
-import 'dart:io';
-
-class HttpException implements Exception  {
+class HttpException implements Exception {
   final String message;
 
   HttpException(this.message);
@@ -11,4 +9,3 @@ class HttpException implements Exception  {
     // return super.toString(); // Instance of HttpException
   }
 }
-

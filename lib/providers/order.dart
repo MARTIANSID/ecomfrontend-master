@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'cart.dart';
-import 'http_exception.dart';
 
 class ProductDetails {
   String styleNumber;
