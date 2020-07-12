@@ -71,7 +71,7 @@ class RoundedInputField extends StatelessWidget {
                       height: ScreenUtil().setHeight(22),
                       width: ScreenUtil().setWidth(22),
                     ),
-              hintText: hintText,
+              labelText: hintText,
               border: InputBorder.none,
             ),
           ),
