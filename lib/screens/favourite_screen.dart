@@ -67,7 +67,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
     setState(() {
       // await Provider.of<Options>(context, listen: false).setBuild(build: value);
       _defaultChoiceIndex1 = value;
-      print(value);
+      // print(value);
     });
   }
 
@@ -110,7 +110,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                   element.styleNumber.contains(searchValue.toUpperCase()))
               .toList();
 
-          print('DC SEARCH');
+          // print('DC SEARCH');
         });
       });
     } catch (err) {
@@ -129,7 +129,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
       });
     }
 
-    print(suggestion);
+    // print(suggestion);
     // setState(() {
 
     // });
@@ -168,7 +168,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
     //     .where(
     //         (element) => element.contains(searchValue.toString().toUpperCase()))
     //     .toList();
-    print('Search Selected' + searchSelected.toString());
+    // print('Search Selected' + searchSelected.toString());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
@@ -360,9 +360,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 600),
-                                  curve: Curves.easeInOut,
+                                Container(
                                   padding: EdgeInsets.only(left: 10.0),
                                   width: ScreenUtil()
                                       .setWidth(searchSelected ? 305 : 360),
@@ -405,7 +403,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                               // setState(() {
 
                                               //   // info=styleNumber[].split(value);
-                                              //   // print(styleNumber[1].split(searchValue));
+                                              // print(styleNumber[1].split(searchValue));
                                               // });
                                               try {
                                                 await getSearch(
@@ -601,7 +599,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                 info = suggestion[index]
                                                     .styleNumber
                                                     .split(searchValue);
-                                                print(info);
+                                                // print(info);
                                                 return GestureDetector(
                                                   onTap: () async {
                                                     try {

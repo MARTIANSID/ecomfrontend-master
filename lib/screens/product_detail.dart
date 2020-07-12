@@ -103,7 +103,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   element.styleNumber.contains(searchValue.toUpperCase()))
               .toList();
 
-          print('DC SEARCH');
+          // print('DC SEARCH');
         });
       });
     } catch (err) {
@@ -120,7 +120,7 @@ class _ProductDetailState extends State<ProductDetail> {
       isLoadingSearch = false;
     }
 
-    print(suggestion);
+    // print(suggestion);
     // setState(() {
 
     // });
@@ -131,7 +131,7 @@ class _ProductDetailState extends State<ProductDetail> {
     setState(() {
       // await Provider.of<Options>(context, listen: false).setBuild(build: value);
       _defaultChoiceIndex1 = value;
-      print(value);
+      // print(value);
     });
   }
 
@@ -256,13 +256,13 @@ class _ProductDetailState extends State<ProductDetail> {
       resizeToAvoidBottomPadding: false,
       body: GestureDetector(
         onPanStart: (details) {
-          print("object1");
+          // print("object1");
           setState(() {
             hideButton = true;
           });
         },
         onPanEnd: (details) {
-          print("object2");
+          // print("object2");
           Timer(
             Duration(seconds: 3),
             () => setState(
@@ -1316,7 +1316,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         // setState(() {
 
                                         //   // info=styleNumber[].split(value);
-                                        //   // print(styleNumber[1].split(searchValue));
+                                        // print(styleNumber[1].split(searchValue));
                                         // });
                                         try {
                                           await getSearch(
@@ -1522,7 +1522,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                             info = suggestion[index]
                                                 .styleNumber
                                                 .split(searchValue);
-                                            print(info);
+                                            // print(info);
                                             return GestureDetector(
                                               onTap: () async {
                                                 try {
@@ -1544,36 +1544,36 @@ class _ProductDetailState extends State<ProductDetail> {
                                                     searchSelectedDoneButton =
                                                         false;
                                                   });
-                                                  print(Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .diamondQuality[widget
-                                                              .defaultIndex4]
-                                                          .toString() +
-                                                      "DC");
-                                                  print(Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .certPrices[Provider
-                                                                  .of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                              .cert[widget.defaultIndex3]]
-                                                          .toString() +
-                                                      "DC");
-                                                  print(widget.defaultIndex1
-                                                          .toString() +
-                                                      "DC");
-                                                  print(widget.defaultIndex2
-                                                          .toString() +
-                                                      "DC");
-                                                  print(widget.defaultIndex3
-                                                          .toString() +
-                                                      "DC");
-                                                  print(widget.defaultIndex4
-                                                          .toString() +
-                                                      "DC");
+                                                  // print(Provider.of<Pagination>(
+                                                  //         context,
+                                                  //         listen: false)
+                                                  //     .diamondQuality[widget
+                                                  //         .defaultIndex4]
+                                                  //     .toString() +
+                                                  // "DC");
+                                                  // print(Provider.of<Pagination>(
+                                                  //         context,
+                                                  //         listen: false)
+                                                  //     .certPrices[Provider
+                                                  //             .of<Pagination>(
+                                                  //                 context,
+                                                  //                 listen:
+                                                  //                     false)
+                                                  //         .cert[widget.defaultIndex3]]
+                                                  //     .toString() +
+                                                  // "DC");
+                                                  // print(widget.defaultIndex1
+                                                  //     .toString() +
+                                                  // "DC");
+                                                  // print(widget.defaultIndex2
+                                                  //     .toString() +
+                                                  // "DC");
+                                                  // print(widget.defaultIndex3
+                                                  //     .toString() +
+                                                  // "DC");
+                                                  // print(widget.defaultIndex4
+                                                  //     .toString() +
+                                                  // "DC");
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(

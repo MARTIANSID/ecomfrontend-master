@@ -47,12 +47,22 @@ class Pagination with ChangeNotifier {
   String count = 'styleNumber';
   int sort = 1;
 
-  void setSort(value) {
+  Future<void> setSort(value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('sort', value);
     sort = value;
   }
 
-  void setCount(value) {
+  Future<void> setCount(value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('count', value);
     count = value;
+  }
+
+  Future<void> getSortData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    count = prefs.getString('count');
+    sort = prefs.getInt('sort');
   }
 
   List<dynamic> allProducts;
@@ -493,8 +503,8 @@ class Pagination with ChangeNotifier {
 
       index = favProducts
           .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts[index].height = 0;
-      // favProducts.remove(favProducts[index]);
+
+      favProducts.remove(favProducts[index]);
     } else {
       favProducts.add(product);
     }
@@ -505,12 +515,7 @@ class Pagination with ChangeNotifier {
       }
     }
     notifyListeners();
-    if (k) {
-      index = favProducts
-          .indexWhere((element) => element.styleNumber == styleNumber);
-      favProducts.remove(favProducts[index]);
-      favProducts[index].height = 0;
-    }
+
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');

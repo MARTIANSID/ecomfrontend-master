@@ -1,9 +1,7 @@
 import 'package:Flutter/components/rounded_input_field.dart';
 import 'package:Flutter/providers/user.dart';
-import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -230,7 +228,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     fullName = value;
-                                    print(fullName);
+                                    // print(fullName);
                                   });
                                 },
                                 icon: Icons.person_outline,
@@ -248,7 +246,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     phoneNumber = value;
-                                    print(phoneNumber);
+                                    // print(phoneNumber);
                                   });
                                 },
                                 // icon: Icons.person,
@@ -266,7 +264,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     emailID = value;
-                                    print(emailID);
+                                    // print(emailID);
                                   });
                                 },
                                 icon: Icons.mail_outline,
@@ -300,7 +298,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     firmDetail = value;
-                                    print(firmDetail);
+                                    // print(firmDetail);
                                   });
                                 },
                                 validator: (value) {
@@ -323,7 +321,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     gstValue = value;
-                                    print(gstValue);
+                                    // print(gstValue);
                                   });
                                 },
                                 validator: (value) {
@@ -356,7 +354,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     streetName = value;
-                                    print(streetName);
+                                    // print(streetName);
                                   });
                                 },
                                 svgOrIcon: false,
@@ -382,7 +380,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     cityName = value;
-                                    print(cityName);
+                                    // print(cityName);
                                   });
                                 },
                                 icon: Icons.location_city,
@@ -406,7 +404,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     stateName = value;
-                                    print(stateName);
+                                    // print(stateName);
                                   });
                                 },
                                 svg: "assets/icons/realEstate.svg",
@@ -434,7 +432,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 onSubmitted: (value) {
                                   setState(() {
                                     pincode = value;
-                                    print(pincode);
+                                    // print(pincode);
                                   });
                                 },
                                 icon: Icons.person_pin,

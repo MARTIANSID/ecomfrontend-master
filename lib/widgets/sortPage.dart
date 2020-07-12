@@ -17,7 +17,7 @@ class SortPage extends StatefulWidget {
 class _SortPageState extends State<SortPage> {
   int _selectedTab;
   bool isLoading = false;
-
+  bool _check = false;
   var sortChoices = [
     'Diamond Weight',
     'Diamond Count',
@@ -29,17 +29,31 @@ class _SortPageState extends State<SortPage> {
     'diamondCount',
     'goldWeight',
   ];
+  void initState() {
+    super.initState();
+    for (int i = 0; i < sortChoicesServer.length; i++) {
+      if (sortChoicesServer[i] ==
+          Provider.of<Pagination>(context, listen: false).count) {
+        _selectedTab = i;
+      }
+    }
+    if (Provider.of<Pagination>(context, listen: false).sort == 1) {
+      _check = true;
+    } else {
+      _check = false;
+    }
+  }
 
   Future<void> sortIt(index, checked) async {
     setState(() {
       isLoading = true;
     });
     var value = index == null ? null : sortChoicesServer[index].toString();
-    Provider.of<Pagination>(context, listen: false).setCount(value);
+    await Provider.of<Pagination>(context, listen: false).setCount(value);
     if (checked) {
-      Provider.of<Pagination>(context, listen: false).setSort(1);
+      await Provider.of<Pagination>(context, listen: false).setSort(1);
     } else {
-      Provider.of<Pagination>(context, listen: false).setSort(-1);
+      await Provider.of<Pagination>(context, listen: false).setSort(-1);
     }
     Provider.of<Pagination>(context, listen: false).pageStart();
 
@@ -52,7 +66,7 @@ class _SortPageState extends State<SortPage> {
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'
               : Provider.of<Pagination>(context, listen: false).count,
-          sort: checked ? 1 : -1),
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
@@ -61,7 +75,7 @@ class _SortPageState extends State<SortPage> {
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'
               : Provider.of<Pagination>(context, listen: false).count,
-          sort: checked ? 1 : -1),
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
@@ -70,7 +84,7 @@ class _SortPageState extends State<SortPage> {
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'
               : Provider.of<Pagination>(context, listen: false).count,
-          sort: checked ? 1 : -1),
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
@@ -79,7 +93,7 @@ class _SortPageState extends State<SortPage> {
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'
               : Provider.of<Pagination>(context, listen: false).count,
-          sort: checked ? 1 : -1),
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
           addition: false,
           page: 1,
@@ -88,7 +102,7 @@ class _SortPageState extends State<SortPage> {
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'
               : Provider.of<Pagination>(context, listen: false).count,
-          sort: checked ? 1 : -1),
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getFav(context)
     ];
     try {
@@ -111,8 +125,6 @@ class _SortPageState extends State<SortPage> {
       });
     }
   }
-
-  bool _check = false;
 
   @override
   Widget build(BuildContext context) {

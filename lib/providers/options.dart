@@ -6,41 +6,51 @@ class Options with ChangeNotifier {
   int certificate;
   int color;
   int diamondQuality;
-
-  
+  int sort = 0;
+  int sortBy = -1;
 
   setBuild({build}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('build', build);
-    this.build=build;
+    this.build = build;
     notifyListeners();
-    
   }
 
   setCert({cert}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setInt('certificate', cert);
-    this.certificate=cert;
+    this.certificate = cert;
     notifyListeners();
   }
 
-setColor({color}) async {
+  setColor({color}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setInt('color', color);
-    this.color=color;
+    this.color = color;
     notifyListeners();
   }
 
   setDiamond({diamond}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-   
 
     prefs.setInt('diamondQuality', diamond);
-     this.diamondQuality=diamond;
-     notifyListeners();
+    this.diamondQuality = diamond;
+    notifyListeners();
   }
+
+  // setSort({sort}) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setInt('sort', sort);
+  //   this.sort = sort;
+  // }
+
+  // setSortBy({sortBy}) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setInt('sortBy', sortBy);
+  //   this.sortBy = sortBy;
+  // }
 
   getStringValuesSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -52,9 +62,6 @@ setColor({color}) async {
     diamondQuality = prefs.getInt('diamondQuality');
     notifyListeners();
   }
-
-
-  
 
   // void change(select) {
   //   if (select == 'build') {
@@ -69,7 +76,6 @@ setColor({color}) async {
   //     c = true;
   //     co = false;
   //     d = false;
-      
 
   //   notifyListeners();
 
@@ -94,6 +100,4 @@ setColor({color}) async {
   //   }
   // }
 
- 
-  
 }

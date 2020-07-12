@@ -4,7 +4,6 @@ import 'package:Flutter/providers/notifiaction.dart';
 import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
-import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/screens/product_detail.dart';
@@ -87,7 +86,7 @@ class _CartScreenState extends State<CartScreen> {
     // await Provider.of<Options>(context, listen: false).setBuild(build: value);
     setState(() {
       Provider.of<Cart>(context, listen: false).buildChange(value, index);
-      print(value);
+      // print(value);
     });
   }
 
@@ -132,7 +131,7 @@ class _CartScreenState extends State<CartScreen> {
                   element.styleNumber.contains(searchValue.toUpperCase()))
               .toList();
           isLoadingSearch = false;
-          print('DC SEARCH');
+          // print('DC SEARCH');
         });
       });
     } catch (err) {
@@ -151,7 +150,7 @@ class _CartScreenState extends State<CartScreen> {
       });
     }
 
-    print(suggestion);
+    // print(suggestion);
     // setState(() {
 
     // });
@@ -186,7 +185,7 @@ class _CartScreenState extends State<CartScreen> {
     //     .where(
     //         (element) => element.contains(searchValue.toString().toUpperCase()))
     //     .toList();
-    print('Search Selected' + searchSelected.toString());
+    // print('Search Selected' + searchSelected.toString());
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -1297,7 +1296,7 @@ class _CartScreenState extends State<CartScreen> {
                                               // setState(() {
 
                                               //   // info=styleNumber[].split(value);
-                                              //   // print(styleNumber[1].split(searchValue));
+                                                // print(styleNumber[1].split(searchValue));
                                               // });
                                               try {
                                                 await getSearch(
@@ -1493,7 +1492,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 info = suggestion[index]
                                                     .styleNumber
                                                     .split(searchValue);
-                                                print(info);
+                                                // print(info);
                                                 return GestureDetector(
                                                   onTap: () async {
                                                     try {

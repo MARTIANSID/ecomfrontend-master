@@ -1,5 +1,4 @@
 import 'package:Flutter/providers/auth.dart';
-import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/screens/home.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
@@ -446,7 +445,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   _showDilog(String title, String content) {
-    print('PP in showDilog');
+    // print('PP in showDilog');
     if (context != null) {
       showDialog(
         context: context,
@@ -622,13 +621,13 @@ class _LoginScreenState extends State<LoginScreen>
   //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
   //       children: <Widget>[
   //         _buildSocialBtn(
-  //           () => print('Login with Facebook'),
+  // () => print('Login with Facebook'),
   //           AssetImage(
   //             'assets/logos/facebook.jpg',
   //           ),
   //         ),
   //         _buildSocialBtn(
-  //           () => print('Login with Google'),
+  // () => print('Login with Google'),
   //           AssetImage(
   //             'assets/logos/google.jpg',
   //           ),
@@ -647,12 +646,12 @@ class _LoginScreenState extends State<LoginScreen>
         _isLoading = true;
       });
       if (_forgotPasswordMenu) _screen++;
-      print('PP next buttton Pressed');
-      print(!_buildForgetButton);
+      // print('PP next buttton Pressed');
+      // print(!_buildForgetButton);
       if (!_buildForgetButton && _screen < 2) {
-        print(_showSignup);
+        // print(_showSignup);
         if (_showSignup) {
-          print('PP In first If part');
+          // print('PP In first If part');
           try {
             await Provider.of<Auth>(context, listen: false).userSignup(
                 _fnameController.text + ' ' + _lnameController.text,
@@ -676,7 +675,7 @@ class _LoginScreenState extends State<LoginScreen>
           }
         } else {
           try {
-            print(_isRegistered);
+            // print(_isRegistered);
             _isRegistered = _forgotPasswordMenu
                 ? true
                 : await Provider.of<Auth>(context, listen: false)
@@ -684,7 +683,7 @@ class _LoginScreenState extends State<LoginScreen>
 
             setState(() {
               _isLoading = false;
-              print('PP in setState1: $_isRegistered');
+              // print('PP in setState1: $_isRegistered');
               // if (_isRegistered != null) {
 
               // }
@@ -694,7 +693,7 @@ class _LoginScreenState extends State<LoginScreen>
                 enable = false;
 
                 _controller.forward();
-                print(!_forgotPasswordMenu);
+                // print(!_forgotPasswordMenu);
                 if (!_forgotPasswordMenu) _buildForgetButton = true;
 
                 _showPasswordCheckBox = true;
@@ -719,11 +718,11 @@ class _LoginScreenState extends State<LoginScreen>
           }
         }
       } else {
-        print('PP in second else part: $_forgotPasswordMenu');
-        print(_phoneController.text);
+        // print('PP in second else part: $_forgotPasswordMenu');
+        // print(_phoneController.text);
         phoneNumber = _phoneController.text;
-        print(_fnameController.text);
-        print(_passwordController.text);
+        // print(_fnameController.text);
+        // print(_passwordController.text);
 
         // await Provider.of<Auth>(context, listen: false)
         //     .checkOtp(code: _nameController.text, number: phoneNumber);
@@ -777,8 +776,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    print('PP value of _requirePassword: $_requirePassword');
-    print('PP value of _showSigUp: $_showSignup');
+    // print('PP value of _requirePassword: $_requirePassword');
+    // print('PP value of _showSigUp: $_showSignup');
     ScreenUtil.init(context, allowFontScaling: true, height: 775, width: 411);
     return Scaffold(
         body: Form(

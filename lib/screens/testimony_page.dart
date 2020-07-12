@@ -90,9 +90,9 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                   IconButton(
                                     icon: Icon(Icons.arrow_back_ios),
                                     onPressed: () {
-                                      print(MediaQuery.of(context).padding.top);
-                                      print(size.width);
-                                      print(size.height);
+                                      // print(MediaQuery.of(context).padding.top);
+                                      // print(size.width);
+                                      // print(size.height);
                                       Navigator.of(context).pop();
                                     },
                                     color: Colors.black,
@@ -195,7 +195,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                         //   setState(() {
                                         //     rating = v;
                                         //   });
-                                        //   print(rating);
+                                        // print(rating);
                                         // },
                                         starCount: 5,
                                         rating: double.parse(
@@ -364,7 +364,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                         //   setState(() {
                                                         //     rating = v;
                                                         //   });
-                                                        //   print(rating);
+                                                        // print(rating);
                                                         // },
                                                         starCount: 5,
                                                         // rating: 3.4,
@@ -440,7 +440,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                               //     //   setState(() {
                                               //     //     rating = v;
                                               //     //   });
-                                              //     //   print(rating);
+                                              //   print(rating);
                                               //     // },
                                               //     starCount: 5,
                                               //     // rating: 3.4,
@@ -671,7 +671,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                     setState(() {
                                       rating = v;
                                     });
-                                    print(rating);
+                                    // print(rating);
                                   },
                                   starCount: 5,
                                   rating: rating,

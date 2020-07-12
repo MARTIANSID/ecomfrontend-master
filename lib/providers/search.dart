@@ -55,7 +55,7 @@ class Searchh with ChangeNotifier {
               SearchProduct(image: i['image'], styleNumber: i['styleNumber']))
           .toList();
 
-      print(products);
+      // print(products);
 
       searchResult = products;
     } on PlatformException {

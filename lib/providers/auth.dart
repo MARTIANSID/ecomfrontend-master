@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
-import 'package:Flutter/screens/auth_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +20,7 @@ class Auth with ChangeNotifier {
       final responseBody = jsonDecode(response.body);
       if (responseBody['error'] == true)
         throw HttpException(responseBody['details']['message']);
-      print('PP checkIfRegistered response: $responseBody');
+      // print('PP checkIfRegistered response: $responseBody');
       return responseBody['registered'];
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -72,8 +71,8 @@ class Auth with ChangeNotifier {
       final response = await http
           .post('${uurl}user/resetpasswordrequest', body: {"number": number});
       final responseBody = json.decode(response.body);
-      print(
-          'PP resetPasswordRequest body details message:${responseBody['details']}');
+      // print(
+      // 'PP resetPasswordRequest body details message:${responseBody['details']}');
       if (responseBody['error'] == true)
         throw HttpException(responseBody['details']['message']);
       else
@@ -95,7 +94,7 @@ class Auth with ChangeNotifier {
 
       if (responseBody['error'] == true)
         throw HttpException(responseBody['details']['message']);
-      print(responseBody['matches']);
+      // print(responseBody['matches']);
       return responseBody['matches'];
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -113,7 +112,7 @@ class Auth with ChangeNotifier {
       final response = await http.patch('${uurl}user/resetpassword/',
           body: {"code": "$otp", "password": "$password", "number": number});
       final responseBody = json.decode(response.body);
-      print('PP resetPassword body details message:$responseBody');
+      // print('PP resetPassword body details message:$responseBody');
       if (responseBody['error'] == true)
         throw HttpException(responseBody['details']['message']);
       else
@@ -131,12 +130,12 @@ class Auth with ChangeNotifier {
       [String name]) async {
     try {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
-      print("DCDCDCDCDC" +
-          status.subscriptionStatus.subscribed.toString() +
-          "DCDCDCDCDC");
+      // print("DCDCDCDCDC" +
+      // status.subscriptionStatus.subscribed.toString() +
+      // "DCDCDCDCDC");
 
       var playerId = status.subscriptionStatus.userId;
-      print(playerId);
+      // print(playerId);
       final response = await http.post(
         '$uurl$urlSegment',
         body: name != null
@@ -189,7 +188,7 @@ class Auth with ChangeNotifier {
       final response = await http
           .post('${uurl}user/resendmessagepassword', body: {"number": number});
       final responseBody = json.decode(response.body);
-      print('PP resetPassword body details message:$responseBody');
+      // print('PP resetPassword body details message:$responseBody');
       if (responseBody['error'] == true) {
         throw HttpException(responseBody['details']['message']);
       } else
@@ -218,8 +217,8 @@ class Auth with ChangeNotifier {
   Future<bool> tryAutoLogin(context) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      print(
-          'PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
+      // print(
+      // 'PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
       if (!prefs.containsKey('userData')) {
         return false;
       }

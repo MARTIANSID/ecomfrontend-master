@@ -103,7 +103,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     );
 
     // _tabController.addListener(() {
-    //   print(Provider.of<Pagination>(context,listen: false).isVerified);
+    print(Provider.of<Pagination>(context, listen: false).isVerified);
     //   if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
     //     //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
     //     dataSelect(
@@ -148,19 +148,45 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   Future<void> getProduct() async {
     var futures = <Future>[
       Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1, addition: false, select: 'all', context: context),
+          page: 1,
+          addition: false,
+          select: 'all',
+          context: context,
+          sortby: Provider.of<Pagination>(context, listen: false).count,
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1, addition: false, select: 'featured', context: context),
+          page: 1,
+          addition: false,
+          select: 'featured',
+          context: context,
+          sortby: Provider.of<Pagination>(context, listen: false).count,
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1, addition: false, select: 'new', context: context),
+          page: 1,
+          addition: false,
+          select: 'new',
+          context: context,
+          sortby: Provider.of<Pagination>(context, listen: false).count,
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1, addition: false, select: 'highestSelling', context: context),
+          page: 1,
+          addition: false,
+          select: 'highestSelling',
+          context: context,
+          sortby: Provider.of<Pagination>(context, listen: false).count,
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getProducts(
-          addition: false, page: 1, context: context, select: 'fancyDiamond'),
+          addition: false,
+          page: 1,
+          context: context,
+          select: 'fancyDiamond',
+          sortby: Provider.of<Pagination>(context, listen: false).count,
+          sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getFav(context),
       Provider.of<Options>(context, listen: false).getStringValuesSF(),
     ];
     try {
+      await Provider.of<Pagination>(context, listen: false).getSortData();
       await Future.wait(futures);
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
       //  await Provider.of<Pagination>(context, listen: false).getProducts(
@@ -230,20 +256,20 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
       // if (Provider.of<Options>(context, listen: false).color != null) {
       //   colorr = Provider.of<Options>(context, listen: false).color;
-      //   print(colorr);
-      //   print('in products');
+      // print(colorr);
+      // print('in products');
       // }
       // if (Provider.of<Options>(context, listen: false).diamondQuality != null) {
       //   diamond = Provider.of<Options>(context, listen: false).diamondQuality;
-      //   print(colorr);
+      // print(colorr);
       // }
       // if (Provider.of<Options>(context, listen: false).build != null) {
       //   buildd = Provider.of<Options>(context, listen: false).build;
-      //   print(colorr);
+      // print(colorr);
       // }
       // if (Provider.of<Options>(context, listen: false).certificate != null) {
       //   certt = Provider.of<Options>(context, listen: false).certificate;
-      //   print(colorr);
+      // print(colorr);
       // }
 
     }
@@ -254,7 +280,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     setState(() {
       // await Provider.of<Options>(context, listen: false).setBuild(build: value);
       _defaultChoiceIndex1 = value;
-      print(value);
+      // print(value);
     });
   }
 
@@ -352,7 +378,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                   element.styleNumber.contains(searchValue.toUpperCase()))
               .toList();
 
-          print('DC SEARCH');
+          // print('DC SEARCH');
         });
       });
     } catch (err) {
@@ -369,7 +395,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       isLoadingSearch = false;
     }
 
-    print(suggestion);
+    // print(suggestion);
     // setState(() {
 
     // });
@@ -423,7 +449,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     //     .where(
     //         (element) => element.contains(searchValue.toString().toUpperCase()))
     //     .toList();
-    print('Search Selected' + searchSelected.toString());
+    // print('Search Selected' + searchSelected.toString());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
@@ -1054,7 +1080,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   // setState(() {
 
                                                   //   // info=styleNumber[].split(value);
-                                                  //   // print(styleNumber[1].split(searchValue));
+                                                  // print(styleNumber[1].split(searchValue));
                                                   // });
                                                   try {
                                                     await getSearch(searchValue
@@ -1146,7 +1172,12 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                             ),
                                           ),
                                           GestureDetector(
-                                            onTap: () {
+                                            onTap: () async {
+                                              await Provider.of<Notif>(context,
+                                                      listen: false)
+                                                  .getNotification(
+                                                      context: context);
+
                                               setState(() {
                                                 tapNotication = !tapNotication;
                                               });
@@ -1271,7 +1302,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                     info = suggestion[index]
                                                         .styleNumber
                                                         .split(searchValue);
-                                                    print(info);
+                                                    // print(info);
                                                     return GestureDetector(
                                                       onTap: () async {
                                                         try {
@@ -1698,101 +1729,127 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 .notifications
                                                 .length,
                                             itemBuilder: (context, index) {
-                                              return Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 20),
-                                                width:
-                                                    ScreenUtil().setWidth(260),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    ShaderMask(
-                                                      shaderCallback:
-                                                          (bounds) =>
-                                                              LinearGradient(
-                                                        colors: [
-                                                          Color(0xFF34BDDD),
-                                                          Color(0xFF367DC8),
-                                                        ],
-                                                        begin:
-                                                            Alignment.topLeft,
-                                                        end: Alignment
-                                                            .bottomRight,
-                                                      ).createShader(
-                                                        Rect.fromLTWH(
-                                                            0,
-                                                            0,
-                                                            bounds.width,
-                                                            bounds.height),
+                                              return Dismissible(
+                                                key: UniqueKey(),
+                                                direction:
+                                                    DismissDirection.startToEnd,
+                                                // confirmDismiss: (DismissDirection
+                                                //     direction) async {
+
+                                                // },
+                                                onDismissed: (DismissDirection
+                                                    direction) async {
+                                                  await Provider.of<Notif>(
+                                                          context,
+                                                          listen: false)
+                                                      .deleteNotification(
+                                                          context: context,
+                                                          id: Provider.of<
+                                                                      Notif>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .notifications[
+                                                                  index]
+                                                              .id);
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 20),
+                                                  width: ScreenUtil()
+                                                      .setWidth(260),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      ShaderMask(
+                                                        shaderCallback:
+                                                            (bounds) =>
+                                                                LinearGradient(
+                                                          colors: [
+                                                            Color(0xFF34BDDD),
+                                                            Color(0xFF367DC8),
+                                                          ],
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                        ).createShader(
+                                                          Rect.fromLTWH(
+                                                              0,
+                                                              0,
+                                                              bounds.width,
+                                                              bounds.height),
+                                                        ),
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/ordersyet.svg",
+                                                          height: ScreenUtil()
+                                                              .setHeight(39),
+                                                          width: ScreenUtil()
+                                                              .setWidth(32),
+                                                          color: Colors.white,
+                                                        ),
                                                       ),
-                                                      child: SvgPicture.asset(
-                                                        "assets/icons/ordersyet.svg",
-                                                        height: ScreenUtil()
-                                                            .setHeight(39),
+                                                      SizedBox(
                                                         width: ScreenUtil()
-                                                            .setWidth(32),
-                                                        color: Colors.white,
+                                                            .setWidth(23),
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: ScreenUtil()
-                                                          .setWidth(23),
-                                                    ),
-                                                    Container(
-                                                      width: ScreenUtil()
-                                                          .setWidth(204),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            // "Order Update",
-                                                            Provider.of<Notif>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .notifications[
-                                                                    index]
-                                                                .title,
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  "Gilroy Light",
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(18,
-                                                                      allowFontScalingSelf:
-                                                                          true),
+                                                      Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(204),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              Provider.of<Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .notifications[
+                                                                      index]
+                                                                  .title,
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Gilroy Light",
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(18,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: ScreenUtil()
-                                                                .setHeight(4),
-                                                          ),
-                                                          Text(
-                                                            Provider.of<Notif>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .notifications[
-                                                                    index]
-                                                                .body,
-                                                            // "Your order has been processed",
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  "Gilroy Light",
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(12,
-                                                                      allowFontScalingSelf:
-                                                                          true),
+                                                            SizedBox(
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setHeight(
+                                                                          4),
                                                             ),
-                                                          ),
-                                                        ],
+                                                            Text(
+                                                              Provider.of<Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .notifications[
+                                                                      index]
+                                                                  .body,
+                                                              // "Your order has been processed",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Gilroy Light",
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(12,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               );
                                             },

@@ -193,10 +193,10 @@ class Cart with ChangeNotifier {
         //           ))
         //         }
         //     });
-        print(cart[0].id);
+        // print(cart[0].id);
 
-        print(response);
-        print(cart);
+        // print(response);
+        // print(cart);
         notifyListeners();
       } on PlatformException {
         throw "Oops Something Went Wrong!";
@@ -342,16 +342,16 @@ class Cart with ChangeNotifier {
                   styleNumber: i["styleNumber"])))
           .toList();
 
-      print(responseData);
+      // print(responseData);
 
-      print(cart);
+      // print(cart);
       notifyListeners();
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (error) {
-      print(error);
+      // print(error);
       throw error;
     }
   }
@@ -493,8 +493,8 @@ class Cart with ChangeNotifier {
       diamondValue,
       certvalue,
       update}) async {
-    print(color);
-    print(colorValue);
+    // print(color);
+    // print(colorValue);
     Provider.of<Cart>(context, listen: false).addCart(
         context: context,
         color: color,

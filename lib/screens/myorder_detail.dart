@@ -1,4 +1,3 @@
-import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,8 +35,8 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
       height: 774.8571428571429,
       allowFontScaling: true,
     );
-    print(size.width);
-    print(size.height);
+    // nt(size.width);
+    // print(size.height);
     return Scaffold(
       body: Container(
         // color: Colors.amber,
@@ -54,7 +53,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                 child: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
                   onPressed: () {
-                    print(MediaQuery.of(context).padding.top);
+                    // print(MediaQuery.of(context).padding.top);
 
                     Navigator.of(context).pop();
                   },

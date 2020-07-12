@@ -98,7 +98,7 @@ class Products with ChangeNotifier {
 
       final extractedData = json.decode(response.body);
       if (extractedData['error'] == true) {
-        print('PP in fetchANdSetProduct error in Products');
+        // print('PP in fetchANdSetProduct error in Products');
         return;
       }
 
@@ -132,8 +132,8 @@ class Products with ChangeNotifier {
           .toList();
       isVerified = extractedData['user']['verified'];
       isPriced = extractedData['user']['priced'];
-      print(loadedProducts.length);
-      print(loadedProducts);
+      // print(loadedProducts.length);
+      // print(loadedProducts);
 
       _products = loadedProducts;
       notifyListeners();
@@ -141,7 +141,7 @@ class Products with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } catch (error) {
-      print('ppps in try catch block Error: $error');
+      // print('ppps in try catch block Error: $error');
       throw (error);
     }
   }
@@ -151,7 +151,7 @@ class Products with ChangeNotifier {
   void filterProducts(String filter) {
     sortType = filter;
     if (nonsortedList == null) nonsortedList = _products;
-    print('PP now Sorting List');
+    // print('PP now Sorting List');
     if (filter == 'Diamond Count') {
       _products.sort((a, b) => a.diamondCount.compareTo(b.diamondCount));
       _products.forEach((element) {
@@ -195,7 +195,7 @@ class Products with ChangeNotifier {
       // _products.insert(0, newProduct); // at the start of the list
       notifyListeners();
     } catch (error) {
-      print(error);
+      // print(error);
       throw error;
     }
   }
@@ -209,7 +209,7 @@ class Products with ChangeNotifier {
   //     _products[prodIndex] = newProduct;
   //     notifyListeners();
   //   } else {
-  //     print('...');
+  // print('...');
   //   }
   // }
 
