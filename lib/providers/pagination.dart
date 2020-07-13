@@ -20,7 +20,7 @@ class Product {
   var designDimensions;
   bool isFavourite;
   Map<dynamic, dynamic> imageUrl;
-  Map<dynamic, dynamic> prices;
+  var prices;
   bool count = false;
   bool weight = false;
   bool gWeight = false;

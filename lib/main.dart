@@ -12,6 +12,7 @@ import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
@@ -101,13 +102,20 @@ Future<void> main() async {
 //       floatingActionButton: FloatingActionButton(
 //         child: Icon(Icons.navigate_next),
 //         onPressed: () {
+
+// SIDHARTH
+
+//           var dateTime = DateFormat("yyyy-MM-ddTHH:mm:ss")
+//               .parse("2020-07-13T13:15:30.000Z", true);
+//           print(dateTime.toLocal());
+
 //           // Timer
-//           // print(DateTime(1594048939 * 1000));
-//           Map<String, dynamic> decodedToken = JwtDecoder.decode(
-//               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZiOTFiNThhNmEzODAyNTYwZTI3M2EiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiZnVsbE5hbWUiOiJTYW5qYXkgSmFpbiIsInZlcmlmaWVkIjp0cnVlLCJwcmljZWQiOnRydWUsInJvbGUiOiJVU0VSIiwiaWF0IjoxNTk0MDQ2NjE0LCJleHAiOjE1OTQwNTAyMTR9.nU49FsTMDGEx_cLYzMKzmwWxT1Br-5NO70825jif9_c');
-//           print(decodedToken['iat']);
-//           print(
-//               DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000));
+//           // // print(DateTime(1594048939 * 1000));
+//           // Map<String, dynamic> decodedToken = JwtDecoder.decode(
+//           //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWZiOTFiNThhNmEzODAyNTYwZTI3M2EiLCJudW1iZXIiOiIxMjM0NTY3ODkwIiwiZnVsbE5hbWUiOiJTYW5qYXkgSmFpbiIsInZlcmlmaWVkIjp0cnVlLCJwcmljZWQiOnRydWUsInJvbGUiOiJVU0VSIiwiaWF0IjoxNTk0MDQ2NjE0LCJleHAiOjE1OTQwNTAyMTR9.nU49FsTMDGEx_cLYzMKzmwWxT1Br-5NO70825jif9_c');
+//           // print(decodedToken['iat']);
+//           // print(
+//           //     DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000));
 //         },
 //       ),
 //       body: Container(
@@ -482,7 +490,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             Positioned(
-              bottom: ScreenUtil().setHeight(10),
+              bottom: ScreenUtil().setHeight(20),
               right: ScreenUtil().setWidth(20),
               // alignment: Alignment.topRight,
               child: GestureDetector(

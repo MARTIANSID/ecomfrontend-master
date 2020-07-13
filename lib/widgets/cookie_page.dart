@@ -815,7 +815,7 @@ class _CookiePageState extends State<CookiePage>
                                                       //       )
                                                       // :
                                                       ? Text(
-                                                          '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹',
+                                                          '${int.parse(widget.products[i].prices[priceKey]) + certPrice + buildPrice} ₹',
                                                           style: TextStyle(
                                                             fontSize: ScreenUtil()
                                                                 .setSp(18,

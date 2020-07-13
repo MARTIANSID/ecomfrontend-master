@@ -209,7 +209,7 @@ class UserInfo with ChangeNotifier {
         },
         body: json.encode({
           "fullName": fullname,
-          "gst": gst == null ? 'NOT GIVEN' : gst,
+          "gst": gst,
           "firm": firm,
           "city": city,
           "street": street,

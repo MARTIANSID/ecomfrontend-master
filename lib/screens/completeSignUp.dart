@@ -212,7 +212,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             FadeInUI(
                               delay: 1.66,
                               child: RoundedInputField(
-                                hintText: "Reference",
+                                hintText: "Reference (Optional)",
                                 controller: referenceController,
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -274,7 +274,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                             FadeInUI(
                               delay: 2.66,
                               child: RoundedInputField(
-                                hintText: "GST (OPTIONAL)",
+                                hintText: "GST (Optional)",
                                 validator: (value) {
                                   if (value.isNotEmpty) {
                                     if (!RegExp(
