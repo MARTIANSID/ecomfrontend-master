@@ -2010,8 +2010,7 @@ class _UserPageState extends State<UserPage>
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              gif:
-                                                  "assets/images/alert.identi");
+                                              gif: "assets/images/alert.gif");
                                         }
                                       } else {
                                         Navigator.push(
@@ -2795,15 +2794,15 @@ class _UserPageState extends State<UserPage>
                                             //     'assets/images/notification1.gif',
                                           ).then((value) async {
                                             if (value) {
-                                              value2 = value;
-                                              if (value2) {
-                                                // Navigator.of(context).pop();
-                                                Navigator.popAndPushNamed(
-                                                    context, '/');
-                                                Provider.of<Auth>(context,
-                                                        listen: false)
-                                                    .logout();
-                                              }
+                                              // value2 = value;
+                                              // if (value2) {
+                                              // Navigator.of(context).pop();
+                                              Navigator.popAndPushNamed(
+                                                  context, '/');
+                                              Provider.of<Auth>(context,
+                                                      listen: false)
+                                                  .logout();
+                                              // }
                                             }
                                           });
                                         },
