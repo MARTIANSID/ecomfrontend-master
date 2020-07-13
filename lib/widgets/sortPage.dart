@@ -79,7 +79,7 @@ class _SortPageState extends State<SortPage> {
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
-          select: 'new',
+          select: 'isNew',
           context: context,
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'

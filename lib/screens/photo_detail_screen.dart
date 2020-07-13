@@ -32,7 +32,7 @@ class PhotoDetailScreen extends StatelessWidget {
                       useDiskCache: true,
                       cacheRule: CacheRule(maxAge: const Duration(days: 3)),
                     ),
-              heroAttributes: PhotoViewHeroAttributes(tag: "tag1"),      
+              heroAttributes: PhotoViewHeroAttributes(tag: "tag1"),
             ),
           ],
         ),
@@ -40,3 +40,6 @@ class PhotoDetailScreen extends StatelessWidget {
     );
   }
 }
+
+// 9791055441
+// vanitha r statistics

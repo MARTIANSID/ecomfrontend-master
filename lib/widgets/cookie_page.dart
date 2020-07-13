@@ -110,10 +110,10 @@ class _CookiePageState extends State<CookiePage>
           context: context,
           sort: Provider.of<Pagination>(context, listen: false).sort,
           sortby: Provider.of<Pagination>(context, listen: false).count);
-    if (widget.select == 'new')
+    if (widget.select == 'isnew')
       await Provider.of<Pagination>(context, listen: false).getProducts(
           page: Provider.of<Pagination>(context, listen: false).pageNew,
-          select: 'new',
+          select: 'isnew',
           addition: true,
           context: context,
           sort: Provider.of<Pagination>(context, listen: false).sort,
@@ -417,14 +417,16 @@ class _CookiePageState extends State<CookiePage>
     print(colorKey);
     // setState(() {
     // if (widget.select != 'fav') {
-    priceKey = (Provider.of<Pagination>(context, listen: false)
-        .diamondQuality[widget.diamond]);
+    if (Provider.of<Pagination>(context, listen: false).isPriced) {
+      priceKey = (Provider.of<Pagination>(context, listen: false)
+          .diamondQuality[widget.diamond]);
 
-    buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
-        Provider.of<Pagination>(context, listen: false).build[widget.build]];
-    certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
-        Provider.of<Pagination>(context, listen: false).cert[widget.cert]];
-    // }
+      buildPrice = Provider.of<Pagination>(context, listen: false).buildPrices[
+          Provider.of<Pagination>(context, listen: false).build[widget.build]];
+      certPrice = Provider.of<Pagination>(context, listen: false).certPrices[
+          Provider.of<Pagination>(context, listen: false).cert[widget.cert]];
+      // }}
+    }
 
     ScreenUtil.init(context,
         width: 411.42857142857144,

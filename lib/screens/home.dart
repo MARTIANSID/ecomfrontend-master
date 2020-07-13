@@ -56,6 +56,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     if (date != null) {
       int d = DateTime.now().difference(DateTime.parse(date)).inDays;
       if (d >= 1) {
+        await Provider.of<UserInfo>(context, listen: false).getuser(context);
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -74,6 +76,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             gif: "assets/images/identi.gif");
       }
     } else {
+      await Provider.of<UserInfo>(context, listen: false).getuser(context);
+
       Navigator.push(
         context,
         MaterialPageRoute(

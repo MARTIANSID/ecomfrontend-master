@@ -91,7 +91,7 @@ class Pagination with ChangeNotifier {
   void pageAdd(select) {
     if (select == 'all') pageAll++;
 
-    if (select == 'new') pageNew++;
+    if (select == 'isnew') pageNew++;
 
     if (select == 'featured') pageFeatured++;
 
@@ -146,7 +146,7 @@ class Pagination with ChangeNotifier {
           .storePricDate(DateTime.now().toString());
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on SocketException {
+    } on SocketException {
       throw 'No Internet';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -191,23 +191,26 @@ class Pagination with ChangeNotifier {
       if (extractedData['error'] != false) {
         throw HttpException(extractedData['details']['message']);
       }
+      isPriced = extractedData['user']['priced'];
 
       build = extractedData["productOptions"]["build"];
       color = extractedData["productOptions"]["color"];
       cert = extractedData["productOptions"]["certification"];
-      goldPrice = extractedData['prices']['goldToday'];
+      if (isPriced) goldPrice = extractedData['prices']['goldToday'];
       isVerified = extractedData['user']['verified'];
-      diamondPrices =
-          Map<dynamic, dynamic>.from(extractedData['prices']['diamond']);
+      if (isPriced)
+        diamondPrices =
+            Map<dynamic, dynamic>.from(extractedData['prices']['diamond']);
 
       diamondQuality = extractedData["productOptions"]["diamondQuality"];
-      buildPrices =
-          Map<dynamic, dynamic>.from(extractedData['prices']['labour']);
-      certPrices =
-          Map<dynamic, dynamic>.from(extractedData['prices']['certification']);
-
-      certPrices.putIfAbsent('NONE', () => 0);
-      comm = extractedData['prices']['comission'];
+      if (isPriced)
+        buildPrices =
+            Map<dynamic, dynamic>.from(extractedData['prices']['labour']);
+      if (isPriced)
+        certPrices = Map<dynamic, dynamic>.from(
+            extractedData['prices']['certification']);
+      if (isPriced) certPrices.putIfAbsent('NONE', () => 0);
+      if (isPriced) comm = extractedData['prices']['comission'];
 
       if (addition) {
         extractedData['products'].forEach((prod) {
@@ -221,7 +224,9 @@ class Pagination with ChangeNotifier {
                   diamondCount: prod['diamondCount'],
                   isFavourite: prod['isFavourite'],
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  prices: Map<dynamic, dynamic>.from(prod['prices']),
+                  prices: prod['prices'] == null
+                      ? null
+                      : Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             );
           if (select == 'featured')
@@ -234,7 +239,9 @@ class Pagination with ChangeNotifier {
                   diamondCount: prod['diamondCount'],
                   isFavourite: prod['isFavourite'],
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  prices: Map<dynamic, dynamic>.from(prod['prices']),
+                  prices: prod['prices'] == null
+                      ? null
+                      : Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             );
           if (select == 'highestSelling')
@@ -247,7 +254,9 @@ class Pagination with ChangeNotifier {
                   diamondCount: prod['diamondCount'],
                   isFavourite: prod['isFavourite'],
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  prices: Map<dynamic, dynamic>.from(prod['prices']),
+                  prices: prod['prices'] == null
+                      ? null
+                      : Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             );
 
@@ -261,10 +270,12 @@ class Pagination with ChangeNotifier {
                   diamondCount: prod['diamondCount'],
                   isFavourite: prod['isFavourite'],
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  prices: Map<dynamic, dynamic>.from(prod['prices']),
+                  prices: prod['prices'] == null
+                      ? null
+                      : Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             );
-          if (select == 'new')
+          if (select == 'isnew')
             newProducts.add(
               Product(
                   designDetails: Map<String, bool>.from(prod['designDetails']),
@@ -274,7 +285,9 @@ class Pagination with ChangeNotifier {
                   diamondCount: prod['diamondCount'],
                   isFavourite: prod['isFavourite'],
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  prices: Map<dynamic, dynamic>.from(prod['prices']),
+                  prices: prod['prices'] == null
+                      ? null
+                      : Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             );
         });
@@ -289,14 +302,15 @@ class Pagination with ChangeNotifier {
                   goldWeight: prod['goldWeight'],
                   diamondCount: prod['diamondCount'],
                   isFavourite: prod['isFavourite'],
+                  prices: prod['prices'] == null
+                      ? null
+                      : Map<dynamic, dynamic>.from(prod['prices']),
                   imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  prices: Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             )
             .toList();
 
         isVerified = extractedData['user']['verified'];
-        isPriced = extractedData['user']['priced'];
 
         if (select == 'all') {
           allProducts = [];
@@ -331,7 +345,7 @@ class Pagination with ChangeNotifier {
           notifyListeners();
         }
 
-        if (select == 'new') {
+        if (select == 'isnew') {
           newProducts = [];
           newProducts = loadedProducts;
           print('new');
@@ -341,7 +355,7 @@ class Pagination with ChangeNotifier {
       }
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -396,7 +410,9 @@ class Pagination with ChangeNotifier {
                 isFavourite: true,
                 imageUrl: Map<dynamic, dynamic>.from(prod['images']),
                 designDimensions: prod['designDimensions'],
-                prices: Map<dynamic, dynamic>.from(prod['prices']),
+                prices: prod['prices'] == null
+                    ? null
+                    : Map<dynamic, dynamic>.from(prod['prices']),
               ),
             )
             .toList();
@@ -407,7 +423,7 @@ class Pagination with ChangeNotifier {
       print(favProducts);
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -673,7 +689,7 @@ class Pagination with ChangeNotifier {
       throw 'No Internet';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
-    }on FormatException {
+    } on FormatException {
       throw "Oops Something Went Wrong!";
     } catch (error) {
       if (allProducts
@@ -765,7 +781,6 @@ class Pagination with ChangeNotifier {
       if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
-      var prices = Map<dynamic, dynamic>.from(responseData['prices']);
 
       List<dynamic> loadedProducts = responseData['products']
           .map(
@@ -777,14 +792,16 @@ class Pagination with ChangeNotifier {
                 diamondCount: prod['diamondCount'],
                 isFavourite: prod['isFavourite'],
                 imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                prices: Map<dynamic, dynamic>.from(prod['prices']),
+                prices: prod['prices'] == null
+                    ? null
+                    : Map<dynamic, dynamic>.from(prod['prices']),
                 designDimensions: prod['designDimensions']),
           )
           .toList();
       productDetailsForSearch = loadedProducts;
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -823,7 +840,7 @@ class Pagination with ChangeNotifier {
       }
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';

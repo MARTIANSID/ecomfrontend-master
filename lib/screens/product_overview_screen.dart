@@ -164,7 +164,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
-          select: 'new',
+          select: 'isnew',
           context: context,
           sortby: Provider.of<Pagination>(context, listen: false).count,
           sort: Provider.of<Pagination>(context, listen: false).sort),
@@ -306,6 +306,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     if (date != null) {
       int d = DateTime.now().difference(DateTime.parse(date)).inDays;
       if (d >= 1) {
+        await Provider.of<UserInfo>(context, listen: false).getuser(context);
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -324,6 +326,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
             gif: "assets/images/identi.gif");
       }
     } else {
+      await Provider.of<UserInfo>(context, listen: false).getuser(context);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -926,7 +929,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           listen: true)
                                       .newProducts,
                                   scrollController: widget.scrollController,
-                                  select: 'new',
+                                  select: 'isnew',
                                   sort: sort,
                                   count: count,
                                   build: _defaultChoiceIndex1,

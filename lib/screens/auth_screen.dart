@@ -955,7 +955,7 @@ class _LoginScreenState extends State<LoginScreen>
                 _forgotPasswordMenu && _requirePassword == false
                     ? Container(
                         padding: EdgeInsets.only(left: 10),
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.bottomLeft,
                         child: _resendMessageBtn(),
                       )
                     : _buildRememberMeCheckbox(),
