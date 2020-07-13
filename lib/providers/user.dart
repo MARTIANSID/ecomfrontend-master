@@ -98,6 +98,8 @@ class UserInfo with ChangeNotifier {
       profileImage = responseData['user']['profileImage'];
 
       return responseData;
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -158,6 +160,8 @@ class UserInfo with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
       return responseData;
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -222,6 +226,8 @@ class UserInfo with ChangeNotifier {
       await storeDate(DateTime.now().toString());
 
       return responseData;
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -292,6 +298,8 @@ class UserInfo with ChangeNotifier {
       response.stream.transform(utf8.decoder).listen((value) {
         // print(value);
       });
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -322,6 +330,8 @@ class UserInfo with ChangeNotifier {
             'Bearer ' + Provider.of<Auth>(context, listen: false).token,
       });
       // print(json.decode(response.body));
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {

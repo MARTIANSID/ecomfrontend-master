@@ -22,16 +22,6 @@ class Notif with ChangeNotifier {
   final uurl = "https://alexa.gemstory.in/";
   List<dynamic> notifications = [];
 
-  // void notiAdd({title, body, link, id}) {
-  //   notifications.add(Noti(body: body, title: title, link: link, id: id));
-  //   print(notifications);
-  //   notifyListeners();
-  // }
-
-  // void notiDelete({id}) {
-  //   notifications.removeWhere((element) => element.id == id);
-  //   notifyListeners();
-  // }
   Future<void> readNNotification({context, id}) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
@@ -49,7 +39,7 @@ class Notif with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        uurl + '/notifications',
+        uurl + '/notification',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -60,6 +50,8 @@ class Notif with ChangeNotifier {
         notifications[index].read = !notifications[index].read;
         notifyListeners();
       }
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } catch (err) {
       throw err;
     }
@@ -91,6 +83,8 @@ class Notif with ChangeNotifier {
         notifications.removeWhere((element) => element.id == id);
         notifyListeners();
       }
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } catch (err) {
       throw err;
     }
@@ -133,6 +127,8 @@ class Notif with ChangeNotifier {
       print(notifications);
 
       notifyListeners();
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } catch (err) {
       throw err;
     }

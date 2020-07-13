@@ -144,7 +144,9 @@ class Pagination with ChangeNotifier {
       }
       await Provider.of<UserInfo>(context, listen: false)
           .storePricDate(DateTime.now().toString());
-    } on SocketException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on SocketException {
       throw 'No Internet';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -337,7 +339,9 @@ class Pagination with ChangeNotifier {
           notifyListeners();
         }
       }
-    } on PlatformException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -401,7 +405,9 @@ class Pagination with ChangeNotifier {
       favProducts = loadedProducts;
       notifyListeners();
       print(favProducts);
-    } on PlatformException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -667,6 +673,8 @@ class Pagination with ChangeNotifier {
       throw 'No Internet';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
+    }on FormatException {
+      throw "Oops Something Went Wrong!";
     } catch (error) {
       if (allProducts
               .indexWhere((element) => element.styleNumber == styleNumber) >=
@@ -774,7 +782,9 @@ class Pagination with ChangeNotifier {
           )
           .toList();
       productDetailsForSearch = loadedProducts;
-    } on PlatformException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -811,7 +821,9 @@ class Pagination with ChangeNotifier {
       if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
-    } on PlatformException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';

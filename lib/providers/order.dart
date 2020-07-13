@@ -89,6 +89,8 @@ class Orders with ChangeNotifier {
                   .toList()))
           .toList();
       print(orderProducts);
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw 'Oops Something went wrong';
     } on SocketException {
@@ -129,6 +131,8 @@ class Orders with ChangeNotifier {
       if (response.statusCode == 200) {
         Provider.of<Cart>(context, listen: false).cartNull();
       }
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw 'Oops Something went wrong';
     } on SocketException {

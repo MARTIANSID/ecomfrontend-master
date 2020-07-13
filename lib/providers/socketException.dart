@@ -1,8 +1,7 @@
 import 'dart:io';
 
-class HttpE implements SocketException{
-
- final String message;
+class HttpE implements SocketException {
+  final String message;
 
   HttpE(this.message);
 

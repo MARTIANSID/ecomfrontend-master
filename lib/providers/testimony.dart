@@ -61,6 +61,8 @@ class Testimony with ChangeNotifier {
 
       //array of maps
 
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -105,6 +107,8 @@ class Testimony with ChangeNotifier {
 
       //array of maps
 
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {

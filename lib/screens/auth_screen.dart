@@ -8,8 +8,6 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 
-import '../providers/products.dart';
-
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -658,10 +656,6 @@ class _LoginScreenState extends State<LoginScreen>
                 _phoneController.text,
                 _passwordController.text);
             Provider.of<Auth>(context, listen: false).changeLog();
-
-            await Provider.of<Products>(context, listen: false)
-                .fetchAndSetProducts(
-                    token: Provider.of<Auth>(context, listen: false).token);
 
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (ctx) => Home()));

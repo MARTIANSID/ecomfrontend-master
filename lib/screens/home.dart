@@ -200,7 +200,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     //           ),
     //         )
     //       : FadeInUp(
-    //           // key: _key,
+    //    e       // key: _key,
     //           preferences:
     //               AnimationPreferences(duration: Duration(milliseconds: 100)),
     //           child: cnb.CurvedNavigationBar(
@@ -209,7 +209,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     //             index: _currentIndex,
     //             height: ScreenUtil().setHeight(60.0),
     //             items: <Widget>[
-    //               Icon(Icons.person, size: ScreenUtil().setSp(35,allowFontScalingSelf: true), color: Colors.white),
+    //               Icon(Icons.person, size: ScrenUtil().setSp(35,allowFontScalingSelf: true), color: Colors.white),
     //               Icon(Icons.favorite, size: ScreenUtil().setSp(35,allowFontScalingSelf: true), color: Colors.white),
     //               Icon(Icons.home, size: ScreenUtil().setSp(35,allowFontScalingSelf: true), color: Colors.white),
     //               Icon(Icons.search, size: ScreenUtil().setSp(35,allowFontScalingSelf: true), color: Colors.white),

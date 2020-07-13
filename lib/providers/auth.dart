@@ -24,6 +24,8 @@ class Auth with ChangeNotifier {
       return responseBody['registered'];
     } on PlatformException {
       throw "Oops Something Went Wrong!";
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -81,6 +83,8 @@ class Auth with ChangeNotifier {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } catch (err) {
       throw err;
     }
@@ -96,6 +100,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       // print(responseBody['matches']);
       return responseBody['matches'];
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -117,6 +123,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       else
         return true;
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -174,6 +182,8 @@ class Auth with ChangeNotifier {
         },
       );
       prefs.setString('userData', userData);
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -193,6 +203,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseBody['details']['message']);
       } else
         return true;
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
@@ -255,6 +267,8 @@ class Auth with ChangeNotifier {
           return true;
         }
       }
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {

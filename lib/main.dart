@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
@@ -9,20 +8,15 @@ import 'package:Flutter/providers/testimony.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/my_order.dart';
 import 'package:Flutter/screens/product_detail.dart';
-import 'package:Flutter/screens/profile_screeen.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './screens/auth_screen.dart';
-import './providers/products.dart';
 import './providers/auth.dart';
 import './screens/home.dart';
 import './providers/notifiaction.dart';
@@ -235,7 +229,6 @@ class _MyAppState extends State<MyApp> {
           value: Auth(),
         ),
         ChangeNotifierProvider.value(value: UserInfo()),
-        ChangeNotifierProvider.value(value: Products()),
         ChangeNotifierProvider.value(value: Cart()),
         ChangeNotifierProvider.value(value: Searchh()),
         ChangeNotifierProvider.value(value: Pagination()),

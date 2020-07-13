@@ -58,6 +58,8 @@ class Searchh with ChangeNotifier {
       // print(products);
 
       searchResult = products;
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {

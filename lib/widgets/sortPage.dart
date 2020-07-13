@@ -177,35 +177,8 @@ class _SortPageState extends State<SortPage> {
                         SizedBox(
                           height: ScreenUtil().setHeight(47),
                         ),
-                        // Text(
-                        //   'Build',
-                        //   style: TextStyle(
-                        //     fontFamily: 'Gilroy Medium',
-                        //     fontSize: ScreenUtil().setSp(18),
-                        //     color: Colors.black,
-                        //   ),
-                        // ),
-                        // CupertinoSegmentedControl(
-                        //   children: const <int, Widget>{
-                        //     0: Padding(
-                        //         padding: EdgeInsets.all(8.0), child: Text('Midnight')),
-                        //     1: Padding(
-                        //         padding: EdgeInsets.all(8.0), child: Text('Viridian')),
-                        //     2: Padding(
-                        //         padding: EdgeInsets.all(8.0), child: Text('Cerulean'))
-                        //   },
-                        //   groupValue: this._selectedTab,
-                        //   onValueChanged: (value) {
-                        //     this.setState(() => this._selectedTab = value);
-                        //     // this._tabController.animateTo(value);
-                        //   },
-                        // ),
                         Center(
                           child: Wrap(
-                            // spacing: 9.0,
-                            // runSpacing: 5.0,
-                            // alignment: WrapAlignment.start,
-                            // crossAxisAlignment: WrapCrossAlignment.start,
                             children: List<Widget>.generate(sortChoices.length,
                                 (int index) {
                               return GestureDetector(
@@ -232,11 +205,6 @@ class _SortPageState extends State<SortPage> {
                                                     Radius.circular(5.0),
                                                 topRight: Radius.circular(5.0),
                                               ),
-                                    // borderRadius: BorderRadius.circular(20),
-                                    // border: Border.all(
-                                    //   color: Colors.black,
-                                    //   width: 1.0,
-                                    // ),
                                     gradient: _selectedTab != index
                                         ? LinearGradient(
                                             colors: [
@@ -259,7 +227,6 @@ class _SortPageState extends State<SortPage> {
                                     padding: const EdgeInsets.all(1.0),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          // borderRadius: BorderRadius.circular(20),
                                           borderRadius: index == 0
                                               ? BorderRadius.only(
                                                   bottomLeft:
@@ -315,8 +282,7 @@ class _SortPageState extends State<SortPage> {
                           height: ScreenUtil().setHeight(50),
                         ),
                         Container(
-                          width: ScreenUtil().setWidth(
-                              400), //Some random width greater than Alertdialog box width to make it center
+                          width: ScreenUtil().setWidth(400),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -361,10 +327,6 @@ class _SortPageState extends State<SortPage> {
                                 width: ScreenUtil().setWidth(180),
                                 height: ScreenUtil().setHeight(35),
                                 decoration: BoxDecoration(
-                                  // image: DecorationImage(
-                                  //   image: AssetImage('assets/images/vector17.png'),
-                                  //   fit: BoxFit.contain,
-                                  // ),
                                   borderRadius: BorderRadius.circular(30),
                                   gradient: LinearGradient(
                                     colors: [
@@ -386,7 +348,16 @@ class _SortPageState extends State<SortPage> {
                                     borderRadius: BorderRadius.circular(30),
                                     onTap: () async {
                                       try {
+                                        Navigator.pop(context);
+                                        if (mounted)
+                                          setState(() {
+                                            isLoading = true;
+                                          });
                                         await sortIt(_selectedTab, _check);
+                                        if (mounted)
+                                          setState(() {
+                                            isLoading = false;
+                                          });
                                       } catch (err) {
                                         dataSelect(
                                             context: context,

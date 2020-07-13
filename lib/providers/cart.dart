@@ -198,7 +198,9 @@ class Cart with ChangeNotifier {
         // print(response);
         // print(cart);
         notifyListeners();
-      } on PlatformException {
+      } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
         throw "Oops Something Went Wrong!";
       } on SocketException {
         throw 'No Internet';
@@ -274,7 +276,9 @@ class Cart with ChangeNotifier {
                       styleNumber: i["styleNumber"])))
               .toList();
         notifyListeners();
-      } on PlatformException {
+      } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
         throw "Oops Something Went Wrong!";
       } on SocketException {
         throw 'No Internet';
@@ -346,7 +350,9 @@ class Cart with ChangeNotifier {
 
       // print(cart);
       notifyListeners();
-    } on PlatformException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -414,7 +420,9 @@ class Cart with ChangeNotifier {
                   styleNumber: i["styleNumber"])))
           .toList();
       notifyListeners();
-    } on PlatformException {
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    }on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';

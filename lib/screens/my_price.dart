@@ -69,7 +69,7 @@ class _MyPriceState extends State<MyPrice> {
     // await Provider.of<Options>(context, listen: false).setBuild(build: value);
     setState(() {
       Provider.of<Cart>(context, listen: false).buildChange(value, index);
-      // print(value);
+      // asdasdadadadada(value);
     });
   }
 
@@ -114,7 +114,7 @@ class _MyPriceState extends State<MyPrice> {
                   element.styleNumber.contains(searchValue.toUpperCase()))
               .toList();
           isLoadingSearch = false;
-          // print('DC SEARCH');
+          // asdasdadadadada('DC SEARCH');
         });
       });
     } catch (err) {
@@ -133,7 +133,7 @@ class _MyPriceState extends State<MyPrice> {
       });
     }
 
-    // print(suggestion);
+    // asdasdadadadada(suggestion);
     // setState(() {
 
     // });
@@ -872,7 +872,7 @@ class _MyPriceState extends State<MyPrice> {
                                               // setState(() {
 
                                               //   // info=styleNumber[].split(value);
-                                              // print(styleNumber[1].split(searchValue));
+                                              // asdasdadadadada(styleNumber[1].split(searchValue));
                                               // });
                                               await getSearch(
                                                   searchValue.toUpperCase());
@@ -1065,7 +1065,7 @@ class _MyPriceState extends State<MyPrice> {
                                                 info = suggestion[index]
                                                     .styleNumber
                                                     .split(searchValue);
-                                                // print(info);
+                                                // asdasdadadadada(info);
                                                 return GestureDetector(
                                                   onTap: () async {
                                                     try {
