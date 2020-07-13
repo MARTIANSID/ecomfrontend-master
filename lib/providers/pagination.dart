@@ -157,11 +157,13 @@ class Pagination with ChangeNotifier {
 
   Future<void> getProducts(
       {context,
-      sort = 1,
-      sortby = 'styleNumber',
+      sort,
+      sortby,
       page = 1,
       select = 'all',
       addition = false}) async {
+    print(sortby.toString() + 'sdoiofihsifgh9');
+    print(sort.toString() + 'wefu9w0f');
     final url =
         'https://alexa.gemstory.in/product/paginated?select=$select&sortby=$sortby&sort=$sort&page=$page&quant=20';
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -782,7 +784,7 @@ class Pagination with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
 
-      List<dynamic> loadedProducts = responseData['products']
+      List<dynamic> loadedProducts = responseData['product']
           .map(
             (prod) => Product(
                 designDetails: Map<String, bool>.from(prod['designDetails']),

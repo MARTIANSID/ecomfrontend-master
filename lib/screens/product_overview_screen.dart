@@ -146,47 +146,53 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   }
 
   Future<void> getProduct() async {
-    var futures = <Future>[
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'all',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'featured',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'isnew',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'highestSelling',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          addition: false,
-          page: 1,
-          context: context,
-          select: 'fancyDiamond',
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getFav(context),
-      Provider.of<Options>(context, listen: false).getStringValuesSF(),
-    ];
     try {
       await Provider.of<Pagination>(context, listen: false).getSortData();
+      var futures = <Future>[
+        Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'all',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort),
+        Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'featured',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort),
+        Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'isnew',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort),
+        Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'highestSelling',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort),
+        Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'fancyDiamond',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort),
+        Provider.of<Pagination>(context, listen: false).getFav(context),
+        Provider.of<Options>(context, listen: false).getStringValuesSF(),
+        Provider.of<Notif>(context, listen: false)
+            .getNotification(context: context),
+      ];
+      // print("bcbcbcbcbc" +
+      //     Provider.of<Pagination>(context, listen: false).count.toString());
+      // print("bcbcbcbcbc" +
+      //     Provider.of<Pagination>(context, listen: false).sort.toString());
       await Future.wait(futures);
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
       //  await Provider.of<Pagination>(context, listen: false).getProducts(
@@ -214,9 +220,10 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   void didChangeDependencies() async {
     if (isInit) {
       try {
-        setState(() {
-          isLoading = true;
-        });
+        if (mounted)
+          setState(() {
+            isLoading = true;
+          });
         if (Provider.of<Auth>(context, listen: false).isLogin ||
             (Provider.of<Auth>(context, listen: false).autoLogin)) {
           await getProduct();
@@ -1202,7 +1209,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                         0
                                                     ? 'assets/icons/notificationPulseIcon.svg'
                                                     : 'assets/icons/notificationIcon.svg',
-                                                color: Colors.black,
+                                                color: Provider.of<Notif>(
+                                                                context,
+                                                                listen: true)
+                                                            .notifications
+                                                            .length >
+                                                        0
+                                                    ? Colors.white
+                                                    : Colors.black,
                                               ),
                                             ),
                                           ),
@@ -1349,17 +1363,21 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                         listen:
                                                                             false)
                                                                     .diamondQuality[_defaultChoiceIndex4],
-                                                                certPrice: Provider.of<
-                                                                            Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .certPrices[Provider.of<
-                                                                            Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .cert[_defaultChoiceIndex3]],
+                                                                certPrice: Provider.of<Pagination>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .isPriced
+                                                                    ? Provider.of<Pagination>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .certPrices[Provider.of<Pagination>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .cert[_defaultChoiceIndex3]]
+                                                                    : null,
                                                                 product: Provider.of<
                                                                             Pagination>(
                                                                         context,
@@ -1770,6 +1788,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                 .notifications[
                                                                     index]
                                                                 .id);
+                                                    print(Provider.of<Notif>(
+                                                            context,
+                                                            listen: false)
+                                                        .notifications[index]
+                                                        .read);
+                                                    // print(
+                                                    // 'reading trueeeeeeeeeeeee');
+                                                    setState(() {});
                                                   },
                                                   child: Container(
                                                     margin: EdgeInsets.only(

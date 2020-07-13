@@ -906,7 +906,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                   buttonText:
                                                                       'Okay',
                                                                   gif:
-                                                                      "assets/images/alert.gif",
+                                                                      "assets/images/identi.gif",
                                                                   onPressed:
                                                                       () {
                                                                     Navigator.pop(

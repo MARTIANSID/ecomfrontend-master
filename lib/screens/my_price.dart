@@ -1105,17 +1105,24 @@ class _MyPriceState extends State<MyPrice> {
                                                                             false)
                                                                     .diamondQuality[
                                                                 _defaultChoiceIndex4],
-                                                            certPrice: Provider
-                                                                    .of<Pagination>(
+                                                            certPrice: Provider.of<
+                                                                            Pagination>(
                                                                         context,
                                                                         listen:
                                                                             false)
-                                                                .certPrices[Provider.of<
-                                                                        Pagination>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .cert[_defaultChoiceIndex3]],
+                                                                    .isPriced
+                                                                ? Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .certPrices[Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cert[_defaultChoiceIndex3]]
+                                                                : null,
                                                             defaultIndex1:
                                                                 _defaultChoiceIndex1,
                                                             defaultIndex2:

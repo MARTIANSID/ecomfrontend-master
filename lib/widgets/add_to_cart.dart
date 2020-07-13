@@ -261,11 +261,11 @@ class AddToCartTState extends State<AddToCart> {
                                   Rect.fromLTWH(
                                       0, 0, bounds.width, bounds.height),
                                 ),
-                                child: widget.product.prices
-                                            .containsKey(priceKey) &&
-                                        Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isPriced
+                                // child: widget.product.prices
+                                //             .containsKey(priceKey) &&
+                                child: Provider.of<Pagination>(context,
+                                            listen: false)
+                                        .isPriced
                                     ? Text(
                                         // '${int.parse(widget.product.prices[priceKey]) + certPrice} ₹',
                                         '${(int.parse(widget.product.prices[priceKey]) + certPrice + buildPrice) * valueOfQuantity}₹',

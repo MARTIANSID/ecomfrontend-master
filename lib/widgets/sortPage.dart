@@ -45,9 +45,10 @@ class _SortPageState extends State<SortPage> {
   }
 
   Future<void> sortIt(index, checked) async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted)
+      setState(() {
+        isLoading = true;
+      });
     var value = index == null ? null : sortChoicesServer[index].toString();
     await Provider.of<Pagination>(context, listen: false).setCount(value);
     if (checked) {
@@ -120,9 +121,10 @@ class _SortPageState extends State<SortPage> {
           },
           gif: "assets/images/alert.gif");
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted)
+        setState(() {
+          isLoading = false;
+        });
     }
   }
 
@@ -348,7 +350,7 @@ class _SortPageState extends State<SortPage> {
                                     borderRadius: BorderRadius.circular(30),
                                     onTap: () async {
                                       try {
-                                        Navigator.pop(context);
+                                        Navigator.of(context).pop();
                                         if (mounted)
                                           setState(() {
                                             isLoading = true;
@@ -369,7 +371,11 @@ class _SortPageState extends State<SortPage> {
                                             },
                                             gif: "assets/images/alert.gif");
                                       } finally {
-                                        Navigator.of(context).pop();
+                                        // if (mounted)
+                                        //   setState(() {
+                                        //     // isLoading = true;
+                                        //   });
+                                        // Navigator.of(context).pop();
                                       }
                                     },
                                     child: Center(

@@ -307,7 +307,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                               child: Center(
                                 child: Text(
                                   // 'There aren\'t any Favourites product added yet!',
-                                  "😕 No, Favourites yet?",
+                                  "😕 No Favourites yet?",
                                   style: TextStyle(
                                     fontFamily: 'Gilory Regular',
                                     color: Color(0xFFA49797),
@@ -640,17 +640,24 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                                             false)
                                                                     .diamondQuality[
                                                                 _defaultChoiceIndex4],
-                                                            certPrice: Provider
-                                                                    .of<Pagination>(
+                                                            certPrice: Provider.of<
+                                                                            Pagination>(
                                                                         context,
                                                                         listen:
                                                                             false)
-                                                                .certPrices[Provider.of<
-                                                                        Pagination>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .cert[_defaultChoiceIndex3]],
+                                                                    .isPriced
+                                                                ? Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .certPrices[Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cert[_defaultChoiceIndex3]]
+                                                                : null,
                                                             product: Provider.of<
                                                                         Pagination>(
                                                                     context,

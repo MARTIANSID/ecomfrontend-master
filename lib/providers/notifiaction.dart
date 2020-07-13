@@ -37,23 +37,25 @@ class Notif with ChangeNotifier {
       Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
-    try {
-      final response = await http.get(
-        uurl + '/notification',
-        headers: {
+    int index = notifications.indexWhere((element) => element.id == id);
+    if (notifications[index].read == false) {
+      try {
+        final response = await http.post(uurl + '/notification/read', headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
-        },
-      );
-      if (response.statusCode == 200) {
-        int index = notifications.indexWhere((element) => element.id == id);
-        notifications[index].read = !notifications[index].read;
-        notifyListeners();
+        }, body: {
+          "notifid": id,
+        });
+        if (response.statusCode == 200) {
+          int index = notifications.indexWhere((element) => element.id == id);
+          notifications[index].read = true;
+          notifyListeners();
+        }
+      } on FormatException {
+        throw "Oops Something Went Wrong!";
+      } catch (err) {
+        throw err;
       }
-    } on FormatException {
-      throw "Oops Something Went Wrong!";
-    } catch (err) {
-      throw err;
     }
   }
 
@@ -72,7 +74,12 @@ class Notif with ChangeNotifier {
       Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
+    var ele;
     try {
+      int index = notifications.indexWhere((element) => element.id == id);
+      ele = notifications[index];
+      notifications.removeWhere((element) => element.id == id);
+      notifyListeners();
       final response = await http.post(uurl + 'notification/delete/', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -80,12 +87,13 @@ class Notif with ChangeNotifier {
         "notifid": id
       });
       if (response.statusCode == 200) {
-        notifications.removeWhere((element) => element.id == id);
-        notifyListeners();
+        print('done!!!');
       }
     } on FormatException {
+      notifications.add(ele);
       throw "Oops Something Went Wrong!";
     } catch (err) {
+      notifications.add(ele);
       throw err;
     }
   }
@@ -120,7 +128,7 @@ class Notif with ChangeNotifier {
               title: i['title'],
               name: i['data']['name'],
               link: i['data'] == null ? '' : i['data']['link'],
-              read: i['reade'],
+              read: i['read'],
               id: i['_id']))
           .toList();
       notifications = list;

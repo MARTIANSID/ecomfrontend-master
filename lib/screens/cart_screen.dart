@@ -1065,7 +1065,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                       "Your order has been placed successfully.",
                                                                   onPressed:
                                                                       () {
-                                                                    Navigator.of(context).pop();
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
                                                                   },
                                                                   gif:
                                                                       "assets/images/success.gif");
@@ -1190,6 +1192,19 @@ class _CartScreenState extends State<CartScreen> {
                                                 : SizedBox(
                                                     height: 0,
                                                   ),
+                                            index ==
+                                                    Provider.of<Cart>(context,
+                                                                listen: false)
+                                                            .cart
+                                                            .length -
+                                                        1
+                                                ? SizedBox(
+                                                    height: ScreenUtil()
+                                                        .setHeight(93),
+                                                  )
+                                                : SizedBox(
+                                                    height: 0,
+                                                  ),
                                           ],
                                         );
                                       },
@@ -1296,7 +1311,7 @@ class _CartScreenState extends State<CartScreen> {
                                               // setState(() {
 
                                               //   // info=styleNumber[].split(value);
-                                                // print(styleNumber[1].split(searchValue));
+                                              // print(styleNumber[1].split(searchValue));
                                               // });
                                               try {
                                                 await getSearch(
@@ -1533,17 +1548,24 @@ class _CartScreenState extends State<CartScreen> {
                                                                             false)
                                                                     .diamondQuality[
                                                                 _defaultChoiceIndex4],
-                                                            certPrice: Provider
-                                                                    .of<Pagination>(
+                                                            certPrice: Provider.of<
+                                                                            Pagination>(
                                                                         context,
                                                                         listen:
                                                                             false)
-                                                                .certPrices[Provider.of<
-                                                                        Pagination>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .cert[_defaultChoiceIndex3]],
+                                                                    .isPriced
+                                                                ? Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .certPrices[Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cert[_defaultChoiceIndex3]]
+                                                                : null,
                                                             product: Provider.of<
                                                                         Pagination>(
                                                                     context,

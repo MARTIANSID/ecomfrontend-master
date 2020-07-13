@@ -742,7 +742,7 @@ class _CookiePageState extends State<CookiePage>
                                                                       context);
                                                                 },
                                                                 gif:
-                                                                    "assets/images/alert.gif");
+                                                                    "assets/images/identi.gif");
                                                           }
                                                         } else {
                                                           dataSelect(
@@ -1040,7 +1040,7 @@ class _CookiePageState extends State<CookiePage>
                                                                         context);
                                                                   },
                                                                   gif:
-                                                                      "assets/images/alert.gif");
+                                                                      "assets/images/identi.gif");
                                                             }
                                                           } else {
                                                             Navigator.push(

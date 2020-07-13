@@ -215,9 +215,9 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 hintText: "Reference (Optional)",
                                 controller: referenceController,
                                 validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Enter Reference";
-                                  }
+                                  // if (value.isEmpty) {
+                                  //   return "Enter Reference";
+                                  // }
                                   return null;
                                 },
                                 onSubmitted: (value) {
@@ -415,28 +415,10 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
           ],
         ),
       ),
-      floatingActionButton: isButtonLoading
-          ? Container(
-              width: ScreenUtil().setWidth(120.0),
-              decoration: BoxDecoration(
-                // image: DecorationImage(
-                //   image: AssetImage('assets/images/vector17.png'),
-                //   fit: BoxFit.contain,
-                // ),
-                borderRadius: BorderRadius.circular(30),
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF34B0E9),
-                    Color(0xFF3685CB),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              padding: EdgeInsets.all(15.0),
-              child: Center(child: CircularProgressIndicator()))
-          : GestureDetector(
-              onTap: () async {
+      floatingActionButton: GestureDetector(
+        onTap: isButtonLoading
+            ? null
+            : () async {
                 if (_key.currentState.validate()) {
                   _key.currentState.save();
                   setState(() {
@@ -478,48 +460,52 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                   }
                 }
               },
-              child: Container(
-                width: ScreenUtil().setWidth(120.0),
-                decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //   image: AssetImage('assets/images/vector17.png'),
-                  //   fit: BoxFit.contain,
-                  // ),
-                  borderRadius: BorderRadius.circular(30),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF34B0E9),
-                      Color(0xFF3685CB),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                padding: EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
+        child: Container(
+          // height: ScreenUtil().setHeight(50),
+          width: ScreenUtil().setWidth(130.0),
+          decoration: BoxDecoration(
+            // image: DecorationImage(
+            //   image: AssetImage('assets/images/vector17.png'),
+            //   fit: BoxFit.contain,
+            // ),
+            borderRadius: BorderRadius.circular(30),
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF34B0E9),
+                Color(0xFF3685CB),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          padding: EdgeInsets.all(15.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              isButtonLoading
+                  ? CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                    )
+                  : Icon(
                       Icons.done_outline,
                       color: Colors.white,
                       size: ScreenUtil().setSp(23, allowFontScalingSelf: true),
                     ),
-                    SizedBox(
-                      width: ScreenUtil().setWidth(10),
-                    ),
-                    Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontFamily: 'Gilroy Medium',
-                        fontSize:
-                            ScreenUtil().setSp(15, allowFontScalingSelf: true),
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+              SizedBox(
+                width: ScreenUtil().setWidth(10),
+              ),
+              Text(
+                'Submit',
+                style: TextStyle(
+                  fontFamily: 'Gilroy Medium',
+                  fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true),
+                  color: Colors.white,
                 ),
               ),
-            ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
