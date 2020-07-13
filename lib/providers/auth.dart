@@ -23,9 +23,9 @@ class Auth with ChangeNotifier {
       // print('PP checkIfRegistered response: $responseBody');
       return responseBody['registered'];
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -80,11 +80,11 @@ class Auth with ChangeNotifier {
       else
         return true;
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } catch (err) {
       throw err;
     }
@@ -101,9 +101,9 @@ class Auth with ChangeNotifier {
       // print(responseBody['matches']);
       return responseBody['matches'];
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -124,9 +124,9 @@ class Auth with ChangeNotifier {
       else
         return true;
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -183,9 +183,9 @@ class Auth with ChangeNotifier {
       );
       prefs.setString('userData', userData);
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } catch (error) {
@@ -204,9 +204,9 @@ class Auth with ChangeNotifier {
       } else
         return true;
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } catch (err) {
@@ -268,9 +268,9 @@ class Auth with ChangeNotifier {
         }
       }
     } on FormatException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on PlatformException {
-      throw "Oops Something Went Wrong!";
+      throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
       throw 'No Internet';
     } catch (err) {

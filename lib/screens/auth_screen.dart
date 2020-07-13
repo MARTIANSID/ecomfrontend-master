@@ -495,7 +495,8 @@ class _LoginScreenState extends State<LoginScreen>
               _showPasswordCheckBox = false;
               _isRegistered = false;
             })
-          : _showDilog('OOPS!', 'Something went wrong, Try again later');
+          : _showDilog('OOPS!',
+              'Something went wrong, I\'m unable to connect to our servers. Try again!');
     } catch (error) {
       _showDilog('Oops!', '$error');
     }

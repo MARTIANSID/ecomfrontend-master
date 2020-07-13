@@ -20,7 +20,7 @@ class Product {
   var designDimensions;
   bool isFavourite;
   Map<dynamic, dynamic> imageUrl;
-  Map<dynamic, dynamic> prices;
+  var prices;
   bool count = false;
   bool weight = false;
   bool gWeight = false;
@@ -146,7 +146,7 @@ class Pagination with ChangeNotifier {
           .storePricDate(DateTime.now().toString());
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on SocketException {
+    } on SocketException {
       throw 'No Internet';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -341,7 +341,7 @@ class Pagination with ChangeNotifier {
       }
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -407,7 +407,7 @@ class Pagination with ChangeNotifier {
       print(favProducts);
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -673,7 +673,7 @@ class Pagination with ChangeNotifier {
       throw 'No Internet';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
-    }on FormatException {
+    } on FormatException {
       throw "Oops Something Went Wrong!";
     } catch (error) {
       if (allProducts
@@ -784,7 +784,7 @@ class Pagination with ChangeNotifier {
       productDetailsForSearch = loadedProducts;
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -823,7 +823,7 @@ class Pagination with ChangeNotifier {
       }
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
