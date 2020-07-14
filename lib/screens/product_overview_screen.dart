@@ -1745,9 +1745,44 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 .length,
                                             itemBuilder: (context, index) {
                                               return Dismissible(
+                                                dismissThresholds: {
+                                                  DismissDirection.startToEnd:
+                                                      0.4
+                                                },
                                                 key: UniqueKey(),
                                                 direction:
                                                     DismissDirection.startToEnd,
+                                                background: Container(
+                                                  color: Colors.red,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Icon(Icons.delete,
+                                                            color:
+                                                                Colors.white),
+                                                        SizedBox(
+                                                          width: ScreenUtil()
+                                                              .setWidth(5),
+                                                        ),
+                                                        Text(
+                                                          'Remove from Cart',
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'Gilroy Regular',
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+
                                                 // confirmDismiss: (DismissDirection
                                                 //     direction) async {
 

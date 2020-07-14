@@ -158,12 +158,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                       padding:
                                           const EdgeInsets.only(right: 8.0),
                                       child: Text(
-                                        'Average Review: ',
-                                        // Provider.of<Testimony>(context,
-                                        //         listen: false)
-                                        //     .userTestimony
-                                        //     .rating
-                                        //     .toString(),
+                                        'Average Review: ${Provider.of<Testimony>(context, listen: false).userTestimony.rating.toString()}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF747474),
@@ -196,11 +191,11 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                         // print(rating);
                                         // },
                                         starCount: 5,
-                                        rating: (Provider.of<Testimony>(context,
+                                        rating: (double.parse(
+                                            Provider.of<Testimony>(context,
                                                     listen: false)
                                                 .userTestimony
-                                                .rating)
-                                            .toDouble(),
+                                                .rating)),
                                         size: ScreenUtil().setSp(20,
                                             allowFontScalingSelf: true),
                                         isReadOnly: true,
