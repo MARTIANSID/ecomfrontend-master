@@ -406,7 +406,7 @@ class _LoginScreenState extends State<LoginScreen>
     // );
     return ArgonTimerButton(
       height: ScreenUtil().setSp(25, allowFontScalingSelf: true),
-      width: MediaQuery.of(context).size.width * 28,
+      width: ScreenUtil().setWidth(100),
       minWidth: MediaQuery.of(context).size.width * 0.30,
       highlightColor: Colors.transparent,
       highlightElevation: 0,
@@ -483,8 +483,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   Future<void> _forgotPassword() async {
     try {
-      final a = await Provider.of<Auth>(context, listen: false)
-          .resetPasswordRequest(_phoneController.text);
+      // final a = await Provider.of<Auth>(context, listen: false)
+      //     .resetPasswordRequest(_phoneController.text);
+      final a = true;
 
       a
           ? setState(() {
@@ -956,8 +957,10 @@ class _LoginScreenState extends State<LoginScreen>
                 _forgotPasswordMenu && _requirePassword == false
                     ? Container(
                         padding: EdgeInsets.only(left: 10),
-                        alignment: Alignment.bottomLeft,
-                        child: _resendMessageBtn(),
+                        alignment: Alignment.bottomRight,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [_resendMessageBtn()]),
                       )
                     : _buildRememberMeCheckbox(),
 

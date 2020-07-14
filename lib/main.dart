@@ -196,11 +196,6 @@ class _MyAppState extends State<MyApp> {
         (OSNotificationOpenedResult result) async {
       String id = result.notification.androidNotificationId.toString();
 
-      await Future.delayed(Duration.zero, () async {
-        await Provider.of<Notif>(context, listen: false)
-            .readNNotification(context: context, id: id);
-      });
-
       // try {
       //   final response = await http.get(
       //     uurl + '/notification',
@@ -211,8 +206,7 @@ class _MyAppState extends State<MyApp> {
       //   );
       //   if (response.statusCode == 200) {
       //     int index = notifications.indexWhere((element) => element.id == id);
-      //     notifications[index].read = !notifications[index].read;
-      //   }
+      //     notifications[index].read = !notifications[index].read;//   }
       // } catch (err) {
       //   throw err;
       // }
