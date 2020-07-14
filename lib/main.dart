@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> {
     OneSignal.shared.init(
       "83761a89-31cd-43d2-8aa5-76d81afa7709",
     );
-    OneSignal.shared.setNotificationReceivedHandler((notification) async {
+    OneSignal.shared.setNotificationReceivedHandler((notification) {
       notification.payload.smallIcon = "ic_stat_onesignal_default.png";
       notification.payload.largeIcon = "ic_onesignal_large_icon_default.png";
       notification.payload.smallIconAccentColor = "FF32FFF3";
@@ -192,14 +192,9 @@ class _MyAppState extends State<MyApp> {
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);
 
-    OneSignal.shared.setNotificationOpenedHandler(
-        (OSNotificationOpenedResult result) async {
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       String id = result.notification.androidNotificationId.toString();
-
-      await Future.delayed(Duration.zero, () async {
-        await Provider.of<Notif>(context, listen: false)
-            .readNNotification(context: context, id: id);
-      });
 
       // try {
       //   final response = await http.get(
@@ -509,7 +504,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Text(
                   page == 2 ? "Next" : "skip",
                   style: TextStyle(
-                    fontFamily: "Gilroy Black",
+                    fontFamily: "Gilroy Regular",
                     fontSize:
                         ScreenUtil().setSp(21, allowFontScalingSelf: true),
                     color: page == 1 ? Color(0xFFFAAB35) : Colors.black,

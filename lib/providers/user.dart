@@ -50,6 +50,7 @@ class UserInfo with ChangeNotifier {
   bool noti;
   String profileImage;
   bool check = false;
+  var totalOrders;
 
   final uurl = "https://alexa.gemstory.in/";
 
@@ -96,6 +97,7 @@ class UserInfo with ChangeNotifier {
       fullname = responseData['user']['fullName'];
       number = responseData['user']['number'];
       profileImage = responseData['user']['profileImage'];
+      totalOrders = responseData['totalOrder'];
 
       return responseData;
     } on FormatException {

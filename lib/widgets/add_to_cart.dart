@@ -268,7 +268,7 @@ class AddToCartTState extends State<AddToCart> {
                                         .isPriced
                                     ? Text(
                                         // '${int.parse(widget.product.prices[priceKey]) + certPrice} ₹',
-                                        '${(int.parse(widget.product.prices[priceKey]) + certPrice + buildPrice) * valueOfQuantity}₹',
+                                        '${(int.parse(widget.product.prices[priceKey]) + certPrice + buildPrice) * valueOfQuantity} ₹',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: ScreenUtil().setSp(18,

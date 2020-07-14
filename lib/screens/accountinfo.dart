@@ -54,7 +54,10 @@ class _AccountInfoState extends State<AccountInfo> {
       firmDetailController.text =
           Provider.of<UserInfo>(context, listen: false).firm.toString();
       gstValueController.text =
-          Provider.of<UserInfo>(context, listen: false).gst.toString();
+          Provider.of<UserInfo>(context, listen: false).gst.toString() ==
+                  'NOT GIVEN'
+              ? null
+              : Provider.of<UserInfo>(context, listen: false).gst.toString();
       streetNameController.text =
           Provider.of<UserInfo>(context, listen: false).street.toString();
       cityNameController.text =

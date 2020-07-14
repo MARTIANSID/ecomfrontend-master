@@ -855,155 +855,171 @@ class _ProductDetailState extends State<ProductDetail> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () {
-                                                !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? dataSelect(
-                                                        context: context,
-                                                        titleText: 'Important!',
-                                                        contentText:
-                                                            "To get complete access of the app, you need to first verify yourself!",
-                                                        buttonText:
-                                                            'Complete SignUp',
-                                                        onPressed: () async {
-                                                          Navigator.pop(
-                                                              context);
-                                                          String date =
-                                                              await Provider.of<
+                                            Container(
+                                              width: ScreenUtil().setWidth(240),
+                                              height: ScreenUtil().setWidth(40),
+                                              // padding: EdgeInsets.all(20.0),
+                                              child: Material(
+                                                type: MaterialType.transparency,
+                                                elevation: 6.0,
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: InkWell(
+                                                  splashColor: Colors.cyan[100]
+                                                      .withOpacity(0.5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  onTap: () {
+                                                    !Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isVerified
+                                                        ? dataSelect(
+                                                            context: context,
+                                                            titleText:
+                                                                'Important!',
+                                                            contentText:
+                                                                "To get complete access of the app, you need to first verify yourself!",
+                                                            buttonText:
+                                                                'Complete SignUp',
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              String date = await Provider.of<
                                                                           UserInfo>(
                                                                       context,
                                                                       listen:
                                                                           false)
                                                                   .getDate();
-                                                          if (date != null) {
-                                                            int d = DateTime
-                                                                    .now()
-                                                                .difference(
-                                                                    DateTime
-                                                                        .parse(
+                                                              if (date !=
+                                                                  null) {
+                                                                int d = DateTime
+                                                                        .now()
+                                                                    .difference(
+                                                                        DateTime.parse(
                                                                             date))
-                                                                .inDays;
-                                                            if (d >= 1) {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          CompleteSignUp(),
-                                                                ),
-                                                              );
-                                                            } else {
-                                                              dataSelect(
-                                                                  context:
-                                                                      context,
-                                                                  titleText:
-                                                                      'Alert!',
-                                                                  contentText:
-                                                                      'Request has already been noted!',
-                                                                  buttonText:
-                                                                      'Okay',
-                                                                  gif:
-                                                                      "assets/images/identi.gif",
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  });
-                                                            }
-                                                          } else {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        CompleteSignUp(),
-                                                              ),
-                                                            );
-                                                          }
-                                                        },
-                                                        gif:
-                                                            "assets/images/alert.gif")
-                                                    : showDialog(
-                                                        context: context,
-                                                        child: AddToCart(
-                                                          globalKey: globalKey,
-                                                          product:
-                                                              widget.product,
-                                                          updateCart: false,
-                                                          choicesBuild:
-                                                              Provider.of<Pagination>(
+                                                                    .inDays;
+                                                                if (d >= 1) {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              CompleteSignUp(),
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  dataSelect(
+                                                                      context:
+                                                                          context,
+                                                                      titleText:
+                                                                          'Alert!',
+                                                                      contentText:
+                                                                          'Request has already been noted!',
+                                                                      buttonText:
+                                                                          'Okay',
+                                                                      gif:
+                                                                          "assets/images/identi.gif",
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      });
+                                                                }
+                                                              } else {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            CompleteSignUp(),
+                                                                  ),
+                                                                );
+                                                              }
+                                                            },
+                                                            gif:
+                                                                "assets/images/alert.gif")
+                                                        : showDialog(
+                                                            context: context,
+                                                            child: AddToCart(
+                                                              globalKey:
+                                                                  globalKey,
+                                                              product: widget
+                                                                  .product,
+                                                              updateCart: false,
+                                                              choicesBuild: Provider.of<
+                                                                          Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
                                                                   .build,
-                                                          choiceColor: Provider
-                                                                  .of<Pagination>(
+                                                              choiceColor: Provider.of<
+                                                                          Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                              .color,
-                                                          choiceCertification:
-                                                              Provider.of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .cert,
-                                                          choiceDiamondQuality:
-                                                              Provider.of<Pagination>(
+                                                                  .color,
+                                                              choiceCertification:
+                                                                  Provider.of<Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .cert,
+                                                              choiceDiamondQuality: Provider.of<
+                                                                          Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
                                                                   .diamondQuality,
-                                                          defValue:
-                                                              _defaultChoiceIndex1,
-                                                          defValue1:
-                                                              _defaultChoiceIndex2,
-                                                          defValue2:
-                                                              _defaultChoiceIndex3,
-                                                          defValue3:
-                                                              _defaultChoiceIndex4,
-                                                          valueChangeBuild: widget
-                                                              .valueChangeBuild,
-                                                          valueChangeColor: widget
-                                                              .valueChangeColor,
-                                                          valueChangeCerti: widget
-                                                              .valueChangeCerti,
-                                                          valueChangeDQ: widget
-                                                              .valueChangeDQ,
-                                                        ),
-                                                      );
-                                              },
-                                              child: Container(
-                                                width:
-                                                    ScreenUtil().setWidth(270),
-                                                height:
-                                                    ScreenUtil().setWidth(40),
-                                                // padding: EdgeInsets.all(20.0),
-                                                child: Center(
-                                                  child: Text(
-                                                    'ADD TO CART',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Gilroy Bold',
-                                                      color: Colors.white,
-                                                      fontSize: ScreenUtil().setSp(
-                                                          18,
-                                                          allowFontScalingSelf:
-                                                              true),
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                                                              defValue:
+                                                                  _defaultChoiceIndex1,
+                                                              defValue1:
+                                                                  _defaultChoiceIndex2,
+                                                              defValue2:
+                                                                  _defaultChoiceIndex3,
+                                                              defValue3:
+                                                                  _defaultChoiceIndex4,
+                                                              valueChangeBuild:
+                                                                  widget
+                                                                      .valueChangeBuild,
+                                                              valueChangeColor:
+                                                                  widget
+                                                                      .valueChangeColor,
+                                                              valueChangeCerti:
+                                                                  widget
+                                                                      .valueChangeCerti,
+                                                              valueChangeDQ: widget
+                                                                  .valueChangeDQ,
+                                                            ),
+                                                          );
+                                                  },
+                                                  child: Center(
+                                                    child: Text(
+                                                      'ADD TO CART',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Bold',
+                                                        color: Colors.white,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(18,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/vector17.png'),
-                                                  fit: BoxFit.contain,
-                                                )),
                                               ),
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/images/vector17.png'),
+                                                fit: BoxFit.contain,
+                                              )),
                                             ),
                                             SizedBox(
                                               height:
@@ -1269,7 +1285,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         width: ScreenUtil().setWidth(360),
                         height: ScreenUtil().setHeight(45),
                         margin: EdgeInsets.fromLTRB(
-                            26, 11, 0, searchSelected ? 0 : 20),
+                            26, 20, 0, searchSelected ? 0 : 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,

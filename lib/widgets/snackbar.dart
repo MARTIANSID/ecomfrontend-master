@@ -29,19 +29,19 @@ void showFloatingFlushbar(BuildContext context, text, productName) {
     ),
     blockBackgroundInteraction: true,
     icon: Icon(Icons.add_shopping_cart),
-    mainButton: Container(
-      margin: EdgeInsets.all(5.0),
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-            side: BorderSide(color: kPrimaryLightColor, width: 1.0)),
-        child: Text(
-          'Undo',
-          style: TextStyle(color: kPrimaryLightColor),
-        ),
-        onPressed: () {},
-      ),
-    ),
+    // mainButton: Container(
+    //   margin: EdgeInsets.all(5.0),
+    //   child: FlatButton(
+    //     shape: RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.circular(18.0),
+    //         side: BorderSide(color: kPrimaryLightColor, width: 1.0)),
+    //     child: Text(
+    //       'Undo',
+    //       style: TextStyle(color: kPrimaryLightColor),
+    //     ),
+    //     onPressed: () {},
+    //   ),
+    // ),
   )..show(context);
 }
 
@@ -70,7 +70,7 @@ void dataSelect({
             titleText,
             style: TextStyle(
               color: Colors.black,
-              fontFamily: 'Gilroy Black',
+              fontFamily: 'Gilroy Medium',
               fontWeight: FontWeight.bold,
               fontSize: ScreenUtil().setSp(
                 19,
@@ -207,7 +207,7 @@ Future<bool> dataSelectConfirmMessage(
           titleText,
           style: TextStyle(
             color: Colors.black,
-            fontFamily: 'Gilroy Black',
+            fontFamily: 'Gilroy Medium',
             fontWeight: FontWeight.bold,
             fontSize: ScreenUtil().setSp(
               19,
@@ -279,7 +279,7 @@ Future<bool> dataSelectConfirmMessage1(
           titleText,
           style: TextStyle(
             color: Colors.black,
-            fontFamily: 'Gilroy Black',
+            fontFamily: 'Gilroy Medium',
             fontWeight: FontWeight.bold,
             fontSize: ScreenUtil().setSp(
               19,
@@ -298,7 +298,7 @@ Future<bool> dataSelectConfirmMessage1(
               allowFontScalingSelf: true,
             ),
           ),
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
         ),
         actions: <Widget>[
           FlatButton(
@@ -324,6 +324,81 @@ Future<bool> dataSelectConfirmMessage1(
               return true;
             },
             child: Text("Yes",
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(
+                      16,
+                      allowFontScalingSelf: true,
+                    ),
+                    color: Colors.black,
+                    fontFamily: 'Gilroy Medium')),
+          )
+        ],
+      );
+    },
+  );
+  return value1;
+}
+
+Future<bool> dataSelectConfirmMessageTNC(
+    {context, titleText, contentText, gif}) async {
+  bool value1 = false;
+  // var alertDialog =
+  value1 = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: Text(
+          titleText,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Gilroy Medium',
+            fontWeight: FontWeight.bold,
+            fontSize: ScreenUtil().setSp(
+              19,
+              allowFontScalingSelf: true,
+            ),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          contentText,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Gilroy Medium',
+            fontSize: ScreenUtil().setSp(
+              16,
+              allowFontScalingSelf: true,
+            ),
+          ),
+          textAlign: TextAlign.left,
+        ),
+        actions: <Widget>[
+          // FlatButton(
+          //   onPressed: () {
+          //     Navigator.pop(context, false);
+          //     // Navigator.of(context).pop();
+          //     value1 = false;
+          //     return false;
+          //   },
+          //   child: Text("No",
+          //       style: TextStyle(
+          //           fontSize: ScreenUtil().setSp(
+          //             16,
+          //             allowFontScalingSelf: true,
+          //           ),
+          //           color: Colors.black,
+          //           fontFamily: 'Gilroy Medium')),
+          // ),
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+              // value1 = true;
+              // return true;
+            },
+            child: Text("Okay",
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(
                       16,
