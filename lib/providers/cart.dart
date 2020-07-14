@@ -199,8 +199,8 @@ class Cart with ChangeNotifier {
         // print(cart);
         notifyListeners();
       } on FormatException {
-      throw "Oops Something Went Wrong!";
-    }on PlatformException {
+        throw "Oops Something Went Wrong!";
+      } on PlatformException {
         throw "Oops Something Went Wrong!";
       } on SocketException {
         throw 'No Internet';
@@ -277,8 +277,8 @@ class Cart with ChangeNotifier {
               .toList();
         notifyListeners();
       } on FormatException {
-      throw "Oops Something Went Wrong!";
-    }on PlatformException {
+        throw "Oops Something Went Wrong!";
+      } on PlatformException {
         throw "Oops Something Went Wrong!";
       } on SocketException {
         throw 'No Internet';
@@ -352,7 +352,7 @@ class Cart with ChangeNotifier {
       notifyListeners();
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -422,7 +422,7 @@ class Cart with ChangeNotifier {
       notifyListeners();
     } on FormatException {
       throw "Oops Something Went Wrong!";
-    }on PlatformException {
+    } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
       throw 'No Internet';
@@ -518,6 +518,27 @@ class Cart with ChangeNotifier {
         product: product,
         quant: true);
   }
+
+  int checkoutPrice({context}) {
+    int price = 0;
+    cart.forEach((element) {
+      price = price +
+          (int.parse(element.product.prices[element.diamond]) +
+                  Provider.of<Pagination>(context, listen: false)
+                      .certPrices[element.cert] +
+                  Provider.of<Pagination>(context, listen: false)
+                      .buildPrices[element.build]) *
+              element.quantity;
+      // (Provider.of<Pagination>(context, listen: false)
+      //             .buildPrices[element.build] +
+      //         Provider.of<Pagination>(context, listen: false)
+      //             .certPrices[element.cert] +
+      //         Provider.of<Pagination>(context, listen: false)
+      //             .diamondPrices[element.diamond]) *
+      //     element.quantity;
+    });
+    return price;
+  }
 }
 
 // {
@@ -552,4 +573,6 @@ class Cart with ChangeNotifier {
 //             }
 //         ]
 //     }
+// }
+//  }
 // }

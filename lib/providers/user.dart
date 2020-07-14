@@ -325,7 +325,7 @@ class UserInfo with ChangeNotifier {
           .authenticate(number, password, 'user/login');
     }
     try {
-      final response = await http.patch(uurl + 'user/notification', headers: {
+      await http.patch(uurl + 'user/notification', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token,
       });

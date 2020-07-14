@@ -12,14 +12,11 @@ class HttpE implements SocketException {
   }
 
   @override
-  // TODO: implement address
   InternetAddress get address => throw UnimplementedError();
 
   @override
-  // TODO: implement osError
   OSError get osError => throw UnimplementedError();
 
   @override
-  // TODO: implement port
   int get port => throw UnimplementedError();
 }

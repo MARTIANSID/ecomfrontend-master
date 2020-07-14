@@ -1,4 +1,3 @@
-import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/testimony.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -60,7 +59,6 @@ class _TestimonyPageState extends State<TestimonyPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     ScreenUtil.init(
       context,
       width: 411.42857142857144,
@@ -237,7 +235,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                     child: Center(
                                       child: Text(
                                         // 'There aren\'t any Favourites product added yet!',
-                                        "😕 No testimonies yet. Please be the first to review?",
+                                        "😕 No testimonies yet. Please be the first to review!",
                                         style: TextStyle(
                                           fontFamily: 'Gilory Regular',
                                           color: Color(0xFFA49797),
@@ -803,6 +801,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                           await Provider.of<Testimony>(context,
                                                   listen: false)
                                               .getTestimony(context: context);
+                                          commentEditingController.clear();
                                         } catch (err) {
                                           dataSelect(
                                               context: context,

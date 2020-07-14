@@ -28,7 +28,6 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
   ];
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     ScreenUtil.init(
       context,
       width: 411.42857142857144,

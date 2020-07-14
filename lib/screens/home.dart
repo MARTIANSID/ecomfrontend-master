@@ -22,8 +22,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  bool _visible = true;
-
   bool loader = true;
   void _onTap(int a) {
     setState(() {

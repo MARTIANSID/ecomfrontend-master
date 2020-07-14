@@ -111,8 +111,6 @@ class Auth with ChangeNotifier {
     }
   }
 
-  String _host = InternetAddress.loopbackIPv4.host;
-
   Future<bool> resetPassword(String number, String otp, String password) async {
     try {
       final response = await http.patch('${uurl}user/resetpassword/',

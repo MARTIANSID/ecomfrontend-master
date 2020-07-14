@@ -384,16 +384,22 @@ class _CartScreenState extends State<CartScreen> {
                                                           .setHeight(79),
                                                       width: ScreenUtil()
                                                           .setWidth(76),
-                                                      image:
-                                                          AdvancedNetworkImage(
-                                                        product
-                                                            .imageUrl['yellow'],
-                                                        useDiskCache: true,
-                                                        cacheRule: CacheRule(
-                                                            maxAge:
-                                                                const Duration(
-                                                                    days: 3)),
-                                                      ),
+                                                      image: AdvancedNetworkImage(
+                                                          product
+                                                              .imageUrl[Provider
+                                                                  .of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          true)
+                                                              .cart[index]
+                                                              .color
+                                                              .toLowerCase()],
+                                                          useDiskCache: true,
+                                                          cacheRule: CacheRule(
+                                                              maxAge:
+                                                                  const Duration(
+                                                                      days:
+                                                                          3))),
                                                       fit: BoxFit.fill,
                                                     ),
                                                     SizedBox(
@@ -1095,7 +1101,7 @@ class _CartScreenState extends State<CartScreen> {
                                                           child: isCheckoutLoading
                                                               ? CircularProgressIndicator()
                                                               : Text(
-                                                                  'Checkout ${Provider.of<Cart>(context, listen: false).totalPrice} ₹',
+                                                                  'Checkout ${Provider.of<Cart>(context, listen: false).checkoutPrice(context: context)} ₹',
                                                                   style:
                                                                       TextStyle(
                                                                     fontFamily:

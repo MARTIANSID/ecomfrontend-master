@@ -205,9 +205,6 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    // print(size.width);
-    // print(size.height);
     ScreenUtil.init(
       context,
       width: 411.42857142857144,
@@ -326,14 +323,56 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                             child: TabBarView(
                               controller: _tabController,
                               children: [
-                                closeApp(
-                                    context,
-                                    Provider.of<Orders>(context, listen: false)
-                                        .orderProducts),
-                                closeApp(
-                                    context,
-                                    Provider.of<Orders>(context, listen: false)
-                                        .completedOrders),
+                                Provider.of<Orders>(context, listen: false)
+                                            .orderProducts
+                                            .length ==
+                                        0
+                                    ? Container(
+                                        width: ScreenUtil().setHeight(350),
+                                        child: Center(
+                                          child: Text(
+                                            // 'There aren\'t any Favourites product added yet!',
+                                            "😕 No orders yet. Please place your first order!",
+                                            style: TextStyle(
+                                              fontFamily: 'Gilory Regular',
+                                              color: Color(0xFFA49797),
+                                              fontSize: ScreenUtil().setSp(17,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )
+                                    : closeApp(
+                                        context,
+                                        Provider.of<Orders>(context,
+                                                listen: false)
+                                            .orderProducts),
+                                Provider.of<Orders>(context, listen: false)
+                                            .completedOrders
+                                            .length ==
+                                        0
+                                    ? Container(
+                                        width: ScreenUtil().setHeight(350),
+                                        child: Center(
+                                          child: Text(
+                                            // 'There aren\'t any Favourites product added yet!',
+                                            "😕 No orders completed yet. Please place your first order!",
+                                            style: TextStyle(
+                                              fontFamily: 'Gilory Regular',
+                                              color: Color(0xFFA49797),
+                                              fontSize: ScreenUtil().setSp(17,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )
+                                    : closeApp(
+                                        context,
+                                        Provider.of<Orders>(context,
+                                                listen: false)
+                                            .completedOrders),
                               ],
                             ),
                           ),

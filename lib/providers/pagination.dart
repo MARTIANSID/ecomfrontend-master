@@ -61,8 +61,10 @@ class Pagination with ChangeNotifier {
 
   Future<void> getSortData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    count = prefs.getString('count');
-    sort = prefs.getInt('sort');
+    count = prefs.getString('count') == null
+        ? 'styleNumber'
+        : prefs.getString('count');
+    sort = prefs.getInt('sort') == null ? -1 : prefs.getInt('sort');
   }
 
   List<dynamic> allProducts;

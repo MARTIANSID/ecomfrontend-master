@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/providers/user.dart';
-import 'package:Flutter/screens/my_order.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
@@ -16,10 +14,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
-import '../constant/const.dart';
 import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,8 +69,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
   bool tapNotication = false;
   Animation<int> _characterCount;
-
-  int _stringIndex;
 
   AnimationController controller;
   AnimationController controllerScroll;
@@ -1951,7 +1945,6 @@ class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    // TODO: Set properties to paint
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
 
@@ -1983,8 +1976,6 @@ class CurvePainter extends CustomPainter {
     path.lineTo(
         ScreenUtil().setWidth(321.76), ScreenUtil().setHeight(82.73 + 22 + 8));
     path.close();
-
-    // TODO: Draw your path
 
     canvas.drawPath(path, paint);
   }

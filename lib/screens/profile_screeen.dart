@@ -310,79 +310,79 @@ class _UserPageState extends State<UserPage>
     return value2;
   }
 
-  void _settingModalBottomSheet(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-            height: 100,
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          'Remvoe Photo',
-                          style: TextStyle(
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
-                          ),
-                          softWrap: true,
-                        )
-                      ],
-                    )),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.camera),
-                        Text(
-                          'Camera',
-                          style: TextStyle(
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
-                          ),
-                        )
-                      ],
-                    )),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.photo),
-                        Text(
-                          'Gallery',
-                          style: TextStyle(
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
-                          ),
-                        )
-                      ],
-                    )),
-              ],
-            ),
-          );
-        });
-  }
+  // void _settingModalBottomSheet(context) {
+  //   showModalBottomSheet(
+  //       context: context,
+  //       builder: (BuildContext bc) {
+  //         return Container(
+  //           height: 100,
+  //           color: Colors.white,
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             children: <Widget>[
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               Container(
+  //                   padding: EdgeInsets.all(10.0),
+  //                   child: Column(
+  //                     children: <Widget>[
+  //                       Icon(
+  //                         Icons.delete,
+  //                         color: Colors.red,
+  //                       ),
+  //                       Text(
+  //                         'Remvoe Photo',
+  //                         style: TextStyle(
+  //                           fontFamily: "Gilroy Medium",
+  //                           fontSize: ScreenUtil()
+  //                               .setSp(16, allowFontScalingSelf: true),
+  //                         ),
+  //                         softWrap: true,
+  //                       )
+  //                     ],
+  //                   )),
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               Container(
+  //                   padding: EdgeInsets.all(10.0),
+  //                   child: Column(
+  //                     children: <Widget>[
+  //                       Icon(Icons.camera),
+  //                       Text(
+  //                         'Camera',
+  //                         style: TextStyle(
+  //                           fontFamily: "Gilroy Medium",
+  //                           fontSize: ScreenUtil()
+  //                               .setSp(16, allowFontScalingSelf: true),
+  //                         ),
+  //                       )
+  //                     ],
+  //                   )),
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               Container(
+  //                   padding: EdgeInsets.all(10.0),
+  //                   child: Column(
+  //                     children: <Widget>[
+  //                       Icon(Icons.photo),
+  //                       Text(
+  //                         'Gallery',
+  //                         style: TextStyle(
+  //                           fontFamily: "Gilroy Medium",
+  //                           fontSize: ScreenUtil()
+  //                               .setSp(16, allowFontScalingSelf: true),
+  //                         ),
+  //                       )
+  //                     ],
+  //                   )),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
 
   File image;
   final picker = ImagePicker();
