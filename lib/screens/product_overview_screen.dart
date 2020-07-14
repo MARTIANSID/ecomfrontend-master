@@ -859,7 +859,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               ),
                                             )
                                           ],
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -1195,23 +1195,18 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   searchSelected ? 0 : 25),
                                               width: ScreenUtil().setWidth(
                                                   searchSelected ? 0 : 25),
-                                              child: SvgPicture.asset(
-                                                Provider.of<Notif>(context,
-                                                                listen: true)
-                                                            .notifications
-                                                            .length >
-                                                        0
-                                                    ? 'assets/icons/notificationPulseIcon.svg'
-                                                    : 'assets/icons/notificationIcon.svg',
-                                                color: Provider.of<Notif>(
-                                                                context,
-                                                                listen: true)
-                                                            .notifications
-                                                            .length >
-                                                        0
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
+                                              child: Provider.of<Notif>(context,
+                                                              listen: true)
+                                                          .notifications
+                                                          .length >
+                                                      0
+                                                  ? Image.asset(
+                                                      'assets/images/notificationPulse.png',
+                                                    )
+                                                  : SvgPicture.asset(
+                                                      'assets/icons/notificationIcon.svg',
+                                                      color: Colors.black,
+                                                    ),
                                             ),
                                           ),
                                         ],
@@ -1676,26 +1671,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                             width: 0.0,
                           )
                         : Container(
-                            height: ScreenUtil().setHeight(775),
-                            width: ScreenUtil().setWidth(411),
                             color: Colors.transparent,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                height: ScreenUtil().setHeight(775),
-                                width: ScreenUtil().setWidth(411),
-                              ),
-                            ),
-                          ),
-                    tapNotication
-                        ? WillPopScope(
-                            onWillPop: () {
-                              // return ;
-                              setState(() {
-                                tapNotication = false;
-                              });
-                              return null;
-                            },
                             child: Container(
                               height: ScreenUtil().setHeight(775),
                               width: ScreenUtil().setWidth(411),
@@ -1709,258 +1685,355 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                   end: Alignment.bottomRight,
                                 ),
                               ),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                child: Stack(
-                                  children: <Widget>[
-                                    FadeIn(
-                                      child: CustomPaint(
-                                        painter: CurvePainter(),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    tapNotication = false;
+                                  });
+                                },
+                                child: Container(
+                                  height: ScreenUtil().setHeight(775),
+                                  width: ScreenUtil().setWidth(411),
+                                ),
+                              ),
+                            ),
+                          ),
+                    tapNotication
+                        ? Container(
+                            height: ScreenUtil().setHeight(775),
+                            width: ScreenUtil().setWidth(370),
+                            color: Colors.transparent,
+                            // decoration: BoxDecoration(
+                            //   gradient: LinearGradient(
+                            //     colors: [
+                            //       Color(0xFF34B0D9).withOpacity(0.2),
+                            //       Color(0xFF3685CB).withOpacity(0.2),
+                            //     ],
+                            //     begin: Alignment.topLeft,
+                            //     end: Alignment.bottomRight,
+                            //   ),
+                            // ),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(327),
+                                    left: ScreenUtil().setWidth(0.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          tapNotication = false;
+                                        });
+                                      },
+                                      child: Container(
+                                        height: ScreenUtil().setHeight(775),
+                                        width: ScreenUtil().setWidth(411),
+                                        color: Colors.transparent,
                                       ),
                                     ),
-                                    Positioned(
-                                      top:
-                                          ScreenUtil().setHeight(82.7 + 22 + 8),
-                                      left: ScreenUtil().setWidth(27),
-                                      child: FadeIn(
-                                        child: Container(
-                                          width: ScreenUtil().setWidth(341),
-                                          height: ScreenUtil().setHeight(300),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(26),
-                                              bottomRight: Radius.circular(26),
-                                              topLeft: Radius.circular(26),
-                                            ),
-                                            color: Colors.white,
+                                  ),
+                                  FadeIn(
+                                    child: CustomPaint(
+                                      painter: CurvePainter(),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(82.7 + 22 + 8),
+                                    left: ScreenUtil().setWidth(27),
+                                    child: FadeIn(
+                                      child: Container(
+                                        width: ScreenUtil().setWidth(341),
+                                        height: ScreenUtil().setHeight(300),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(26),
+                                            bottomRight: Radius.circular(26),
+                                            topLeft: Radius.circular(26),
                                           ),
-                                          padding: EdgeInsets.all(25),
-                                          child: ListView.builder(
-                                            physics: BouncingScrollPhysics(),
-                                            itemCount: Provider.of<Notif>(
-                                                    context,
-                                                    listen: true)
-                                                .notifications
-                                                .length,
-                                            itemBuilder: (context, index) {
-                                              return Dismissible(
-                                                dismissThresholds: {
-                                                  DismissDirection.startToEnd:
-                                                      0.4
-                                                },
-                                                key: UniqueKey(),
-                                                direction:
-                                                    DismissDirection.startToEnd,
-                                                background: Container(
-                                                  color: Colors.red,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(Icons.delete,
-                                                            color:
-                                                                Colors.white),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(5),
+                                          color: Colors.white,
+                                        ),
+                                        padding: EdgeInsets.all(25),
+                                        child:
+                                            Provider.of<Notif>(context,
+                                                            listen: true)
+                                                        .notifications
+                                                        .length ==
+                                                    0
+                                                ? Center(
+                                                    child: ShaderMask(
+                                                      shaderCallback: (bounds) =>
+                                                          LinearGradient(
+                                                        colors: [
+                                                          Color(0xFF34BDDD),
+                                                          Color(0xFF367DC8),
+                                                        ],
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
+                                                      ).createShader(
+                                                              Rect.fromLTWH(
+                                                                  0,
+                                                                  0,
+                                                                  bounds.width,
+                                                                  bounds
+                                                                      .height)),
+                                                      child: Text(
+                                                        'No new notifications!',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily:
+                                                              'Gilroy Medium',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(20,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                          color: Colors.white,
                                                         ),
-                                                        Text(
-                                                          'Remove from Cart',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Gilroy Regular',
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
+                                                  )
+                                                : ListView.builder(
+                                                    physics:
+                                                        BouncingScrollPhysics(),
+                                                    itemCount:
+                                                        Provider.of<Notif>(
+                                                                context,
+                                                                listen: true)
+                                                            .notifications
+                                                            .length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(
+                                                                260 + 15 + 15),
+                                                        child: Dismissible(
+                                                          // dismissThresholds: {
+                                                          //   DismissDirection
+                                                          //       .startToEnd: 0.4
+                                                          // },
+                                                          key: UniqueKey(),
+                                                          direction:
+                                                              DismissDirection
+                                                                  .startToEnd,
+                                                          background: Container(
+                                                            color: Colors.red,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(15),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .delete,
+                                                                      color: Colors
+                                                                          .white),
+                                                                  SizedBox(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            5),
+                                                                  ),
+                                                                  Text(
+                                                                    'Delete Notification',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Gilroy Regular',
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
 
-                                                // confirmDismiss: (DismissDirection
-                                                //     direction) async {
+                                                          // confirmDismiss: (DismissDirection
+                                                          //     direction) async {
 
-                                                // },
-                                                onDismissed: (DismissDirection
-                                                    direction) async {
-                                                  await Provider.of<Notif>(
-                                                          context,
-                                                          listen: false)
-                                                      .deleteNotification(
-                                                          context: context,
-                                                          id: Provider.of<
-                                                                      Notif>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .notifications[
-                                                                  index]
-                                                              .id);
-                                                },
-                                                child: GestureDetector(
-                                                  onTap: () async {
-                                                    await Provider.of<Notif>(
-                                                            context,
-                                                            listen: false)
-                                                        .readNNotification(
-                                                            context: context,
-                                                            id: Provider.of<
+                                                          // },
+                                                          onDismissed:
+                                                              (DismissDirection
+                                                                  direction) async {
+                                                            await Provider.of<
                                                                         Notif>(
                                                                     context,
                                                                     listen:
                                                                         false)
-                                                                .notifications[
-                                                                    index]
-                                                                .id);
-                                                    print(Provider.of<Notif>(
-                                                            context,
-                                                            listen: false)
-                                                        .notifications[index]
-                                                        .read);
-                                                    // print(
-                                                    // 'reading trueeeeeeeeeeeee');
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 20),
-                                                    width: ScreenUtil()
-                                                        .setWidth(260),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        ShaderMask(
-                                                          shaderCallback:
-                                                              (bounds) =>
-                                                                  LinearGradient(
-                                                            colors: [
-                                                              Color(0xFF34BDDD),
-                                                              Color(0xFF367DC8),
-                                                            ],
-                                                            begin: Alignment
-                                                                .topLeft,
-                                                            end: Alignment
-                                                                .bottomRight,
-                                                          ).createShader(
-                                                            Rect.fromLTWH(
-                                                                0,
-                                                                0,
-                                                                bounds.width,
-                                                                bounds.height),
-                                                          ),
+                                                                .deleteNotification(
+                                                                    context:
+                                                                        context,
+                                                                    id: Provider.of<Notif>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .notifications[
+                                                                            index]
+                                                                        .id);
+                                                          },
                                                           child:
-                                                              SvgPicture.asset(
-                                                            "assets/icons/ordersyet.svg",
-                                                            height: ScreenUtil()
-                                                                .setHeight(39),
-                                                            width: ScreenUtil()
-                                                                .setWidth(32),
-                                                            color: Colors.white,
+                                                              GestureDetector(
+                                                            onTap: () async {
+                                                              await Provider.of<
+                                                                          Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .readNNotification(
+                                                                      context:
+                                                                          context,
+                                                                      id: Provider.of<Notif>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .notifications[
+                                                                              index]
+                                                                          .id);
+                                                              print(Provider.of<
+                                                                          Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .notifications[
+                                                                      index]
+                                                                  .read);
+                                                              // print(
+                                                              // 'reading trueeeeeeeeeeeee');
+                                                              setState(() {});
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          20),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          260),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: <
+                                                                    Widget>[
+                                                                  ShaderMask(
+                                                                    shaderCallback:
+                                                                        (bounds) =>
+                                                                            LinearGradient(
+                                                                      colors: [
+                                                                        Color(
+                                                                            0xFF34BDDD),
+                                                                        Color(
+                                                                            0xFF367DC8),
+                                                                      ],
+                                                                      begin: Alignment
+                                                                          .topLeft,
+                                                                      end: Alignment
+                                                                          .bottomRight,
+                                                                    ).createShader(
+                                                                      Rect.fromLTWH(
+                                                                          0,
+                                                                          0,
+                                                                          bounds
+                                                                              .width,
+                                                                          bounds
+                                                                              .height),
+                                                                    ),
+                                                                    child: SvgPicture
+                                                                        .asset(
+                                                                      "assets/icons/ordersyet.svg",
+                                                                      height: ScreenUtil()
+                                                                          .setHeight(
+                                                                              39),
+                                                                      width: ScreenUtil()
+                                                                          .setWidth(
+                                                                              32),
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            23),
+                                                                  ),
+                                                                  Container(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            204),
+                                                                    child:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Text(
+                                                                          Provider.of<Notif>(context, listen: false)
+                                                                              .notifications[index]
+                                                                              .title,
+                                                                          style: TextStyle(
+                                                                              fontFamily: "Gilroy Light",
+                                                                              fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
+                                                                              fontWeight: Provider.of<Notif>(context, listen: true).notifications[index].read ? FontWeight.normal : FontWeight.bold),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              ScreenUtil().setHeight(4),
+                                                                        ),
+                                                                        Text(
+                                                                          Provider.of<Notif>(context, listen: false)
+                                                                              .notifications[index]
+                                                                              .body,
+                                                                          // "Your order has been processed",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                "Gilroy Light",
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(12, allowFontScalingSelf: true),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(23),
-                                                        ),
-                                                        Container(
-                                                          width: ScreenUtil()
-                                                              .setWidth(204),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: <Widget>[
-                                                              Text(
-                                                                Provider.of<Notif>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .notifications[
-                                                                        index]
-                                                                    .title,
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Gilroy Light",
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        18,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight: Provider.of<Notif>(context, listen: true)
-                                                                            .notifications[
-                                                                                index]
-                                                                            .read
-                                                                        ? FontWeight
-                                                                            .normal
-                                                                        : FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              SizedBox(
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setHeight(
-                                                                            4),
-                                                              ),
-                                                              Text(
-                                                                Provider.of<Notif>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .notifications[
-                                                                        index]
-                                                                    .body,
-                                                                // "Your order has been processed",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      "Gilroy Light",
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      12,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                      );
+                                                    },
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
                                       ),
                                     ),
-                                    Positioned(
-                                      top: ScreenUtil().setHeight(20 + 22 + 10),
-                                      left: ScreenUtil().setWidth(354),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            tapNotication = false;
-                                          });
-                                        },
-                                        child: SvgPicture.asset(
-                                          'assets/icons/notificationIcon.svg',
-                                          height: ScreenUtil().setHeight(25),
-                                          width: ScreenUtil().setWidth(25),
-                                          color: Colors.black,
-                                        ),
-                                      ),
+                                  ),
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(20 + 22 + 10),
+                                    left: ScreenUtil().setWidth(345),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          tapNotication = false;
+                                        });
+                                      },
+                                      child: Icon(Icons.clear,
+                                          size: ScreenUtil().setSp(30,
+                                              allowFontScalingSelf: true)),
                                     ),
-                                  ],
-                                ),
+                                    // ),
+                                  ),
+                                ],
                               ),
                             ),
                           )

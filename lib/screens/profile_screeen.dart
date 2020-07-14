@@ -809,143 +809,21 @@ class _UserPageState extends State<UserPage>
                                     // SizedBox(
                                     //   width: ScreenUtil().setWidth(46),
                                     // ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (!Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isVerified) {
-                                          if (storeCheckValue) {
-                                          } else {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CompleteSignUp(),
-                                              ),
-                                            );
-                                          }
-                                        } else if (!Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .isPriced) {
-                                          try {
-                                            String date =
-                                                await Provider.of<UserInfo>(
-                                                        context,
-                                                        listen: false)
-                                                    .getPriceDate();
-                                            if (date != null) {
-                                              int d = DateTime.now()
-                                                  .difference(
-                                                      DateTime.parse(date))
-                                                  .inDays;
-                                              if (d >= 1) {
-                                                dataSelect(
-                                                    context: context,
-                                                    titleText: 'Important!',
-                                                    buttonText:
-                                                        'Request Prices',
-                                                    contentText:
-                                                        "To see prices you must first request a quotation from Team Gemstory",
-                                                    onPressed: requestPrice,
-                                                    gif:
-                                                        "assets/images/alert.gif");
-                                              } else {
-                                                dataSelect(
-                                                    context: context,
-                                                    titleText: 'Alert!',
-                                                    buttonText: 'Okay',
-                                                    contentText:
-                                                        'Request has already been noted!',
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    gif:
-                                                        "assets/images/identi.gif");
-                                              }
+                                    Material(
+                                      type: MaterialType.transparency,
+                                      elevation: 6.0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: InkWell(
+                                        splashColor:
+                                            Colors.white.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: () async {
+                                          if (!Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isVerified) {
+                                            if (storeCheckValue) {
                                             } else {
-                                              dataSelect(
-                                                  context: context,
-                                                  titleText: 'Important!',
-                                                  buttonText: 'Request Prices',
-                                                  contentText:
-                                                      "To see prices you must first request a quotation from Team Gemstory",
-                                                  onPressed: requestPrice,
-                                                  gif:
-                                                      "assets/images/alert.gif");
-                                            }
-                                          } catch (err) {
-                                            dataSelect(
-                                                context: context,
-                                                titleText: 'Alert!',
-                                                buttonText: 'Okay',
-                                                contentText: err.toString(),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                gif: "assets/images/alert.gif");
-                                          }
-                                        } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MyOrder(),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          // ShaderMask(
-                                          // shaderCallback: (bounds) => LinearGradient(
-                                          //   colors: [
-                                          //     Color(0xFF34BDDD),
-                                          //     Color(0xFF367DC8),
-                                          //   ],
-                                          //   begin: Alignment.topLeft,
-                                          //   end: Alignment.bottomRight,
-                                          // ).createShader(
-                                          //   Rect.fromLTWH(
-                                          //       0, 0, bounds.width, bounds.height),
-                                          // ),
-                                          SvgPicture.asset(
-                                            'assets/icons/orders.svg',
-                                            height: ScreenUtil().setHeight(40),
-                                            width: ScreenUtil().setWidth(38),
-                                            // color: Colors.white,
-                                          ),
-                                          // ),
-                                          SizedBox(
-                                            height: ScreenUtil().setHeight(17),
-                                          ),
-                                          Text(
-                                            'ORDERS',
-                                            style: TextStyle(
-                                              fontFamily: 'Gilroy Bold',
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (!Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isVerified) {
-                                          String date =
-                                              await Provider.of<UserInfo>(
-                                                      context,
-                                                      listen: false)
-                                                  .getDate();
-                                          if (date != null) {
-                                            int d = DateTime.now()
-                                                .difference(
-                                                    DateTime.parse(date))
-                                                .inDays;
-                                            if (d >= 1) {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -953,44 +831,47 @@ class _UserPageState extends State<UserPage>
                                                       CompleteSignUp(),
                                                 ),
                                               );
-                                            } else {
-                                              dataSelect(
-                                                  context: context,
-                                                  titleText: 'Alert!',
-                                                  buttonText: 'Okay',
-                                                  contentText:
-                                                      'Request has already been noted!',
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  gif:
-                                                      "assets/images/identi.gif");
                                             }
-                                          } else {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CompleteSignUp(),
-                                              ),
-                                            );
-                                          }
-                                        } else if (!Provider.of<Pagination>(
-                                                context,
-                                                listen: false)
-                                            .isPriced) {
-                                          try {
-                                            String date =
-                                                await Provider.of<UserInfo>(
-                                                        context,
-                                                        listen: false)
-                                                    .getPriceDate();
-                                            if (date != null) {
-                                              int d = DateTime.now()
-                                                  .difference(
-                                                      DateTime.parse(date))
-                                                  .inDays;
-                                              if (d >= 1) {
+                                          } else if (!Provider.of<Pagination>(
+                                                  context,
+                                                  listen: false)
+                                              .isPriced) {
+                                            try {
+                                              String date =
+                                                  await Provider.of<UserInfo>(
+                                                          context,
+                                                          listen: false)
+                                                      .getPriceDate();
+                                              if (date != null) {
+                                                int d = DateTime.now()
+                                                    .difference(
+                                                        DateTime.parse(date))
+                                                    .inDays;
+                                                if (d >= 1) {
+                                                  dataSelect(
+                                                      context: context,
+                                                      titleText: 'Important!',
+                                                      buttonText:
+                                                          'Request Prices',
+                                                      contentText:
+                                                          "To see prices you must first request a quotation from Team Gemstory",
+                                                      onPressed: requestPrice,
+                                                      gif:
+                                                          "assets/images/alert.gif");
+                                                } else {
+                                                  dataSelect(
+                                                      context: context,
+                                                      titleText: 'Alert!',
+                                                      buttonText: 'Okay',
+                                                      contentText:
+                                                          'Request has already been noted!',
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      gif:
+                                                          "assets/images/identi.gif");
+                                                }
+                                              } else {
                                                 dataSelect(
                                                     context: context,
                                                     titleText: 'Important!',
@@ -1001,6 +882,104 @@ class _UserPageState extends State<UserPage>
                                                     onPressed: requestPrice,
                                                     gif:
                                                         "assets/images/alert.gif");
+                                              }
+                                            } catch (err) {
+                                              dataSelect(
+                                                  context: context,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText: err.toString(),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  gif:
+                                                      "assets/images/alert.gif");
+                                            }
+                                          } else {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => MyOrder(),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: <Widget>[
+                                              // ShaderMask(
+                                              // shaderCallback: (bounds) => LinearGradient(
+                                              //   colors: [
+                                              //     Color(0xFF34BDDD),
+                                              //     Color(0xFF367DC8),
+                                              //   ],
+                                              //   begin: Alignment.topLeft,
+                                              //   end: Alignment.bottomRight,
+                                              // ).createShader(
+                                              //   Rect.fromLTWH(
+                                              //       0, 0, bounds.width, bounds.height),
+                                              // ),
+                                              SvgPicture.asset(
+                                                'assets/icons/orders.svg',
+                                                height:
+                                                    ScreenUtil().setHeight(40),
+                                                width:
+                                                    ScreenUtil().setWidth(38),
+                                                // color: Colors.white,
+                                              ),
+                                              // ),
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(17),
+                                              ),
+                                              Text(
+                                                'ORDERS',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Bold',
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Material(
+                                      type: MaterialType.transparency,
+                                      elevation: 6.0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: InkWell(
+                                        splashColor:
+                                            Colors.white.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: () async {
+                                          if (!Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isVerified) {
+                                            String date =
+                                                await Provider.of<UserInfo>(
+                                                        context,
+                                                        listen: false)
+                                                    .getDate();
+                                            if (date != null) {
+                                              int d = DateTime.now()
+                                                  .difference(
+                                                      DateTime.parse(date))
+                                                  .inDays;
+                                              if (d >= 1) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CompleteSignUp(),
+                                                  ),
+                                                );
                                               } else {
                                                 dataSelect(
                                                     context: context,
@@ -1015,201 +994,321 @@ class _UserPageState extends State<UserPage>
                                                         "assets/images/identi.gif");
                                               }
                                             } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CompleteSignUp(),
+                                                ),
+                                              );
+                                            }
+                                          } else if (!Provider.of<Pagination>(
+                                                  context,
+                                                  listen: false)
+                                              .isPriced) {
+                                            try {
+                                              String date =
+                                                  await Provider.of<UserInfo>(
+                                                          context,
+                                                          listen: false)
+                                                      .getPriceDate();
+                                              if (date != null) {
+                                                int d = DateTime.now()
+                                                    .difference(
+                                                        DateTime.parse(date))
+                                                    .inDays;
+                                                if (d >= 1) {
+                                                  dataSelect(
+                                                      context: context,
+                                                      titleText: 'Important!',
+                                                      buttonText:
+                                                          'Request Prices',
+                                                      contentText:
+                                                          "To see prices you must first request a quotation from Team Gemstory",
+                                                      onPressed: requestPrice,
+                                                      gif:
+                                                          "assets/images/alert.gif");
+                                                } else {
+                                                  dataSelect(
+                                                      context: context,
+                                                      titleText: 'Alert!',
+                                                      buttonText: 'Okay',
+                                                      contentText:
+                                                          'Request has already been noted!',
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      gif:
+                                                          "assets/images/identi.gif");
+                                                }
+                                              } else {
+                                                dataSelect(
+                                                    context: context,
+                                                    titleText: 'Important!',
+                                                    buttonText:
+                                                        'Request Prices',
+                                                    contentText:
+                                                        "To see prices you must first request a quotation from Team Gemstory",
+                                                    onPressed: requestPrice,
+                                                    gif:
+                                                        "assets/images/alert.gif");
+                                              }
+                                            } catch (err) {
                                               dataSelect(
                                                   context: context,
-                                                  titleText: 'Important!',
-                                                  buttonText: 'Request Prices',
-                                                  contentText:
-                                                      "To see prices you must first request a quotation from Team Gemstory",
-                                                  onPressed: requestPrice,
+                                                  titleText: 'Alert!',
+                                                  buttonText: 'Okay',
+                                                  contentText: err.toString(),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
                                                   gif:
                                                       "assets/images/alert.gif");
                                             }
-                                          } catch (err) {
-                                            dataSelect(
-                                                context: context,
-                                                titleText: 'Alert!',
-                                                buttonText: 'Okay',
-                                                contentText: err.toString(),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                gif: "assets/images/alert.gif");
-                                          }
-                                        } else {
-                                          bool value2 = false;
+                                          } else {
+                                            bool value2 = false;
 
-                                          await _showDialog(
-                                            globalKey.currentContext,
-                                            // 'Alert!',
-                                            // "Are you sure, You want to open Whatsapp?",
-                                            // 'Open Whatsapp',
-                                          ).then((value) async {
-                                            if (value) {
-                                              setState(() {
-                                                value2 = value;
-                                              });
-                                            }
-                                          });
-                                          if (value2)
+                                            await _showDialog(
+                                              globalKey.currentContext,
+                                              // 'Alert!',
+                                              // "Are you sure, You want to open Whatsapp?",
+                                              // 'Open Whatsapp',
+                                            ).then((value) async {
+                                              if (value) {
+                                                setState(() {
+                                                  value2 = value;
+                                                });
+                                              }
+                                            });
+                                            if (value2)
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => MyPrice(
+                                                    onButtonTapped:
+                                                        widget.onButtonTapped,
+                                                  ),
+                                                ),
+                                              );
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: <Widget>[
+                                              SvgPicture.asset(
+                                                'assets/icons/price.svg',
+                                                height:
+                                                    ScreenUtil().setHeight(40),
+                                                width:
+                                                    ScreenUtil().setWidth(38),
+                                                // color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(17),
+                                              ),
+                                              Text(
+                                                'PRICES',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Bold',
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Material(
+                                      type: MaterialType.transparency,
+                                      elevation: 6.0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: InkWell(
+                                        splashColor:
+                                            Colors.white.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: () async {
+                                          if (Provider.of<Pagination>(context,
+                                                  listen: false)
+                                              .isVerified)
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => MyPrice(
-                                                  onButtonTapped:
-                                                      widget.onButtonTapped,
-                                                ),
+                                                builder: (context) =>
+                                                    AccountInfo(),
                                               ),
                                             );
-                                        }
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          SvgPicture.asset(
-                                            'assets/icons/price.svg',
-                                            height: ScreenUtil().setHeight(40),
-                                            width: ScreenUtil().setWidth(38),
-                                            // color: Colors.white,
+                                          else {
+                                            String date =
+                                                await Provider.of<UserInfo>(
+                                                        context,
+                                                        listen: false)
+                                                    .getDate();
+                                            if (date != null) {
+                                              int d = DateTime.now()
+                                                  .difference(
+                                                      DateTime.parse(date))
+                                                  .inDays;
+                                              if (d >= 1) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CompleteSignUp(),
+                                                  ),
+                                                );
+                                              } else {
+                                                dataSelect(
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    buttonText: 'Okay',
+                                                    contentText:
+                                                        'Request has already been noted!',
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    gif:
+                                                        "assets/images/identi.gif");
+                                              }
+                                            } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CompleteSignUp(),
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: <Widget>[
+                                              SvgPicture.asset(
+                                                'assets/icons/accountInfo.svg',
+                                                height:
+                                                    ScreenUtil().setHeight(40),
+                                                width:
+                                                    ScreenUtil().setWidth(38),
+                                                // color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(17),
+                                              ),
+                                              Text(
+                                                'ACCOUNT',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Bold',
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(
-                                            height: ScreenUtil().setHeight(17),
-                                          ),
-                                          Text(
-                                            'PRICES',
-                                            style: TextStyle(
-                                              fontFamily: 'Gilroy Bold',
-                                              fontSize: 16,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (Provider.of<Pagination>(context,
-                                                listen: false)
-                                            .isVerified)
+                                    Material(
+                                      type: MaterialType.transparency,
+                                      elevation: 6.0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: InkWell(
+                                        splashColor:
+                                            Colors.white.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: () {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  AccountInfo(),
+                                                  TestimonyPage(),
                                             ),
                                           );
-                                        else {
-                                          String date =
-                                              await Provider.of<UserInfo>(
-                                                      context,
-                                                      listen: false)
-                                                  .getDate();
-                                          if (date != null) {
-                                            int d = DateTime.now()
-                                                .difference(
-                                                    DateTime.parse(date))
-                                                .inDays;
-                                            if (d >= 1) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CompleteSignUp(),
-                                                ),
-                                              );
-                                            } else {
-                                              dataSelect(
-                                                  context: context,
-                                                  titleText: 'Alert!',
-                                                  buttonText: 'Okay',
-                                                  contentText:
-                                                      'Request has already been noted!',
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  gif:
-                                                      "assets/images/identi.gif");
-                                            }
-                                          } else {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CompleteSignUp(),
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: <Widget>[
+                                              SvgPicture.asset(
+                                                'assets/icons/reviews.svg',
+                                                height:
+                                                    ScreenUtil().setHeight(40),
+                                                width:
+                                                    ScreenUtil().setWidth(38),
+                                                // color: Colors.white,
                                               ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          SvgPicture.asset(
-                                            'assets/icons/accountInfo.svg',
-                                            height: ScreenUtil().setHeight(40),
-                                            width: ScreenUtil().setWidth(38),
-                                            // color: Colors.white,
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(17),
+                                              ),
+                                              Text(
+                                                'REVIEWS',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Bold',
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(
-                                            height: ScreenUtil().setHeight(17),
-                                          ),
-                                          Text(
-                                            'ACCOUNT',
-                                            style: TextStyle(
-                                              fontFamily: 'Gilroy Bold',
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TestimonyPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: Column(
-                                        children: <Widget>[
-                                          SvgPicture.asset(
-                                            'assets/icons/reviews.svg',
-                                            height: ScreenUtil().setHeight(40),
-                                            width: ScreenUtil().setWidth(38),
-                                            // color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            height: ScreenUtil().setHeight(17),
-                                          ),
-                                          Text(
-                                            'REVIEWS',
-                                            style: TextStyle(
-                                              fontFamily: 'Gilroy Bold',
-                                              fontSize: ScreenUtil().setSp(16,
-                                                  allowFontScalingSelf: true),
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],
                                 )
                               : Center(
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      String date = await Provider.of<UserInfo>(
+                                  child: Material(
+                                    type: MaterialType.transparency,
+                                    elevation: 6.0,
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: InkWell(
+                                      splashColor:
+                                          Colors.white.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(10),
+                                      onTap: () async {
+                                        String date =
+                                            await Provider.of<UserInfo>(context,
+                                                    listen: false)
+                                                .getDate();
+                                        if (date != null) {
+                                          int d = DateTime.now()
+                                              .difference(DateTime.parse(date))
+                                              .inDays;
+                                          if (d >= 1) {
+                                            Navigator.push(
                                               context,
-                                              listen: false)
-                                          .getDate();
-                                      if (date != null) {
-                                        int d = DateTime.now()
-                                            .difference(DateTime.parse(date))
-                                            .inDays;
-                                        if (d >= 1) {
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CompleteSignUp(),
+                                              ),
+                                            );
+                                          } else {
+                                            dataSelect(
+                                                context: context,
+                                                titleText: 'Alert!',
+                                                buttonText: 'Okay',
+                                                contentText:
+                                                    'Request has already been noted!',
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                gif:
+                                                    "assets/images/aler`t.gif");
+                                          }
+                                        } else {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -1217,62 +1316,48 @@ class _UserPageState extends State<UserPage>
                                                   CompleteSignUp(),
                                             ),
                                           );
-                                        } else {
-                                          dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText:
-                                                  'Request has already been noted!',
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/aler`t.gif");
                                         }
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CompleteSignUp(),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: Column(
-                                      children: <Widget>[
-                                        // ShaderMask(
-                                        // shaderCallback: (bounds) => LinearGradient(
-                                        //   colors: [
-                                        //     Color(0xFF34BDDD),
-                                        //     Color(0xFF367DC8),
-                                        //   ],
-                                        //   begin: Alignment.topLeft,
-                                        //   end: Alignment.bottomRight,
-                                        // ).createShader(
-                                        //   Rect.fromLTWH(
-                                        //       0, 0, bounds.width, bounds.height),
-                                        // ),
-                                        SvgPicture.asset(
-                                          'assets/icons/completeSignUp.svg',
-                                          height: ScreenUtil().setHeight(40),
-                                          width: ScreenUtil().setWidth(38),
-                                          color: Colors.white,
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: <Widget>[
+                                            // ShaderMask(
+                                            // shaderCallback: (bounds) => LinearGradient(
+                                            //   colors: [
+                                            //     Color(0xFF34BDDD),
+                                            //     Color(0xFF367DC8),
+                                            //   ],
+                                            //   begin: Alignment.topLeft,
+                                            //   end: Alignment.bottomRight,
+                                            // ).createShader(
+                                            //   Rect.fromLTWH(
+                                            //       0, 0, bounds.width, bounds.height),
+                                            // ),
+                                            SvgPicture.asset(
+                                              'assets/icons/completeSignUp.svg',
+                                              height:
+                                                  ScreenUtil().setHeight(40),
+                                              width: ScreenUtil().setWidth(38),
+                                              color: Colors.white,
+                                            ),
+                                            // ),
+                                            SizedBox(
+                                              height:
+                                                  ScreenUtil().setHeight(17),
+                                            ),
+                                            Text(
+                                              'COMPLETE SIGNUP',
+                                              style: TextStyle(
+                                                fontFamily: 'Gilroy Bold',
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf: true),
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        // ),
-                                        SizedBox(
-                                          height: ScreenUtil().setHeight(17),
-                                        ),
-                                        Text(
-                                          'COMPLETE SIGNUP',
-                                          style: TextStyle(
-                                            fontFamily: 'Gilroy Bold',
-                                            fontSize: ScreenUtil().setSp(16,
-                                                allowFontScalingSelf: true),
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1557,10 +1642,9 @@ class _UserPageState extends State<UserPage>
                                                   ScreenUtil().setHeight(14),
                                             ),
                                             Text(
-                                              Provider.of<Orders>(context,
+                                              Provider.of<UserInfo>(context,
                                                       listen: false)
-                                                  .completedOrders
-                                                  .length
+                                                  .totalOrders
                                                   .toString(),
                                               style: TextStyle(
                                                 fontFamily: 'Gilroy Medium',
@@ -1950,7 +2034,15 @@ class _UserPageState extends State<UserPage>
                                       child: InkWell(
                                         splashColor: Colors.cyan[50],
                                         borderRadius: BorderRadius.circular(20),
-                                        onTap: () {},
+                                        onTap: () async {
+                                          if (await canLaunch(
+                                              "https://legal.gemstory.in")) {
+                                            await launch(
+                                                "https://legal.gemstory.in");
+                                          } else {
+                                            throw 'Could not launch https://legal.gemstory.in';
+                                          }
+                                        },
                                         child: Padding(
                                           padding: const EdgeInsets.all(9),
                                           child: Row(

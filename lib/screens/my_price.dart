@@ -694,6 +694,20 @@ class _MyPriceState extends State<MyPrice> {
                                                               comm:
                                                                   value.toInt(),
                                                               context: context);
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText:
+                                                              'Commission Changed Succesfully!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              "Your commission has been changed successfully.",
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          gif:
+                                                              "assets/images/success.gif");
                                                     } catch (err) {
                                                       dataSelect(
                                                           context: context,
@@ -961,18 +975,6 @@ class _MyPriceState extends State<MyPrice> {
                                             color: Colors.black,
                                             size: searchSelected ? 25 : 0,
                                           ),
-                                        ),
-                                      ),
-                                      AnimatedContainer(
-                                        duration: Duration(milliseconds: 600),
-                                        margin: EdgeInsets.only(right: 6.0),
-                                        height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 25),
-                                        width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 25),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/notificationIcon.svg',
-                                          color: Colors.black,
                                         ),
                                       ),
                                     ],

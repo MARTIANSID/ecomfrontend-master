@@ -15,6 +15,14 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
 
   bool isLoading = false;
 
+  List<String> str = [
+    'Processing',
+    'Manufacturing',
+    'Certification & Final Inspection',
+    'Delivery',
+    'Completed',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +55,26 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
         });
       }
     });
+  }
+
+  String orderStatusCheck(status) {
+    switch (status) {
+      case 1:
+        return str[0];
+        break;
+      case 2:
+        return str[1];
+        break;
+      case 3:
+        return str[2];
+        break;
+      case 4:
+        return str[3];
+        break;
+      case 5:
+        return str[4];
+        break;
+    }
   }
 
   Widget closeApp(BuildContext context, orderProducts) {
@@ -135,7 +163,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                             ),
                           ),
                           Text(
-                            'Received at Dock',
+                            orderStatusCheck(orderProducts[index].status),
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Gilroy Regular',
@@ -332,7 +360,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                                         child: Center(
                                           child: Text(
                                             // 'There aren\'t any Favourites product added yet!',
-                                            "😕 No orders yet. Please place your first order!",
+                                            "😕 No orders yet!",
                                             style: TextStyle(
                                               fontFamily: 'Gilory Regular',
                                               color: Color(0xFFA49797),
@@ -357,7 +385,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                                         child: Center(
                                           child: Text(
                                             // 'There aren\'t any Favourites product added yet!',
-                                            "😕 No orders completed yet. Please place your first order!",
+                                            "😕 No orders completed yet!",
                                             style: TextStyle(
                                               fontFamily: 'Gilory Regular',
                                               color: Color(0xFFA49797),

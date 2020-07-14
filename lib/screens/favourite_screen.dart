@@ -13,9 +13,12 @@ import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'product_overview_screen.dart';
 
 class FavouriteScreen extends StatefulWidget {
   final ScrollController scrollController;
@@ -56,6 +59,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
   bool searchSelectedDoneButton = false;
 
   GlobalKey globalKey = GlobalKey();
+
+  bool tapNotication = false;
 
   @override
   void initState() {
@@ -191,7 +196,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                         ),
                   widget.val
                       ? Padding(
-                          padding: EdgeInsets.fromLTRB(25, 0, 26, 0),
+                          padding: EdgeInsets.fromLTRB(24, 0, 30, 0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,7 +235,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                       );
                                     },
                                     child: Padding(
-                                      padding: EdgeInsets.only(right: 4.0),
+                                      padding: EdgeInsets.only(right: 8.0),
                                       child: SvgPicture.asset(
                                         'assets/icons/sortIcon.svg',
                                         width: ScreenUtil().setWidth(24),
@@ -267,7 +272,57 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                     ),
                                   )
                                 ],
-                              )
+                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.end,
+                              //   crossAxisAlignment: CrossAxisAlignment.center,
+                              //   children: <Widget>[
+                              //     GestureDetector(
+                              //       onTap: () {
+                              //         showDialog(
+                              //           context: context,
+                              //           child: SortPage(),
+                              //         );
+                              //       },
+                              //       child: Padding(
+                              //         padding: EdgeInsets.only(right: 4.0),
+                              //         child: SvgPicture.asset(
+                              //           'assets/icons/sortIcon.svg',
+                              //           width: ScreenUtil().setWidth(24),
+                              //           height: ScreenUtil().setHeight(24),
+                              //           color: Colors.black,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     GestureDetector(
+                              //       onTap: () {
+                              //         showDialog(
+                              //           context: context,
+                              //           child: OptionsDialog(
+                              //             choicesBuild: _choices,
+                              //             choiceColor: _choices1,
+                              //             choiceCertification: _choices2,
+                              //             choiceDiamondQuality: _choices3,
+                              //             defValue: _defaultChoiceIndex1,
+                              //             defValue1: _defaultChoiceIndex2,
+                              //             defValue2: _defaultChoiceIndex3,
+                              //             defValue3: _defaultChoiceIndex4,
+                              //             valueChangeBuild: _onValueChange,
+                              //             valueChangeColor: _onValueChangeColor,
+                              //             valueChangeCerti: _onValueChangeCerti,
+                              //             valueChangeDQ: _onValueChangeDQ,
+                              //           ),
+                              //         );
+                              //       },
+                              //       child: SvgPicture.asset(
+                              //         'assets/icons/optionsIcon.svg',
+                              //         width: ScreenUtil().setWidth(24),
+                              //         height: ScreenUtil().setHeight(24),
+                              //         color: Colors.black,
+                              //       ),
+                              //     )
+                              //   ],
+                              // )
                             ],
                           ),
                         )
@@ -487,11 +542,15 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () {
-                                          // setState(() {
-                                          //   tapNotication =
-                                          //       !tapNotication;
-                                          // });
+                                        onTap: () async {
+                                          await Provider.of<Notif>(context,
+                                                  listen: false)
+                                              .getNotification(
+                                                  context: context);
+
+                                          setState(() {
+                                            tapNotication = !tapNotication;
+                                          });
                                         },
                                         child: AnimatedContainer(
                                           duration: Duration(milliseconds: 600),
@@ -500,16 +559,18 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                               searchSelected ? 0 : 25),
                                           width: ScreenUtil().setWidth(
                                               searchSelected ? 0 : 25),
-                                          child: SvgPicture.asset(
-                                            Provider.of<Notif>(context,
-                                                            listen: true)
-                                                        .notifications
-                                                        .length >
-                                                    0
-                                                ? 'assets/icons/notificationPulseIcon.svg'
-                                                : 'assets/icons/notificationIcon.svg',
-                                            color: Colors.black,
-                                          ),
+                                          child: Provider.of<Notif>(context,
+                                                          listen: true)
+                                                      .notifications
+                                                      .length >
+                                                  0
+                                              ? Image.asset(
+                                                  'assets/images/notificationPulse.png',
+                                                )
+                                              : SvgPicture.asset(
+                                                  'assets/icons/notificationIcon.svg',
+                                                  color: Colors.black,
+                                                ),
                                         ),
                                       ),
                                     ],
@@ -840,6 +901,350 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                 : SizedBox(
                     height: 0.0,
                   ),
+            !tapNotication
+                ? SizedBox(
+                    height: 0.0,
+                    width: 0.0,
+                  )
+                : Container(
+                    color: Colors.transparent,
+                    child: Container(
+                      height: ScreenUtil().setHeight(775),
+                      width: ScreenUtil().setWidth(411),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF34B0D9).withOpacity(0.2),
+                            Color(0xFF3685CB).withOpacity(0.2),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: ScreenUtil().setHeight(775),
+                          width: ScreenUtil().setWidth(411),
+                        ),
+                      ),
+                    ),
+                  ),
+            tapNotication
+                ? Container(
+                    height: ScreenUtil().setHeight(775),
+                    width: ScreenUtil().setWidth(370),
+                    // decoration: BoxDecoration(
+                    //   gradient: LinearGradient(
+                    //     colors: [
+                    //       Color(0xFF34B0D9).withOpacity(0.2),
+                    //       Color(0xFF3685CB).withOpacity(0.2),
+                    //     ],
+                    //     begin: Alignment.topLeft,
+                    //     end: Alignment.bottomRight,
+                    //   ),
+                    // ),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                            top: ScreenUtil().setHeight(327),
+                            left: ScreenUtil().setWidth(0.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  tapNotication = false;
+                                });
+                              },
+                              child: Container(
+                                height: ScreenUtil().setHeight(775),
+                                width: ScreenUtil().setWidth(411),
+                                color: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                          FadeIn(
+                            child: CustomPaint(
+                              painter: CurvePainter(),
+                            ),
+                          ),
+                          Positioned(
+                            top: ScreenUtil().setHeight(82.7 + 22 + 8),
+                            left: ScreenUtil().setWidth(27),
+                            child: FadeIn(
+                              child: Container(
+                                width: ScreenUtil().setWidth(341),
+                                height: ScreenUtil().setHeight(300),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(26),
+                                    bottomRight: Radius.circular(26),
+                                    topLeft: Radius.circular(26),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                padding: EdgeInsets.all(25),
+                                child: Provider.of<Notif>(context, listen: true)
+                                            .notifications
+                                            .length ==
+                                        0
+                                    ? Center(
+                                        child: ShaderMask(
+                                          shaderCallback: (bounds) =>
+                                              LinearGradient(
+                                            colors: [
+                                              Color(0xFF34BDDD),
+                                              Color(0xFF367DC8),
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ).createShader(Rect.fromLTWH(0, 0,
+                                                  bounds.width, bounds.height)),
+                                          child: Text(
+                                            'No new notifications!',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Gilroy Medium',
+                                              fontSize: ScreenUtil().setSp(20,
+                                                  allowFontScalingSelf: true),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: Provider.of<Notif>(context,
+                                                listen: true)
+                                            .notifications
+                                            .length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            width: ScreenUtil()
+                                                .setWidth(260 + 15 + 15),
+                                            child: Dismissible(
+                                              // dismissThresholds: {
+                                              //   DismissDirection
+                                              //       .startToEnd: 0.4
+                                              // },
+                                              key: UniqueKey(),
+                                              direction:
+                                                  DismissDirection.startToEnd,
+                                              background: Container(
+                                                color: Colors.red,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(Icons.delete,
+                                                          color: Colors.white),
+                                                      SizedBox(
+                                                        width: ScreenUtil()
+                                                            .setWidth(5),
+                                                      ),
+                                                      Text(
+                                                        'Delete Notification',
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Gilroy Regular',
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+
+                                              // confirmDismiss: (DismissDirection
+                                              //     direction) async {
+
+                                              // },
+                                              onDismissed: (DismissDirection
+                                                  direction) async {
+                                                await Provider.of<Notif>(
+                                                        context,
+                                                        listen: false)
+                                                    .deleteNotification(
+                                                        context: context,
+                                                        id: Provider.of<Notif>(
+                                                                context,
+                                                                listen: false)
+                                                            .notifications[
+                                                                index]
+                                                            .id);
+                                              },
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  await Provider.of<Notif>(
+                                                          context,
+                                                          listen: false)
+                                                      .readNNotification(
+                                                          context: context,
+                                                          id: Provider.of<
+                                                                      Notif>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .notifications[
+                                                                  index]
+                                                              .id);
+                                                  print(Provider.of<Notif>(
+                                                          context,
+                                                          listen: false)
+                                                      .notifications[index]
+                                                      .read);
+                                                  // print(
+                                                  // 'reading trueeeeeeeeeeeee');
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 20),
+                                                  width: ScreenUtil()
+                                                      .setWidth(260),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      ShaderMask(
+                                                        shaderCallback:
+                                                            (bounds) =>
+                                                                LinearGradient(
+                                                          colors: [
+                                                            Color(0xFF34BDDD),
+                                                            Color(0xFF367DC8),
+                                                          ],
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                        ).createShader(
+                                                          Rect.fromLTWH(
+                                                              0,
+                                                              0,
+                                                              bounds.width,
+                                                              bounds.height),
+                                                        ),
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/ordersyet.svg",
+                                                          height: ScreenUtil()
+                                                              .setHeight(39),
+                                                          width: ScreenUtil()
+                                                              .setWidth(32),
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: ScreenUtil()
+                                                            .setWidth(23),
+                                                      ),
+                                                      Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(204),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              Provider.of<Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .notifications[
+                                                                      index]
+                                                                  .title,
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Gilroy Light",
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      18,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                  fontWeight: Provider.of<Notif>(
+                                                                              context,
+                                                                              listen:
+                                                                                  true)
+                                                                          .notifications[
+                                                                              index]
+                                                                          .read
+                                                                      ? FontWeight
+                                                                          .normal
+                                                                      : FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setHeight(
+                                                                          4),
+                                                            ),
+                                                            Text(
+                                                              Provider.of<Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .notifications[
+                                                                      index]
+                                                                  .body,
+                                                              // "Your order has been processed",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Gilroy Light",
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(12,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: ScreenUtil().setHeight(20 + 22 + 10),
+                            left: ScreenUtil().setWidth(348),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  tapNotication = false;
+                                });
+                              },
+                              child: Icon(Icons.clear,
+                                  size: ScreenUtil()
+                                      .setSp(30, allowFontScalingSelf: true)),
+                              // child: SvgPicture.asset(
+                              //   'assets/icons/notificationIcon.svg',
+                              //   height: ScreenUtil().setHeight(25),
+                              //   width: ScreenUtil().setWidth(25),
+                              //   color: Colors.black,
+                              // ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    height: 0.0,
+                    width: 0.0,
+                  )
             // Positioned(
             //   right: ScreenUtil().setHeight(32.88),
             //   top: ScreenUtil().setHeight(108.5),

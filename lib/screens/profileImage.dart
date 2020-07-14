@@ -49,180 +49,214 @@ class _ProfileImageState extends State<ProfileImage> {
                   width: ScreenUtil().setWidth(10),
                 ),
                 Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                            onTap: () async {
-                              setState(() {
-                                isLoadingimage = true;
-                              });
-                              try {
-                                await Provider.of<UserInfo>(context,
-                                        listen: false)
-                                    .deleteImage(context: context);
-                                await Provider.of<UserInfo>(context,
-                                        listen: false)
-                                    .getuser(context);
-                              } catch (err) {
-                                dataSelect(
-                                    context: context,
-                                    titleText: 'Alert!',
-                                    buttonText: 'Okay',
-                                    contentText: err.toString(),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    gif: "assets/images/alert.gif");
-                              } finally {
-                                setState(() {
-                                  isLoadingimage = false;
-                                });
-                              }
-                            },
-                            child: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            )),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(10),
-                        ),
-                        Text(
-                          'Remove',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      elevation: 6.0,
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        splashColor: Colors.cyan[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () async {
+                          setState(() {
+                            isLoadingimage = true;
+                          });
+                          try {
+                            await Provider.of<UserInfo>(context, listen: false)
+                                .deleteImage(context: context);
+                            await Provider.of<UserInfo>(context, listen: false)
+                                .getuser(context);
+                          } catch (err) {
+                            dataSelect(
+                                context: context,
+                                titleText: 'Alert!',
+                                buttonText: 'Okay',
+                                contentText: err.toString(),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                gif: "assets/images/alert.gif");
+                          } finally {
+                            setState(() {
+                              isLoadingimage = false;
+                            });
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(10),
+                              ),
+                              Text(
+                                'Remove',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: "Gilroy Medium",
+                                  fontSize: ScreenUtil()
+                                      .setSp(16, allowFontScalingSelf: true),
+                                ),
+                                softWrap: true,
+                              )
+                            ],
                           ),
-                          softWrap: true,
-                        )
-                      ],
+                        ),
+                      ),
                     )),
                 SizedBox(
                   width: 10,
                 ),
                 Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () async {
-                            final i = await picker.getImage(
-                                source: ImageSource.camera);
-                            // print(i.path);
-                            if (i.path != null) {
-                              setState(() {
-                                isLoadingimage = true;
-                              });
-                              try {
-                                // if (context != null) print("SDCD");
-                                await Provider.of<UserInfo>(context,
-                                        listen: false)
-                                    .changeImage(
-                                        context: context, image: File(i.path));
-                                await Provider.of<UserInfo>(context,
-                                        listen: false)
-                                    .getuser(context);
+                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      elevation: 6.0,
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        splashColor: Colors.cyan[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () async {
+                          final i =
+                              await picker.getImage(source: ImageSource.camera);
+                          // print(i.path);
+                          if (i.path != null) {
+                            setState(() {
+                              isLoadingimage = true;
+                            });
+                            try {
+                              // if (context != null) print("SDCD");
+                              await Provider.of<UserInfo>(context,
+                                      listen: false)
+                                  .changeImage(
+                                      context: context, image: File(i.path));
+                              await Provider.of<UserInfo>(context,
+                                      listen: false)
+                                  .getuser(context);
 
-                                // image = File(
-                                //     i.path);
-                              } catch (err) {
-                                dataSelect(
-                                    context: context,
-                                    titleText: 'Alert!',
-                                    buttonText: 'Okay',
-                                    contentText: err.toString(),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    gif: "assets/images/alert.gif");
-                              } finally {
-                                Navigator.pop(context);
-                                setState(() {
-                                  isLoadingimage = false;
-                                });
-                              }
+                              // image = File(
+                              //     i.path);
+                            } catch (err) {
+                              dataSelect(
+                                  context: context,
+                                  titleText: 'Alert!',
+                                  buttonText: 'Okay',
+                                  contentText: err.toString(),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  gif: "assets/images/alert.gif");
+                            } finally {
+                              Navigator.pop(context);
+                              setState(() {
+                                isLoadingimage = false;
+                              });
                             }
-                          },
-                          child: Icon(Icons.camera_alt),
-                        ),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(10),
-                        ),
-                        Text(
-                          'Camera',
-                          style: TextStyle(
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.camera_alt),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(10),
+                              ),
+                              Text(
+                                'Camera',
+                                style: TextStyle(
+                                  fontFamily: "Gilroy Medium",
+                                  fontSize: ScreenUtil()
+                                      .setSp(16, allowFontScalingSelf: true),
+                                ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
+                        ),
+                      ),
                     )),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
                 ),
                 Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () async {
-                            final i = await picker.getImage(
-                                source: ImageSource.gallery);
-                            // print(i.path);
-                            if (i.path != null) {
-                              setState(() {
-                                isLoadingimage = true;
-                              });
-                              try {
-                                // if (context != null) print("SDCD");
-                                await Provider.of<UserInfo>(context,
-                                        listen: false)
-                                    .changeImage(
-                                        context: context, image: File(i.path));
-                                await Provider.of<UserInfo>(context,
-                                        listen: false)
-                                    .getuser(context);
+                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      elevation: 6.0,
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        splashColor: Colors.cyan[100].withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () async {
+                          final i = await picker.getImage(
+                              source: ImageSource.gallery);
+                          // print(i.path);
+                          if (i.path != null) {
+                            setState(() {
+                              isLoadingimage = true;
+                            });
+                            try {
+                              // if (context != null) print("SDCD");
+                              await Provider.of<UserInfo>(context,
+                                      listen: false)
+                                  .changeImage(
+                                      context: context, image: File(i.path));
+                              await Provider.of<UserInfo>(context,
+                                      listen: false)
+                                  .getuser(context);
 
-                                // image = File(
-                                //     i.path);
-                              } catch (err) {
-                                dataSelect(
-                                    context: context,
-                                    titleText: 'Alert!',
-                                    buttonText: 'Okay',
-                                    contentText: err.toString(),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    gif: "assets/images/alert.gif");
-                              } finally {
-                                Navigator.pop(context);
-                                setState(() {
-                                  isLoadingimage = false;
-                                });
-                              }
+                              // image = File(
+                              //     i.path);
+                            } catch (err) {
+                              dataSelect(
+                                  context: context,
+                                  titleText: 'Alert!',
+                                  buttonText: 'Okay',
+                                  contentText: err.toString(),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  gif: "assets/images/alert.gif");
+                            } finally {
+                              Navigator.pop(context);
+                              setState(() {
+                                isLoadingimage = false;
+                              });
                             }
-                          },
-                          child: Icon(Icons.photo_library),
-                        ),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(10),
-                        ),
-                        Text(
-                          'Gallery',
-                          style: TextStyle(
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              GestureDetector(
+                                child: Icon(Icons.photo_library),
+                              ),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(10),
+                              ),
+                              Text(
+                                'Gallery',
+                                style: TextStyle(
+                                  fontFamily: "Gilroy Medium",
+                                  fontSize: ScreenUtil()
+                                      .setSp(16, allowFontScalingSelf: true),
+                                ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
+                        ),
+                      ),
                     )),
               ],
             ),
@@ -236,11 +270,24 @@ class _ProfileImageState extends State<ProfileImage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         actions: <Widget>[
-          GestureDetector(
+          Material(
+            type: MaterialType.transparency,
+            elevation: 6.0,
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(30),
+            child: InkWell(
+              splashColor: Colors.cyan[100].withOpacity(0.5),
+              borderRadius: BorderRadius.circular(30),
+              // splashColor: Colors.cyan[100].withOpacity(0.5),
               onTap: () async {
                 _settingModalBottomSheet(context);
               },
-              child: Icon(Icons.edit))
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Icon(Icons.edit),
+              ),
+            ),
+          ),
         ],
       ),
       body: Container(
