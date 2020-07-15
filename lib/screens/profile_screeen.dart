@@ -55,16 +55,14 @@ class _UserPageState extends State<UserPage>
   @override
   void initState() {
     super.initState();
-    if (Provider.of<UserInfo>(context, listen: false).check == false)
-      setState(() {
-        isLoading = true;
-      });
+
+    setState(() {
+      isLoading = true;
+    });
     Future.delayed(Duration(seconds: 0), () async {
       try {
-        if (Provider.of<UserInfo>(context, listen: false).check == false) {
-          await Provider.of<UserInfo>(context, listen: false).getuser(context);
-          isSwitched = Provider.of<UserInfo>(context, listen: false).noti;
-        }
+        await Provider.of<UserInfo>(context, listen: false).getuser(context);
+        isSwitched = Provider.of<UserInfo>(context, listen: false).noti;
       } catch (err) {
         dataSelect(
             context: context,
@@ -1112,7 +1110,10 @@ class _UserPageState extends State<UserPage>
                                                 'PRICES',
                                                 style: TextStyle(
                                                   fontFamily: 'Gilroy Bold',
-                                                  fontSize: 16,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -1915,8 +1916,8 @@ class _UserPageState extends State<UserPage>
                                         borderRadius: BorderRadius.circular(30),
                                         onTap: () {},
                                         child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              9, 0, 9, 0),
+                                          padding:
+                                              EdgeInsets.fromLTRB(9, 0, 9, 0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

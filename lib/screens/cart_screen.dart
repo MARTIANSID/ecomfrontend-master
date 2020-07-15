@@ -17,7 +17,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'product_overview_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CartScreen extends StatefulWidget {
   final int pageIndex;
@@ -1117,7 +1116,10 @@ class _CartScreenState extends State<CartScreen> {
                                                                 },
                                                                 child: Center(
                                                                   child: isCheckoutLoading
-                                                                      ? CircularProgressIndicator()
+                                                                      ? CircularProgressIndicator(
+                                                                          backgroundColor:
+                                                                              Colors.white,
+                                                                        )
                                                                       : Text(
                                                                           'Checkout ${Provider.of<Cart>(context, listen: false).checkoutPrice(context: context)} ₹',
                                                                           style:

@@ -43,6 +43,7 @@ dependencies:
   image_picker: ^0.6.7+3
   giffy_dialog: ^1.7.0
   jwt_decoder: ^1.0.1
+  firebase_auth: ^0.16.1
   liquid_swipe:
     git:
       url: git://github.com/iamSahdeep/liquid_swipe_flutter.git

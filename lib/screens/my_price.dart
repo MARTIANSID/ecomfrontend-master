@@ -694,6 +694,118 @@ class _MyPriceState extends State<MyPrice> {
                                                               comm:
                                                                   value.toInt(),
                                                               context: context);
+                                                      final futures = [
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getProducts(
+                                                                page: 1,
+                                                                addition: false,
+                                                                select: 'all',
+                                                                context:
+                                                                    context,
+                                                                sortby: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .count,
+                                                                sort: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .sort),
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getProducts(
+                                                                page: 1,
+                                                                addition: false,
+                                                                select:
+                                                                    'featured',
+                                                                context:
+                                                                    context,
+                                                                sortby: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .count,
+                                                                sort: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .sort),
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getProducts(
+                                                                page: 1,
+                                                                addition: false,
+                                                                select: 'isnew',
+                                                                context:
+                                                                    context,
+                                                                sortby: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .count,
+                                                                sort: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .sort),
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getProducts(
+                                                                page: 1,
+                                                                addition: false,
+                                                                select:
+                                                                    'highestSelling',
+                                                                context:
+                                                                    context,
+                                                                sortby: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .count,
+                                                                sort: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .sort),
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getProducts(
+                                                                addition: false,
+                                                                page: 1,
+                                                                context:
+                                                                    context,
+                                                                select:
+                                                                    'fancyDiamond',
+                                                                sortby: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .count,
+                                                                sort: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .sort),
+                                                      ];
+                                                      await Future.wait(
+                                                          futures);
                                                       dataSelect(
                                                           context: context,
                                                           titleText:
