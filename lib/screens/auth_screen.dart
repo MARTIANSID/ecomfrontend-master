@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -113,6 +114,12 @@ class _LoginScreenState extends State<LoginScreen>
             children: <Widget>[
               TextFormField(
                 enabled: enable,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                ],
+                // maxLength: 10,
+                enableSuggestions: false,
+                maxLengthEnforced: false,
                 validator: validate,
                 controller: controller,
                 keyboardType: inputType,
@@ -224,6 +231,7 @@ class _LoginScreenState extends State<LoginScreen>
                   validator: validate,
                   controller: controller,
                   keyboardType: inputType,
+                  textCapitalization: TextCapitalization.sentences,
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Gilroy Regular',
@@ -654,7 +662,11 @@ class _LoginScreenState extends State<LoginScreen>
           // print('PP In first If part');
           try {
             await Provider.of<Auth>(context, listen: false).userSignup(
-                _fnameController.text + ' ' + _lnameController.text,
+                _fnameController.text.substring(0, 1).toUpperCase() +
+                    _fnameController.text.substring(1).toLowerCase() +
+                    ' ' +
+                    _lnameController.text.substring(0, 1).toUpperCase() +
+                    _lnameController.text.substring(1).toLowerCase(),
                 _phoneController.text,
                 _passwordController.text);
             Provider.of<Auth>(context, listen: false).changeLog();
@@ -931,8 +943,6 @@ class _LoginScreenState extends State<LoginScreen>
                         : (value) {
                             if (value.isEmpty) {
                               return "Enter Phone Number";
-                            } else if (value.length != 10) {
-                              return "Incorrect Phone Number";
                             }
                             return null;
                           },
@@ -1053,27 +1063,17 @@ class _LoginScreenState extends State<LoginScreen>
                             text: 'By creating an account, you agree to the ',
                           ),
                           TextSpan(
-                            text: 'Terms of Service, ',
+                            text:
+                                'Terms of Service, Privacy Policy, and Data Processing Terms.',
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () async {},
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'Privacy Policy, ',
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {},
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'and Data Processing Terms.',
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {},
+                              ..onTap = () async {
+                                if (await canLaunch(
+                                    "https://legal.gemstory.in")) {
+                                  await launch("https://legal.gemstory.in");
+                                } else {
+                                  throw 'Could not launch https://legal.gemstory.in';
+                                }
+                              },
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               decorationThickness: 2.0,

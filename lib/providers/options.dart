@@ -57,8 +57,6 @@ class Options with ChangeNotifier {
     //Return String
     build = prefs.getInt('build');
     certificate = prefs.getInt('certificate');
-    color = prefs.getInt('color');
-    print(color);
     diamondQuality = prefs.getInt('diamondQuality');
     notifyListeners();
   }

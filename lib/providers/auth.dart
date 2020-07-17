@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -141,7 +142,7 @@ class Auth with ChangeNotifier {
       // "DCDCDCDCDC");
 
       var playerId = status.subscriptionStatus.userId;
-      // print(playerId);
+      print(playerId);
       final response = await http.post(
         '$uurl$urlSegment',
         body: name != null
@@ -149,9 +150,17 @@ class Auth with ChangeNotifier {
                 "fullName": name,
                 "number": number,
                 "password": password,
-                "notifid": playerId == null ? "" : playerId
+                "notifid": playerId == null
+                    ? "27e25d0e-54e8-49ae-9d9c-9db6f185edc1"
+                    : playerId
               }
-            : {"number": number, "password": password, "notifid": playerId},
+            : {
+                "number": number,
+                "password": password,
+                "notifid": playerId == null
+                    ? "27e25d0e-54e8-49ae-9d9c-9db6f185edc1"
+                    : playerId
+              },
       );
       final responseData = json.decode(response.body);
       if (responseData['error'] != false) {
@@ -297,6 +306,8 @@ class Auth with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('userData');
     prefs.remove('remberMe');
+    prefs.remove('count');
+    prefs.remove('sort');
   }
 
   void autoLogout({context}) {
@@ -309,7 +320,8 @@ class Auth with ChangeNotifier {
         Duration(seconds: timeToExpiry),
         remeberMe
             ? () {
-                _token = null;
+                logout(context: context);
+                Navigator.popAndPushNamed(context, '/');
               }
             : () => logout(context: context));
 
@@ -327,5 +339,9 @@ class Auth with ChangeNotifier {
     password = extractedUserData['password'];
 
     return true;
+  }
+
+  void restart({context}) {
+    Phoenix.rebirth(context);
   }
 }

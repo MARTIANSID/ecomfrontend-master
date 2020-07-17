@@ -364,7 +364,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                             height: ScreenUtil().setHeight(130),
                             padding: EdgeInsets.all(10.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 // color: Colors.black,
@@ -381,6 +381,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                   padding: const EdgeInsets.only(
                                     top: 8.0,
                                     bottom: 8.0,
+                                    right: 15.0,
                                   ),
                                   child: VerticalDivider(
                                     color: Colors.black,

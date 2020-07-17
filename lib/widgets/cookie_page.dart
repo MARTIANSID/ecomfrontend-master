@@ -918,6 +918,13 @@ class _CookiePageState extends State<CookiePage>
                                                   if (mounted) setState(() {});
                                                   if (widget.products[i]
                                                       .isFavourite) {
+                                                    showFloatingFlushbar(
+                                                        widget.globalKey
+                                                            .currentContext,
+                                                        'Product removed from Favourites list',
+                                                        widget.products[i]
+                                                            .styleNumber,
+                                                        '❤');
                                                     await Provider.of<
                                                                 Pagination>(
                                                             context,
@@ -939,6 +946,13 @@ class _CookiePageState extends State<CookiePage>
                                                             context: context,
                                                             product: widget
                                                                 .products[i]);
+                                                    showFloatingFlushbar(
+                                                        widget.globalKey
+                                                            .currentContext,
+                                                        'Product added to the Favourites list',
+                                                        widget.products[i]
+                                                            .styleNumber,
+                                                        '❤');
                                                   }
                                                   if (mounted) setState(() {});
                                                 } catch (err) {

@@ -42,7 +42,7 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage>
     with SingleTickerProviderStateMixin {
   GlobalKey globalKey = GlobalKey();
-  bool value2;
+  // bool value2;
   bool isLoading = false;
 
   bool isLoadingimage = false;
@@ -51,6 +51,7 @@ class _UserPageState extends State<UserPage>
   int timerVal = 0;
 
   bool isSwitched;
+  bool val = false;
 
   @override
   void initState() {
@@ -90,222 +91,6 @@ class _UserPageState extends State<UserPage>
     await Provider.of<Pagination>(context, listen: false)
         .requestPrice(context: context);
     Navigator.of(context).pop();
-  }
-
-  Future<bool> _showDialog(BuildContext context) async {
-    bool p = await Provider.of<Auth>(context, listen: false).getPassword();
-    GlobalKey<FormState> _key = GlobalKey();
-    bool value2 = false;
-    await showDialog(
-      context: context,
-      builder: (context) {
-        // return AlertDialog(
-        //   content:
-        //   actions: <Widget>[
-        //     FlatButton(
-        //       child: const Text('CANCEL'),
-        //       onPressed: () {
-        //         Navigator.pop(context);
-        //         setState(() {
-        //           value2 = false;
-        //         });
-        //         // return false;
-        //       },
-        //     ),
-        //     FlatButton(
-        //       child: const Text('OPEN'),
-        //       onPressed: () {
-        //         if (_key.currentState.validate()) {
-        //           _key.currentState.save();
-        //           Navigator.pop(context);
-        //           setState(() {
-        //             value2 = true;
-        //           });
-        //           // return true;
-        //         }
-        //       },
-        //     ),
-        //   ],
-        // );
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          contentPadding: EdgeInsets.all(0),
-          content: Container(
-            width: ScreenUtil().setWidth(400),
-            height: ScreenUtil().setHeight(200),
-            child: Column(
-              children: <Widget>[
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: <Widget>[
-                //     IconButton(
-                //       icon: Icon(Icons.clear),
-                //       color: Colors.black,
-                //       onPressed: () {
-                //         Navigator.pop(context);
-                //         setState(() {
-                //           value2 = false;
-                //         });
-                //       },
-                //     ),
-                //   ],
-                // ),
-                Container(
-                  width: ScreenUtil().setWidth(400),
-                  height: ScreenUtil().setHeight(150),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white,
-                  ),
-                  child: Form(
-                    key: _key,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                          height: ScreenUtil().setHeight(15),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 15.0),
-                          child: Text(
-                            'Enter your password',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Gilroy Medium",
-                              fontSize: ScreenUtil()
-                                  .setSp(18, allowFontScalingSelf: true),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20, right: 20),
-                          width: ScreenUtil().setWidth(290),
-                          // flex: 11,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFF34BDDD),
-                                Color(0xFF367DC8),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                          padding: EdgeInsets.all(3),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: EdgeInsets.only(left: 10),
-                            child: TextFormField(
-                              style: TextStyle(
-                                fontFamily: 'Gilroy Regular',
-                                fontSize: ScreenUtil()
-                                    .setSp(16, allowFontScalingSelf: true),
-                              ),
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                icon: SvgPicture.asset(
-                                  "assets/icons/lock.svg",
-                                  height: ScreenUtil().setWidth(18),
-                                  width: ScreenUtil().setHeight(21),
-                                  color: Colors.black,
-                                ),
-                                hintText: "Password",
-                                border: InputBorder.none,
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return "Enter Password";
-                                } else if (Provider.of<Auth>(context,
-                                            listen: false)
-                                        .password !=
-                                    value) {
-                                  return "Incorrect Password";
-                                } else if (p == false) {
-                                  return "Something went wrong";
-                                }
-                                return null;
-                              },
-                              autofocus: true,
-                            ),
-                          ),
-                        ),
-                        // SizedBox(
-                        //   height: ScreenUtil().setHeight(5),
-                        // )
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: ScreenUtil().setWidth(400),
-                  height: ScreenUtil().setHeight(50),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF34BDDD),
-                        Color(0xFF367DC8),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    elevation: 6.0,
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                    child: InkWell(
-                      splashColor: Colors.cyan[50].withOpacity(0.5),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
-                      onTap: () {
-                        if (_key.currentState.validate()) {
-                          _key.currentState.save();
-                          Navigator.pop(context);
-                          setState(() {
-                            value2 = true;
-                          });
-                          // return true;
-                        }
-                      },
-                      child: Center(
-                        child: Text(
-                          "Confirm",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Gilroy Medium",
-                            fontSize: ScreenUtil()
-                                .setSp(16, allowFontScalingSelf: true),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
-    // print(value2);
-    return value2;
   }
 
   // void _settingModalBottomSheet(context) {
@@ -381,6 +166,9 @@ class _UserPageState extends State<UserPage>
   //         );
   //       });
   // }
+  void changeVal(flag) {
+    val = flag;
+  }
 
   File image;
   final picker = ImagePicker();
@@ -1064,30 +852,44 @@ class _UserPageState extends State<UserPage>
                                                       "assets/images/alert.gif");
                                             }
                                           } else {
-                                            bool value2 = false;
+                                            await Provider.of<Auth>(context,
+                                                    listen: false)
+                                                .getPassword();
+                                            // bool p = await Provider.of<Auth>(context, listen: false).getPassword();
 
-                                            await _showDialog(
-                                              globalKey.currentContext,
-                                              // 'Alert!',
-                                              // "Are you sure, You want to open Whatsapp?",
-                                              // 'Open Whatsapp',
-                                            ).then((value) async {
-                                              if (value) {
-                                                setState(() {
-                                                  value2 = value;
-                                                });
-                                              }
-                                            });
-                                            if (value2)
+                                            await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return MyDialog(changeVal);
+                                              },
+                                            );
+                                            if (val) {
                                               Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => MyPrice(
-                                                    onButtonTapped:
-                                                        widget.onButtonTapped,
-                                                  ),
-                                                ),
-                                              );
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyPrice(
+                                                      onButtonTapped:
+                                                          widget.onButtonTapped,
+                                                    ),
+                                                  ));
+                                            }
+
+                                            // print(value2);
+
+                                            // 'Alert!',
+                                            // "Are you sure, You want to open Whatsapp?",
+                                            // 'Open Whatsapp',
+                                            // ).then((value) async {
+                                            //   if (value) {
+                                            //     setState(() {
+                                            //       value2 = value;
+                                            //     });
+                                            //   }
+                                            // });
+                                            // if (value2)
+
+                                            //   );
                                           }
                                         },
                                         child: Padding(
@@ -1110,7 +912,10 @@ class _UserPageState extends State<UserPage>
                                                 'PRICES',
                                                 style: TextStyle(
                                                   fontFamily: 'Gilroy Bold',
-                                                  fontSize: 16,
+                                                  fontSize: ScreenUtil().setSp(
+                                                      16,
+                                                      allowFontScalingSelf:
+                                                          true),
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -1304,7 +1109,7 @@ class _UserPageState extends State<UserPage>
                                                   Navigator.pop(context);
                                                 },
                                                 gif:
-                                                    "assets/images/aler`t.gif");
+                                                    "assets/images/identi.gif");
                                           }
                                         } else {
                                           Navigator.push(
@@ -1400,11 +1205,11 @@ class _UserPageState extends State<UserPage>
                                             "Are you sure, You want to open Whatsapp?",
                                         gif: 'assets/images/whatsappGIF.gif',
                                       ).then((value) async {
-                                        if (value) {
+                                        if (value != null && value) {
                                           value2 = value;
                                         }
                                       });
-                                      if (value2) {
+                                      if (value2 != null && value2) {
                                         if (await canLaunch(
                                             "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.")) {
                                           await launch(
@@ -1710,11 +1515,11 @@ class _UserPageState extends State<UserPage>
                                             "1) 100pcs minimum quantity\n2) 2500 handling charges\n3) 100% gold advance\n4) Labour payment at the time of delivery",
                                         gif: 'assets/images/whatsappGIF.gif',
                                       ).then((value) async {
-                                        if (value) {
+                                        if (value != null && value) {
                                           value2 = value;
                                         }
                                       });
-                                      if (value2) {
+                                      if (value2 != null && value2) {
                                         if (await canLaunch(
                                             "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.")) {
                                           await launch(
@@ -1913,8 +1718,8 @@ class _UserPageState extends State<UserPage>
                                         borderRadius: BorderRadius.circular(30),
                                         onTap: () {},
                                         child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              9, 0, 9, 0),
+                                          padding:
+                                              EdgeInsets.fromLTRB(9, 0, 9, 0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -1980,12 +1785,9 @@ class _UserPageState extends State<UserPage>
                                                     });
                                                   });
                                                   // }
-                                                  if (!value2) {
-                                                    setState(() {
-                                                      isSwitched = !value;
-                                                      // print(isSwitched);
-                                                    });
-                                                  } else {
+
+                                                  if (value2 != null &&
+                                                      value2) {
                                                     try {
                                                       await Provider.of<
                                                                   UserInfo>(
@@ -2006,6 +1808,14 @@ class _UserPageState extends State<UserPage>
                                                           },
                                                           gif:
                                                               "assets/images/alert.gif");
+                                                    }
+                                                  } else {
+                                                    if (value2 == null ||
+                                                        !value2) {
+                                                      setState(() {
+                                                        isSwitched = !value;
+                                                        // print(isSwitched);
+                                                      });
                                                     }
                                                   }
                                                 },
@@ -2104,7 +1914,7 @@ class _UserPageState extends State<UserPage>
                                             // gif:
                                             //     'assets/images/notification1.gif',
                                           ).then((value) async {
-                                            if (value) {
+                                            if (value && value != null) {
                                               // value2 = value;
                                               // if (value2) {
                                               // Navigator.of(context).pop();
@@ -2223,8 +2033,200 @@ class _UserPageState extends State<UserPage>
     );
   }
 }
+
 // /notification get
 // delete
 // notifId
 // /notification/read get
 // notidId
+class MyDialog extends StatefulWidget {
+  final change;
+  MyDialog(this.change);
+  @override
+  _MyDialogState createState() => _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  bool showPassword = false;
+  bool value2 = false;
+  GlobalKey<FormState> _key = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      contentPadding: EdgeInsets.all(0),
+      content: Container(
+        width: ScreenUtil().setWidth(400),
+        height: ScreenUtil().setHeight(200),
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: ScreenUtil().setWidth(400),
+              height: ScreenUtil().setHeight(150),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
+              child: Form(
+                key: _key,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: ScreenUtil().setHeight(15),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        'Enter your password',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: "Gilroy Medium",
+                          fontSize: ScreenUtil()
+                              .setSp(18, allowFontScalingSelf: true),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      width: ScreenUtil().setWidth(290),
+                      // flex: 11,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF34BDDD),
+                            Color(0xFF367DC8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(3),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: EdgeInsets.only(left: 10),
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: <Widget>[
+                            TextFormField(
+                              style: TextStyle(
+                                fontFamily: 'Gilroy Regular',
+                                fontSize: ScreenUtil()
+                                    .setSp(16, allowFontScalingSelf: true),
+                              ),
+                              obscureText: showPassword ? false : true,
+                              decoration: InputDecoration(
+                                icon: SvgPicture.asset(
+                                  "assets/icons/lock.svg",
+                                  height: ScreenUtil().setWidth(18),
+                                  width: ScreenUtil().setHeight(21),
+                                  color: Colors.black,
+                                ),
+                                hintText: "Password",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return "Enter Password";
+                                } else if (Provider.of<Auth>(context,
+                                            listen: false)
+                                        .password !=
+                                    value) {
+                                  return "Incorrect Password";
+                                }
+                                return null;
+                              },
+                              autofocus: true,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  showPassword = !showPassword;
+                                });
+                                print(showPassword);
+                              },
+                              icon: Icon(
+                                showPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.black,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    // SizedBox(
+                    //   height: ScreenUtil().setHeight(5),
+                    // )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              width: ScreenUtil().setWidth(400),
+              height: ScreenUtil().setHeight(50),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
+                ),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF34BDDD),
+                    Color(0xFF367DC8),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Material(
+                type: MaterialType.transparency,
+                elevation: 6.0,
+                color: Colors.transparent,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
+                ),
+                child: InkWell(
+                  splashColor: Colors.cyan[50].withOpacity(0.5),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
+                  onTap: () {
+                    if (_key.currentState.validate()) {
+                      _key.currentState.save();
+                      Navigator.pop(context);
+                      widget.change(true);
+
+                      // return true;
+                    }
+                  },
+                  child: Center(
+                    child: Text(
+                      "Confirm",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Gilroy Medium",
+                        fontSize:
+                            ScreenUtil().setSp(16, allowFontScalingSelf: true),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

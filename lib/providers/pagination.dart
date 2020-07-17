@@ -16,7 +16,7 @@ class Product {
   var diamondWeight;
   var goldWeight;
   var diamondCount;
-  Map<String, bool> designDetails;
+  // Map<String, bool> designDetails;
   var designDimensions;
   bool isFavourite;
   Map<dynamic, dynamic> imageUrl;
@@ -34,7 +34,7 @@ class Product {
       this.diamondCount,
       this.isFavourite = false,
       this.prices,
-      this.designDetails,
+      // this.designDetails,
       this.imageUrl,
       this.designDimensions,
       this.height = 150});
@@ -167,7 +167,7 @@ class Pagination with ChangeNotifier {
     print(sortby.toString() + 'sdoiofihsifgh9');
     print(sort.toString() + 'wefu9w0f');
     final url =
-        'https://alexa.gemstory.in/product/paginated?select=$select&sortby=$sortby&sort=$sort&page=$page&quant=20';
+        'https://alexa.gemstory.in/product/paginated?select=$select&sortby=$sortby&sort=$sort&page=$page&quant=30';
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
@@ -221,7 +221,7 @@ class Pagination with ChangeNotifier {
           if (select == 'all')
             allProducts.add(
               Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
+                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
                   styleNumber: prod['styleNumber'],
                   diamondWeight: prod['diamondWeight'],
                   goldWeight: prod['goldWeight'],
@@ -236,7 +236,7 @@ class Pagination with ChangeNotifier {
           if (select == 'featured')
             featuredProducts.add(
               Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
+                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
                   styleNumber: prod['styleNumber'],
                   diamondWeight: prod['diamondWeight'],
                   goldWeight: prod['goldWeight'],
@@ -251,7 +251,7 @@ class Pagination with ChangeNotifier {
           if (select == 'highestSelling')
             highestSellingProducts.add(
               Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
+                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
                   styleNumber: prod['styleNumber'],
                   diamondWeight: prod['diamondWeight'],
                   goldWeight: prod['goldWeight'],
@@ -267,7 +267,7 @@ class Pagination with ChangeNotifier {
           if (select == 'fancyDiamond')
             fancyDiamond.add(
               Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
+                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
                   styleNumber: prod['styleNumber'],
                   diamondWeight: prod['diamondWeight'],
                   goldWeight: prod['goldWeight'],
@@ -282,7 +282,7 @@ class Pagination with ChangeNotifier {
           if (select == 'isnew')
             newProducts.add(
               Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
+                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
                   styleNumber: prod['styleNumber'],
                   diamondWeight: prod['diamondWeight'],
                   goldWeight: prod['goldWeight'],
@@ -300,7 +300,7 @@ class Pagination with ChangeNotifier {
         List<dynamic> loadedProducts = extractedData['products']
             .map(
               (prod) => Product(
-                  designDetails: Map<String, bool>.from(prod['designDetails']),
+                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
                   styleNumber: prod['styleNumber'],
                   diamondWeight: prod['diamondWeight'],
                   goldWeight: prod['goldWeight'],
@@ -327,9 +327,9 @@ class Pagination with ChangeNotifier {
         if (select == 'featured') {
           featuredProducts = [];
           featuredProducts = loadedProducts;
+          print(featuredProducts);
           print('feat');
-          print(featuredProducts[0]);
-          print(featuredProducts[2].prices);
+
           notifyListeners();
         }
 
@@ -406,7 +406,7 @@ class Pagination with ChangeNotifier {
         loadedProducts = extractedData['products']
             .map(
               (prod) => Product(
-                designDetails: Map<String, bool>.from(prod['designDetails']),
+                // // designDetails: Map<String, bool>.from(prod['designDetails']),
                 styleNumber: prod['styleNumber'],
                 diamondWeight: prod['diamondWeight'],
                 goldWeight: prod['goldWeight'],
@@ -789,7 +789,7 @@ class Pagination with ChangeNotifier {
       List<dynamic> loadedProducts = responseData['product']
           .map(
             (prod) => Product(
-                designDetails: Map<String, bool>.from(prod['designDetails']),
+                // // designDetails: Map<String, bool>.from(prod['designDetails']),
                 styleNumber: prod['styleNumber'],
                 diamondWeight: prod['diamondWeight'],
                 goldWeight: prod['goldWeight'],

@@ -59,7 +59,7 @@ class Orders with ChangeNotifier {
           json.decode(prefs.getString('userData')) as Map<String, Object>;
       String number = extractedUserData['number'];
       String password = extractedUserData['password'];
-      Provider.of<Auth>(context, listen: false)
+      await Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
     try {
@@ -117,7 +117,7 @@ class Orders with ChangeNotifier {
           json.decode(prefs.getString('userData')) as Map<String, Object>;
       String number = extractedUserData['number'];
       String password = extractedUserData['password'];
-      Provider.of<Auth>(context, listen: false)
+      await Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
     try {

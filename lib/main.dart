@@ -11,6 +11,7 @@ import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -32,7 +33,7 @@ Future<void> main() async {
   initScreen3 = prefs.getInt("initScreen3");
   await prefs.setInt("initScreen3", 1);
   // print('initScreen3 ${initScreen3}');
-  runApp(MyApp());
+  runApp(Phoenix(child: MyApp()));
 }
 
 // class MyApp extends StatelessWidget {

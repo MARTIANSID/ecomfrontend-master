@@ -680,12 +680,27 @@ class _MyPriceState extends State<MyPrice> {
                                                         'assets/images/commission.gif',
                                                   ).then((value) =>
                                                       value2 = value);
-                                                  if (value2) {
+                                                  if (value2 != null &&
+                                                      value2) {
                                                     try {
                                                       setState(() {
                                                         prevage = age;
                                                         age = value;
                                                       });
+                                                      // dataSelect(
+                                                      //     context: context,
+                                                      //     titleText:
+                                                      //         'Commission Changed Succesfully!',
+                                                      //     buttonText: 'Okay',
+                                                      //     contentText:
+                                                      //         "Your commission has been changed successfully.",
+                                                      //     onPressed: () {
+                                                      //       Navigator.of(
+                                                      //               context)
+                                                      //           .pop();
+                                                      //     },
+                                                      //     gif:
+                                                      //         "assets/images/success.gif");
                                                       await Provider.of<
                                                                   Pagination>(
                                                               context,
@@ -803,6 +818,10 @@ class _MyPriceState extends State<MyPrice> {
                                                                         listen:
                                                                             false)
                                                                     .sort),
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getFav(context),
                                                       ];
                                                       await Future.wait(
                                                           futures);
@@ -835,9 +854,11 @@ class _MyPriceState extends State<MyPrice> {
                                                               "assets/images/alert.gif");
                                                     }
                                                   } else {
-                                                    setState(() {
-                                                      age = prevage;
-                                                    });
+                                                    if (value2 == null ||
+                                                        !value2)
+                                                      setState(() {
+                                                        age = prevage;
+                                                      });
                                                   }
                                                 },
                                                 style: SliderStyle(

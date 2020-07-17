@@ -351,15 +351,24 @@ class _SortPageState extends State<SortPage> {
                                     onTap: () async {
                                       try {
                                         Navigator.of(context).pop();
-                                        if (mounted)
-                                          setState(() {
-                                            isLoading = true;
-                                          });
-                                        await sortIt(_selectedTab, _check);
-                                        if (mounted)
-                                          setState(() {
-                                            isLoading = false;
-                                          });
+                                        if (_selectedTab != null) {
+                                          showFloatingFlushbar(
+                                              context,
+                                              _selectedTab == null
+                                                  ? 'Sort-by changed Successfully'
+                                                  : "Now sorting by ${sortChoices[_selectedTab]}",
+                                              "${_check ? "Low to High" : "High to Low"}",
+                                              '');
+                                          if (mounted)
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                          await sortIt(_selectedTab, _check);
+                                          if (mounted)
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                        }
                                       } catch (err) {
                                         dataSelect(
                                             context: context,

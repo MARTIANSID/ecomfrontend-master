@@ -6,10 +6,18 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 
-void showFloatingFlushbar(BuildContext context, text, productName) {
+void showFloatingFlushbar(BuildContext context, text, productName, cartIcon) {
   Flushbar(
     borderRadius: 8,
-    backgroundColor: kPrimaryColor,
+    backgroundGradient: LinearGradient(
+      colors: [
+        Color(0xFF34B0D9),
+        Color(0xFF3685CB),
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    // backgroundColor: kPrimaryColor,
     boxShadows: [
       BoxShadow(
         color: Colors.black45,
@@ -18,17 +26,29 @@ void showFloatingFlushbar(BuildContext context, text, productName) {
       ),
     ],
     margin: EdgeInsets.all(10.0),
-    animationDuration: Duration(seconds: 2),
-    duration: Duration(seconds: 1),
+    animationDuration: Duration(milliseconds: 500),
+    duration: Duration(seconds: 1, milliseconds: 500),
     dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-    forwardAnimationCurve: Curves.elasticOut,
+    forwardAnimationCurve: Curves.easeOut,
     title: text,
     messageText: Text(
       productName,
-      style: TextStyle(fontFamily: 'Gilroy Regular', color: Colors.white),
+      style: TextStyle(
+          fontFamily: 'Gilroy Regular',
+          color: Colors.white,
+          fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true)),
     ),
     blockBackgroundInteraction: true,
-    icon: Icon(Icons.add_shopping_cart),
+    icon: Padding(
+      padding: EdgeInsets.only(left: 13.0),
+      child: Text(
+        cartIcon,
+        style: TextStyle(
+            fontFamily: 'Gilroy Regular',
+            color: Colors.white,
+            fontSize: ScreenUtil().setSp(20, allowFontScalingSelf: true)),
+      ),
+    ),
     // mainButton: Container(
     //   margin: EdgeInsets.all(5.0),
     //   child: FlatButton(

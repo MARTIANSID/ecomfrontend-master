@@ -621,11 +621,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         "Are you sure, You want to open Whatsapp?",
                                     gif: 'assets/images/whatsappGIF.gif',
                                   ).then((value) async {
-                                    if (value) {
-                                      value2 = value;
-                                    }
+                                    // if (value) {
+                                    value2 = value;
+                                    // }
                                   });
-                                  if (value2) {
+                                  if (value2 != null && value2) {
                                     if (await canLaunch(
                                         "https://api.whatsapp.com/send?phone=919004801229&text=Hello, I like your App.")) {
                                       await launch(

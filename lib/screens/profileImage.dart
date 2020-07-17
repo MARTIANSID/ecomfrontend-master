@@ -40,7 +40,8 @@ class _ProfileImageState extends State<ProfileImage> {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24), topRight: Radius.circular(24)),
             ),
-            height: ScreenUtil().setHeight(90),
+            width: ScreenUtil().setWidth(411),
+            height: ScreenUtil().setHeight(110),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
