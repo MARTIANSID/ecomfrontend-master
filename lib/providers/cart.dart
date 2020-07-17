@@ -69,7 +69,7 @@ class Cart with ChangeNotifier {
           (element) => element.product.styleNumber == product.styleNumber);
 
       if (index >= 0) {
-        if (cart[index].color == color &&
+        if (cart[index].color.toLowerCase() == color.toLowerCase() &&
             cart[index].build == build &&
             cart[index].diamond == diamond &&
             cart[index].cert == cert) {
@@ -471,20 +471,105 @@ class Cart with ChangeNotifier {
     certvalue,
     update,
   }) async {
-    Provider.of<Cart>(context, listen: false).addCart(
-        context: context,
-        color: color,
-        cert: cert,
-        colorValue: colorValue,
-        certvalue: certvalue,
-        build: build,
-        buildValue: buildValue,
-        update: true,
-        diamond: diamond,
-        diamondValue: diamondValue,
-        product: product,
-        quantity: cart[index].quantity - 1,
-        quant: true);
+    bool quant = true;
+    try {
+      cart[index].quantity = cart[index].quantity - 1;
+      if (quant) {
+        notifyListeners();
+      }
+      final response = await http.patch(
+        this.url,
+        headers: {
+          'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          "id": cart[index].id,
+          "diamondQuality": diamond,
+          "build": build,
+          "certificate": cert,
+          "color": color.toUpperCase(),
+          "quantity": cart[index].quantity,
+        }),
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != false) {
+        cart[index].quantity = cart[index].quantity + 1;
+        if (quant) {
+          notifyListeners();
+        }
+        throw HttpException(responseData['details']['message']);
+      }
+
+      totalPrice = responseData['cart']['totalPrice'];
+
+      if (quant == false)
+        cart = responseData['cart']['products']
+            .map((i) => Cartt(
+                build: i['options']['build'],
+                color: i['options']['color'].toLowerCase(),
+                diamond: i['options']['diamondQuality'],
+                cert: i['options']['certificate'],
+                id: i['id'],
+                quantity: i['options']['quantity'],
+                buildValue: Provider.of<Pagination>(context, listen: false)
+                    .build
+                    .indexOf(i['options']['build']),
+                certValue: Provider.of<Pagination>(context, listen: false)
+                    .cert
+                    .indexOf(i['options']['certificate']),
+                colorValue: Provider.of<Pagination>(context, listen: false)
+                    .color
+                    .indexOf(i['options']['color']),
+                diamondValue: Provider.of<Pagination>(context, listen: false)
+                    .diamondQuality
+                    .indexOf(i['options']['diamondQuality']),
+                product: Product(
+                    imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                    prices: Map<dynamic, dynamic>.from(i['prices']),
+                    styleNumber: i["styleNumber"])))
+            .toList();
+      notifyListeners();
+    } on FormatException {
+      cart[index].quantity = cart[index].quantity + 1;
+      if (quant) {
+        notifyListeners();
+      }
+      throw "Oops Something Went Wrong!";
+    } on PlatformException {
+      cart[index].quantity = cart[index].quantity + 1;
+      if (quant) {
+        notifyListeners();
+      }
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
+      cart[index].quantity = cart[index].quantity + 1;
+      if (quant) {
+        notifyListeners();
+      }
+      throw 'No Internet';
+    } catch (err) {
+      cart[index].quantity = cart[index].quantity + 1;
+      if (quant) {
+        notifyListeners();
+      }
+      throw err;
+    }
+    // Provider.of<Cart>(context, listen: false).addCart(
+    //     context: context,
+    //     color: color.toLowerCase(),
+    //     cert: cert,
+    //     colorValue: colorValue,
+    //     certvalue: certvalue,
+    //     build: build,
+    //     buildValue: buildValue,
+    //     update: true,
+    //     diamond: diamond,
+    //     diamondValue: diamondValue,
+    //     product: product,
+    //     quantity: cart[index].quantity - 1,
+    //     quant: true);
   }
 
   Future<void> incQuantity(
@@ -503,20 +588,111 @@ class Cart with ChangeNotifier {
       update}) async {
     // print(color);
     // print(colorValue);
-    Provider.of<Cart>(context, listen: false).addCart(
-        context: context,
-        color: color,
-        cert: cert,
-        colorValue: colorValue,
-        certvalue: certvalue,
-        build: build,
-        buildValue: buildValue,
-        quantity: cart[index].quantity + 1,
-        update: true,
-        diamond: diamond,
-        diamondValue: diamondValue,
-        product: product,
-        quant: true);
+    // Provider.of<Cart>(context, listen: false).addCart(
+    //   context: context,
+    //   color: color.toLowerCase(),
+    //   cert: cert,
+    //   colorValue: colorValue,
+    //   certvalue: certvalue,
+    //   build: build,
+    //   buildValue: buildValue,
+    //   quantity: cart[index].quantity + 1,
+    //   update: true,
+    //   diamond: diamond,
+    //   diamondValue: diamondValue,
+    //   product: product,
+    //   quant: true,
+    // );
+    bool quant = true;
+
+    try {
+      cart[index].quantity = cart[index].quantity + 1;
+      if (quant) {
+        notifyListeners();
+      }
+
+      final response = await http.patch(
+        this.url,
+        headers: {
+          'Authorization':
+              'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          "id": cart[index].id,
+          "diamondQuality": diamond,
+          "build": build,
+          "certificate": cert,
+          "color": color.toUpperCase(),
+          "quantity": cart[index].quantity,
+        }),
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != false) {
+        cart[index].quantity = cart[index].quantity - 1;
+        if (quant) {
+          notifyListeners();
+        }
+        throw HttpException(responseData['details']['message']);
+      }
+
+      totalPrice = responseData['cart']['totalPrice'];
+
+      if (quant == false)
+        cart = responseData['cart']['products']
+            .map((i) => Cartt(
+                build: i['options']['build'],
+                color: i['options']['color'].toLowerCase(),
+                diamond: i['options']['diamondQuality'],
+                cert: i['options']['certificate'],
+                id: i['id'],
+                quantity: i['options']['quantity'],
+                buildValue: Provider.of<Pagination>(context, listen: false)
+                    .build
+                    .indexOf(i['options']['build']),
+                certValue: Provider.of<Pagination>(context, listen: false)
+                    .cert
+                    .indexOf(i['options']['certificate']),
+                colorValue: Provider.of<Pagination>(context, listen: false)
+                    .color
+                    .indexOf(i['options']['color']),
+                diamondValue: Provider.of<Pagination>(context, listen: false)
+                    .diamondQuality
+                    .indexOf(i['options']['diamondQuality']),
+                product: Product(
+                    imageUrl: Map<dynamic, dynamic>.from(i['images']),
+                    prices: Map<dynamic, dynamic>.from(i['prices']),
+                    styleNumber: i["styleNumber"])))
+            .toList();
+      notifyListeners();
+    } on FormatException {
+      cart[index].quantity = cart[index].quantity - 1;
+      if (quant) {
+        notifyListeners();
+      }
+
+      throw "Oops Something Went Wrong!";
+    } on PlatformException {
+      cart[index].quantity = cart[index].quantity - 1;
+      if (quant) {
+        notifyListeners();
+      }
+
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
+      cart[index].quantity = cart[index].quantity - 1;
+      if (quant) {
+        notifyListeners();
+      }
+
+      throw 'No Internet';
+    } catch (err) {
+      cart[index].quantity = cart[index].quantity - 1;
+      if (quant) {
+        notifyListeners();
+      }
+      throw err;
+    }
   }
 
   int checkoutPrice({context}) {

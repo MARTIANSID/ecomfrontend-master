@@ -2188,6 +2188,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                         }
                                                                       } else {
                                                                         await Provider.of<Cart>(context, listen: false).decQuantity(
+                                                                          
                                                                             context:
                                                                                 context,
                                                                             product:
@@ -2203,7 +2204,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                             colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
                                                                             certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
                                                                             diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                            index: index);
+                                                                            index: index,
+                                                                            );
                                                                       }
                                                                     } catch (err) {
                                                                       dataSelect(
