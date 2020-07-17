@@ -91,31 +91,49 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
       shrinkWrap: true,
       itemCount: orderProducts.length,
       itemBuilder: (context, index) {
+        int quants = 0;
+        // orderProducts[index].products.foreach((element) {
+        //   quants = quants + element.quantity;
+        // });
+        for (var i = 0; i < orderProducts[index].products.length; i++) {
+          // setState(() {
+          quants = quants + orderProducts[index].products[i].quantity;
+          // });
+        }
+
         return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MyOrderDetailPage(
-                      products: orderProducts[index].products, index: index)),
+                builder: (context) => MyOrderDetailPage(
+                    products: orderProducts[index].products, index: index),
+              ),
             );
           },
           child: Container(
-            width: ScreenUtil().setWidth(330),
+            width: ScreenUtil().setWidth(411),
             height: ScreenUtil().setHeight(155),
             margin: EdgeInsets.only(
               bottom: 20.0,
-              left: 5.0,
-              right: 5.0,
+              left: 15.0,
+              right: 15.0,
             ),
             padding: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
-              // color: Colors.amber,
+              color: Colors.white,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  blurRadius: 10,
+                  color: Colors.black.withOpacity(0.37),
+                  offset: Offset(2, 5),
+                )
+              ],
               borderRadius: BorderRadius.circular(15.0),
-              border: Border.all(
-                color: Colors.grey,
-                width: 1.0,
-              ),
+              // border: Border.all(
+              //   color: Colors.grey,
+              //   width: 1.0,
+              // ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,7 +150,10 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                               .setSp(27, allowFontScalingSelf: true)),
                     ),
                     Text(
-                      orderProducts[index].products.length.toString(),
+                      // orderProducts[index].products.length.toString(),
+                      quants == 1
+                          ? quants.toString() + " Nose Pin"
+                          : quants.toString() + " Nose Pins",
                       style: TextStyle(
                         color: Colors.grey[400],
                         fontSize:
@@ -295,53 +316,56 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                       // color: Colors.amber,
                       width: ScreenUtil().setWidth(411),
                       height: ScreenUtil().setHeight(655),
-                      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 10.0),
+                      padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          TabBar(
-                            controller: _tabController,
-                            // indicatorColor: Colors.cyan,
-                            labelColor: Colors.white,
-                            isScrollable: true,
-                            // labelPadding: EdgeInsets.only(right: size.width / 12),
-                            unselectedLabelColor: Color(0xFFCDCDCD),
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFF34BDDD),
-                                  Color(0xFF3680C9),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            child: TabBar(
+                              controller: _tabController,
+                              // indicatorColor: Colors.cyan,
+                              labelColor: Colors.white,
+                              isScrollable: true,
+                              // labelPadding: EdgeInsets.only(right: size.width / 12),
+                              unselectedLabelColor: Color(0xFFCDCDCD),
+                              indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25.0),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF34BDDD),
+                                    Color(0xFF3680C9),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                               ),
-                            ),
 
-                            // indicatorPadding: EdgeInsets.all(10.0),
-                            //indicator: UnderlineTabIndicator(insets:EdgeI`nsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
-                            tabs: [
-                              Tab(
-                                child: Text(
-                                  'All',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Regular',
-                                    fontSize: ScreenUtil()
-                                        .setSp(19, allowFontScalingSelf: true),
+                              // indicatorPadding: EdgeInsets.all(10.0),
+                              //indicator: UnderlineTabIndicator(insets:EdgeI`nsets.only(right:20.0),borderSide:BorderSide(color:Colors.pink),),
+                              tabs: [
+                                Tab(
+                                  child: Text(
+                                    'All',
+                                    style: TextStyle(
+                                      fontFamily: 'Gilroy Regular',
+                                      fontSize: ScreenUtil().setSp(19,
+                                          allowFontScalingSelf: true),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Tab(
-                                child: Text(
-                                  'Completed',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy Regular',
-                                    fontSize: ScreenUtil()
-                                        .setSp(19, allowFontScalingSelf: true),
+                                Tab(
+                                  child: Text(
+                                    'Completed',
+                                    style: TextStyle(
+                                      fontFamily: 'Gilroy Regular',
+                                      fontSize: ScreenUtil().setSp(19,
+                                          allowFontScalingSelf: true),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: ScreenUtil().setHeight(20),

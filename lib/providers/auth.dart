@@ -141,7 +141,7 @@ class Auth with ChangeNotifier {
       // "DCDCDCDCDC");
 
       var playerId = status.subscriptionStatus.userId;
-      // print(playerId);
+      print(playerId);
       final response = await http.post(
         '$uurl$urlSegment',
         body: name != null
@@ -149,9 +149,17 @@ class Auth with ChangeNotifier {
                 "fullName": name,
                 "number": number,
                 "password": password,
-                "notifid": playerId == null ? "" : playerId
+                "notifid": playerId == null
+                    ? "27e25d0e-54e8-49ae-9d9c-9db6f185edc1"
+                    : playerId
               }
-            : {"number": number, "password": password, "notifid": playerId},
+            : {
+                "number": number,
+                "password": password,
+                "notifid": playerId == null
+                    ? "27e25d0e-54e8-49ae-9d9c-9db6f185edc1"
+                    : playerId
+              },
       );
       final responseData = json.decode(response.body);
       if (responseData['error'] != false) {

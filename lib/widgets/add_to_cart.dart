@@ -1048,14 +1048,14 @@ class AddToCartTState extends State<AddToCart> {
                                   widget.updateCart
                                       ? showFloatingFlushbar(
                                           widget.globalKey.currentContext,
-                                          'Your Cart data has been successfully Updated',
+                                          'Product successfully Updated',
                                           widget.product.styleNumber,
-                                        )
+                                          '🛒')
                                       : showFloatingFlushbar(
                                           widget.globalKey.currentContext,
-                                          'Product has been added to your Cart"🛒"',
+                                          'Product added sucessfully',
                                           widget.product.styleNumber,
-                                        );
+                                          '🛒');
                                 }
                                 // }
                                 // Navigator.of(context).pop();

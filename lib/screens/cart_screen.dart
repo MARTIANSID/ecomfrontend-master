@@ -64,9 +64,8 @@ class _CartScreenState extends State<CartScreen> {
     });
     Future.delayed(Duration.zero, () async {
       try {
-        if (Provider.of<Cart>(context, listen: false).cart.isEmpty)
-          await Provider.of<Cart>(context, listen: false)
-              .getCart(context: context);
+        await Provider.of<Cart>(context, listen: false)
+            .getCart(context: context);
       } catch (err) {
         dataSelect(
             context: context,
@@ -216,7 +215,7 @@ class _CartScreenState extends State<CartScreen> {
                           padding: EdgeInsets.fromLTRB(24, 0, 25, 0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               ShaderMask(
                                 shaderCallback: (bounds) => LinearGradient(
@@ -240,6 +239,38 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                               ),
+                              Provider.of<Cart>(context, listen: true)
+                                          .cart
+                                          .length ==
+                                      0
+                                  ? SizedBox(
+                                      height: 0.0,
+                                      width: 0.0,
+                                    )
+                                  : Text(
+                                      Provider.of<Cart>(context, listen: true)
+                                                  .cart
+                                                  .length ==
+                                              1
+                                          ? Provider.of<Cart>(context,
+                                                      listen: true)
+                                                  .cart
+                                                  .length
+                                                  .toString() +
+                                              " Product"
+                                          : Provider.of<Cart>(context,
+                                                      listen: true)
+                                                  .cart
+                                                  .length
+                                                  .toString() +
+                                              " Products",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: 'Gilroy Medium',
+                                        fontSize: ScreenUtil().setSp(20,
+                                            allowFontScalingSelf: true),
+                                      ),
+                                    ),
                             ],
                           ),
                         ),
@@ -683,8 +714,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                               .cart[index]
                                                                               .quantity ==
                                                                           1) {
-                                                                        final v =
-                                                                            await dataSelectConfirmMessage(
+                                                                        bool v =
+                                                                            false;
+                                                                        v = await dataSelectConfirmMessage(
                                                                           context:
                                                                               context,
                                                                           titleText:
@@ -694,7 +726,10 @@ class _CartScreenState extends State<CartScreen> {
                                                                           gif:
                                                                               'assets/images/reversecartGIF.gif',
                                                                         );
-                                                                        if (v) {
+                                                                        if (v !=
+                                                                                null &&
+                                                                            v ==
+                                                                                true) {
                                                                           try {
                                                                             await Provider.of<Cart>(context, listen: false).deleteCart(
                                                                                 id: Provider.of<Cart>(context, listen: false).cart[index].id,
@@ -1062,7 +1097,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                     titleText:
                                                                         'Confirm!',
                                                                     contentText:
-                                                                        "By placing the order, I agree to the terms and condition given by Gemstory.",
+                                                                        "Are you sure you want to place the order?",
                                                                     gif:
                                                                         'assets/images/cartGIF1.gif',
                                                                   ).then(

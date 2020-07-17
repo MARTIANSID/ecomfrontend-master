@@ -1067,18 +1067,20 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                       'assets/images/whatsappGIF.gif',
                                                                 ).then(
                                                                     (value) async {
-                                                                  if (value) {
-                                                                    value2 =
-                                                                        value;
-                                                                  }
+                                                                  // if (value) {
+                                                                  value2 =
+                                                                      value;
+                                                                  // }
                                                                 });
-                                                                if (value2) {
+                                                                if (value2 !=
+                                                                        null &&
+                                                                    value2) {
                                                                   if (await canLaunch(
-                                                                      "https://wa.me/919322244007")) {
+                                                                      "https://wa.me/919004801229")) {
                                                                     await launch(
-                                                                        "https://wa.me/919322244007");
+                                                                        "https://wa.me/919004801229");
                                                                   } else {
-                                                                    throw 'Could not launch https://wa.me/919322244007';
+                                                                    throw 'Could not launch https://wa.me/919004801229';
                                                                   }
                                                                 }
                                                               },
@@ -1229,6 +1231,11 @@ class _ProductDetailState extends State<ProductDetail> {
                         try {
                           if (mounted) setState(() {});
                           if (widget.product.isFavourite) {
+                            showFloatingFlushbar(
+                                context,
+                                'Product removed from Favourites list',
+                                widget.product.styleNumber,
+                                '❤');
                             await Provider.of<Pagination>(context,
                                     listen: false)
                                 .toogleFavourite(
@@ -1241,6 +1248,11 @@ class _ProductDetailState extends State<ProductDetail> {
                                     styleNumber: widget.product.styleNumber,
                                     context: context,
                                     product: widget.product);
+                            showFloatingFlushbar(
+                                context,
+                                'Product added to the Favourites list',
+                                widget.product.styleNumber,
+                                '❤');
                           }
                           if (mounted) setState(() {});
                         } catch (err) {

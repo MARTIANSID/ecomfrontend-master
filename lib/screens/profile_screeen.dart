@@ -42,7 +42,7 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage>
     with SingleTickerProviderStateMixin {
   GlobalKey globalKey = GlobalKey();
-  bool value2;
+  // bool value2;
   bool isLoading = false;
 
   bool isLoadingimage = false;
@@ -99,34 +99,7 @@ class _UserPageState extends State<UserPage>
     await showDialog(
       context: context,
       builder: (context) {
-        // return AlertDialog(
-        //   content:
-        //   actions: <Widget>[
-        //     FlatButton(
-        //       child: const Text('CANCEL'),
-        //       onPressed: () {
-        //         Navigator.pop(context);
-        //         setState(() {
-        //           value2 = false;
-        //         });
-        //         // return false;
-        //       },
-        //     ),
-        //     FlatButton(
-        //       child: const Text('OPEN'),
-        //       onPressed: () {
-        //         if (_key.currentState.validate()) {
-        //           _key.currentState.save();
-        //           Navigator.pop(context);
-        //           setState(() {
-        //             value2 = true;
-        //           });
-        //           // return true;
-        //         }
-        //       },
-        //     ),
-        //   ],
-        // );
+        bool showPassword = false;
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -137,21 +110,6 @@ class _UserPageState extends State<UserPage>
             height: ScreenUtil().setHeight(200),
             child: Column(
               children: <Widget>[
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: <Widget>[
-                //     IconButton(
-                //       icon: Icon(Icons.clear),
-                //       color: Colors.black,
-                //       onPressed: () {
-                //         Navigator.pop(context);
-                //         setState(() {
-                //           value2 = false;
-                //         });
-                //       },
-                //     ),
-                //   ],
-                // ),
                 Container(
                   width: ScreenUtil().setWidth(400),
                   height: ScreenUtil().setHeight(150),
@@ -202,37 +160,56 @@ class _UserPageState extends State<UserPage>
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: EdgeInsets.only(left: 10),
-                            child: TextFormField(
-                              style: TextStyle(
-                                fontFamily: 'Gilroy Regular',
-                                fontSize: ScreenUtil()
-                                    .setSp(16, allowFontScalingSelf: true),
-                              ),
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                icon: SvgPicture.asset(
-                                  "assets/icons/lock.svg",
-                                  height: ScreenUtil().setWidth(18),
-                                  width: ScreenUtil().setHeight(21),
-                                  color: Colors.black,
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: <Widget>[
+                                TextFormField(
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy Regular',
+                                    fontSize: ScreenUtil()
+                                        .setSp(16, allowFontScalingSelf: true),
+                                  ),
+                                  obscureText: showPassword ? false : true,
+                                  decoration: InputDecoration(
+                                    icon: SvgPicture.asset(
+                                      "assets/icons/lock.svg",
+                                      height: ScreenUtil().setWidth(18),
+                                      width: ScreenUtil().setHeight(21),
+                                      color: Colors.black,
+                                    ),
+                                    hintText: "Password",
+                                    border: InputBorder.none,
+                                  ),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return "Enter Password";
+                                    } else if (Provider.of<Auth>(context,
+                                                listen: false)
+                                            .password !=
+                                        value) {
+                                      return "Incorrect Password";
+                                    } else if (p == false) {
+                                      return "Something went wrong";
+                                    }
+                                    return null;
+                                  },
+                                  autofocus: true,
                                 ),
-                                hintText: "Password",
-                                border: InputBorder.none,
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return "Enter Password";
-                                } else if (Provider.of<Auth>(context,
-                                            listen: false)
-                                        .password !=
-                                    value) {
-                                  return "Incorrect Password";
-                                } else if (p == false) {
-                                  return "Something went wrong";
-                                }
-                                return null;
-                              },
-                              autofocus: true,
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      showPassword = !showPassword;
+                                    });
+                                    print(showPassword);
+                                  },
+                                  icon: Icon(
+                                    showPassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -1307,7 +1284,7 @@ class _UserPageState extends State<UserPage>
                                                   Navigator.pop(context);
                                                 },
                                                 gif:
-                                                    "assets/images/aler`t.gif");
+                                                    "assets/images/identi.gif");
                                           }
                                         } else {
                                           Navigator.push(
@@ -1403,11 +1380,11 @@ class _UserPageState extends State<UserPage>
                                             "Are you sure, You want to open Whatsapp?",
                                         gif: 'assets/images/whatsappGIF.gif',
                                       ).then((value) async {
-                                        if (value) {
+                                        if (value != null && value) {
                                           value2 = value;
                                         }
                                       });
-                                      if (value2) {
+                                      if (value2 != null && value2) {
                                         if (await canLaunch(
                                             "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to make my own Design.")) {
                                           await launch(
@@ -1713,11 +1690,11 @@ class _UserPageState extends State<UserPage>
                                             "1) 100pcs minimum quantity\n2) 2500 handling charges\n3) 100% gold advance\n4) Labour payment at the time of delivery",
                                         gif: 'assets/images/whatsappGIF.gif',
                                       ).then((value) async {
-                                        if (value) {
+                                        if (value != null && value) {
                                           value2 = value;
                                         }
                                       });
-                                      if (value2) {
+                                      if (value2 != null && value2) {
                                         if (await canLaunch(
                                             "https://api.whatsapp.com/send?phone=919004801229&text=Hi, I want to use my own Diamonds.")) {
                                           await launch(
@@ -1983,12 +1960,9 @@ class _UserPageState extends State<UserPage>
                                                     });
                                                   });
                                                   // }
-                                                  if (!value2) {
-                                                    setState(() {
-                                                      isSwitched = !value;
-                                                      // print(isSwitched);
-                                                    });
-                                                  } else {
+
+                                                  if (value2 != null &&
+                                                      value2) {
                                                     try {
                                                       await Provider.of<
                                                                   UserInfo>(
@@ -2009,6 +1983,14 @@ class _UserPageState extends State<UserPage>
                                                           },
                                                           gif:
                                                               "assets/images/alert.gif");
+                                                    }
+                                                  } else {
+                                                    if (value2 == null ||
+                                                        !value2) {
+                                                      setState(() {
+                                                        isSwitched = !value;
+                                                        // print(isSwitched);
+                                                      });
                                                     }
                                                   }
                                                 },
@@ -2107,7 +2089,7 @@ class _UserPageState extends State<UserPage>
                                             // gif:
                                             //     'assets/images/notification1.gif',
                                           ).then((value) async {
-                                            if (value) {
+                                            if (value && value != null) {
                                               // value2 = value;
                                               // if (value2) {
                                               // Navigator.of(context).pop();

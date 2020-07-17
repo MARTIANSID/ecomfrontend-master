@@ -97,7 +97,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     );
 
     // _tabController.addListener(() {
-    print(Provider.of<Pagination>(context, listen: false).isVerified);
+    // print(Provider.of<Pagination>(context, listen: false).isVerified);
     //   if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
     //     //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
     //     dataSelect(
@@ -796,66 +796,76 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  child: SortPage(
-                                                    scrollController:
-                                                        widget.scrollController,
+                                            Tooltip(
+                                              message: "Sort",
+                                              waitDuration:
+                                                  Duration(seconds: 4),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    child: SortPage(
+                                                      scrollController: widget
+                                                          .scrollController,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 8.0),
+                                                  child: SvgPicture.asset(
+                                                    'assets/icons/sortIcon.svg',
+                                                    width: ScreenUtil()
+                                                        .setWidth(24),
+                                                    height: ScreenUtil()
+                                                        .setHeight(24),
+                                                    color: Colors.black,
                                                   ),
-                                                );
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    EdgeInsets.only(right: 8.0),
+                                                ),
+                                              ),
+                                            ),
+                                            Tooltip(
+                                              message: "Options",
+                                              waitDuration:
+                                                  Duration(seconds: 4),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    child: OptionsDialog(
+                                                      choicesBuild: _choices,
+                                                      choiceColor: _choices1,
+                                                      choiceCertification:
+                                                          _choices2,
+                                                      choiceDiamondQuality:
+                                                          _choices3,
+                                                      defValue:
+                                                          _defaultChoiceIndex1,
+                                                      defValue1:
+                                                          _defaultChoiceIndex2,
+                                                      defValue2:
+                                                          _defaultChoiceIndex3,
+                                                      defValue3:
+                                                          _defaultChoiceIndex4,
+                                                      valueChangeBuild:
+                                                          _onValueChange,
+                                                      valueChangeColor:
+                                                          _onValueChangeColor,
+                                                      valueChangeCerti:
+                                                          _onValueChangeCerti,
+                                                      valueChangeDQ:
+                                                          _onValueChangeDQ,
+                                                    ),
+                                                  );
+                                                },
                                                 child: SvgPicture.asset(
-                                                  'assets/icons/sortIcon.svg',
+                                                  'assets/icons/optionsIcon.svg',
                                                   width:
                                                       ScreenUtil().setWidth(24),
                                                   height: ScreenUtil()
                                                       .setHeight(24),
                                                   color: Colors.black,
                                                 ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  child: OptionsDialog(
-                                                    choicesBuild: _choices,
-                                                    choiceColor: _choices1,
-                                                    choiceCertification:
-                                                        _choices2,
-                                                    choiceDiamondQuality:
-                                                        _choices3,
-                                                    defValue:
-                                                        _defaultChoiceIndex1,
-                                                    defValue1:
-                                                        _defaultChoiceIndex2,
-                                                    defValue2:
-                                                        _defaultChoiceIndex3,
-                                                    defValue3:
-                                                        _defaultChoiceIndex4,
-                                                    valueChangeBuild:
-                                                        _onValueChange,
-                                                    valueChangeColor:
-                                                        _onValueChangeColor,
-                                                    valueChangeCerti:
-                                                        _onValueChangeCerti,
-                                                    valueChangeDQ:
-                                                        _onValueChangeDQ,
-                                                  ),
-                                                );
-                                              },
-                                              child: SvgPicture.asset(
-                                                'assets/icons/optionsIcon.svg',
-                                                width:
-                                                    ScreenUtil().setWidth(24),
-                                                height:
-                                                    ScreenUtil().setHeight(24),
-                                                color: Colors.black,
                                               ),
                                             )
                                           ],

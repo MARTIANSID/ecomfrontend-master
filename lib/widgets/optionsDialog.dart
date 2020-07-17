@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'snackbar.dart';
+
 class OptionsDialog extends StatefulWidget {
   final int defValue;
   final int defValue1;
@@ -559,6 +561,11 @@ class _OptionsDialogState extends State<OptionsDialog> {
                             widget.valueChangeCerti(_defaultChoiceIndex2);
                             widget.valueChangeDQ(_defaultChoiceIndex3);
                             Navigator.of(context).pop();
+                            showFloatingFlushbar(
+                                context,
+                                'Configuration Changed Successfully',
+                                "Nosepins",
+                                '');
                           },
                           child: Center(
                             child: Text(
