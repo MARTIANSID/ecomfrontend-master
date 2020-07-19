@@ -1014,7 +1014,6 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                           child: Text(
                                             'No new notifications!',
                                             style: TextStyle(
-                                              fontWeight: FontWeight.bold,
                                               fontFamily: 'Gilroy Medium',
                                               fontSize: ScreenUtil().setSp(20,
                                                   allowFontScalingSelf: true),

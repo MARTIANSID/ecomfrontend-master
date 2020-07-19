@@ -1792,8 +1792,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                       child: Text(
                                                         'No new notifications!',
                                                         style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
                                                           fontFamily:
                                                               'Gilroy Medium',
                                                           fontSize: ScreenUtil()

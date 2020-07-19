@@ -1111,7 +1111,7 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
               Positioned(
                 top: ScreenUtil().setHeight(92 + 22),
-                left: ScreenUtil().setWidth(30),
+                right: ScreenUtil().setWidth(26),
                 child: hideButton
                     ? GestureDetector(
                         onTap: () {
@@ -1165,42 +1165,42 @@ class _ProductDetailState extends State<ProductDetail> {
                         ),
                       ),
               ),
-              Positioned(
-                top: ScreenUtil().setHeight(92 + 22),
-                right: ScreenUtil().setWidth(26),
-                child: hideButton
-                    ? GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PhotoDetailScreen(
-                                  widget.colorKey, widget.product),
-                            ),
-                          );
-                        },
-                        child: SvgPicture.asset(
-                          'assets/icons/zoomIcon.svg',
-                          width: ScreenUtil().setWidth(29),
-                          height: ScreenUtil().setHeight(29),
-                          color: isColourSetLinear ||
-                                  (!isColourSetLinear && !isColourSetRadial)
-                              ? Color(0xFFB8B8B8)
-                              : Colors.white,
-                        ),
-                      )
-                    : FadeOut(
-                        child: SvgPicture.asset(
-                          'assets/icons/zoomIcon.svg',
-                          width: ScreenUtil().setWidth(29),
-                          height: ScreenUtil().setHeight(29),
-                          color: isColourSetLinear ||
-                                  (!isColourSetLinear && !isColourSetRadial)
-                              ? Color(0xFFB8B8B8)
-                              : Colors.white,
-                        ),
-                      ),
-              ),
+              // Positioned(
+              //   top: ScreenUtil().setHeight(92 + 22),
+              //   right: ScreenUtil().setWidth(26),
+              //   child: hideButton
+              //       ? GestureDetector(
+              //           onTap: () {
+              //             Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (context) => PhotoDetailScreen(
+              //                     widget.colorKey, widget.product),
+              //               ),
+              //             );
+              //           },
+              //           child: SvgPicture.asset(
+              //             'assets/icons/zoomIcon.svg',
+              //             width: ScreenUtil().setWidth(29),
+              //             height: ScreenUtil().setHeight(29),
+              //             color: isColourSetLinear ||
+              //                     (!isColourSetLinear && !isColourSetRadial)
+              //                 ? Color(0xFFB8B8B8)
+              //                 : Colors.white,
+              //           ),
+              //         )
+              //       : FadeOut(
+              //           child: SvgPicture.asset(
+              //             'assets/icons/zoomIcon.svg',
+              //             width: ScreenUtil().setWidth(29),
+              //             height: ScreenUtil().setHeight(29),
+              //             color: isColourSetLinear ||
+              //                     (!isColourSetLinear && !isColourSetRadial)
+              //                 ? Color(0xFFB8B8B8)
+              //                 : Colors.white,
+              //           ),
+              //         ),
+              // ),
               Positioned(
                 top: ScreenUtil().setHeight(383),
                 right: ScreenUtil().setWidth(26),

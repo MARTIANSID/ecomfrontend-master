@@ -89,6 +89,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                       // color: Colors.amber,
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
+                        reverse: true,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                             height: ScreenUtil().setHeight(125),

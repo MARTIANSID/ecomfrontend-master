@@ -149,7 +149,7 @@ class Pagination with ChangeNotifier {
     } on FormatException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } catch (err) {
@@ -362,7 +362,7 @@ class Pagination with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -430,7 +430,7 @@ class Pagination with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -690,7 +690,7 @@ class Pagination with ChangeNotifier {
       }
       notifyListeners();
 
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on FormatException {
@@ -808,7 +808,7 @@ class Pagination with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -847,7 +847,7 @@ class Pagination with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }

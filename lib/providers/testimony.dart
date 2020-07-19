@@ -66,7 +66,7 @@ class Testimony with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -112,7 +112,7 @@ class Testimony with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }

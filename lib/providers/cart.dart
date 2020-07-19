@@ -203,7 +203,7 @@ class Cart with ChangeNotifier {
       } on PlatformException {
         throw "Oops Something Went Wrong!";
       } on SocketException {
-        throw 'No Internet';
+        throw 'No Internet Connection! Please connect to Internet.';
       } catch (error) {
         throw error;
       }
@@ -281,7 +281,7 @@ class Cart with ChangeNotifier {
       } on PlatformException {
         throw "Oops Something Went Wrong!";
       } on SocketException {
-        throw 'No Internet';
+        throw 'No Internet Connection! Please connect to Internet.';
       } catch (err) {
         throw err;
       }
@@ -355,7 +355,7 @@ class Cart with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (error) {
       // print(error);
       throw error;
@@ -425,7 +425,7 @@ class Cart with ChangeNotifier {
     } on PlatformException {
       throw "Oops Something Went Wrong!";
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -548,7 +548,7 @@ class Cart with ChangeNotifier {
       if (quant) {
         notifyListeners();
       }
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       cart[index].quantity = cart[index].quantity + 1;
       if (quant) {
@@ -685,7 +685,7 @@ class Cart with ChangeNotifier {
         notifyListeners();
       }
 
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       cart[index].quantity = cart[index].quantity - 1;
       if (quant) {

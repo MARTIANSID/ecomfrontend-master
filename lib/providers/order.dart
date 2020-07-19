@@ -94,7 +94,7 @@ class Orders with ChangeNotifier {
     } on PlatformException {
       throw 'Oops Something went wrong';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -136,7 +136,7 @@ class Orders with ChangeNotifier {
     } on PlatformException {
       throw 'Oops Something went wrong';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }

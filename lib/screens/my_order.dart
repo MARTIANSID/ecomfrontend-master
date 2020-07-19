@@ -2,6 +2,7 @@ import 'package:Flutter/providers/order.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'myorder_detail.dart';
 
@@ -100,6 +101,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
           quants = quants + orderProducts[index].products[i].quantity;
           // });
         }
+
+        DateTime dateTime =
+            DateFormat("MMM dd yyyy").parse(orderProducts[index].datePlaced);
 
         return GestureDetector(
           onTap: () {
@@ -229,7 +233,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
                                     0, 0, bounds.width, bounds.height),
                               ),
                               child: Text(
-                                orderProducts[index].datePlaced,
+                                // orderProducts[index].datePlaced,
+                                DateFormat("MMM dd, yyyy")
+                                    .format(dateTime.add(Duration(days: 20))),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Gilroy Regular',

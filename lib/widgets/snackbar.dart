@@ -1,6 +1,4 @@
 import 'dart:ui';
-
-import 'package:Flutter/constant/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -367,6 +365,7 @@ Future<bool> dataSelectConfirmMessageTNC(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        scrollable: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),

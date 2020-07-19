@@ -828,7 +828,7 @@ class _MyPriceState extends State<MyPrice> {
                                                       dataSelect(
                                                           context: context,
                                                           titleText:
-                                                              'Commission Changed Succesfully!',
+                                                              'Commission Changed!',
                                                           buttonText: 'Okay',
                                                           contentText:
                                                               "Your commission has been changed successfully.",

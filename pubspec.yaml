@@ -107,9 +107,9 @@ flutter:
     - family: Gilroy Black
       fonts:
         - asset: assets/fonts/Gilroy-Black.ttf
-    - family: MyFlutterApp
-      fonts:
-        - asset: assets/fonts/MyFlutterApp.ttf
+    # - family: MyFlutterApp
+    #   fonts:
+    #     - asset: assets/fonts/MyFlutterApp.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

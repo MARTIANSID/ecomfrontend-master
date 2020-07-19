@@ -28,7 +28,7 @@ class Auth with ChangeNotifier {
     } on FormatException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -83,7 +83,7 @@ class Auth with ChangeNotifier {
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } on FormatException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } catch (err) {
@@ -106,7 +106,7 @@ class Auth with ChangeNotifier {
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -127,7 +127,7 @@ class Auth with ChangeNotifier {
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -194,7 +194,7 @@ class Auth with ChangeNotifier {
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (error) {
       throw error;
     }
@@ -215,7 +215,7 @@ class Auth with ChangeNotifier {
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }
@@ -279,7 +279,7 @@ class Auth with ChangeNotifier {
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on SocketException {
-      throw 'No Internet';
+      throw 'No Internet Connection! Please connect to Internet.';
     } catch (err) {
       throw err;
     }

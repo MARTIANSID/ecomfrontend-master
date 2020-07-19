@@ -873,6 +873,7 @@ class _UserPageState extends State<UserPage>
                                                           widget.onButtonTapped,
                                                     ),
                                                   ));
+                                              val = false;
                                             }
 
                                             // print(value2);

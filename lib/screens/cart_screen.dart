@@ -2221,25 +2221,50 @@ class _CartScreenState extends State<CartScreen> {
                                                                           }
                                                                         }
                                                                       } else {
-                                                                        await Provider.of<Cart>(context, listen: false).decQuantity(
-                                                                          
-                                                                            context:
-                                                                                context,
-                                                                            product:
-                                                                                product,
-                                                                            update:
-                                                                                true,
-                                                                            build:
-                                                                                Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false).cart[index].buildValue],
-                                                                            color: Provider.of<Pagination>(context, listen: false).color[Provider.of<Cart>(context, listen: false).cart[index].colorValue],
-                                                                            cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
-                                                                            diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
-                                                                            buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
-                                                                            colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
-                                                                            certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
-                                                                            diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                            index: index,
-                                                                            );
+                                                                        await Provider.of<Cart>(context,
+                                                                                listen: false)
+                                                                            .decQuantity(
+                                                                          context:
+                                                                              context,
+                                                                          product:
+                                                                              product,
+                                                                          update:
+                                                                              true,
+                                                                          build: Provider.of<Pagination>(context, listen: false)
+                                                                              .build[Provider.of<Cart>(context,
+                                                                                  listen: false)
+                                                                              .cart[index]
+                                                                              .buildValue],
+                                                                          color: Provider.of<Pagination>(context, listen: false)
+                                                                              .color[Provider.of<Cart>(context,
+                                                                                  listen: false)
+                                                                              .cart[index]
+                                                                              .colorValue],
+                                                                          cert: Provider.of<Pagination>(context, listen: false)
+                                                                              .cert[Provider.of<Cart>(context,
+                                                                                  listen: false)
+                                                                              .cart[index]
+                                                                              .certValue],
+                                                                          diamond: Provider.of<Pagination>(context, listen: false)
+                                                                              .diamondQuality[Provider.of<Cart>(context,
+                                                                                  listen: false)
+                                                                              .cart[index]
+                                                                              .diamondValue],
+                                                                          buildValue: Provider.of<Cart>(context, listen: false)
+                                                                              .cart[index]
+                                                                              .buildValue,
+                                                                          colorValue: Provider.of<Cart>(context, listen: false)
+                                                                              .cart[index]
+                                                                              .colorValue,
+                                                                          certvalue: Provider.of<Cart>(context, listen: false)
+                                                                              .cart[index]
+                                                                              .certValue,
+                                                                          diamondValue: Provider.of<Cart>(context, listen: false)
+                                                                              .cart[index]
+                                                                              .diamondValue,
+                                                                          index:
+                                                                              index,
+                                                                        );
                                                                       }
                                                                     } catch (err) {
                                                                       dataSelect(
@@ -3466,7 +3491,6 @@ class _CartScreenState extends State<CartScreen> {
                                                 child: Text(
                                                   'No new notifications!',
                                                   style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
                                                     fontFamily: 'Gilroy Medium',
                                                     fontSize: ScreenUtil().setSp(
                                                         20,

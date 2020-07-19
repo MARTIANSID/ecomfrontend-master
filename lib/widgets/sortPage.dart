@@ -296,13 +296,14 @@ class _SortPageState extends State<SortPage> {
                                     'Low to High',
                                     style: TextStyle(
                                       fontFamily: 'Gilroy Medium',
-                                      fontSize: ScreenUtil().setSp(14,
+                                      fontSize: ScreenUtil().setSp(18,
                                           allowFontScalingSelf: true),
                                       color: Color(0xFF545151),
                                     ),
                                   ),
                                   SizedBox(
-                                    width: ScreenUtil().setWidth(9),
+                                    width:
+                                        ScreenUtil().setWidth(_check ? 9 : 12),
                                   ),
                                   GestureDetector(
                                     onTap: () {
@@ -314,9 +315,9 @@ class _SortPageState extends State<SortPage> {
                                       _check
                                           ? 'assets/images/checkBoxTicked.png'
                                           : 'assets/images/checkBox.png',
-                                      width: ScreenUtil().setWidth(17),
-                                      height: ScreenUtil()
-                                          .setHeight(_check ? 17 : 14),
+                                      width: ScreenUtil()
+                                          .setWidth(_check ? 23 : 20),
+                                      height: ScreenUtil().setHeight(23),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
