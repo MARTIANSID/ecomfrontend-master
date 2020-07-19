@@ -1904,6 +1904,22 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                           .notifications[
                                                                               index]
                                                                           .id);
+                                                              if (Provider.of<
+                                                                          Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .notifications[
+                                                                      index]
+                                                                  .restart) {
+                                                                Provider.of<Auth>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .restart(
+                                                                        context:
+                                                                            context);
+                                                              }
                                                               print(Provider.of<
                                                                           Notif>(
                                                                       context,

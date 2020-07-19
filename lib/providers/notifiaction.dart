@@ -12,10 +12,19 @@ class Noti {
   String body;
   String name;
   String link;
+  bool restart;
+
   bool read;
 
   var id;
-  Noti({this.body, this.title, this.id, this.link, this.name, this.read});
+  Noti(
+      {this.body,
+      this.title,
+      this.id,
+      this.link,
+      this.name,
+      this.read,
+      this.restart});
 }
 
 class Notif with ChangeNotifier {
@@ -129,6 +138,7 @@ class Notif with ChangeNotifier {
               name: i['data']['name'],
               link: i['data'] == null ? '' : i['data']['link'],
               read: i['read'],
+              restart: i['data']['restart'],
               id: i['_id']))
           .toList();
       notifications = list;

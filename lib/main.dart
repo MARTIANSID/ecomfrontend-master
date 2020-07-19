@@ -192,6 +192,10 @@ class _MyAppState extends State<MyApp> {
       notification.payload.smallIconAccentColor = "FF32FFF3";
       // await Provider.of<Notif>(context, listen: false)
       //     .getNotification(context: context);
+
+      if (notification.payload.title == 'ALL TEST!') {
+        Phoenix.rebirth(context);
+      }
     });
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);

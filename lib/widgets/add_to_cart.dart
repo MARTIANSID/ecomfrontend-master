@@ -1041,10 +1041,10 @@ class AddToCartTState extends State<AddToCart> {
                                       },
                                       gif: "assets/images/alert.gif");
                                 } finally {
-                                  Navigator.of(context).pop();
-                                  setState(() {
-                                    isLoading = false;
-                                  });
+                                  Navigator.pop(context);
+
+                                  isLoading = false;
+
                                   widget.updateCart
                                       ? showFloatingFlushbar(
                                           widget.globalKey.currentContext,
