@@ -8,6 +8,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './http_exception.dart';
@@ -43,6 +44,10 @@ class Auth with ChangeNotifier {
   bool remeberMe = false;
   String password;
   int once = 0;
+  bool flag = false;
+  void changeFlage(value) {
+    flag = value;
+  }
 
   bool get isAuth {
     return token != null;
@@ -137,12 +142,10 @@ class Auth with ChangeNotifier {
       [String name]) async {
     try {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
-      // print("DCDCDCDCDC" +
-      // status.subscriptionStatus.subscribed.toString() +
-      // "DCDCDCDCDC");
 
       var playerId = status.subscriptionStatus.userId;
       print(playerId);
+
       final response = await http.post(
         '$uurl$urlSegment',
         body: name != null
@@ -163,6 +166,7 @@ class Auth with ChangeNotifier {
               },
       );
       final responseData = json.decode(response.body);
+
       if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
@@ -176,6 +180,7 @@ class Auth with ChangeNotifier {
       // _expiryDate = DateTime.now().add(
       //   Duration(seconds: 20),
       // );
+      print(_token.toString() + 'dofhdfoigergwefefe');
 
       autoLogout();
       notifyListeners();
@@ -320,8 +325,9 @@ class Auth with ChangeNotifier {
         Duration(seconds: timeToExpiry),
         remeberMe
             ? () {
-                logout(context: context);
-                Navigator.popAndPushNamed(context, '/');
+                // logout(context: context);
+                // Navigator.popAndPushNamed(context, '/');
+                _token = null;
               }
             : () => logout(context: context));
 
@@ -343,5 +349,31 @@ class Auth with ChangeNotifier {
 
   void restart({context}) {
     Phoenix.rebirth(context);
+  }
+
+  Future<void> sendPlayerId({context, playerId}) async {
+    try {
+      final response = await http.post("${uurl}/user/playerid",
+          headers: {
+            'Authorization':
+                'Bearer ' + Provider.of<Auth>(context, listen: false).token,
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json.encode({"notifid": playerId}));
+
+      final responseData = json.decode(response.body);
+      print(responseData);
+      if (responseData['error']) {
+        throw HttpException(responseData['details']['message']);
+      }
+    } on FormatException {
+      throw "Oops Something Went Wrong!";
+    } on PlatformException {
+      throw "Oops Something Went Wrong!";
+    } on SocketException {
+      throw 'No Internet Connection! Please connect to Internet.';
+    } catch (err) {
+      throw err;
+    }
   }
 }

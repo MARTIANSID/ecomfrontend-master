@@ -16,6 +16,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -189,6 +190,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       //     Provider.of<Pagination>(context, listen: false).sort.toString());
       await Future.wait(futures);
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
+
       //  await Provider.of<Pagination>(context, listen: false).getProducts(
       //       page: 1, addition: false, select: 'fancyDiamond', context: context);
       if (Provider.of<Auth>(context, listen: false).isLogin &&

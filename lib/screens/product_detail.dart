@@ -268,14 +268,14 @@ class _ProductDetailState extends State<ProductDetail> {
         },
         onPanEnd: (details) {
           // print("object2");
-          Timer(
-            Duration(seconds: 3),
-            () => setState(
-              () {
-                hideButton = false;
-              },
-            ),
-          );
+          Timer(Duration(seconds: 3), () {
+            if (mounted)
+              setState(
+                () {
+                  hideButton = false;
+                },
+              );
+          });
         },
         child: Container(
           color: Colors.white,

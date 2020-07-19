@@ -191,9 +191,11 @@ class _MyAppState extends State<MyApp> {
       notification.payload.largeIcon = "ic_onesignal_large_icon_default.png";
       notification.payload.smallIconAccentColor = "FF32FFF3";
       // await Provider.of<Notif>(context, listen: false)
-      //     .getNotification(context: context);
-
-      if (notification.payload.title == 'ALL TEST!') {
+      //     .getNotification(context: context);(notification.payload.body;
+// const length=notification.payload.body.
+      if (notification.payload.body
+              .substring(notification.payload.body.length - 1) ==
+          "!") {
         Phoenix.rebirth(context);
       }
     });

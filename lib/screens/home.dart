@@ -1,3 +1,4 @@
+import 'package:Flutter/providers/auth.dart';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
@@ -9,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './product_overview_screen.dart';
 import 'completeSignUp.dart';
@@ -144,6 +147,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             // controller.animateTo(0.0);
           });
       }
+    });
+    Future.delayed(Duration(seconds: 0), () async {
+      var status = await OneSignal.shared.getPermissionSubscriptionState();
+      var playerId = status.subscriptionStatus.userId;
+      await Provider.of<Auth>(context, listen: false)
+          .sendPlayerId(context: context, playerId: playerId);
     });
   }
 
