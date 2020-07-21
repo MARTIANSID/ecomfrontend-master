@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -376,6 +377,8 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                   style: TextStyle(
                                     fontFamily: 'Gilory Regular',
                                     color: Color(0xFFA49797),
+                                    // height: 3.0,
+                                    // decoration: TextDecoration.underline,
                                     fontSize: ScreenUtil()
                                         .setSp(17, allowFontScalingSelf: true),
                                   ),
@@ -574,9 +577,16 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                       .notifications
                                                       .length >
                                                   0
-                                              ? Image.asset(
-                                                  'assets/images/notificationPulse.png',
-                                                )
+                                              ? Provider.of<Notif>(context,
+                                                          listen: true)
+                                                      .checkForDelete()
+                                                  ? SvgPicture.asset(
+                                                      'assets/icons/notificationIcon.svg',
+                                                      color: Colors.black,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/notificationPulse.png',
+                                                    )
                                               : SvgPicture.asset(
                                                   'assets/icons/notificationIcon.svg',
                                                   color: Colors.black,
@@ -940,10 +950,44 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                       ),
                     ),
                   ),
+            !tapNotication
+                ? SizedBox(
+                    height: 0.0,
+                    width: 0.0,
+                  )
+                : Container(
+                    color: Colors.transparent,
+                    child: Container(
+                      height: ScreenUtil().setHeight(775),
+                      width: ScreenUtil().setWidth(411),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF34B0D9).withOpacity(0.2),
+                            Color(0xFF3685CB).withOpacity(0.2),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            tapNotication = false;
+                          });
+                        },
+                        child: Container(
+                          height: ScreenUtil().setHeight(775),
+                          width: ScreenUtil().setWidth(411),
+                        ),
+                      ),
+                    ),
+                  ),
             tapNotication
                 ? Container(
                     height: ScreenUtil().setHeight(775),
                     width: ScreenUtil().setWidth(370),
+                    color: Colors.transparent,
                     // decoration: BoxDecoration(
                     //   gradient: LinearGradient(
                     //     colors: [
@@ -1100,11 +1144,30 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                               .notifications[
                                                                   index]
                                                               .id);
-                                                  print(Provider.of<Notif>(
-                                                          context,
-                                                          listen: false)
-                                                      .notifications[index]
-                                                      .read);
+                                                  // if (!Provider.of<
+                                                  //             Notif>(
+                                                  //         context,
+                                                  //         listen:
+                                                  //             false)
+                                                  //     .notifications[
+                                                  //         index]
+                                                  //     .read) {
+                                                  //   Provider.of<Auth>(
+                                                  //           context,
+                                                  //           listen:
+                                                  //               false)
+                                                  //       .restart(
+                                                  //           context:
+                                                  //               context);
+                                                  // }
+                                                  // print(Provider.of<
+                                                  //             Notif>(
+                                                  //         context,
+                                                  //         listen:
+                                                  //             false)
+                                                  //     .notifications[
+                                                  //         index]
+                                                  //     .read);
                                                   // print(
                                                   // 'reading trueeeeeeeeeeeee');
                                                   setState(() {});
@@ -1161,6 +1224,38 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: <Widget>[
+                                                            Align(
+                                                              alignment: Alignment
+                                                                  .centerRight,
+                                                              child: Text(
+                                                                DateFormat('dd MMM, yyyy').add_jm().format(Provider.of<
+                                                                            Notif>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .notifications[
+                                                                        index]
+                                                                    .createdAt),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "Gilroy Light",
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      12,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setHeight(
+                                                                          7.0),
+                                                            ),
                                                             Text(
                                                               Provider.of<Notif>(
                                                                       context,
@@ -1228,7 +1323,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                           ),
                           Positioned(
                             top: ScreenUtil().setHeight(20 + 22 + 10),
-                            left: ScreenUtil().setWidth(348),
+                            left: ScreenUtil().setWidth(345),
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -1238,14 +1333,73 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                               child: Icon(Icons.clear,
                                   size: ScreenUtil()
                                       .setSp(30, allowFontScalingSelf: true)),
-                              // child: SvgPicture.asset(
-                              //   'assets/icons/notificationIcon.svg',
-                              //   height: ScreenUtil().setHeight(25),
-                              //   width: ScreenUtil().setWidth(25),
-                              //   color: Colors.black,
-                              // ),
                             ),
+                            // ),
                           ),
+                          Positioned(
+                            top: ScreenUtil().setHeight(425),
+                            left: ScreenUtil().setWidth(260),
+                            child: Provider.of<Notif>(context, listen: true)
+                                        .notifications
+                                        .length ==
+                                    0
+                                ? SizedBox(
+                                    height: 0.0,
+                                  )
+                                : Container(
+                                    width: ScreenUtil().setWidth(100),
+                                    height: ScreenUtil().setHeight(45),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                          blurRadius: 10,
+                                          color: Colors.black.withOpacity(0.37),
+                                          offset: Offset(1, 3),
+                                        ),
+                                      ],
+                                      color: Colors.white,
+                                    ),
+                                    child: Material(
+                                      type: MaterialType.transparency,
+                                      elevation: 6.0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: InkWell(
+                                        splashColor:
+                                            Colors.cyan[100].withOpacity(0.8),
+                                        borderRadius: BorderRadius.circular(10),
+                                        onTap: () async {
+                                          Provider.of<Notif>(context,
+                                                      listen: true)
+                                                  .checkForDelete()
+                                              ? await Provider.of<Notif>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteAll(context: context)
+                                              : await Provider.of<Notif>(
+                                                      context,
+                                                      listen: false)
+                                                  .readAll(context: context);
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            Provider.of<Notif>(context,
+                                                        listen: true)
+                                                    .checkForDelete()
+                                                ? 'Delete All'
+                                                : 'Read All',
+                                            style: TextStyle(
+                                              fontFamily: "Gilroy Medium",
+                                              fontSize: ScreenUtil().setSp(12,
+                                                  allowFontScalingSelf: true),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          )
                         ],
                       ),
                     ),

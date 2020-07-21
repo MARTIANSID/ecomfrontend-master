@@ -1,6 +1,7 @@
 import 'package:Flutter/components/text_field_container.dart';
 import 'package:Flutter/constant/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -16,6 +17,7 @@ class RoundedInputField extends StatelessWidget {
   final Function onPressed;
   final String svg;
   final bool svgOrIcon;
+  final bool pincodeLimit;
   // final GlobalKey<FormState> keyForm;
   const RoundedInputField(
       {Key key,
@@ -25,6 +27,7 @@ class RoundedInputField extends StatelessWidget {
       this.color = kPrimaryLightColor,
       this.proceed,
       this.svg,
+      this.pincodeLimit = false,
       this.svgOrIcon = true,
       this.validator,
       this.controller,
@@ -49,6 +52,11 @@ class RoundedInputField extends StatelessWidget {
             onChanged: onChanged,
             onSaved: onSubmitted,
             cursorColor: kPrimaryColor,
+            inputFormatters: [
+              pincodeLimit
+                  ? LengthLimitingTextInputFormatter(6)
+                  : LengthLimitingTextInputFormatter(100),
+            ],
             style: TextStyle(
               fontFamily: 'Gilroy Regular',
               fontSize: ScreenUtil().setSp(16, allowFontScalingSelf: true),
@@ -56,7 +64,8 @@ class RoundedInputField extends StatelessWidget {
             controller: controller,
             keyboardType: hintText == "Enter Phone Number" ||
                     hintText == "Enter OTP" ||
-                    hintText == "Enter Commission"
+                    hintText == "Enter Commission" ||
+                    hintText == "Pincode"
                 ? TextInputType.phone
                 : TextInputType.text,
             decoration: InputDecoration(

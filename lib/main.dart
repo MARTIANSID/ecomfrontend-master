@@ -255,26 +255,70 @@ class _MyAppState extends State<MyApp> {
             primaryColor: Colors.blue,
           ),
           initialRoute: initScreen3 == 0 || initScreen3 == null ? "first" : "/",
+          home: auth.isAuth
+              ? Home()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(ctx),
+                  builder: (ctxx, authResultSnapshot) {
+                    print('checking for future builder ');
+                    print(authResultSnapshot.data);
+                    if (!authResultSnapshot.hasData) {
+                      print('hi');
+
+                      return SplashScreen();
+                    } else if (authResultSnapshot.hasData) {
+                      print(authResultSnapshot.data.toString() + 'got data');
+
+                      if (authResultSnapshot.data) {
+                        print(authResultSnapshot.data.toString() + 'For Home');
+                        return Home();
+                      } else {
+                        print(authResultSnapshot.data.toString() +
+                            'For LoginScreen');
+                        return LoginScreen();
+                      }
+                    } else {
+                      return Text('Something Went Wrong');
+                    }
+                  }),
           routes: {
-            '/': (context) => auth.isAuth
-                ? Home()
-                : FutureBuilder(
-                    future: auth.tryAutoLogin(context),
-                    builder: (ctx, authResultSnapshot) =>
-                        authResultSnapshot.connectionState ==
-                                ConnectionState.waiting
-                            ? SplashScreen()
-                            : authResultSnapshot.data ? Home() : LoginScreen(),
-                  ),
             "first": (context) => OnboardingScreen(),
             "order": (context) => MyOrder(),
-            "productDetail": (context) => ProductDetail()
+            "productDetail": (context) => ProductDetail(),
+            // "/": (context) => auth.isAuth
+            //     ? Home()
+            //     : FutureBuilder(
+            //         future: auth.tryAutoLogin(context),
+            //         builder: (ctx, authResultSnapshot) =>
+            //             authResultSnapshot.connectionState ==
+            //                     ConnectionState.waiting
+            //                 ? SplashScreen()
+            //                 : authResultSnapshot.data ? Home() : LoginScreen(),
+            //       ),
           },
         ),
       ),
     );
   }
 }
+//  child: Consumer<Auth>(
+//         builder: (ctx, auth, _) => MaterialApp(
+//              debugShowCheckedModeBanner: false,
+//           theme: ThemeData(
+//             primaryColor: Colors.blue,
+//           ),
+//           initialRoute: initScreen3 == 0 || initScreen3 == null ? "first" : "/",
+//               home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+//               routes: {
+//                 ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+//                 CartScreen.routeName: (ctx) => CartScreen(),
+//                 OrdersScreen.routeName: (ctx) => OrdersScreen(),
+//                 UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+//                 EditProductScreen.routeName: (ctx) => EditProductScreen(),
+//               },
+//             ),
+//       ),
+//     );
 
 class OnboardingScreen extends StatefulWidget {
   @override

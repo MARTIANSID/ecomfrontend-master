@@ -136,50 +136,54 @@ class _AccountInfoState extends State<AccountInfo> {
                   SizedBox(
                     height: ScreenUtil().setHeight(30),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            editFields = !editFields;
-                          });
-                        },
-                        child: Container(
-                          // duration: Duration(milliseconds: 500),
-                          height: ScreenUtil().setHeight(45),
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            border: Border.all(color: Colors.black, width: 1.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                editFields ? Icons.cancel : Icons.edit,
-                                color: Colors.black,
-                                size: ScreenUtil()
-                                    .setSp(15, allowFontScalingSelf: true),
-                              ),
-                              SizedBox(
-                                width: ScreenUtil().setWidth(8),
-                              ),
-                              Text(
-                                editFields ? 'Cancel' : 'Edit Account',
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy Regular',
-                                  fontSize: ScreenUtil()
-                                      .setSp(14, allowFontScalingSelf: true),
+                  FadeInUI(
+                    delay: 2.0,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              editFields = !editFields;
+                            });
+                          },
+                          child: Container(
+                            // duration: Duration(milliseconds: 500),
+                            height: ScreenUtil().setHeight(45),
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  editFields ? Icons.cancel : Icons.edit,
                                   color: Colors.black,
+                                  size: ScreenUtil()
+                                      .setSp(15, allowFontScalingSelf: true),
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  width: ScreenUtil().setWidth(8),
+                                ),
+                                Text(
+                                  editFields ? 'Cancel' : 'Edit Account',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy Regular',
+                                    fontSize: ScreenUtil()
+                                        .setSp(14, allowFontScalingSelf: true),
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: ScreenUtil().setHeight(10),
@@ -222,6 +226,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                     return "Name Error";
                                   } else if (value.isEmpty) {
                                     return "Enter Your Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid Full Name";
                                   }
                                   return null;
                                 },
@@ -307,6 +313,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter Firm Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid Firm Name";
                                   }
                                   return null;
                                 },
@@ -374,6 +382,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter City Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid City Name";
                                   }
                                   return null;
                                 },
@@ -398,6 +408,8 @@ class _AccountInfoState extends State<AccountInfo> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter State Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid State Name";
                                   }
                                   return null;
                                 },
@@ -421,6 +433,7 @@ class _AccountInfoState extends State<AccountInfo> {
                               child: RoundedInputField(
                                 controller: pincodeController,
                                 hintText: "Pincode",
+                                pincodeLimit: true,
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter Pincode";
