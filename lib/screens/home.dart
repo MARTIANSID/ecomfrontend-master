@@ -148,11 +148,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           });
       }
     });
+
     Future.delayed(Duration(seconds: 0), () async {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
       var playerId = status.subscriptionStatus.userId;
-      await Provider.of<Auth>(context, listen: false)
-          .sendPlayerId(context: context, playerId: playerId);
+      if (context != null)
+        await Provider.of<Auth>(context, listen: false)
+            .sendPlayerId(context: context, playerId: playerId);
     });
   }
 

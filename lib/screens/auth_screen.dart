@@ -947,7 +947,7 @@ class _LoginScreenState extends State<LoginScreen>
                         : (value) {
                             if (value.isEmpty) {
                               return "Enter Phone Number";
-                            } else if (value.length != 10) {
+                            } else if (value.length < 10) {
                               return "Enter 10 digit Number";
                             }
                             return null;

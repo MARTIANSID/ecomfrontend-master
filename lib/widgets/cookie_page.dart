@@ -341,7 +341,7 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.goldWeight.toString(),
+                        product.goldWeight.toString() + ' gms',
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),
@@ -351,7 +351,7 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.diamondWeight.toString(),
+                        product.diamondWeight.toString() + ' ct',
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),
@@ -361,7 +361,7 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.diamondCount.toString(),
+                        product.diamondCount.toString() + ' pieces',
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),

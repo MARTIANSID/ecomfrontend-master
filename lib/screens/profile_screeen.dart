@@ -75,9 +75,10 @@ class _UserPageState extends State<UserPage>
             },
             gif: "assets/images/alert.gif");
       } finally {
-        setState(() {
-          isLoading = false;
-        });
+        if (mounted)
+          setState(() {
+            isLoading = false;
+          });
       }
     });
   }
@@ -864,7 +865,6 @@ class _UserPageState extends State<UserPage>
                                               },
                                             );
                                             if (val) {
-                                            
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

@@ -171,18 +171,15 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData['details']['message']);
       }
       _token = name != null
-          ? responseData['details']['token']
-          : responseData['token'];
+          ? responseData['details']['token']['access']['token']
+          : responseData['token']['access']['token'];
       _number = number;
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(_token);
-      _expiryDate =
-          DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
-      print(_expiryDate.toString() + 'INLOGINEXPIRYDATE');
-      // _expiryDate = DateTime.now().add(
-      //   Duration(seconds: 20),
-      // );
-      print(_expiryDate.toIso8601String() + 'ExpiryDate');
+      // Map<String, dynamic> decodedToken = JwtDecoder.decode(_token);
 
+      _expiryDate = DateTime.now().add(Duration(
+          seconds: name == null
+              ? responseData['token']['access']['expiryin']
+              : responseData['details']['token']['access']['expiryin']));
       autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
@@ -190,7 +187,7 @@ class Auth with ChangeNotifier {
         {
           'token': _token,
           'number': _number,
-          'expiryDate': _expiryDate.toString(),
+          'expiryDate': _expiryDate.toIso8601String(),
           'password': password,
         },
       );
@@ -256,9 +253,11 @@ class Auth with ChangeNotifier {
       final extractedUserData =
           json.decode(prefs.getString('userData')) as Map<String, Object>;
       final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
-      if (prefs.get('remberMe') != null) {
-        remeberMe = prefs.get('remberMe');
-      }
+      // if (prefs.get('remberMe') != null) {
+      //   remeberMe = prefs.get('remberMe');
+      // }
+      remeberMe =
+          prefs.getBool('remberMe') == null ? true : prefs.getBool('remberMe');
       String password;
       _token = extractedUserData['token'];
       _number = extractedUserData['number'];
@@ -328,17 +327,16 @@ class Auth with ChangeNotifier {
       _authTimer.cancel();
     }
 
-    final String timeToExpiry =
-        _expiryDate.difference(DateTime.now()).inSeconds.toString();
-    print(timeToExpiry + 'TIMETOEXPIRY!!');
+    final int timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
+    print(timeToExpiry.toString() + 'TIMEFOREXPIRY');
 
-    print(remeberMe.toString() + 'ergeqropfhr9hfwrfwrfwfwfwefwef');
-    timeToExpiry.substring(1);
-
-    _authTimer = Timer(Duration(seconds: int.parse(timeToExpiry)), () async {
+    _authTimer = Timer(Duration(seconds: timeToExpiry - 2), () async {
+      final prefs = await SharedPreferences.getInstance();
+      remeberMe =
+          prefs.getBool('remberMe') == null ? true : prefs.getBool('remberMe');
       if (remeberMe) {
         _token = null;
-        final prefs = await SharedPreferences.getInstance();
+
         final extractedUserData =
             json.decode(prefs.getString('userData')) as Map<String, Object>;
         String number = extractedUserData['number'];
