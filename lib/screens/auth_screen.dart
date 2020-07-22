@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool _buildForgetButton = false;
   bool _isRegistered = false;
   bool _showSignup = false;
-  bool _rememberMe = false;
+  bool _rememberMe = true;
   bool _showPassword = false;
   bool _showPasswordCheckBox = false;
   bool _forgotPasswordMenu = false;
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen>
                   //             _buildForgetButton = false;
                   //             _isRegistered = false;
                   //             _showSignup = false;
-                  //             _rememberMe = false;
+                  // _rememberMe = false;
                   //             _showPassword = false;
                   //             _showPasswordCheckBox = false;
                   //             _forgotPasswordMenu = false;
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen>
                           _buildForgetButton = false;
                           _isRegistered = false;
                           _showSignup = false;
-                          _rememberMe = false;
+                          // _rememberMe = false;
                           _showPassword = false;
                           _showPasswordCheckBox = false;
                           _forgotPasswordMenu = false;
@@ -255,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen>
                     //             _buildForgetButton = false;
                     //             _isRegistered = false;
                     //             _showSignup = false;
-                    //             _rememberMe = false;
+                    // _rememberMe = false;
                     //             _showPassword = false;
                     //             _showPasswordCheckBox = false;
                     //             _forgotPasswordMenu = false;
@@ -341,7 +341,7 @@ class _LoginScreenState extends State<LoginScreen>
                     // _buildForgetButton = false;
                     // _isRegistered = false;
                     // _showSignup = false;
-                    // _rememberMe = false;
+                    _rememberMe = false;
                     _showPassword = !_showPassword;
                     // _showPasswordCheckBox = false;
                     // _forgotPasswordMenu = false;
@@ -475,7 +475,7 @@ class _LoginScreenState extends State<LoginScreen>
                 _buildForgetButton = false;
                 _isRegistered = false;
                 _showSignup = false;
-                _rememberMe = false;
+                // _rememberMe = false;
                 _showPassword = false;
                 _showPasswordCheckBox = false;
                 _forgotPasswordMenu = false;
@@ -536,7 +536,7 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           ),
           Text(
-            'Remember me',
+            'Keep me Logged In',
             style: kLabelStyle,
           ),
         ],
@@ -754,7 +754,7 @@ class _LoginScreenState extends State<LoginScreen>
             _buildForgetButton = false;
             _isRegistered = false;
             _showSignup = false;
-            _rememberMe = false;
+            // _rememberMe = false;
             _showPassword = false;
             _showPasswordCheckBox = false;
             _forgotPasswordMenu = false;
@@ -863,7 +863,7 @@ class _LoginScreenState extends State<LoginScreen>
                 //             _buildForgetButton = false;
                 //             _isRegistered = false;
                 //             _showSignup = false;
-                //             _rememberMe = false;
+                // _rememberMe = false;
                 //             _showPassword = false;
                 //             _showPasswordCheckBox = false;
                 //             _forgotPasswordMenu = false;
@@ -893,6 +893,8 @@ class _LoginScreenState extends State<LoginScreen>
                               return "Enter First Name";
                             } else if (value.length < 3) {
                               return "Name Error";
+                            } else if (value.contains(RegExp(r'[0-9]'))) {
+                              return "Enter Valid Name";
                             }
                             return null;
                           },
@@ -912,6 +914,8 @@ class _LoginScreenState extends State<LoginScreen>
                               return "Enter Last Name";
                             } else if (value.length < 3) {
                               return "Name Error";
+                            } else if (value.contains(RegExp(r'[0-9]'))) {
+                              return "Enter Valid Name";
                             }
                             return null;
                           },
@@ -943,6 +947,8 @@ class _LoginScreenState extends State<LoginScreen>
                         : (value) {
                             if (value.isEmpty) {
                               return "Enter Phone Number";
+                            } else if (value.length != 10) {
+                              return "Enter 10 digit Number";
                             }
                             return null;
                           },

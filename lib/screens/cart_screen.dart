@@ -14,6 +14,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'product_overview_screen.dart';
@@ -2165,42 +2166,55 @@ class _CartScreenState extends State<CartScreen> {
                                                                 CrossAxisAlignment
                                                                     .center,
                                                             children: <Widget>[
-                                                              GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  setState(() {
-                                                                    isCheckoutLoading =
-                                                                        true;
-                                                                  });
-                                                                  if (Provider.of<Cart>(
-                                                                              context,
-                                                                              listen:
-                                                                                  false)
-                                                                          .cart[
-                                                                              index]
-                                                                          .quantity >=
-                                                                      1) {
-                                                                    try {
-                                                                      if (Provider.of<Cart>(context, listen: false)
-                                                                              .cart[index]
-                                                                              .quantity ==
-                                                                          1) {
-                                                                        bool v =
-                                                                            false;
-                                                                        v = await dataSelectConfirmMessage(
-                                                                          context:
-                                                                              context,
-                                                                          titleText:
-                                                                              'Alert!',
-                                                                          contentText:
-                                                                              "Are you sure, You want to remove ${product.styleNumber} from Cart?",
-                                                                          gif:
-                                                                              'assets/images/reversecartGIF.gif',
-                                                                        );
-                                                                        if (v !=
-                                                                                null &&
-                                                                            v ==
-                                                                                true) {
+                                                              Material(
+                                                                type: MaterialType
+                                                                    .transparency,
+                                                                elevation: 6.0,
+                                                                color: Colors
+                                                                    .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child: InkWell(
+                                                                  splashColor: Colors
+                                                                      .cyan[100]
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  onTap:
+                                                                      () async {
+                                                                    setState(
+                                                                        () {
+                                                                      isCheckoutLoading =
+                                                                          true;
+                                                                    });
+                                                                    if (Provider.of<Cart>(context,
+                                                                                listen: false)
+                                                                            .cart[index]
+                                                                            .quantity >=
+                                                                        1) {
+                                                                      try {
+                                                                        if (Provider.of<Cart>(context, listen: false).cart[index].quantity ==
+                                                                            1) {
+                                                                          // bool
+                                                                          //     v =
+                                                                          //     false;
+                                                                          // v = await dataSelectConfirmMessage(
+                                                                          //   context:
+                                                                          //       context,
+                                                                          //   titleText:
+                                                                          //       'Alert!',
+                                                                          //   contentText:
+                                                                          //       "Are you sure, You want to remove ${product.styleNumber} from Cart?",
+                                                                          //   gif:
+                                                                          //       'assets/images/reversecartGIF.gif',
+                                                                          // );
+                                                                          // if (v != null &&
+                                                                          //     v == true) {
                                                                           try {
                                                                             await Provider.of<Cart>(context, listen: false).deleteCart(
                                                                                 id: Provider.of<Cart>(context, listen: false).cart[index].id,
@@ -2218,143 +2232,73 @@ class _CartScreenState extends State<CartScreen> {
                                                                                   Navigator.pop(context);
                                                                                 },
                                                                                 gif: "assets/images/alert.gif");
+                                                                            // }
                                                                           }
+                                                                        } else {
+                                                                          await Provider.of<Cart>(context, listen: false)
+                                                                              .decQuantity(
+                                                                            context:
+                                                                                context,
+                                                                            product:
+                                                                                product,
+                                                                            update:
+                                                                                true,
+                                                                            build:
+                                                                                Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false).cart[index].buildValue],
+                                                                            color:
+                                                                                Provider.of<Pagination>(context, listen: false).color[Provider.of<Cart>(context, listen: false).cart[index].colorValue],
+                                                                            cert:
+                                                                                Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
+                                                                            diamond:
+                                                                                Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
+                                                                            buildValue:
+                                                                                Provider.of<Cart>(context, listen: false).cart[index].buildValue,
+                                                                            colorValue:
+                                                                                Provider.of<Cart>(context, listen: false).cart[index].colorValue,
+                                                                            certvalue:
+                                                                                Provider.of<Cart>(context, listen: false).cart[index].certValue,
+                                                                            diamondValue:
+                                                                                Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
+                                                                            index:
+                                                                                index,
+                                                                          );
                                                                         }
-                                                                      } else {
-                                                                        await Provider.of<Cart>(context,
-                                                                                listen: false)
-                                                                            .decQuantity(
-                                                                          context:
-                                                                              context,
-                                                                          product:
-                                                                              product,
-                                                                          update:
-                                                                              true,
-                                                                          build: Provider.of<Pagination>(context, listen: false)
-                                                                              .build[Provider.of<Cart>(context,
-                                                                                  listen: false)
-                                                                              .cart[index]
-                                                                              .buildValue],
-                                                                          color: Provider.of<Pagination>(context, listen: false)
-                                                                              .color[Provider.of<Cart>(context,
-                                                                                  listen: false)
-                                                                              .cart[index]
-                                                                              .colorValue],
-                                                                          cert: Provider.of<Pagination>(context, listen: false)
-                                                                              .cert[Provider.of<Cart>(context,
-                                                                                  listen: false)
-                                                                              .cart[index]
-                                                                              .certValue],
-                                                                          diamond: Provider.of<Pagination>(context, listen: false)
-                                                                              .diamondQuality[Provider.of<Cart>(context,
-                                                                                  listen: false)
-                                                                              .cart[index]
-                                                                              .diamondValue],
-                                                                          buildValue: Provider.of<Cart>(context, listen: false)
-                                                                              .cart[index]
-                                                                              .buildValue,
-                                                                          colorValue: Provider.of<Cart>(context, listen: false)
-                                                                              .cart[index]
-                                                                              .colorValue,
-                                                                          certvalue: Provider.of<Cart>(context, listen: false)
-                                                                              .cart[index]
-                                                                              .certValue,
-                                                                          diamondValue: Provider.of<Cart>(context, listen: false)
-                                                                              .cart[index]
-                                                                              .diamondValue,
-                                                                          index:
-                                                                              index,
-                                                                        );
+                                                                      } catch (err) {
+                                                                        dataSelect(
+                                                                            context:
+                                                                                context,
+                                                                            titleText:
+                                                                                'Alert!',
+                                                                            buttonText:
+                                                                                'Okay',
+                                                                            contentText: err
+                                                                                .toString(),
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            gif:
+                                                                                "assets/images/alert.gif");
+                                                                      } finally {
+                                                                        setState(
+                                                                            () {
+                                                                          isCheckoutLoading =
+                                                                              false;
+                                                                        });
                                                                       }
-                                                                    } catch (err) {
-                                                                      dataSelect(
-                                                                          context:
-                                                                              context,
-                                                                          titleText:
-                                                                              'Alert!',
-                                                                          buttonText:
-                                                                              'Okay',
-                                                                          contentText: err
-                                                                              .toString(),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          gif:
-                                                                              "assets/images/alert.gif");
-                                                                    } finally {
-                                                                      setState(
-                                                                          () {
-                                                                        isCheckoutLoading =
-                                                                            false;
-                                                                      });
                                                                     }
-                                                                  }
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          15),
-                                                                  color: Colors
-                                                                      .transparent,
+                                                                  },
                                                                   child:
-                                                                      ShaderMask(
-                                                                    shaderCallback:
-                                                                        (bounds) =>
-                                                                            LinearGradient(
-                                                                      colors: [
-                                                                        Colors
-                                                                            .black,
-                                                                        Colors
-                                                                            .black,
-                                                                      ],
-                                                                      begin: Alignment
-                                                                          .topLeft,
-                                                                      end: Alignment
-                                                                          .bottomRight,
-                                                                    ).createShader(
-                                                                      Rect.fromLTWH(
-                                                                          0,
-                                                                          0,
-                                                                          bounds
-                                                                              .width,
-                                                                          bounds
-                                                                              .height),
-                                                                    ),
-                                                                    child: Text(
-                                                                      '-',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontFamily:
-                                                                            'Gilroy Bold',
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize: ScreenUtil().setSp(
-                                                                            25,
-                                                                            allowFontScalingSelf:
-                                                                                true),
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width:
-                                                                    ScreenUtil()
+                                                                      Container(
+                                                                    width: ScreenUtil()
                                                                         .setWidth(
+                                                                            17),
+                                                                    margin: EdgeInsets.only(
+                                                                        left: 5,
+                                                                        right:
                                                                             5),
-                                                              ),
-                                                              GestureDetector(
-                                                                onTap: () {},
-                                                                child:
-                                                                    Container(
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          35),
-                                                                  child: Center(
+                                                                    color: Colors
+                                                                        .transparent,
                                                                     child:
                                                                         ShaderMask(
                                                                       shaderCallback:
@@ -2379,16 +2323,15 @@ class _CartScreenState extends State<CartScreen> {
                                                                       ),
                                                                       child:
                                                                           Text(
-                                                                        // '888',
-                                                                        '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
+                                                                        '-',
                                                                         style:
                                                                             TextStyle(
                                                                           fontFamily:
-                                                                              'Gilroy Black',
+                                                                              'Gilroy Bold',
                                                                           color:
                                                                               Colors.black,
                                                                           fontSize: ScreenUtil().setSp(
-                                                                              20,
+                                                                              30,
                                                                               allowFontScalingSelf: true),
                                                                           fontWeight:
                                                                               FontWeight.w500,
@@ -2398,89 +2341,28 @@ class _CartScreenState extends State<CartScreen> {
                                                                   ),
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              // SizedBox(
+                                                              //   width:
+                                                              //       ScreenUtil()
+                                                              //           .setWidth(
+                                                              //               3),
+                                                              // ),
+                                                              Container(
                                                                 width:
                                                                     ScreenUtil()
                                                                         .setWidth(
-                                                                            5),
-                                                              ),
-                                                              GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  try {
-                                                                    setState(
-                                                                        () {
-                                                                      isCheckoutLoading =
-                                                                          true;
-                                                                    });
-                                                                    await Provider.of<Cart>(context, listen: false).incQuantity(
-                                                                        context:
-                                                                            context,
-                                                                        product:
-                                                                            product,
-                                                                        update:
-                                                                            true,
-                                                                        build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
-                                                                            .cart[
-                                                                                index]
-                                                                            .buildValue],
-                                                                        color: Provider.of<Pagination>(context, listen: false)
-                                                                            .color[Provider.of<Cart>(context,
-                                                                                listen: false)
-                                                                            .cart[index]
-                                                                            .colorValue],
-                                                                        cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false).cart[index].certValue],
-                                                                        diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
-                                                                        buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
-                                                                        colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
-                                                                        certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
-                                                                        diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
-                                                                        index: index);
-                                                                    // setState(() {
-                                                                    //   isCheckoutLoading=false;
-                                                                    // });
-                                                                  } catch (err) {
-                                                                    dataSelect(
-                                                                        context:
-                                                                            context,
-                                                                        titleText:
-                                                                            'Alert!',
-                                                                        buttonText:
-                                                                            'Okay',
-                                                                        contentText: err
-                                                                            .toString(),
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        gif:
-                                                                            "assets/images/alert.gif");
-                                                                  } finally {
-                                                                    setState(
-                                                                        () {
-                                                                      isCheckoutLoading =
-                                                                          false;
-                                                                    });
-                                                                  }
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  width: ScreenUtil()
-                                                                      .setWidth(
-                                                                          15),
-                                                                  color: Colors
-                                                                      .transparent,
+                                                                            35),
+                                                                child: Center(
                                                                   child:
                                                                       ShaderMask(
                                                                     shaderCallback:
                                                                         (bounds) =>
                                                                             LinearGradient(
                                                                       colors: [
-                                                                        Color(
-                                                                            0xFF34B0D9),
-                                                                        Color(
-                                                                            0xFF3685CB),
+                                                                        Colors
+                                                                            .black,
+                                                                        Colors
+                                                                            .black,
                                                                       ],
                                                                       begin: Alignment
                                                                           .topLeft,
@@ -2496,19 +2378,157 @@ class _CartScreenState extends State<CartScreen> {
                                                                               .height),
                                                                     ),
                                                                     child: Text(
-                                                                      '+',
+                                                                      // '888',
+                                                                      '${Provider.of<Cart>(context, listen: true).cart[index].quantity}',
                                                                       style:
                                                                           TextStyle(
                                                                         fontFamily:
-                                                                            'Gilroy Bold',
+                                                                            'Gilroy Black',
                                                                         color: Colors
-                                                                            .white,
+                                                                            .black,
                                                                         fontSize: ScreenUtil().setSp(
-                                                                            25,
+                                                                            20,
                                                                             allowFontScalingSelf:
                                                                                 true),
                                                                         fontWeight:
                                                                             FontWeight.w500,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              // SizedBox(
+                                                              //   width:
+                                                              //       ScreenUtil()
+                                                              //           .setWidth(
+                                                              //               3),
+                                                              // ),
+                                                              Material(
+                                                                type: MaterialType
+                                                                    .transparency,
+                                                                elevation: 6.0,
+                                                                color: Colors
+                                                                    .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child: InkWell(
+                                                                  splashColor: Colors
+                                                                      .cyan[100]
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  onTap:
+                                                                      () async {
+                                                                    try {
+                                                                      setState(
+                                                                          () {
+                                                                        isCheckoutLoading =
+                                                                            true;
+                                                                      });
+                                                                      await Provider.of<Cart>(context, listen: false).incQuantity(
+                                                                          context:
+                                                                              context,
+                                                                          product:
+                                                                              product,
+                                                                          update:
+                                                                              true,
+                                                                          build: Provider.of<Pagination>(context, listen: false).build[Provider.of<Cart>(context, listen: false)
+                                                                              .cart[
+                                                                                  index]
+                                                                              .buildValue],
+                                                                          color: Provider.of<Pagination>(context, listen: false).color[Provider.of<Cart>(context, listen: false)
+                                                                              .cart[
+                                                                                  index]
+                                                                              .colorValue],
+                                                                          cert: Provider.of<Pagination>(context, listen: false).cert[Provider.of<Cart>(context, listen: false)
+                                                                              .cart[index]
+                                                                              .certValue],
+                                                                          diamond: Provider.of<Pagination>(context, listen: false).diamondQuality[Provider.of<Cart>(context, listen: false).cart[index].diamondValue],
+                                                                          buildValue: Provider.of<Cart>(context, listen: false).cart[index].buildValue,
+                                                                          colorValue: Provider.of<Cart>(context, listen: false).cart[index].colorValue,
+                                                                          certvalue: Provider.of<Cart>(context, listen: false).cart[index].certValue,
+                                                                          diamondValue: Provider.of<Cart>(context, listen: false).cart[index].diamondValue,
+                                                                          index: index);
+                                                                      // setState(() {
+                                                                      //   isCheckoutLoading=false;
+                                                                      // });
+                                                                    } catch (err) {
+                                                                      dataSelect(
+                                                                          context:
+                                                                              context,
+                                                                          titleText:
+                                                                              'Alert!',
+                                                                          buttonText:
+                                                                              'Okay',
+                                                                          contentText: err
+                                                                              .toString(),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          gif:
+                                                                              "assets/images/alert.gif");
+                                                                    } finally {
+                                                                      setState(
+                                                                          () {
+                                                                        isCheckoutLoading =
+                                                                            false;
+                                                                      });
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets.only(
+                                                                        left: 5,
+                                                                        right:
+                                                                            5),
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            17),
+                                                                    color: Colors
+                                                                        .transparent,
+                                                                    child:
+                                                                        ShaderMask(
+                                                                      shaderCallback:
+                                                                          (bounds) =>
+                                                                              LinearGradient(
+                                                                        colors: [
+                                                                          Color(
+                                                                              0xFF34B0D9),
+                                                                          Color(
+                                                                              0xFF3685CB),
+                                                                        ],
+                                                                        begin: Alignment
+                                                                            .topLeft,
+                                                                        end: Alignment
+                                                                            .bottomRight,
+                                                                      ).createShader(
+                                                                        Rect.fromLTWH(
+                                                                            0,
+                                                                            0,
+                                                                            bounds.width,
+                                                                            bounds.height),
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        '+',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              'Gilroy Bold',
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              30,
+                                                                              allowFontScalingSelf: true),
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
@@ -2564,7 +2584,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             width: ScreenUtil()
                                                                 .setWidth(250),
                                                             height: ScreenUtil()
-                                                                .setWidth(43),
+                                                                .setWidth(48),
                                                             // padding: EdgeInsets.all(20.0),
                                                             child: Material(
                                                               type: MaterialType
@@ -2649,9 +2669,16 @@ class _CartScreenState extends State<CartScreen> {
                                                                 },
                                                                 child: Center(
                                                                   child: isCheckoutLoading
-                                                                      ? CircularProgressIndicator(
-                                                                          backgroundColor:
-                                                                              Colors.white,
+                                                                      ? Container(
+                                                                          height:
+                                                                              ScreenUtil().setHeight(30.0),
+                                                                          width:
+                                                                              ScreenUtil().setWidth(30.0),
+                                                                          child:
+                                                                              CircularProgressIndicator(
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                          ),
                                                                         )
                                                                       : Text(
                                                                           'Checkout ${Provider.of<Cart>(context, listen: false).checkoutPrice(context: context)} ₹',
@@ -3050,9 +3077,16 @@ class _CartScreenState extends State<CartScreen> {
                                                       .notifications
                                                       .length >
                                                   0
-                                              ? Image.asset(
-                                                  'assets/images/notificationPulse.png',
-                                                )
+                                              ? Provider.of<Notif>(context,
+                                                          listen: true)
+                                                      .checkForDelete()
+                                                  ? SvgPicture.asset(
+                                                      'assets/icons/notificationIcon.svg',
+                                                      color: Colors.black,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/notificationPulse.png',
+                                                    )
                                               : SvgPicture.asset(
                                                   'assets/icons/notificationIcon.svg',
                                                   color: Colors.black,
@@ -3413,10 +3447,44 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                         ),
+                  !tapNotication
+                      ? SizedBox(
+                          height: 0.0,
+                          width: 0.0,
+                        )
+                      : Container(
+                          color: Colors.transparent,
+                          child: Container(
+                            height: ScreenUtil().setHeight(775),
+                            width: ScreenUtil().setWidth(411),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFF34B0D9).withOpacity(0.2),
+                                  Color(0xFF3685CB).withOpacity(0.2),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  tapNotication = false;
+                                });
+                              },
+                              child: Container(
+                                height: ScreenUtil().setHeight(775),
+                                width: ScreenUtil().setWidth(411),
+                              ),
+                            ),
+                          ),
+                        ),
                   tapNotication
                       ? Container(
                           height: ScreenUtil().setHeight(775),
                           width: ScreenUtil().setWidth(370),
+                          color: Colors.transparent,
                           // decoration: BoxDecoration(
                           //   gradient: LinearGradient(
                           //     colors: [
@@ -3468,270 +3536,308 @@ class _CartScreenState extends State<CartScreen> {
                                         color: Colors.white,
                                       ),
                                       padding: EdgeInsets.all(25),
-                                      child: Provider.of<Notif>(context,
-                                                      listen: true)
-                                                  .notifications
-                                                  .length ==
-                                              0
-                                          ? Center(
-                                              child: ShaderMask(
-                                                shaderCallback: (bounds) =>
-                                                    LinearGradient(
-                                                  colors: [
-                                                    Color(0xFF34BDDD),
-                                                    Color(0xFF367DC8),
-                                                  ],
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                ).createShader(Rect.fromLTWH(
-                                                        0,
-                                                        0,
-                                                        bounds.width,
-                                                        bounds.height)),
-                                                child: Text(
-                                                  'No new notifications!',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Gilroy Medium',
-                                                    fontSize: ScreenUtil().setSp(
-                                                        20,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          : ListView.builder(
-                                              physics: BouncingScrollPhysics(),
-                                              itemCount: Provider.of<Notif>(
-                                                      context,
-                                                      listen: true)
-                                                  .notifications
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                  width: ScreenUtil()
-                                                      .setWidth(260 + 15 + 15),
-                                                  child: Dismissible(
-                                                    // dismissThresholds: {
-                                                    //   DismissDirection
-                                                    //       .startToEnd: 0.4
-                                                    // },
-                                                    key: UniqueKey(),
-                                                    direction: DismissDirection
-                                                        .startToEnd,
-                                                    background: Container(
-                                                      color: Colors.red,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(15),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Icon(Icons.delete,
-                                                                color: Colors
-                                                                    .white),
-                                                            SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          5),
-                                                            ),
-                                                            Text(
-                                                              'Delete Notification',
-                                                              style: TextStyle(
-                                                                fontFamily:
-                                                                    'Gilroy Regular',
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
+                                      child:
+                                          Provider.of<Notif>(context,
+                                                          listen: true)
+                                                      .notifications
+                                                      .length ==
+                                                  0
+                                              ? Center(
+                                                  child: ShaderMask(
+                                                    shaderCallback: (bounds) =>
+                                                        LinearGradient(
+                                                      colors: [
+                                                        Color(0xFF34BDDD),
+                                                        Color(0xFF367DC8),
+                                                      ],
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
+                                                    ).createShader(
+                                                            Rect.fromLTWH(
+                                                                0,
+                                                                0,
+                                                                bounds.width,
+                                                                bounds.height)),
+                                                    child: Text(
+                                                      'No new notifications!',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Medium',
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(20,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                        color: Colors.white,
                                                       ),
                                                     ),
+                                                  ),
+                                                )
+                                              : ListView.builder(
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  itemCount: Provider.of<Notif>(
+                                                          context,
+                                                          listen: true)
+                                                      .notifications
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Container(
+                                                      width: ScreenUtil()
+                                                          .setWidth(
+                                                              260 + 15 + 15),
+                                                      child: Dismissible(
+                                                        // dismissThresholds: {
+                                                        //   DismissDirection
+                                                        //       .startToEnd: 0.4
+                                                        // },
+                                                        key: UniqueKey(),
+                                                        direction:
+                                                            DismissDirection
+                                                                .startToEnd,
+                                                        background: Container(
+                                                          color: Colors.red,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    color: Colors
+                                                                        .white),
+                                                                SizedBox(
+                                                                  width: ScreenUtil()
+                                                                      .setWidth(
+                                                                          5),
+                                                                ),
+                                                                Text(
+                                                                  'Delete Notification',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        'Gilroy Regular',
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
 
-                                                    // confirmDismiss: (DismissDirection
-                                                    //     direction) async {
+                                                        // confirmDismiss: (DismissDirection
+                                                        //     direction) async {
 
-                                                    // },
-                                                    onDismissed:
-                                                        (DismissDirection
-                                                            direction) async {
-                                                      await Provider.of<Notif>(
-                                                              context,
-                                                              listen: false)
-                                                          .deleteNotification(
-                                                              context: context,
-                                                              id: Provider.of<
-                                                                          Notif>(
+                                                        // },
+                                                        onDismissed:
+                                                            (DismissDirection
+                                                                direction) async {
+                                                          await Provider.of<
+                                                                      Notif>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .deleteNotification(
+                                                                  context:
                                                                       context,
-                                                                      listen:
-                                                                          false)
-                                                                  .notifications[
-                                                                      index]
-                                                                  .id);
-                                                    },
-                                                    child: GestureDetector(
-                                                      onTap: () async {
-                                                        await Provider.of<
-                                                                    Notif>(
-                                                                context,
-                                                                listen: false)
-                                                            .readNNotification(
-                                                                context:
-                                                                    context,
-                                                                id: Provider.of<
-                                                                            Notif>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .notifications[
-                                                                        index]
-                                                                    .id);
-                                                        print(
-                                                            Provider.of<Notif>(
+                                                                  id: Provider.of<
+                                                                              Notif>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .notifications[
+                                                                          index]
+                                                                      .id);
+                                                        },
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            await Provider.of<
+                                                                        Notif>(
                                                                     context,
                                                                     listen:
                                                                         false)
-                                                                .notifications[
-                                                                    index]
-                                                                .read);
-                                                        // print(
-                                                        // 'reading trueeeeeeeeeeeee');
-                                                        setState(() {});
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 20),
-                                                        width: ScreenUtil()
-                                                            .setWidth(260),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: <Widget>[
-                                                            ShaderMask(
-                                                              shaderCallback:
-                                                                  (bounds) =>
-                                                                      LinearGradient(
-                                                                colors: [
-                                                                  Color(
-                                                                      0xFF34BDDD),
-                                                                  Color(
-                                                                      0xFF367DC8),
-                                                                ],
-                                                                begin: Alignment
-                                                                    .topLeft,
-                                                                end: Alignment
-                                                                    .bottomRight,
-                                                              ).createShader(
-                                                                Rect.fromLTWH(
-                                                                    0,
-                                                                    0,
-                                                                    bounds
-                                                                        .width,
-                                                                    bounds
-                                                                        .height),
-                                                              ),
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                "assets/icons/ordersyet.svg",
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setHeight(
-                                                                            39),
-                                                                width:
-                                                                    ScreenUtil()
-                                                                        .setWidth(
-                                                                            32),
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          23),
-                                                            ),
-                                                            Container(
-                                                              width:
-                                                                  ScreenUtil()
-                                                                      .setWidth(
-                                                                          204),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text(
-                                                                    Provider.of<Notif>(
+                                                                .readNNotification(
+                                                                    context:
+                                                                        context,
+                                                                    id: Provider.of<Notif>(
                                                                             context,
                                                                             listen:
                                                                                 false)
                                                                         .notifications[
                                                                             index]
-                                                                        .title,
-                                                                    style: TextStyle(
-                                                                        fontFamily:
-                                                                            "Gilroy Light",
-                                                                        fontSize: ScreenUtil().setSp(
-                                                                            18,
-                                                                            allowFontScalingSelf:
-                                                                                true),
-                                                                        fontWeight: Provider.of<Notif>(context, listen: true).notifications[index].read
-                                                                            ? FontWeight.normal
-                                                                            : FontWeight.bold),
+                                                                        .id);
+                                                            // if (!Provider.of<
+                                                            //             Notif>(
+                                                            //         context,
+                                                            //         listen:
+                                                            //             false)
+                                                            //     .notifications[
+                                                            //         index]
+                                                            //     .read) {
+                                                            //   Provider.of<Auth>(
+                                                            //           context,
+                                                            //           listen:
+                                                            //               false)
+                                                            //       .restart(
+                                                            //           context:
+                                                            //               context);
+                                                            // }
+                                                            // print(Provider.of<
+                                                            //             Notif>(
+                                                            //         context,
+                                                            //         listen:
+                                                            //             false)
+                                                            //     .notifications[
+                                                            //         index]
+                                                            //     .read);
+                                                            // print(
+                                                            // 'reading trueeeeeeeeeeeee');
+                                                            setState(() {});
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 20),
+                                                            width: ScreenUtil()
+                                                                .setWidth(260),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: <
+                                                                  Widget>[
+                                                                ShaderMask(
+                                                                  shaderCallback:
+                                                                      (bounds) =>
+                                                                          LinearGradient(
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xFF34BDDD),
+                                                                      Color(
+                                                                          0xFF367DC8),
+                                                                    ],
+                                                                    begin: Alignment
+                                                                        .topLeft,
+                                                                    end: Alignment
+                                                                        .bottomRight,
+                                                                  ).createShader(
+                                                                    Rect.fromLTWH(
+                                                                        0,
+                                                                        0,
+                                                                        bounds
+                                                                            .width,
+                                                                        bounds
+                                                                            .height),
                                                                   ),
-                                                                  SizedBox(
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    "assets/icons/ordersyet.svg",
                                                                     height: ScreenUtil()
                                                                         .setHeight(
-                                                                            4),
+                                                                            39),
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            32),
+                                                                    color: Colors
+                                                                        .white,
                                                                   ),
-                                                                  Text(
-                                                                    Provider.of<Notif>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .notifications[
-                                                                            index]
-                                                                        .body,
-                                                                    // "Your order has been processed",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontFamily:
-                                                                          "Gilroy Light",
-                                                                      fontSize: ScreenUtil().setSp(
-                                                                          12,
-                                                                          allowFontScalingSelf:
-                                                                              true),
-                                                                    ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: ScreenUtil()
+                                                                      .setWidth(
+                                                                          23),
+                                                                ),
+                                                                Container(
+                                                                  width: ScreenUtil()
+                                                                      .setWidth(
+                                                                          204),
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: <
+                                                                        Widget>[
+                                                                      Align(
+                                                                        alignment:
+                                                                            Alignment.centerRight,
+                                                                        child:
+                                                                            Text(
+                                                                          DateFormat('dd MMM, yyyy')
+                                                                              .add_jm()
+                                                                              .format(Provider.of<Notif>(context, listen: false).notifications[index].createdAt),
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                "Gilroy Light",
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(12, allowFontScalingSelf: true),
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            ScreenUtil().setHeight(7.0),
+                                                                      ),
+                                                                      Text(
+                                                                        Provider.of<Notif>(context,
+                                                                                listen: false)
+                                                                            .notifications[index]
+                                                                            .title,
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "Gilroy Light",
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(18, allowFontScalingSelf: true),
+                                                                            fontWeight: Provider.of<Notif>(context, listen: true).notifications[index].read ? FontWeight.normal : FontWeight.bold),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            ScreenUtil().setHeight(4),
+                                                                      ),
+                                                                      Text(
+                                                                        Provider.of<Notif>(context,
+                                                                                listen: false)
+                                                                            .notifications[index]
+                                                                            .body,
+                                                                        // "Your order has been processed",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontFamily:
+                                                                              "Gilroy Light",
+                                                                          fontSize: ScreenUtil().setSp(
+                                                                              12,
+                                                                              allowFontScalingSelf: true),
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                                    );
+                                                  },
+                                                ),
                                     ),
                                   ),
                                 ),
                                 Positioned(
                                   top: ScreenUtil().setHeight(20 + 22 + 10),
-                                  left: ScreenUtil().setWidth(348),
+                                  left: ScreenUtil().setWidth(345),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -3741,14 +3847,82 @@ class _CartScreenState extends State<CartScreen> {
                                     child: Icon(Icons.clear,
                                         size: ScreenUtil().setSp(30,
                                             allowFontScalingSelf: true)),
-                                    // child: SvgPicture.asset(
-                                    //   'assets/icons/notificationIcon.svg',
-                                    //   height: ScreenUtil().setHeight(25),
-                                    //   width: ScreenUtil().setWidth(25),
-                                    //   color: Colors.black,
-                                    // ),
                                   ),
+                                  // ),
                                 ),
+                                Positioned(
+                                  top: ScreenUtil().setHeight(425),
+                                  left: ScreenUtil().setWidth(260),
+                                  child: Provider.of<Notif>(context,
+                                                  listen: true)
+                                              .notifications
+                                              .length ==
+                                          0
+                                      ? SizedBox(
+                                          height: 0.0,
+                                        )
+                                      : Container(
+                                          width: ScreenUtil().setWidth(100),
+                                          height: ScreenUtil().setHeight(45),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            boxShadow: <BoxShadow>[
+                                              BoxShadow(
+                                                blurRadius: 10,
+                                                color: Colors.black
+                                                    .withOpacity(0.37),
+                                                offset: Offset(1, 3),
+                                              ),
+                                            ],
+                                            color: Colors.white,
+                                          ),
+                                          child: Material(
+                                            type: MaterialType.transparency,
+                                            elevation: 6.0,
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: InkWell(
+                                              splashColor: Colors.cyan[100]
+                                                  .withOpacity(0.8),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              onTap: () async {
+                                                Provider.of<Notif>(context,
+                                                            listen: true)
+                                                        .checkForDelete()
+                                                    ? await Provider.of<Notif>(
+                                                            context,
+                                                            listen: false)
+                                                        .deleteAll(
+                                                            context: context)
+                                                    : await Provider.of<Notif>(
+                                                            context,
+                                                            listen: false)
+                                                        .readAll(
+                                                            context: context);
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  Provider.of<Notif>(context,
+                                                              listen: true)
+                                                          .checkForDelete()
+                                                      ? 'Delete All'
+                                                      : 'Read All',
+                                                  style: TextStyle(
+                                                    fontFamily: "Gilroy Medium",
+                                                    fontSize: ScreenUtil().setSp(
+                                                        12,
+                                                        allowFontScalingSelf:
+                                                            true),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                )
                               ],
                             ),
                           ),

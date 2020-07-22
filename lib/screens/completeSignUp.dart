@@ -163,6 +163,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     return "Name Error";
                                   } else if (value.isEmpty) {
                                     return "Enter Your Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid Name";
                                   }
                                   return null;
                                 },
@@ -192,7 +194,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                   if (!RegExp(
                                           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
                                       .hasMatch(value)) {
-                                    return "Check your Email-ID";
+                                    return "Enter Proper Email-ID";
                                   } else if (value.isEmpty) {
                                     return "Enter Email-ID";
                                   }
@@ -257,6 +259,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter Firm Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid Firm Name";
                                   }
                                   return null;
                                 },
@@ -327,6 +331,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter City Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid City Name";
                                   }
                                   return null;
                                 },
@@ -347,6 +353,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter State Name";
+                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                    return "Enter Valid State Name";
                                   }
                                   return null;
                                 },
@@ -381,6 +389,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                     // print(pincode);
                                   });
                                 },
+                                pincodeLimit: true,
                                 icon: Icons.person_pin,
                                 proceed: false,
                               ),

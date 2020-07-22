@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1212,9 +1213,16 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                           .notifications
                                                           .length >
                                                       0
-                                                  ? Image.asset(
-                                                      'assets/images/notificationPulse.png',
-                                                    )
+                                                  ? Provider.of<Notif>(context,
+                                                              listen: true)
+                                                          .checkForDelete()
+                                                      ? SvgPicture.asset(
+                                                          'assets/icons/notificationIcon.svg',
+                                                          color: Colors.black,
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/images/notificationPulse.png',
+                                                        )
                                                   : SvgPicture.asset(
                                                       'assets/icons/notificationIcon.svg',
                                                       color: Colors.black,
@@ -1906,30 +1914,30 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                           .notifications[
                                                                               index]
                                                                           .id);
-                                                              if (Provider.of<
-                                                                          Notif>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .notifications[
-                                                                      index]
-                                                                  .restart) {
-                                                                Provider.of<Auth>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .restart(
-                                                                        context:
-                                                                            context);
-                                                              }
-                                                              print(Provider.of<
-                                                                          Notif>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .notifications[
-                                                                      index]
-                                                                  .read);
+                                                              // if (!Provider.of<
+                                                              //             Notif>(
+                                                              //         context,
+                                                              //         listen:
+                                                              //             false)
+                                                              //     .notifications[
+                                                              //         index]
+                                                              //     .read) {
+                                                              //   Provider.of<Auth>(
+                                                              //           context,
+                                                              //           listen:
+                                                              //               false)
+                                                              //       .restart(
+                                                              //           context:
+                                                              //               context);
+                                                              // }
+                                                              // print(Provider.of<
+                                                              //             Notif>(
+                                                              //         context,
+                                                              //         listen:
+                                                              //             false)
+                                                              //     .notifications[
+                                                              //         index]
+                                                              //     .read);
                                                               // print(
                                                               // 'reading trueeeeeeeeeeeee');
                                                               setState(() {});
@@ -2004,6 +2012,24 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                               .start,
                                                                       children: <
                                                                           Widget>[
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.centerRight,
+                                                                          child:
+                                                                              Text(
+                                                                            DateFormat('dd MMM, yyyy').add_jm().format(Provider.of<Notif>(context, listen: false).notifications[index].createdAt),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontFamily: "Gilroy Light",
+                                                                              fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true),
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              ScreenUtil().setHeight(7.0),
+                                                                        ),
                                                                         Text(
                                                                           Provider.of<Notif>(context, listen: false)
                                                                               .notifications[index]
@@ -2059,6 +2085,82 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                     ),
                                     // ),
                                   ),
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(425),
+                                    left: ScreenUtil().setWidth(260),
+                                    child: Provider.of<Notif>(context,
+                                                    listen: true)
+                                                .notifications
+                                                .length ==
+                                            0
+                                        ? SizedBox(
+                                            height: 0.0,
+                                          )
+                                        : Container(
+                                            width: ScreenUtil().setWidth(100),
+                                            height: ScreenUtil().setHeight(45),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                  blurRadius: 10,
+                                                  color: Colors.black
+                                                      .withOpacity(0.37),
+                                                  offset: Offset(1, 3),
+                                                ),
+                                              ],
+                                              color: Colors.white,
+                                            ),
+                                            child: Material(
+                                              type: MaterialType.transparency,
+                                              elevation: 6.0,
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: InkWell(
+                                                splashColor: Colors.cyan[100]
+                                                    .withOpacity(0.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                onTap: () async {
+                                                  Provider.of<Notif>(context,
+                                                              listen: true)
+                                                          .checkForDelete()
+                                                      ? await Provider.of<
+                                                                  Notif>(
+                                                              context,
+                                                              listen: false)
+                                                          .deleteAll(
+                                                              context: context)
+                                                      : await Provider.of<
+                                                                  Notif>(
+                                                              context,
+                                                              listen: false)
+                                                          .readAll(
+                                                              context: context);
+                                                },
+                                                child: Center(
+                                                  child: Text(
+                                                    Provider.of<Notif>(context,
+                                                                listen: true)
+                                                            .checkForDelete()
+                                                        ? 'Delete All'
+                                                        : 'Read All',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "Gilroy Medium",
+                                                      fontSize: ScreenUtil().setSp(
+                                                          12,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                  )
                                 ],
                               ),
                             ),

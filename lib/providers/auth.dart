@@ -41,7 +41,7 @@ class Auth with ChangeNotifier {
   String _number;
   Timer _authTimer;
   bool autoLogin = false;
-  bool remeberMe = false;
+  bool remeberMe = true;
   String password;
   int once = 0;
   bool flag = false;
@@ -240,12 +240,18 @@ class Auth with ChangeNotifier {
 
   Future<bool> tryAutoLogin(context) async {
     try {
+      print('in auto login again!!');
       final prefs = await SharedPreferences.getInstance();
+      print(prefs.getString('userData'));
+
       // print(
       // 'PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
       if (!prefs.containsKey('userData')) {
+        print('Returning False from autologin');
         return false;
       }
+      print('after return false');
+
       final extractedUserData =
           json.decode(prefs.getString('userData')) as Map<String, Object>;
       final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
@@ -279,6 +285,7 @@ class Auth with ChangeNotifier {
           return true;
         }
       }
+      return false;
     } on FormatException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
     } on PlatformException {
@@ -306,30 +313,53 @@ class Auth with ChangeNotifier {
       _authTimer = null;
     }
 
-    notifyListeners();
-
     final prefs = await SharedPreferences.getInstance();
+    remeberMe = false;
     prefs.remove('userData');
     prefs.remove('remberMe');
     prefs.remove('count');
     prefs.remove('sort');
+    notifyListeners();
   }
 
-  void autoLogout({context}) {
+  void autoLogout({context}) async {
     if (_authTimer != null) {
       _authTimer.cancel();
     }
 
     final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-    _authTimer = Timer(
-        Duration(seconds: timeToExpiry),
-        remeberMe
-            ? () {
-                // logout(context: context);
-                // Navigator.popAndPushNamed(context, '/');
-                _token = null;
-              }
-            : () => logout(context: context));
+    print(remeberMe.toString() + 'ergeqropfhr9hfwrfwrfwfwfwefwef');
+
+    _authTimer = Timer(Duration(seconds: timeToExpiry), () async {
+      if (remeberMe) {
+        _token = null;
+        final prefs = await SharedPreferences.getInstance();
+        final extractedUserData =
+            json.decode(prefs.getString('userData')) as Map<String, Object>;
+        String number = extractedUserData['number'];
+        String password = extractedUserData['password'];
+        print('started!!!!');
+        await authenticate(number, password, 'user/login');
+      } else {
+        print('started logout!!!');
+        logout();
+      }
+    }
+        // remeberMe
+        //     ? () async {
+        //         _token = null;
+        //         final prefs = await SharedPreferences.getInstance();
+        //         final extractedUserData = json
+        //             .decode(prefs.getString('userData')) as Map<String, Object>;
+        //         String number = extractedUserData['number'];
+        //         String password = extractedUserData['password'];
+        //         print('started!!!!');
+        //         await authenticate(number, password, 'user/login');
+        //       }
+        //     : () {
+        //         logout(context: context);
+        //       });
+        );
 
     notifyListeners();
   }
