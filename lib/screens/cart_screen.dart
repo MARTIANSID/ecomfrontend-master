@@ -1795,20 +1795,20 @@ class _CartScreenState extends State<CartScreen> {
                                                 Dismissible(
                                                   direction: DismissDirection
                                                       .startToEnd,
-                                                  confirmDismiss:
-                                                      (DismissDirection
-                                                          direction) async {
-                                                    return await dataSelectConfirmMessage(
-                                                      context: context,
-                                                      titleText: 'Alert!',
-                                                      contentText:
-                                                          "Are you sure, You want to remove ${product.styleNumber} from Cart?",
-                                                      gif:
-                                                          'assets/images/reversecartGIF.gif',
-                                                    ).then((value) async {
-                                                      return value2 = value;
-                                                    });
-                                                  },
+                                                  // confirmDismiss:
+                                                  //     (DismissDirection
+                                                  //         direction) async {
+                                                  //   return await dataSelectConfirmMessage(
+                                                  //     context: context,
+                                                  //     titleText: 'Alert!',
+                                                  //     contentText:
+                                                  //         "Are you sure, You want to remove ${product.styleNumber} from Cart?",
+                                                  //     gif:
+                                                  //         'assets/images/reversecartGIF.gif',
+                                                  //   ).then((value) async {
+                                                  //     return value2 = value;
+                                                  //   });
+                                                  // },
                                                   onDismissed: (DismissDirection
                                                       direction) async {
                                                     // setState(() {
@@ -3890,7 +3890,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   BorderRadius.circular(10),
                                               onTap: () async {
                                                 Provider.of<Notif>(context,
-                                                            listen: true)
+                                                            listen: false)
                                                         .checkForDelete()
                                                     ? await Provider.of<Notif>(
                                                             context,
@@ -3906,7 +3906,7 @@ class _CartScreenState extends State<CartScreen> {
                                               child: Center(
                                                 child: Text(
                                                   Provider.of<Notif>(context,
-                                                              listen: true)
+                                                              listen: false)
                                                           .checkForDelete()
                                                       ? 'Delete All'
                                                       : 'Read All',

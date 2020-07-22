@@ -2125,7 +2125,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                     BorderRadius.circular(10),
                                                 onTap: () async {
                                                   Provider.of<Notif>(context,
-                                                              listen: true)
+                                                              listen: false)
                                                           .checkForDelete()
                                                       ? await Provider.of<
                                                                   Notif>(
@@ -2143,7 +2143,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 child: Center(
                                                   child: Text(
                                                     Provider.of<Notif>(context,
-                                                                listen: true)
+                                                                listen: false)
                                                             .checkForDelete()
                                                         ? 'Delete All'
                                                         : 'Read All',

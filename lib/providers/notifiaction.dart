@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -15,9 +16,17 @@ class Noti {
   String name;
   String link;
   bool read;
+  DateTime createdAt;
 
   var id;
-  Noti({this.body, this.title, this.id, this.link, this.name, this.read});
+  Noti(
+      {this.body,
+      this.createdAt,
+      this.title,
+      this.id,
+      this.link,
+      this.name,
+      this.read});
 }
 
 class Notif with ChangeNotifier {
@@ -135,6 +144,8 @@ class Notif with ChangeNotifier {
           .map((i) => Noti(
               body: i['body'],
               title: i['title'],
+              createdAt:
+                  DateFormat("yyyy-MM-ddTHH:mm:ss").parse(i['createdAt'], true),
               name: i['data']['name'],
               link: i['data'] == null ? '' : i['data']['link'],
               read: i['read'],

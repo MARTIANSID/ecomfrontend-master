@@ -1371,7 +1371,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                         borderRadius: BorderRadius.circular(10),
                                         onTap: () async {
                                           Provider.of<Notif>(context,
-                                                      listen: true)
+                                                      listen: false)
                                                   .checkForDelete()
                                               ? await Provider.of<Notif>(
                                                       context,
@@ -1385,7 +1385,7 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                         child: Center(
                                           child: Text(
                                             Provider.of<Notif>(context,
-                                                        listen: true)
+                                                        listen: false)
                                                     .checkForDelete()
                                                 ? 'Delete All'
                                                 : 'Read All',

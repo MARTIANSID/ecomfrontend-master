@@ -177,10 +177,11 @@ class Auth with ChangeNotifier {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(_token);
       _expiryDate =
           DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
+      print(_expiryDate.toString() + 'INLOGINEXPIRYDATE');
       // _expiryDate = DateTime.now().add(
       //   Duration(seconds: 20),
       // );
-      print(_token.toString() + 'dofhdfoigergwefefe');
+      print(_expiryDate.toIso8601String() + 'ExpiryDate');
 
       autoLogout();
       notifyListeners();
@@ -189,7 +190,7 @@ class Auth with ChangeNotifier {
         {
           'token': _token,
           'number': _number,
-          'expiryDate': _expiryDate.toIso8601String(),
+          'expiryDate': _expiryDate.toString(),
           'password': password,
         },
       );
@@ -327,10 +328,14 @@ class Auth with ChangeNotifier {
       _authTimer.cancel();
     }
 
-    final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-    print(remeberMe.toString() + 'ergeqropfhr9hfwrfwrfwfwfwefwef');
+    final String timeToExpiry =
+        _expiryDate.difference(DateTime.now()).inSeconds.toString();
+    print(timeToExpiry + 'TIMETOEXPIRY!!');
 
-    _authTimer = Timer(Duration(seconds: timeToExpiry), () async {
+    print(remeberMe.toString() + 'ergeqropfhr9hfwrfwrfwfwfwefwef');
+    timeToExpiry.substring(1);
+
+    _authTimer = Timer(Duration(seconds: int.parse(timeToExpiry)), () async {
       if (remeberMe) {
         _token = null;
         final prefs = await SharedPreferences.getInstance();

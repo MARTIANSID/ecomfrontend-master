@@ -2269,7 +2269,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                               BorderRadius.circular(10),
                                           onTap: () async {
                                             Provider.of<Notif>(context,
-                                                        listen: true)
+                                                        listen: false)
                                                     .checkForDelete()
                                                 ? await Provider.of<Notif>(
                                                         context,
@@ -2283,7 +2283,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                           child: Center(
                                             child: Text(
                                               Provider.of<Notif>(context,
-                                                          listen: true)
+                                                          listen: false)
                                                       .checkForDelete()
                                                   ? 'Delete All'
                                                   : 'Read All',

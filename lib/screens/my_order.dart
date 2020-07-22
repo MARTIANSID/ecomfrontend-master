@@ -19,7 +19,7 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
   List<String> str = [
     'Processing',
     'Manufacturing',
-    'Certification & Final Inspection',
+    'Certification',
     'Delivery',
     'Completed',
   ];
@@ -111,7 +111,9 @@ class _MyOrderState extends State<MyOrder> with TickerProviderStateMixin {
               context,
               MaterialPageRoute(
                 builder: (context) => MyOrderDetailPage(
-                    products: orderProducts[index].products, index: index),
+                    orderProducts: orderProducts[index],
+                    products: orderProducts[index].products,
+                    index: index),
               ),
             );
           },

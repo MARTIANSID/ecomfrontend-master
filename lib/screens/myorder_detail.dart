@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 class MyOrderDetailPage extends StatefulWidget {
   final List<dynamic> products;
+  final orderProducts;
   final int index;
-  MyOrderDetailPage({this.products, this.index});
+
+  const MyOrderDetailPage(
+      {Key key, this.products, this.orderProducts, this.index})
+      : super(key: key);
   @override
   _MyOrderDetailPageState createState() => _MyOrderDetailPageState();
 }
@@ -63,11 +67,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(40.0, 10.0, 10.0, 10.0),
               child: Text(
-                "#" +
-                    Provider.of<Orders>(context, listen: false)
-                        .orderProducts[widget.index]
-                        .orderNumber
-                        .toString(),
+                "#" + widget.orderProducts.orderNumber.toString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: ScreenUtil().setSp(30, allowFontScalingSelf: true),
@@ -82,14 +82,11 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: ScreenUtil().setHeight(125 *
-                          Provider.of<Orders>(context, listen: false)
-                              .orderProducts[widget.index]
-                              .status),
+                      height: ScreenUtil()
+                          .setHeight(125 * widget.orderProducts.status),
                       // color: Colors.amber,
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        reverse: true,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                             height: ScreenUtil().setHeight(125),
@@ -110,11 +107,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Provider.of<Orders>(context,
-                                                        listen: false)
-                                                    .orderProducts[widget.index]
-                                                    .status >=
-                                                index + 1
+                                        widget.orderProducts.status >= index + 1
                                             ? Text(
                                                 str[index],
                                                 style: TextStyle(
@@ -127,11 +120,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                                     color: Colors.black),
                                               )
                                             : SizedBox(height: 0.0),
-                                        Provider.of<Orders>(context,
-                                                        listen: false)
-                                                    .orderProducts[widget.index]
-                                                    .status >=
-                                                index + 1
+                                        widget.orderProducts.status >= index + 1
                                             ? Container(
                                                 decoration: BoxDecoration(
                                                   // border: Border.all(
@@ -175,11 +164,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Provider.of<Orders>(context,
-                                                      listen: false)
-                                                  .orderProducts[widget.index]
-                                                  .status >=
-                                              index + 1
+                                      widget.orderProducts.status >= index + 1
                                           ? ShaderMask(
                                               shaderCallback: (bounds) =>
                                                   LinearGradient(
@@ -238,11 +223,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                                       //     ),
                                       //   ),
                                       index != 4
-                                          ? Provider.of<Orders>(context,
-                                                          listen: false)
-                                                      .orderProducts[
-                                                          widget.index]
-                                                      .status >
+                                          ? widget.orderProducts.status >
                                                   index + 1
                                               ? Padding(
                                                   padding:

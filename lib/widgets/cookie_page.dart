@@ -432,7 +432,7 @@ class _CookiePageState extends State<CookiePage>
         width: 411.42857142857144,
         height: 774.8571428571429,
         allowFontScaling: true);
-    print(size.height);
+
     print(size.width.toString() + 'DC');
     return isLoadingg
         ? Center(child: CircularProgressIndicator())
@@ -481,10 +481,7 @@ class _CookiePageState extends State<CookiePage>
                                   AnimatedContainer(
                                     duration: Duration(seconds: 1),
                                     width: ScreenUtil().setWidth(159),
-                                    height: ScreenUtil().setHeight(
-                                        widget.select == 'fav'
-                                            ? widget.products[i].height
-                                            : 150),
+                                    height: ScreenUtil().setHeight(150),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
                                       color: Colors.white,
