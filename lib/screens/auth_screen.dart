@@ -491,9 +491,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   Future<void> _forgotPassword() async {
     try {
-      // final a = await Provider.of<Auth>(context, listen: false)
-      //     .resetPasswordRequest(_phoneController.text);
-      final a = true;
+      final a = await Provider.of<Auth>(context, listen: false)
+          .resetPasswordRequest(_phoneController.text);
 
       a
           ? setState(() {

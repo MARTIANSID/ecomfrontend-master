@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:js';
 
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
@@ -225,7 +226,7 @@ class UserInfo with ChangeNotifier {
       if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
-      await storeDate(DateTime.now().toString());
+      await storeDate(DateTime.now().toString(), context);
 
       return responseData;
     } on FormatException {
@@ -239,14 +240,14 @@ class UserInfo with ChangeNotifier {
     }
   }
 
-  Future<String> getDate() async {
+  Future<String> getDate(context) async {
     SharedPreferences cc = await SharedPreferences.getInstance();
-    return cc.getString('date');
+    return cc.getString('${Provider.of<Auth>(context, listen: false).number}');
   }
 
-  Future<void> storeDate(date) async {
+  Future<void> storeDate(date, context) async {
     SharedPreferences cc = await SharedPreferences.getInstance();
-    cc.setString('date', date);
+    cc.setString('${Provider.of<Auth>(context, listen: false).number}', date);
 
     notifyListeners();
   }

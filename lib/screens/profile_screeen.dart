@@ -753,7 +753,7 @@ class _UserPageState extends State<UserPage>
                                                 await Provider.of<UserInfo>(
                                                         context,
                                                         listen: false)
-                                                    .getDate();
+                                                    .getDate(context);
                                             if (date != null) {
                                               int d = DateTime.now()
                                                   .difference(
@@ -951,7 +951,7 @@ class _UserPageState extends State<UserPage>
                                                 await Provider.of<UserInfo>(
                                                         context,
                                                         listen: false)
-                                                    .getDate();
+                                                    .getDate(context);
                                             if (date != null) {
                                               int d = DateTime.now()
                                                   .difference(
@@ -1087,7 +1087,7 @@ class _UserPageState extends State<UserPage>
                                         String date =
                                             await Provider.of<UserInfo>(context,
                                                     listen: false)
-                                                .getDate();
+                                                .getDate(context);
                                         if (date != null) {
                                           int d = DateTime.now()
                                               .difference(DateTime.parse(date))

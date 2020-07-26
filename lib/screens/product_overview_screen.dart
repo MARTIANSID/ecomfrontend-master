@@ -306,7 +306,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
   void completeSignUp() async {
     Navigator.of(context).pop();
-    String date = await Provider.of<UserInfo>(context, listen: false).getDate();
+    String date =
+        await Provider.of<UserInfo>(context, listen: false).getDate(context);
     if (date != null) {
       int d = DateTime.now().difference(DateTime.parse(date)).inDays;
       if (d >= 1) {

@@ -902,7 +902,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .getDate();
+                                                                  .getDate(
+                                                                      context);
                                                               if (date !=
                                                                   null) {
                                                                 int d = DateTime

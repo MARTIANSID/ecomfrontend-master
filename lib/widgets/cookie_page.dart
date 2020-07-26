@@ -87,7 +87,7 @@ class _CookiePageState extends State<CookiePage>
   int _defaultChoiceIndex4;
 
   bool show = false;
-  double scroll = 500.0;
+  double scroll = 100.0;
   AnimationController controller;
 
   Animation<int> characterCount;
@@ -1018,7 +1018,8 @@ class _CookiePageState extends State<CookiePage>
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .getDate();
+                                                                  .getDate(
+                                                                      context);
                                                           if (date != null) {
                                                             int d = DateTime
                                                                     .now()
