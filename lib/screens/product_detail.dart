@@ -668,9 +668,13 @@ class _ProductDetailState extends State<ProductDetail> {
                                       // child: widget.product.prices.containsKey(
                                       //             widget.diamondKey) &&
                                       child: Provider.of<Pagination>(context,
-                                                      listen: false)
-                                                  .isPriced ==
-                                              true
+                                                          listen: false)
+                                                      .isPriced ==
+                                                  true &&
+                                              Provider.of<Pagination>(context,
+                                                          listen: false)
+                                                      .isVerified ==
+                                                  true
                                           ? Text(
                                               // '50000',
                                               '${int.parse(widget.product.prices[Provider.of<Pagination>(context, listen: false).diamondQuality[_defaultChoiceIndex4]]) + Provider.of<Pagination>(context, listen: false).certPrices[Provider.of<Pagination>(context, listen: false).cert[_defaultChoiceIndex3]] + Provider.of<Pagination>(context, listen: false).buildPrices[Provider.of<Pagination>(context, listen: false).build[_defaultChoiceIndex1]]} ₹',

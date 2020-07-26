@@ -437,7 +437,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Enter Pincode";
-                                  } else if (value.length != 6) {
+                                  } else if (value.length < 6) {
                                     return "Enter Proper Pincode";
                                   }
                                   return null;

@@ -377,7 +377,11 @@ class Cart with ChangeNotifier {
       await Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
+    var prod;
     try {
+      prod = cart[cart.indexWhere((element) => element.id == id)];
+      cart.removeWhere((element) => element.id == id);
+      notifyListeners();
       final response = await http.patch(
         this.url,
         headers: {
@@ -390,37 +394,39 @@ class Cart with ChangeNotifier {
 
       final responseData = json.decode(response.body);
       if (responseData['error'] != false) {
+        cart.add(prod);
         throw HttpException(responseData['details']['message']);
       }
       totalPrice = responseData['cart']['totalPrice'];
 
-      cart = responseData['cart']['products']
-          .map((i) => Cartt(
-              build: i['options']['build'],
-              color: i['options']['color'].toLowerCase(),
-              diamond: i['options']['diamondQuality'],
-              cert: i['options']['certificate'],
-              id: i['id'],
-              quantity: i['options']['quantity'],
-              buildValue: Provider.of<Pagination>(context, listen: false)
-                  .build
-                  .indexOf(i['options']['build']),
-              certValue: Provider.of<Pagination>(context, listen: false)
-                  .cert
-                  .indexOf(i['options']['certificate']),
-              colorValue: Provider.of<Pagination>(context, listen: false)
-                  .color
-                  .indexOf(i['options']['color']),
-              diamondValue: Provider.of<Pagination>(context, listen: false)
-                  .diamondQuality
-                  .indexOf(i['options']['diamondQuality']),
-              product: Product(
-                  imageUrl: Map<dynamic, dynamic>.from(i['images']),
-                  prices: Map<dynamic, dynamic>.from(i['prices']),
-                  styleNumber: i["styleNumber"])))
-          .toList();
-      notifyListeners();
+      // cart = responseData['cart']['products']
+      //     .map((i) => Cartt(
+      //         build: i['options']['build'],
+      //         color: i['options']['color'].toLowerCase(),
+      //         diamond: i['options']['diamondQuality'],
+      //         cert: i['options']['certificate'],
+      //         id: i['id'],
+      //         quantity: i['options']['quantity'],
+      //         buildValue: Provider.of<Pagination>(context, listen: false)
+      //             .build
+      //             .indexOf(i['options']['build']),
+      //         certValue: Provider.of<Pagination>(context, listen: false)
+      //             .cert
+      //             .indexOf(i['options']['certificate']),
+      //         colorValue: Provider.of<Pagination>(context, listen: false)
+      //             .color
+      //             .indexOf(i['options']['color']),
+      //         diamondValue: Provider.of<Pagination>(context, listen: false)
+      //             .diamondQuality
+      //             .indexOf(i['options']['diamondQuality']),
+      //         product: Product(
+      //             imageUrl: Map<dynamic, dynamic>.from(i['images']),
+      //             prices: Map<dynamic, dynamic>.from(i['prices']),
+      //             styleNumber: i["styleNumber"])))
+      //     .toList();
+
     } on FormatException {
+      cart.add(prod);
       throw "Oops Something Went Wrong!";
     } on PlatformException {
       throw "Oops Something Went Wrong!";
@@ -716,39 +722,3 @@ class Cart with ChangeNotifier {
     return price;
   }
 }
-
-// {
-//     "error": false,
-//     "user": {
-//         "number": 12345,
-//         "role": "USER"
-//     },
-//     "cart": {
-//         "totalQuantity": 5,
-//         "totalPrice": 605248,
-//         "products": [
-//             {
-//                 "id": "5ef32b351248b40991785704",
-//                 "isFavourite": false,
-//                 "styleNumber": "GS11123",
-//                 "displayImage": "https://staticimg.titan.co.in/Mia/Catalog/552818OWDAAA22_3.jpg?pView=pdp",
-//                 "diamondWeight": 1.9,
-//                 "diamondCount": 186,
-//                 "designDimensions": "10x40 mm",
-//                 "goldWeight": 3.903,
-//                 "price": 121050,
-//                 "prices":[],
-//                 images:[],
-//                 "options": {
-//                     "quantity": 5,
-//                     "build": "SCREW",
-//                     "color": "ROSE",
-//                     "certificate": "IGI",
-//                     "diamondQuality": "VVS_EF"
-//                 }
-//             }
-//         ]
-//     }
-// }
-//  }
-// }

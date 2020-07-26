@@ -341,7 +341,7 @@ class _LoginScreenState extends State<LoginScreen>
                     // _buildForgetButton = false;
                     // _isRegistered = false;
                     // _showSignup = false;
-                    _rememberMe = false;
+                    // _rememberMe = false;
                     _showPassword = !_showPassword;
                     // _showPasswordCheckBox = false;
                     // _forgotPasswordMenu = false;

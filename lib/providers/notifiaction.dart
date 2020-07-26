@@ -144,8 +144,9 @@ class Notif with ChangeNotifier {
           .map((i) => Noti(
               body: i['body'],
               title: i['title'],
-              createdAt:
-                  DateFormat("yyyy-MM-ddTHH:mm:ss").parse(i['createdAt'], true),
+              createdAt: DateFormat("yyyy-MM-ddTHH:mm:ss")
+                  .parse(i['createdAt'], true)
+                  .toLocal(),
               name: i['data']['name'],
               link: i['data'] == null ? '' : i['data']['link'],
               read: i['read'],

@@ -195,7 +195,8 @@ class _CookiePageState extends State<CookiePage>
 
   void didChangeDependencies() async {
     if (isInit) {
-      if (widget.select != 'fav') {
+      if (widget.select != 'fav' &&
+          Provider.of<Pagination>(context, listen: false).isVerified) {
         createList();
       }
       // _defaultChoiceIndex1 =
