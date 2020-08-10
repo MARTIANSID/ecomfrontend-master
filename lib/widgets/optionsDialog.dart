@@ -78,7 +78,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
           contentPadding: EdgeInsets.all(14.0),
           children: <Widget>[
             Container(
-              height: ScreenUtil().setHeight(530),
+              // height: ScreenUtil().setHeight(530),
               width: ScreenUtil().setWidth(400),
               // width: 700.0,
               child: Column(

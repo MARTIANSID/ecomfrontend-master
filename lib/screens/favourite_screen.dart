@@ -12,7 +12,7 @@ import 'package:Flutter/widgets/snackbar.dart';
 import 'package:Flutter/widgets/sortPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -807,19 +807,21 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                                           width: ScreenUtil()
                                                               .setWidth(90),
                                                           // color: Colors.amber,
-                                                          child: Image(
-                                                            image:
-                                                                AdvancedNetworkImage(
-                                                              suggestion[index]
-                                                                  .image,
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3)),
-                                                            ),
+                                                          child: Image.network(
+                                                            suggestion[index]
+                                                                .image,
+                                                            // image:
+                                                            //     AdvancedNetworkImage(
+                                                            //   suggestion[index]
+                                                            //       .image,
+                                                            //   useDiskCache:
+                                                            //       true,
+                                                            //   cacheRule: CacheRule(
+                                                            //       maxAge:
+                                                            //           const Duration(
+                                                            //               days:
+                                                            //                   3)),
+                                                            // ),
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),

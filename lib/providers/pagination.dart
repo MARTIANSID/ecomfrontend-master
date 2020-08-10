@@ -97,14 +97,14 @@ class Pagination with ChangeNotifier {
 
     if (select == 'featured') pageFeatured++;
 
-    if (select == 'highestSelling') pageHighest++;
+    if (select == 'navratna') pageHighest++;
 
     if (select == 'fancyDiamond') pageDiamond++;
   }
 
   void pageStart() {
     pageAll = pageNew = pageFeatured = pageHighest = pageDiamond = 1;
-    print(pageAll.toString() + 'all;;');
+    // print(pageAll.toString() + 'all;;');
     notifyListeners();
   }
 
@@ -140,7 +140,6 @@ class Pagination with ChangeNotifier {
         },
       );
       final responseData = json.decode(response.body);
-      print(json.decode(response.body));
       if (responseData['error'] != false) {
         throw HttpException(responseData['details']['message']);
       }
@@ -164,10 +163,15 @@ class Pagination with ChangeNotifier {
       page = 1,
       select = 'all',
       addition = false}) async {
-    print(sortby.toString() + 'sdoiofihsifgh9');
-    print(sort.toString() + 'wefu9w0f');
-    final url =
-        'https://alexa.gemstory.in/product/paginated?select=$select&sortby=$sortby&sort=$sort&page=$page&quant=30';
+    final url = 'https://alexa.gemstory.in/product/paginated?select=' +
+        select.toString() +
+        '&sortby=' +
+        sortby.toString() +
+        '&sort=' +
+        sort.toString() +
+        '&page=' +
+        page.toString() +
+        '&quant=30';
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
@@ -192,6 +196,7 @@ class Pagination with ChangeNotifier {
       );
 
       final extractedData = json.decode(response.body);
+      print(select + extractedData.toString());
       if (extractedData['error'] != false) {
         throw HttpException(extractedData['details']['message']);
       }
@@ -248,7 +253,7 @@ class Pagination with ChangeNotifier {
                       : Map<dynamic, dynamic>.from(prod['prices']),
                   designDimensions: prod['designDimensions']),
             );
-          if (select == 'highestSelling')
+          if (select == 'navratna')
             highestSellingProducts.add(
               Product(
                   // // designDetails: Map<String, bool>.from(prod['designDetails']),
@@ -297,63 +302,129 @@ class Pagination with ChangeNotifier {
         });
         if (addition) notifyListeners();
       } else {
-        List<dynamic> loadedProducts = extractedData['products']
-            .map(
-              (prod) => Product(
-                  // // designDetails: Map<String, bool>.from(prod['designDetails']),
-                  styleNumber: prod['styleNumber'],
-                  diamondWeight: prod['diamondWeight'],
-                  goldWeight: prod['goldWeight'],
-                  diamondCount: prod['diamondCount'],
-                  isFavourite: prod['isFavourite'],
-                  prices: prod['prices'] == null
-                      ? null
-                      : Map<dynamic, dynamic>.from(prod['prices']),
-                  imageUrl: Map<dynamic, dynamic>.from(prod['images']),
-                  designDimensions: prod['designDimensions']),
-            )
-            .toList();
-
         isVerified = extractedData['user']['verified'];
+        // List<dynamic> loadedProducts = extractedData['products']
+        //     .map(
+        //       (prod) => Product(
+        //           // // designDetails: Map<String, bool>.from(prod['designDetails']),
+        //           styleNumber: prod['styleNumber'],
+        //           diamondWeight: prod['diamondWeight'],
+        //           goldWeight: prod['goldWeight'],
+        //           diamondCount: prod['diamondCount'],
+        //           isFavourite: prod['isFavourite'],
+        //           prices: prod['prices'] == null
+        //               ? null
+        //               : Map<dynamic, dynamic>.from(prod['prices']),
+        //           imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+        //           designDimensions: prod['designDimensions']),
+        //     )
+        //     .toList();
 
         if (select == 'all') {
-          allProducts = [];
-          allProducts = loadedProducts;
+          // allProducts = [];
+          allProducts = extractedData['products']
+              .map(
+                (prod) => Product(
+                    // // designDetails: Map<String, bool>.from(prod['designDetails']),
+                    styleNumber: prod['styleNumber'],
+                    diamondWeight: prod['diamondWeight'],
+                    goldWeight: prod['goldWeight'],
+                    diamondCount: prod['diamondCount'],
+                    isFavourite: prod['isFavourite'],
+                    prices: prod['prices'] == null
+                        ? null
+                        : Map<dynamic, dynamic>.from(prod['prices']),
+                    imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                    designDimensions: prod['designDimensions']),
+              )
+              .toList();
           print('all');
-          print(allProducts);
+          print(allProducts.length);
           notifyListeners();
-        }
-
-        if (select == 'featured') {
-          featuredProducts = [];
-          featuredProducts = loadedProducts;
-          print(featuredProducts);
+        } else if (select == 'featured') {
+          // featuredProducts = [];
+          featuredProducts = extractedData['products']
+              .map(
+                (prod) => Product(
+                    // // designDetails: Map<String, bool>.from(prod['designDetails']),
+                    styleNumber: prod['styleNumber'],
+                    diamondWeight: prod['diamondWeight'],
+                    goldWeight: prod['goldWeight'],
+                    diamondCount: prod['diamondCount'],
+                    isFavourite: prod['isFavourite'],
+                    prices: prod['prices'] == null
+                        ? null
+                        : Map<dynamic, dynamic>.from(prod['prices']),
+                    imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                    designDimensions: prod['designDimensions']),
+              )
+              .toList();
+          print(featuredProducts.length);
           print('feat');
 
           notifyListeners();
-        }
-
-        if (select == 'highestSelling') {
-          highestSellingProducts = [];
-          highestSellingProducts = loadedProducts;
+        } else if (select == 'navratna') {
+          // highestSellingProducts = [];
+          highestSellingProducts = extractedData['products']
+              .map(
+                (prod) => Product(
+                    // // designDetails: Map<String, bool>.from(prod['designDetails']),
+                    styleNumber: prod['styleNumber'],
+                    diamondWeight: prod['diamondWeight'],
+                    goldWeight: prod['goldWeight'],
+                    diamondCount: prod['diamondCount'],
+                    isFavourite: prod['isFavourite'],
+                    prices: prod['prices'] == null
+                        ? null
+                        : Map<dynamic, dynamic>.from(prod['prices']),
+                    imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                    designDimensions: prod['designDimensions']),
+              )
+              .toList();
           print('heigh');
-          print(highestSellingProducts);
+          print(highestSellingProducts.length);
           notifyListeners();
-        }
-
-        if (select == 'fancyDiamond') {
-          fancyDiamond = [];
-          fancyDiamond = loadedProducts;
+        } else if (select == 'fancyDiamond') {
+          // fancyDiamond = [];
+          fancyDiamond = extractedData['products']
+              .map(
+                (prod) => Product(
+                    // // designDetails: Map<String, bool>.from(prod['designDetails']),
+                    styleNumber: prod['styleNumber'],
+                    diamondWeight: prod['diamondWeight'],
+                    goldWeight: prod['goldWeight'],
+                    diamondCount: prod['diamondCount'],
+                    isFavourite: prod['isFavourite'],
+                    prices: prod['prices'] == null
+                        ? null
+                        : Map<dynamic, dynamic>.from(prod['prices']),
+                    imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                    designDimensions: prod['designDimensions']),
+              )
+              .toList();
           print('fanc');
-          print(fancyDiamond);
+          print(fancyDiamond.length);
           notifyListeners();
-        }
-
-        if (select == 'isnew') {
-          newProducts = [];
-          newProducts = loadedProducts;
+        } else {
+          // newProducts = [];
+          newProducts = extractedData['products']
+              .map(
+                (prod) => Product(
+                    // // designDetails: Map<String, bool>.from(prod['designDetails']),
+                    styleNumber: prod['styleNumber'],
+                    diamondWeight: prod['diamondWeight'],
+                    goldWeight: prod['goldWeight'],
+                    diamondCount: prod['diamondCount'],
+                    isFavourite: prod['isFavourite'],
+                    prices: prod['prices'] == null
+                        ? null
+                        : Map<dynamic, dynamic>.from(prod['prices']),
+                    imageUrl: Map<dynamic, dynamic>.from(prod['images']),
+                    designDimensions: prod['designDimensions']),
+              )
+              .toList();
           print('new');
-          print(newProducts);
+          print(newProducts.length);
           notifyListeners();
         }
       }
@@ -424,7 +495,7 @@ class Pagination with ChangeNotifier {
 
       favProducts = loadedProducts;
       notifyListeners();
-      print(favProducts);
+      // print(favProducts);
     } on FormatException {
       throw "Oops Something Went Wrong!";
     } on PlatformException {

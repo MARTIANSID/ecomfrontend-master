@@ -102,7 +102,7 @@ class Notif with ChangeNotifier {
         "notifid": id
       });
       if (response.statusCode == 200) {
-        print('done!!!');
+        // print('done!!!');
       }
     } on FormatException {
       throw "Oops Something Went Wrong!";
@@ -153,7 +153,7 @@ class Notif with ChangeNotifier {
               id: i['_id']))
           .toList();
       notifications = list;
-      print(notifications);
+      // print(notifications);
 
       notifyListeners();
     } on FormatException {

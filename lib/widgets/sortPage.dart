@@ -56,6 +56,8 @@ class _SortPageState extends State<SortPage> {
     } else {
       await Provider.of<Pagination>(context, listen: false).setSort(-1);
     }
+    print(Provider.of<Pagination>(context, listen: false).count);
+    print(Provider.of<Pagination>(context, listen: false).sort);
     Provider.of<Pagination>(context, listen: false).pageStart();
 
     var futures = <Future>[
@@ -89,7 +91,7 @@ class _SortPageState extends State<SortPage> {
       Provider.of<Pagination>(context, listen: false).getProducts(
           page: 1,
           addition: false,
-          select: 'highestSelling',
+          select: 'navratna',
           context: context,
           sortby: Provider.of<Pagination>(context, listen: false).count == null
               ? 'styleNumber'

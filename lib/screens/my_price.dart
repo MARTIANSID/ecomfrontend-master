@@ -7,7 +7,7 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -1319,19 +1319,21 @@ class _MyPriceState extends State<MyPrice> {
                                                           width: ScreenUtil()
                                                               .setWidth(90),
                                                           // color: Colors.amber,
-                                                          child: Image(
-                                                            image:
-                                                                AdvancedNetworkImage(
-                                                              suggestion[index]
-                                                                  .image,
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3)),
-                                                            ),
+                                                          child: Image.network(
+                                                            suggestion[index]
+                                                                .image,
+                                                            // image:
+                                                            //     AdvancedNetworkImage(
+                                                            //   suggestion[index]
+                                                            //       .image,
+                                                            //   useDiskCache:
+                                                            //       true,
+                                                            //   cacheRule: CacheRule(
+                                                            //       maxAge:
+                                                            //           const Duration(
+                                                            //               days:
+                                                            //                   3)),
+                                                            // ),
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),

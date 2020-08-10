@@ -164,32 +164,37 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               !this.enable
-                  ? IconButton(
-                      onPressed: () {
-                        setState(() {
-                          this.enable = true;
-                          enable = true;
-                          _phoneController.clear();
-                          _fnameController.clear();
-                          _lnameController.clear();
-                          _passwordController.clear();
-                          _requirePassword = false;
-                          _buildForgetButton = false;
-                          _isRegistered = false;
-                          _showSignup = false;
-                          // _rememberMe = false;
-                          _showPassword = false;
-                          _showPasswordCheckBox = false;
-                          _forgotPasswordMenu = false;
-                          _screen = 0;
-                        });
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                    )
-                  : SizedBox(height: 0.0),
+                  ? _forgotPasswordMenu == false
+                      ? IconButton(
+                          onPressed: () {
+                            if (mounted)
+                              setState(() {
+                                this.enable = true;
+                                enable = true;
+                                _phoneController.clear();
+                                _fnameController.clear();
+                                _lnameController.clear();
+                                _passwordController.clear();
+                                _requirePassword = false;
+                                _buildForgetButton = false;
+                                _isRegistered = false;
+                                _showSignup = false;
+                                // _rememberMe = false;
+                                _showPassword = false;
+                                _showPasswordCheckBox = false;
+                                _forgotPasswordMenu = false;
+                                _screen = 0;
+                              });
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        )
+                      : SizedBox(height: 0.0)
+                  : SizedBox(
+                      height: 0.0,
+                    ),
             ],
           ),
         ),
@@ -332,21 +337,22 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               IconButton(
                 onPressed: () {
-                  setState(() {
-                    // enable = true;
-                    // _phoneController.clear();
-                    // _nameController.clear();
-                    // _passwordController.clear();
-                    // _requirePassword = false;
-                    // _buildForgetButton = false;
-                    // _isRegistered = false;
-                    // _showSignup = false;
-                    // _rememberMe = false;
-                    _showPassword = !_showPassword;
-                    // _showPasswordCheckBox = false;
-                    // _forgotPasswordMenu = false;
-                    // _screen = 0;
-                  });
+                  if (mounted)
+                    setState(() {
+                      // enable = true;
+                      // _phoneController.clear();
+                      // _nameController.clear();
+                      // _passwordController.clear();
+                      // _requirePassword = false;
+                      // _buildForgetButton = false;
+                      // _isRegistered = false;
+                      // _showSignup = false;
+                      // _rememberMe = false;
+                      _showPassword = !_showPassword;
+                      // _showPasswordCheckBox = false;
+                      // _forgotPasswordMenu = false;
+                      // _screen = 0;
+                    });
                 },
                 icon: Icon(
                   _showPassword ? Icons.visibility : Icons.visibility_off,
@@ -439,9 +445,9 @@ class _LoginScreenState extends State<LoginScreen>
       ),
       loader: (timeLeft) {
         return Text(
-          "Wait | $timeLeft",
+          "Please Wait| $timeLeft",
           style: TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
         );
       },
       borderRadius: 5.0,
@@ -523,14 +529,15 @@ class _LoginScreenState extends State<LoginScreen>
               checkColor: Colors.green,
               activeColor: Colors.white,
               onChanged: (value) {
-                setState(() {
-                  // if (_showPasswordCheckBox) {
-                  // _showPassword = !_showPassword;
-                  // } else {
-                  _rememberMe = value;
-                  Provider.of<Auth>(context, listen: false).setRemeber(value);
-                  // }
-                });
+                if (mounted)
+                  setState(() {
+                    // if (_showPasswordCheckBox) {
+                    // _showPassword = !_showPassword;
+                    // } else {
+                    _rememberMe = value;
+                    Provider.of<Auth>(context, listen: false).setRemeber(value);
+                    // }
+                  });
               },
             ),
           ),
@@ -687,35 +694,35 @@ class _LoginScreenState extends State<LoginScreen>
                 ? true
                 : await Provider.of<Auth>(context, listen: false)
                     .checkIfRegistered(_phoneController.text);
+            if (mounted)
+              setState(() {
+                _isLoading = false;
+                // print('PP in setState1: $_isRegistered');
+                // if (_isRegistered != null) {
 
-            setState(() {
-              _isLoading = false;
-              // print('PP in setState1: $_isRegistered');
-              // if (_isRegistered != null) {
+                // }
+                if (_isRegistered) {
+                  phoneNumber = _phoneController.text;
+                  _requirePassword = true;
+                  enable = false;
 
-              // }
-              if (_isRegistered) {
-                phoneNumber = _phoneController.text;
-                _requirePassword = true;
-                enable = false;
+                  _controller.forward();
+                  // print(!_forgotPasswordMenu);
+                  if (!_forgotPasswordMenu) _buildForgetButton = true;
 
-                _controller.forward();
-                // print(!_forgotPasswordMenu);
-                if (!_forgotPasswordMenu) _buildForgetButton = true;
+                  _showPasswordCheckBox = true;
+                } else {
+                  _showSignup = true;
+                  enable = false;
 
-                _showPasswordCheckBox = true;
-              } else {
-                _showSignup = true;
-                enable = false;
-
-                _requirePassword = true;
-                _controller.forward();
-                _showPasswordCheckBox = true;
-              }
-              // setState(() {
-              //   _isLoading = true;
-              // });
-            });
+                  _requirePassword = true;
+                  _controller.forward();
+                  _showPasswordCheckBox = true;
+                }
+                // setState(() {
+                //   _isLoading = true;
+                // });
+              });
           } catch (error) {
             _showDilog('Oops!', '$error');
           } finally {
@@ -903,7 +910,7 @@ class _LoginScreenState extends State<LoginScreen>
                           icon: Icons.person,
                         ),
                         SizedBox(
-                          width: ScreenUtil().setWidth(11),
+                          width: ScreenUtil().setWidth(7),
                         ),
                         _buildGivenNameTF(
                           name: 'Last Name',
@@ -966,8 +973,7 @@ class _LoginScreenState extends State<LoginScreen>
                     child: FadeTransition(
                         opacity: _opacityAnimation, child: _buildPasswordTF()),
                   ),
-                if (_buildForgetButton)
-                  _buildForgotPasswordBtn(),
+                if (_buildForgetButton) _buildForgotPasswordBtn(),
 
                 _forgotPasswordMenu && _requirePassword == false
                     ? Container(
@@ -995,9 +1001,10 @@ class _LoginScreenState extends State<LoginScreen>
                                   .checkOtp(
                                       number: phoneNumber.toString(),
                                       code: _fnameController.text);
-                              setState(() {
-                                isVerifyLoading = false;
-                              });
+                              if (mounted)
+                                setState(() {
+                                  isVerifyLoading = false;
+                                });
 
                               if (b) {
                                 _forgotPasswordMenu = true;
@@ -1017,9 +1024,10 @@ class _LoginScreenState extends State<LoginScreen>
                             } catch (error) {
                               _showDilog('Oops!', '$error');
                             } finally {
-                              setState(() {
-                                isVerifyLoading = false;
-                              });
+                              if (mounted)
+                                setState(() {
+                                  isVerifyLoading = false;
+                                });
                             }
                           },
                           elevation: 5.0,
@@ -1049,6 +1057,90 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                         ))
                     : _buildNextBtn(),
+                if (!_showSignup &&
+                    !_forgotPasswordMenu &&
+                    _requirePassword) ...[
+                  SizedBox(
+                    height: ScreenUtil().setHeight(10),
+                  ),
+                  SlideTransition(
+                    position: _slideAnimation,
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontFamily: 'Gilroy Medium',
+                          fontSize: ScreenUtil()
+                              .setSp(12, allowFontScalingSelf: true),
+                          color: Colors.white,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'By logging in account, I agree to the ',
+                          ),
+                          TextSpan(
+                            text: 'Terms of Service,',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch(
+                                    "https://legal.gemstory.in")) {
+                                  await launch("https://legal.gemstory.in");
+                                } else {
+                                  throw 'Could not launch https://legal.gemstory.in';
+                                }
+                              },
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' ',
+                          ),
+                          TextSpan(
+                            text: 'Privacy Policy,',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch(
+                                    "https://legal.gemstory.in")) {
+                                  await launch("https://legal.gemstory.in");
+                                } else {
+                                  throw 'Could not launch https://legal.gemstory.in';
+                                }
+                              },
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' and ',
+                          ),
+                          TextSpan(
+                            text: 'Data Processing Terms.',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch(
+                                    "https://legal.gemstory.in")) {
+                                  await launch("https://legal.gemstory.in");
+                                } else {
+                                  throw 'Could not launch https://legal.gemstory.in';
+                                }
+                              },
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(10),
+                  ),
+                ],
+
                 if (_showSignup) ...[
                   SizedBox(
                     height: ScreenUtil().setHeight(10),
@@ -1065,11 +1157,48 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                         children: [
                           TextSpan(
-                            text: 'By creating an account, you agree to the ',
+                            text: 'By creating an account, I agree to the ',
                           ),
                           TextSpan(
-                            text:
-                                'Terms of Service, Privacy Policy, and Data Processing Terms.',
+                            text: 'Terms of Service,',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch(
+                                    "https://legal.gemstory.in")) {
+                                  await launch("https://legal.gemstory.in");
+                                } else {
+                                  throw 'Could not launch https://legal.gemstory.in';
+                                }
+                              },
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' ',
+                          ),
+                          TextSpan(
+                            text: 'Privacy Policy,',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch(
+                                    "https://legal.gemstory.in")) {
+                                  await launch("https://legal.gemstory.in");
+                                } else {
+                                  throw 'Could not launch https://legal.gemstory.in';
+                                }
+                              },
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 2.0,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' and ',
+                          ),
+                          TextSpan(
+                            text: 'Data Processing Terms.',
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
                                 if (await canLaunch(

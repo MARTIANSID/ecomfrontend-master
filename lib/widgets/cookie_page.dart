@@ -7,7 +7,7 @@ import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' show ImageFilter;
@@ -92,6 +92,8 @@ class _CookiePageState extends State<CookiePage>
 
   Animation<int> characterCount;
 
+  bool fff = true;
+
   @override
   void initState() {
     super.initState();
@@ -126,10 +128,10 @@ class _CookiePageState extends State<CookiePage>
           context: context,
           sort: Provider.of<Pagination>(context, listen: false).sort,
           sortby: Provider.of<Pagination>(context, listen: false).count);
-    if (widget.select == 'highestSelling')
+    if (widget.select == 'navratna')
       await Provider.of<Pagination>(context, listen: false).getProducts(
           page: Provider.of<Pagination>(context, listen: false).pageHighest,
-          select: 'highestSelling',
+          select: 'navratna',
           addition: true,
           context: context,
           sort: Provider.of<Pagination>(context, listen: false).sort,
@@ -415,7 +417,6 @@ class _CookiePageState extends State<CookiePage>
     colorKey =
         (Provider.of<Pagination>(context, listen: false).color[widget.color])
             .toLowerCase();
-    print(colorKey);
     // setState(() {
     // if (widget.select != 'fav') {
     if (Provider.of<Pagination>(context, listen: false).isPriced) {
@@ -433,8 +434,6 @@ class _CookiePageState extends State<CookiePage>
         width: 411.42857142857144,
         height: 774.8571428571429,
         allowFontScaling: true);
-
-    print(size.width.toString() + 'DC');
     return isLoadingg
         ? Center(child: CircularProgressIndicator())
         : Stack(
@@ -584,8 +583,7 @@ class _CookiePageState extends State<CookiePage>
                                                 Container(
                                                     // color: Colors.amber,
                                                     height: ScreenUtil().setHeight(
-                                                        !Provider.of<Pagination>(
-                                                                    context,
+                                                        !Provider.of<Pagination>(context,
                                                                     listen:
                                                                         false)
                                                                 .isVerified
@@ -604,37 +602,43 @@ class _CookiePageState extends State<CookiePage>
                                                     // color: Colors.amber,
                                                     child: widget.products[i].imageUrl
                                                             .containsKey(colorKey)
-                                                        ? Image(
+                                                        ? Image.network(
+                                                            widget.products[i]
+                                                                    .imageUrl[
+                                                                colorKey],
                                                             // color: Colors.amber,
-                                                            image:
-                                                                AdvancedNetworkImage(
-                                                              widget.products[i]
-                                                                      .imageUrl[
-                                                                  colorKey],
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3)),
-                                                            ),
+                                                            // image:
+                                                            //     AdvancedNetworkImage(
+                                                            //   widget.products[i]
+                                                            //           .imageUrl[
+                                                            //       colorKey],
+                                                            //   useDiskCache:
+                                                            //       true,
+                                                            //   cacheRule: CacheRule(
+                                                            //       maxAge:
+                                                            //           const Duration(
+                                                            //               days:
+                                                            //                   3)),
+                                                            // ),
                                                             fit: BoxFit.fill,
                                                           )
-                                                        : Image(
-                                                            image:
-                                                                AdvancedNetworkImage(
-                                                              widget.products[i]
-                                                                      .imageUrl[
-                                                                  'yellow'],
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3)),
-                                                            ),
+                                                        : Image.network(
+                                                            widget.products[i]
+                                                                    .imageUrl[
+                                                                'yellow'],
+                                                            // image:
+                                                            //     AdvancedNetworkImage(
+                                                            //   widget.products[i]
+                                                            //           .imageUrl[
+                                                            //       'yellow'],
+                                                            //   useDiskCache:
+                                                            //       true,
+                                                            //   cacheRule: CacheRule(
+                                                            //       maxAge:
+                                                            //           const Duration(
+                                                            //               days:
+                                                            //                   3)),
+                                                            // ),
                                                             fit: BoxFit.fill,
                                                           )
 
@@ -997,38 +1001,99 @@ class _CookiePageState extends State<CookiePage>
                                                   .withOpacity(0.5),
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              onTap: () {
-                                                !Provider.of<Pagination>(
+                                              onTap: () async {
+                                                if (Provider.of<Pagination>(
                                                             context,
                                                             listen: false)
-                                                        .isVerified
-                                                    ? dataSelect(
-                                                        context: context,
-                                                        titleText: 'Important!',
-                                                        buttonText:
-                                                            'Complete SignUp',
-                                                        contentText:
-                                                            "To get complete access of the app, you need to first verify yourself!",
-                                                        onPressed: () async {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          String date =
-                                                              await Provider.of<
-                                                                          UserInfo>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .getDate(
-                                                                      context);
-                                                          if (date != null) {
-                                                            int d = DateTime
-                                                                    .now()
-                                                                .difference(
-                                                                    DateTime
-                                                                        .parse(
-                                                                            date))
-                                                                .inDays;
-                                                            if (d >= 1) {
+                                                        .isVerified ==
+                                                    false) {
+                                                  var date = await Provider.of<
+                                                              UserInfo>(context,
+                                                          listen: false)
+                                                      .getDate(context);
+                                                  if (date != null) {
+                                                    int d = DateTime.now()
+                                                        .difference(
+                                                            DateTime.parse(
+                                                                date))
+                                                        .inDays;
+                                                    if (d < 1) {
+                                                      fff = false;
+                                                      dataSelect(
+                                                          context: context,
+                                                          titleText: 'Alert!',
+                                                          buttonText: 'Okay',
+                                                          contentText:
+                                                              'Request has already been noted!',
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          gif:
+                                                              "assets/images/identi.gif");
+                                                    }
+                                                  }
+                                                }
+                                                if (fff) {
+                                                  !Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .isVerified
+                                                      ? dataSelect(
+                                                          context: context,
+                                                          titleText:
+                                                              'Important!',
+                                                          buttonText:
+                                                              'Complete SignUp',
+                                                          contentText:
+                                                              "To get complete access of the app, you need to first verify yourself!",
+                                                          onPressed: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            String date =
+                                                                await Provider.of<
+                                                                            UserInfo>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .getDate(
+                                                                        context);
+                                                            if (date != null) {
+                                                              int d = DateTime
+                                                                      .now()
+                                                                  .difference(
+                                                                      DateTime.parse(
+                                                                          date))
+                                                                  .inDays;
+                                                              if (d >= 1) {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            CompleteSignUp(),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                dataSelect(
+                                                                    context:
+                                                                        context,
+                                                                    titleText:
+                                                                        'Alert!',
+                                                                    buttonText:
+                                                                        'Okay',
+                                                                    contentText:
+                                                                        "Request has already been noted!",
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    gif:
+                                                                        "assets/images/identi.gif");
+                                                              }
+                                                            } else {
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
@@ -1037,90 +1102,64 @@ class _CookiePageState extends State<CookiePage>
                                                                           CompleteSignUp(),
                                                                 ),
                                                               );
-                                                            } else {
-                                                              dataSelect(
-                                                                  context:
-                                                                      context,
-                                                                  titleText:
-                                                                      'Alert!',
-                                                                  buttonText:
-                                                                      'Okay',
-                                                                  contentText:
-                                                                      "Request has already been noted!",
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  gif:
-                                                                      "assets/images/identi.gif");
                                                             }
-                                                          } else {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        CompleteSignUp(),
-                                                              ),
-                                                            );
-                                                          }
-                                                        },
-                                                        gif:
-                                                            "assets/images/alert.gif")
-                                                    // )
-                                                    : showDialog(
-                                                        context: widget
-                                                            .globalKey
-                                                            .currentContext,
-                                                        child: AddToCart(
-                                                          globalKey:
-                                                              widget.globalKey,
-                                                          product: widget
-                                                              .products[i],
-                                                          updateCart: false,
-                                                          choicesBuild:
-                                                              Provider.of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .build,
-                                                          choiceColor: Provider
-                                                                  .of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                              .color,
-                                                          choiceCertification:
-                                                              Provider.of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .cert,
-                                                          choiceDiamondQuality:
-                                                              Provider.of<Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .diamondQuality,
-                                                          defValue:
-                                                              _defaultChoiceIndex1,
-                                                          defValue1:
-                                                              _defaultChoiceIndex2,
-                                                          defValue2:
-                                                              _defaultChoiceIndex3,
-                                                          defValue3:
-                                                              _defaultChoiceIndex4,
-                                                          valueChangeBuild:
-                                                              _onValueChange,
-                                                          valueChangeColor:
-                                                              _onValueChangeColor,
-                                                          valueChangeCerti:
-                                                              _onValueChangeCerti,
-                                                          valueChangeDQ:
-                                                              _onValueChangeDQ,
-                                                        ),
-                                                      );
+                                                          },
+                                                          gif:
+                                                              "assets/images/alert.gif")
+                                                      // )
+                                                      : showDialog(
+                                                          context: widget
+                                                              .globalKey
+                                                              .currentContext,
+                                                          child: AddToCart(
+                                                            globalKey: widget
+                                                                .globalKey,
+                                                            product: widget
+                                                                .products[i],
+                                                            updateCart: false,
+                                                            choicesBuild:
+                                                                Provider.of<Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .build,
+                                                            choiceColor: Provider.of<
+                                                                        Pagination>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .color,
+                                                            choiceCertification:
+                                                                Provider.of<Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cert,
+                                                            choiceDiamondQuality:
+                                                                Provider.of<Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .diamondQuality,
+                                                            defValue:
+                                                                _defaultChoiceIndex1,
+                                                            defValue1:
+                                                                _defaultChoiceIndex2,
+                                                            defValue2:
+                                                                _defaultChoiceIndex3,
+                                                            defValue3:
+                                                                _defaultChoiceIndex4,
+                                                            valueChangeBuild:
+                                                                _onValueChange,
+                                                            valueChangeColor:
+                                                                _onValueChangeColor,
+                                                            valueChangeCerti:
+                                                                _onValueChangeCerti,
+                                                            valueChangeDQ:
+                                                                _onValueChangeDQ,
+                                                          ),
+                                                        );
+                                                }
                                               },
                                               child: Icon(
                                                 Icons.shopping_cart,

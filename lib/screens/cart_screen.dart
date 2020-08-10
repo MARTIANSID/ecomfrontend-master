@@ -10,7 +10,7 @@ import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -1901,28 +1901,29 @@ class _CartScreenState extends State<CartScreen> {
                                                           width: ScreenUtil()
                                                               .setWidth(4),
                                                         ),
-                                                        Image(
+                                                        Image.network(
+                                                          product
+                                                              .imageUrl[Provider
+                                                                  .of<Cart>(
+                                                                      context,
+                                                                      listen:
+                                                                          true)
+                                                              .cart[index]
+                                                              .color
+                                                              .toLowerCase()],
                                                           height: ScreenUtil()
                                                               .setHeight(79),
                                                           width: ScreenUtil()
                                                               .setWidth(76),
-                                                          image: AdvancedNetworkImage(
-                                                              product
-                                                                  .imageUrl[Provider.of<
-                                                                          Cart>(
-                                                                      context,
-                                                                      listen:
-                                                                          true)
-                                                                  .cart[index]
-                                                                  .color
-                                                                  .toLowerCase()],
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3))),
+                                                          // image: AdvancedNetworkImage(
+
+                                                          //     useDiskCache:
+                                                          //         true,
+                                                          //     cacheRule: CacheRule(
+                                                          //         maxAge:
+                                                          //             const Duration(
+                                                          //                 days:
+                                                          //                     3))),
                                                           fit: BoxFit.fill,
                                                         ),
                                                         SizedBox(
@@ -3307,19 +3308,21 @@ class _CartScreenState extends State<CartScreen> {
                                                           width: ScreenUtil()
                                                               .setWidth(90),
                                                           // color: Colors.amber,
-                                                          child: Image(
-                                                            image:
-                                                                AdvancedNetworkImage(
-                                                              suggestion[index]
+                                                          child: Image.network(
+                                                            suggestion[index]
                                                                   .image,
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3)),
-                                                            ),
+                                                            // image:
+                                                            //     AdvancedNetworkImage(
+                                                            //   suggestion[index]
+                                                            //       .image,
+                                                            //   useDiskCache:
+                                                            //       true,
+                                                            //   cacheRule: CacheRule(
+                                                            //       maxAge:
+                                                            //           const Duration(
+                                                            //               days:
+                                                            //                   3)),
+                                                            // ),
                                                             fit: BoxFit.fill,
                                                           ),
                                                         ),

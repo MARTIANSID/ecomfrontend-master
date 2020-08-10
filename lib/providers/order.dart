@@ -88,7 +88,6 @@ class Orders with ChangeNotifier {
                       diamondQuality: i['options']['diamondQuality']))
                   .toList()))
           .toList();
-      print(orderProducts);
     } on FormatException {
       throw "Oops Something Went Wrong!";
     } on PlatformException {

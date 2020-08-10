@@ -11,7 +11,7 @@ import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -93,6 +93,8 @@ class _ProductDetailState extends State<ProductDetail> {
   int _defaultChoiceIndex4;
 
   int page = 0;
+
+  bool fff = true;
 
   Future<void> getSearch(query) async {
     try {
@@ -415,22 +417,28 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 ),
                                               );
                                             },
-                                            child: Image(
+                                            child: Image.network(
+                                              widget.product.imageUrl[
+                                                  Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .color[index]
+                                                      .toLowerCase()],
                                               height:
                                                   ScreenUtil().setHeight(290),
                                               width: ScreenUtil().setWidth(290),
-                                              image: AdvancedNetworkImage(
-                                                widget.product.imageUrl[
-                                                    Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .color[index]
-                                                        .toLowerCase()],
-                                                useDiskCache: true,
-                                                cacheRule: CacheRule(
-                                                    maxAge: const Duration(
-                                                        days: 3)),
-                                              ),
+                                              // image: AdvancedNetworkImage(
+                                              //   widget.product.imageUrl[
+                                              //       Provider.of<Pagination>(
+                                              //               context,
+                                              //               listen: false)
+                                              //           .color[index]
+                                              //           .toLowerCase()],
+                                              //   useDiskCache: true,
+                                              //   cacheRule: CacheRule(
+                                              //       maxAge: const Duration(
+                                              //           days: 3)),
+                                              // ),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -452,15 +460,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                           ),
                                         );
                                       },
-                                      child: Image(
+                                      child: Image.network(
+                                        widget.product.imageUrl['yellow'],
                                         height: ScreenUtil().setHeight(290),
                                         width: ScreenUtil().setWidth(290),
-                                        image: AdvancedNetworkImage(
-                                          widget.product.imageUrl['yellow'],
-                                          useDiskCache: true,
-                                          cacheRule: CacheRule(
-                                              maxAge: const Duration(days: 3)),
-                                        ),
+                                        // image: AdvancedNetworkImage(
+                                        //   widget.product.imageUrl['yellow'],
+                                        //   useDiskCache: true,
+                                        //   cacheRule: CacheRule(
+                                        //       maxAge: const Duration(days: 3)),
+                                        // ),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -474,7 +483,13 @@ class _ProductDetailState extends State<ProductDetail> {
                               // padding: EdgeInsets.all(20),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: List<Widget>.generate(3, _buildDot),
+                                children: List<Widget>.generate(
+                                  Provider.of<Pagination>(context,
+                                          listen: false)
+                                      .color
+                                      .length,
+                                  _buildDot,
+                                ),
                               ),
                             ),
                           ],
@@ -880,39 +895,103 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       .withOpacity(0.5),
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  onTap: () {
-                                                    !Provider.of<Pagination>(
+                                                  onTap: () async {
+                                                    if (Provider.of<Pagination>(
                                                                 context,
                                                                 listen: false)
-                                                            .isVerified
-                                                        ? dataSelect(
-                                                            context: context,
-                                                            titleText:
-                                                                'Important!',
-                                                            contentText:
-                                                                "To get complete access of the app, you need to first verify yourself!",
-                                                            buttonText:
-                                                                'Complete SignUp',
-                                                            onPressed:
-                                                                () async {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              String date = await Provider.of<
-                                                                          UserInfo>(
+                                                            .isVerified ==
+                                                        false) {
+                                                      var date = await Provider
+                                                              .of<UserInfo>(
+                                                                  context,
+                                                                  listen: false)
+                                                          .getDate(context);
+                                                      if (date != null) {
+                                                        int d = DateTime.now()
+                                                            .difference(
+                                                                DateTime.parse(
+                                                                    date))
+                                                            .inDays;
+                                                        if (d < 1) {
+                                                          fff = false;
+                                                          dataSelect(
+                                                              context: context,
+                                                              titleText:
+                                                                  'Alert!',
+                                                              buttonText:
+                                                                  'Okay',
+                                                              contentText:
+                                                                  'Request has already been noted!',
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              gif:
+                                                                  "assets/images/identi.gif");
+                                                        }
+                                                      }
+                                                    }
+                                                    if (fff) {
+                                                      !Provider.of<Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isVerified
+                                                          ? dataSelect(
+                                                              context: context,
+                                                              titleText:
+                                                                  'Important!',
+                                                              contentText:
+                                                                  "To get complete access of the app, you need to first verify yourself!",
+                                                              buttonText:
+                                                                  'Complete SignUp',
+                                                              onPressed:
+                                                                  () async {
+                                                                Navigator.pop(
+                                                                    context);
+                                                                String date = await Provider.of<
+                                                                            UserInfo>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .getDate(
+                                                                        context);
+                                                                if (date !=
+                                                                    null) {
+                                                                  int d = DateTime
+                                                                          .now()
+                                                                      .difference(
+                                                                          DateTime.parse(
+                                                                              date))
+                                                                      .inDays;
+                                                                  if (d >= 1) {
+                                                                    Navigator
+                                                                        .push(
                                                                       context,
-                                                                      listen:
-                                                                          false)
-                                                                  .getDate(
-                                                                      context);
-                                                              if (date !=
-                                                                  null) {
-                                                                int d = DateTime
-                                                                        .now()
-                                                                    .difference(
-                                                                        DateTime.parse(
-                                                                            date))
-                                                                    .inDays;
-                                                                if (d >= 1) {
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                CompleteSignUp(),
+                                                                      ),
+                                                                    );
+                                                                  } else {
+                                                                    dataSelect(
+                                                                        context:
+                                                                            context,
+                                                                        titleText:
+                                                                            'Alert!',
+                                                                        contentText:
+                                                                            'Request has already been noted!',
+                                                                        buttonText:
+                                                                            'Okay',
+                                                                        gif:
+                                                                            "assets/images/identi.gif",
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                        });
+                                                                  }
+                                                                } else {
                                                                   Navigator
                                                                       .push(
                                                                     context,
@@ -922,90 +1001,66 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                               CompleteSignUp(),
                                                                     ),
                                                                   );
-                                                                } else {
-                                                                  dataSelect(
-                                                                      context:
-                                                                          context,
-                                                                      titleText:
-                                                                          'Alert!',
-                                                                      contentText:
-                                                                          'Request has already been noted!',
-                                                                      buttonText:
-                                                                          'Okay',
-                                                                      gif:
-                                                                          "assets/images/identi.gif",
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      });
                                                                 }
-                                                              } else {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            CompleteSignUp(),
-                                                                  ),
-                                                                );
-                                                              }
-                                                            },
-                                                            gif:
-                                                                "assets/images/alert.gif")
-                                                        : showDialog(
-                                                            context: context,
-                                                            child: AddToCart(
-                                                              globalKey:
-                                                                  globalKey,
-                                                              product: widget
-                                                                  .product,
-                                                              updateCart: false,
-                                                              choicesBuild: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .build,
-                                                              choiceColor: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .color,
-                                                              choiceCertification:
-                                                                  Provider.of<Pagination>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .cert,
-                                                              choiceDiamondQuality: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .diamondQuality,
-                                                              defValue:
-                                                                  _defaultChoiceIndex1,
-                                                              defValue1:
-                                                                  _defaultChoiceIndex2,
-                                                              defValue2:
-                                                                  _defaultChoiceIndex3,
-                                                              defValue3:
-                                                                  _defaultChoiceIndex4,
-                                                              valueChangeBuild:
-                                                                  widget
-                                                                      .valueChangeBuild,
-                                                              valueChangeColor:
-                                                                  widget
-                                                                      .valueChangeColor,
-                                                              valueChangeCerti:
-                                                                  widget
-                                                                      .valueChangeCerti,
-                                                              valueChangeDQ: widget
-                                                                  .valueChangeDQ,
-                                                            ),
-                                                          );
+                                                              },
+                                                              gif:
+                                                                  "assets/images/alert.gif")
+                                                          : showDialog(
+                                                              context: context,
+                                                              child: AddToCart(
+                                                                globalKey:
+                                                                    globalKey,
+                                                                product: widget
+                                                                    .product,
+                                                                updateCart:
+                                                                    false,
+                                                                choicesBuild: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .build,
+                                                                choiceColor: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .color,
+                                                                choiceCertification: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .cert,
+                                                                choiceDiamondQuality: Provider.of<
+                                                                            Pagination>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .diamondQuality,
+                                                                defValue:
+                                                                    _defaultChoiceIndex1,
+                                                                defValue1:
+                                                                    _defaultChoiceIndex2,
+                                                                defValue2:
+                                                                    _defaultChoiceIndex3,
+                                                                defValue3:
+                                                                    _defaultChoiceIndex4,
+                                                                valueChangeBuild:
+                                                                    widget
+                                                                        .valueChangeBuild,
+                                                                valueChangeColor:
+                                                                    widget
+                                                                        .valueChangeColor,
+                                                                valueChangeCerti:
+                                                                    widget
+                                                                        .valueChangeCerti,
+                                                                valueChangeDQ:
+                                                                    widget
+                                                                        .valueChangeDQ,
+                                                              ),
+                                                            );
+                                                    }
                                                   },
                                                   child: Center(
                                                     child: Text(
@@ -1718,17 +1773,18 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       width: ScreenUtil()
                                                           .setWidth(90),
                                                       // color: Colors.amber,
-                                                      child: Image(
-                                                        image:
-                                                            AdvancedNetworkImage(
-                                                          suggestion[index]
-                                                              .image,
-                                                          useDiskCache: true,
-                                                          cacheRule: CacheRule(
-                                                              maxAge:
-                                                                  const Duration(
-                                                                      days: 3)),
-                                                        ),
+                                                      child: Image.network(
+                                                        suggestion[index].image,
+                                                        // image:
+                                                        //     AdvancedNetworkImage(
+                                                        //   suggestion[index]
+                                                        //       .image,
+                                                        //   useDiskCache: true,
+                                                        //   cacheRule: CacheRule(
+                                                        //       maxAge:
+                                                        //           const Duration(
+                                                        //               days: 3)),
+                                                        // ),
                                                         fit: BoxFit.fill,
                                                       ),
                                                     ),
