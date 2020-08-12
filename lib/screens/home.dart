@@ -26,6 +26,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool loader = true;
+
+  bool f = true;
   void _onTap(int a) {
     setState(() {
       _currentIndex = a;
@@ -126,9 +128,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           controller.reverse();
           // controller.animateTo(0.0);
         });
-      }
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
+      } else if (_hideButtonController.position.pixels > 250.0 &&
+          _hideButtonController.position.userScrollDirection ==
+              ScrollDirection.reverse) {
         if (_isVisible)
           setState(() {
             _isVisible = false;
@@ -137,8 +139,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             controller.forward(from: 0.0);
             // controller.animateTo(1);
           });
-      }
-      if (_hideButtonController.position.userScrollDirection ==
+      } else if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.forward) {
         if (!_isVisible)
           setState(() {
@@ -525,31 +526,61 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         ),
                         GestureDetector(
                           onTap: _isVisible
-                              ? () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => CartScreen(
-                                  //       pageIndex: _previousIndex,
-                                  //       pageController: pageController,
-                                  //     ),
-                                  //   ),
-                                  // );
-                                  if (!Provider.of<Pagination>(context,
-                                          listen: false)
-                                      .isVerified) {
-                                    dataSelect(
-                                        context: context,
-                                        titleText: 'Important!',
-                                        buttonText: 'Complete SignUp',
-                                        contentText:
-                                            'To get complete access of the app, you need to first verify yourself!',
-                                        onPressed: completeSignUp,
-                                        gif: "assets/images/alert.gif");
-                                  } else {
-                                    pageController.jumpToPage(
-                                      3,
-                                    );
+                              ? () async {
+                                  if (Provider.of<Pagination>(context,
+                                              listen: false)
+                                          .isVerified ==
+                                      false) {
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => CartScreen(
+                                    //       pageIndex: _previousIndex,
+                                    //       pageController: pageController,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                    var date = await Provider.of<UserInfo>(
+                                            context,
+                                            listen: false)
+                                        .getDate(context);
+                                    if (date != null) {
+                                      int d = DateTime.now()
+                                          .difference(DateTime.parse(date))
+                                          .inDays;
+                                      if (d < 1) {
+                                        f = false;
+                                        dataSelect(
+                                            context: context,
+                                            titleText: 'Alert!',
+                                            buttonText: 'Okay',
+                                            contentText:
+                                                'Request has already been noted!',
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            gif: "assets/images/identi.gif");
+                                      }
+                                    }
+                                  }
+                                  if (f == true) {
+                                    if (!Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .isVerified &&
+                                        f == true) {
+                                      dataSelect(
+                                          context: context,
+                                          titleText: 'Important!',
+                                          buttonText: 'Complete SignUp',
+                                          contentText:
+                                              'To get complete access of the app, you need to first verify yourself!',
+                                          onPressed: completeSignUp,
+                                          gif: "assets/images/alert.gif");
+                                    } else {
+                                      pageController.jumpToPage(
+                                        3,
+                                      );
+                                    }
                                   }
                                 }
                               : null,

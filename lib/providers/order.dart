@@ -42,7 +42,7 @@ class Order {
 //   String datePlaced;
 // }
 
-final uurl = "https://alexa.gemstory.in/";
+final uurl = "https://echo.gemstory.in/";
 
 class Orders with ChangeNotifier {
   List<dynamic> completedOrders = [];
@@ -88,7 +88,6 @@ class Orders with ChangeNotifier {
                       diamondQuality: i['options']['diamondQuality']))
                   .toList()))
           .toList();
-      print(orderProducts);
     } on FormatException {
       throw "Oops Something Went Wrong!";
     } on PlatformException {

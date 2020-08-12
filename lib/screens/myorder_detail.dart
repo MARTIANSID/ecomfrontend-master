@@ -347,7 +347,7 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                             padding: EdgeInsets.all(10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 // color: Colors.black,
                                 Image(

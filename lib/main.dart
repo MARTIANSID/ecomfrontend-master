@@ -260,21 +260,12 @@ class _MyAppState extends State<MyApp> {
               : FutureBuilder(
                   future: auth.tryAutoLogin(ctx),
                   builder: (ctxx, authResultSnapshot) {
-                    print('checking for future builder ');
-                    print(authResultSnapshot.data);
                     if (!authResultSnapshot.hasData) {
-                      print('hi');
-
                       return SplashScreen();
                     } else if (authResultSnapshot.hasData) {
-                      print(authResultSnapshot.data.toString() + 'got data');
-
                       if (authResultSnapshot.data) {
-                        print(authResultSnapshot.data.toString() + 'For Home');
                         return Home();
                       } else {
-                        print(authResultSnapshot.data.toString() +
-                            'For LoginScreen');
                         return LoginScreen();
                       }
                     } else {

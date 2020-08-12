@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:js';
 
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +52,7 @@ class UserInfo with ChangeNotifier {
   bool check = false;
   var totalOrders;
 
-  final uurl = "https://alexa.gemstory.in/";
+  final uurl = "https://echo.gemstory.in/";
 
   Future<dynamic> getuser(context) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&

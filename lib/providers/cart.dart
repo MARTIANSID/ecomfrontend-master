@@ -47,7 +47,7 @@ class Cart with ChangeNotifier {
   bool check;
   int totalPrice;
   int totalQuantity;
-  var url = 'https://alexa.gemstory.in/cart';
+  var url = 'https://echo.gemstory.in/cart';
 
   Future<void> addCart(
       {context,
@@ -289,7 +289,7 @@ class Cart with ChangeNotifier {
   }
 
   Future<void> getCart({context}) async {
-    final url = 'https://alexa.gemstory.in/cart';
+    final url = 'https://echo.gemstory.in/cart';
 
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {

@@ -10,14 +10,14 @@ import 'package:Flutter/screens/splash_screen.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:Flutter/widgets/sortPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,6 +78,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
   int flag = 0;
 
+  bool ff = true;
+
   @override
   void initState() {
     super.initState();
@@ -97,48 +99,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-
-    // _tabController.addListener(() {
-    // print(Provider.of<Pagination>(context, listen: false).isVerified);
-    //   if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false) {
-    //     //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
-    //     dataSelect(
-    //       context,
-    //       'Important!',
-    //       "To get complete access of the app, you need to first verify yourself!",
-    //       'Complete SignUp',
-    //     );
-    //   }
-    //   // if (_tabController.indexIsChanging) {
-    //   //   dataSelect(
-    //   //     context,
-    //   //     'Important!',
-    //   //     "To get complete access of the app, you need to first verify yourself!",
-    //   //     'Complete SignUp',
-    //   //   );
-    //   // }
-    // });
-    // _loadedProduct = Provider.of<Products>(context, listen: true);
-
-    // new Future.delayed(Duration.zero, () async {
-
-    //   // if (Provider.of<Options>(context, listen: false).build != null) {
-    //   //   buildd = Provider.of<Options>(context, listen: false).build;
-    //   // }
-    //   // if (Provider.of<Options>(context, listen: false).certificate != null) {
-    //   //   certt = Provider.of<Options>(context, listen: false).certificate;
-    //   // }
-//  Binding.instance.addPostFrameCallback((_) {
-//       if (Provider.of<Auth>(context, listen: false).isLogin ||
-//           (Provider.of<Auth>(context, listen: false).autoLogin)) {
-
-//     });   // });
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (Provider.of<Auth>(context, listen: false).isLogin ||
-    //       (Provider.of<Auth>(context, listen: false).autoLogin)) {
-
-    // });
   }
 
   Future<void> getProduct() async {
@@ -148,36 +108,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
         Provider.of<Pagination>(context, listen: false).getProducts(
             page: 1,
             addition: false,
-            select: 'all',
-            context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort),
-        Provider.of<Pagination>(context, listen: false).getProducts(
-            page: 1,
-            addition: false,
             select: 'featured',
             context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort),
-        Provider.of<Pagination>(context, listen: false).getProducts(
-            page: 1,
-            addition: false,
-            select: 'isnew',
-            context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort),
-        Provider.of<Pagination>(context, listen: false).getProducts(
-            page: 1,
-            addition: false,
-            select: 'highestSelling',
-            context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort),
-        Provider.of<Pagination>(context, listen: false).getProducts(
-            addition: false,
-            page: 1,
-            context: context,
-            select: 'fancyDiamond',
             sortby: Provider.of<Pagination>(context, listen: false).count,
             sort: Provider.of<Pagination>(context, listen: false).sort),
         Provider.of<Pagination>(context, listen: false).getFav(context),
@@ -185,15 +117,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
         Provider.of<Notif>(context, listen: false)
             .getNotification(context: context),
       ];
-      // print("bcbcbcbcbc" +
-      //     Provider.of<Pagination>(context, listen: false).count.toString());
-      // print("bcbcbcbcbc" +
-      //     Provider.of<Pagination>(context, listen: false).sort.toString());
       await Future.wait(futures);
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
-
-      //  await Provider.of<Pagination>(context, listen: false).getProducts(
-      //       page: 1, addition: false, select: 'fancyDiamond', context: context);
       if (Provider.of<Auth>(context, listen: false).isLogin &&
           Provider.of<Auth>(context, listen: false).autoLogin == false)
         Provider.of<Auth>(context, listen: false).changeLog();
@@ -241,41 +166,40 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
         if (mounted)
           setState(() {
             isLoading = false;
-
             isInit = false;
-
             super.didChangeDependencies();
-            // colorr = Provider.of<Options>(context, listen: false).color;
-            // diamond = Provider.of<Options>(context, listen: false).diamondQuality;
-            // buildd = Provider.of<Options>(context, listen: false).build;
-            // certt = Provider.of<Options>(context, listen: false).certificate;
           });
       }
-
-      // Timer.periodic(
-      //     Duration(seconds: 1),
-      //     (Timer t) async => await Provider.of<Options>(context, listen: false)
-      //         .getStringValuesSF());
-      // await Provider.of<Options>(context, listen: false).getStringValuesSF();
-
-      // if (Provider.of<Options>(context, listen: false).color != null) {
-      //   colorr = Provider.of<Options>(context, listen: false).color;
-      // print(colorr);
-      // print('in products');
-      // }
-      // if (Provider.of<Options>(context, listen: false).diamondQuality != null) {
-      //   diamond = Provider.of<Options>(context, listen: false).diamondQuality;
-      // print(colorr);
-      // }
-      // if (Provider.of<Options>(context, listen: false).build != null) {
-      //   buildd = Provider.of<Options>(context, listen: false).build;
-      // print(colorr);
-      // }
-      // if (Provider.of<Options>(context, listen: false).certificate != null) {
-      //   certt = Provider.of<Options>(context, listen: false).certificate;
-      // print(colorr);
-      // }
-
+      if (context != null) {
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'all',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'isnew',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'navratna',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'fancyDiamond',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+      }
     }
   }
 
@@ -501,51 +425,57 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        // ShaderMask(
-                                        // shaderCallback: (bounds) => LinearGradient(
-                                        //   colors: [
-                                        //     Color(0xFF34B0D9),
-                                        //     Color(0xFF3685CB),
-                                        //   ],
-                                        //   begin: Alignment.topLeft,
-                                        //   end: Alignment.bottomRight,
-                                        // ).createShader(
-                                        //   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                                        // ),
-                                        //   child: Text(
-                                        //     'CART',
-                                        //     style: TextStyle(
-                                        //       color: Colors.white,
-                                        //       fontFamily: 'Gilroy Black',
-                                        //       fontSize: ScreenUtil()
-                                        //           .setSp(20, allowFontScalingSelf: true),
-                                        //     ),
-                                        //   ),
-                                        // ),
                                         Container(
                                           height: ScreenUtil().setHeight(20),
                                           width: ScreenUtil().setWidth(265),
                                           child: TabBar(
-                                            onTap: (value) {
-                                              // setState(() {
-                                              //   _tabController.index = 1;
-                                              // });
+                                            onTap: (value) async {
                                               if (Provider.of<Pagination>(
                                                           context,
                                                           listen: false)
                                                       .isVerified ==
                                                   false) {
+                                                // setState(() {
+                                                //   _tabController.index = 1;
+                                                // });
+                                                var date =
+                                                    await Provider.of<UserInfo>(
+                                                            context,
+                                                            listen: false)
+                                                        .getDate(context);
+                                                if (date != null) {
+                                                  int d = DateTime.now()
+                                                      .difference(
+                                                          DateTime.parse(date))
+                                                      .inDays;
+                                                  if (d < 1) {
+                                                    ff = false;
+                                                    setState(() {
+                                                      _tabController.index = 1;
+                                                    });
+                                                    dataSelect(
+                                                        context: context,
+                                                        titleText: 'Alert!',
+                                                        buttonText: 'Okay',
+                                                        contentText:
+                                                            'Request has already been noted!',
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        gif:
+                                                            "assets/images/identi.gif");
+                                                  }
+                                                }
+                                              }
+                                              if (!Provider.of<Pagination>(
+                                                          context,
+                                                          listen: false)
+                                                      .isVerified &&
+                                                  ff) {
                                                 setState(() {
                                                   _tabController.index = 1;
                                                 });
-                                                //  if (_tabController.indexIsChanging&&Provider.of<Pagination>(context,listen: false).isVerified==false)
-                                                // dataSelect(
-                                                //   context,
-                                                //   'Important!',
-                                                //   "To get complete access of the app, you need to first verify yourself!",
-                                                //   'Complete SignUp',
-                                                //   completeSignUp,
-                                                // );
                                                 dataSelect(
                                                     context: context,
                                                     titleText: 'Important!',
@@ -559,8 +489,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               }
                                             },
                                             controller: _tabController,
-                                            // indicatorColor: kPrimaryColor,
-                                            // labelColor: Colors.black,
                                             labelStyle: TextStyle(
                                               fontFamily: 'Gilroy Bold',
                                               color: Colors.white,
@@ -573,7 +501,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               fontSize: ScreenUtil().setSp(14,
                                                   allowFontScalingSelf: true),
                                             ),
-                                            // indicatorPadding: EdgeInsets.only(left: 8.0, right: 8.0),
                                             labelPadding: EdgeInsets.only(
                                                 left: 5.0, right: 5.0),
                                             isScrollable: true,
@@ -582,8 +509,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               Tab(
                                                 child: ShaderMask(
                                                   shaderCallback: (bounds) =>
-                                                      // _tabController.index == 0
-                                                      // ?
                                                       LinearGradient(
                                                     colors: [
                                                       Color(0xFF34B0D9),
@@ -598,25 +523,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                         bounds.width,
                                                         bounds.height),
                                                   ),
-                                                  // : LinearGradient(
-                                                  //     colors: [
-                                                  //       Color(0xFFA49797),
-                                                  //       Color(0xFFA49797),
-                                                  //     ],
-                                                  //     begin: Alignment.topLeft,
-                                                  //     end:
-                                                  //         Alignment.bottomRight,
-                                                  //   ).createShader(
-                                                  //     Rect.fromLTWH(
-                                                  //         0,
-                                                  //         0,
-                                                  //         bounds.width,
-                                                  //         bounds.height),
-                                                  //   ),
                                                   child: Text(
                                                     'ALL',
                                                     style: TextStyle(
-                                                      // color: Colors.black,
                                                       color: Colors.white,
                                                     ),
                                                   ),
@@ -625,8 +534,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               Tab(
                                                 child: ShaderMask(
                                                   shaderCallback: (bounds) =>
-                                                      // _tabController.index == 1
-                                                      // ?
                                                       LinearGradient(
                                                     colors: [
                                                       Color(0xFF34B0D9),
@@ -641,21 +548,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                         bounds.width,
                                                         bounds.height),
                                                   ),
-                                                  // : LinearGradient(
-                                                  //     colors: [
-                                                  //       Color(0xFFA49797),
-                                                  //       Color(0xFFA49797),
-                                                  //     ],
-                                                  //     begin: Alignment.topLeft,
-                                                  //     end:
-                                                  //         Alignment.bottomRight,
-                                                  //   ).createShader(
-                                                  //     Rect.fromLTWH(
-                                                  //         0,
-                                                  //         0,
-                                                  //         bounds.width,
-                                                  //         bounds.height),
-                                                  //   ),
                                                   child: Text(
                                                     'FEATURED',
                                                     style: TextStyle(
@@ -667,8 +559,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                               Tab(
                                                 child: ShaderMask(
                                                   shaderCallback: (bounds) =>
-                                                      // _tabController.index == 2
-                                                      // ?
                                                       LinearGradient(
                                                     colors: [
                                                       Color(0xFF34B0D9),
@@ -741,7 +631,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                   //         bounds.height),
                                                   //   ),
                                                   child: Text(
-                                                    'HIGHEST SELLING',
+                                                    'NAVRATNA',
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                     ),
@@ -812,7 +702,122 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                       scrollController: widget
                                                           .scrollController,
                                                     ),
-                                                  );
+                                                  ).then((value) async {
+                                                    // await Future.wait([
+                                                    //   Provider.of<Pagination>(
+                                                    //           context,
+                                                    //           listen: false)
+                                                    //       .getProducts(
+                                                    //           addition: false,
+                                                    //           page: 1,
+                                                    //           context: context,
+                                                    //           select:
+                                                    //               'featured',
+                                                    //           sortby: Provider.of<
+                                                    //                       Pagination>(
+                                                    //                   context,
+                                                    //                   listen:
+                                                    //                       false)
+                                                    //               .count,
+                                                    //           sort: Provider.of<
+                                                    //                       Pagination>(
+                                                    //                   context,
+                                                    //                   listen:
+                                                    //                       false)
+                                                    //               .sort)
+                                                    // ]);
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select: 'all',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort)
+                                                    ]);
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select: 'isnew',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort)
+                                                    ]);
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select:
+                                                                  'fancyDiamond',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort),
+                                                    ]);
+
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select:
+                                                                  'navratna',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort)
+                                                    ]);
+                                                  });
                                                 },
                                                 child: Padding(
                                                   padding: EdgeInsets.only(
@@ -836,6 +841,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 onTap: () {
                                                   showDialog(
                                                     context: context,
+                                                    barrierDismissible: true,
                                                     child: OptionsDialog(
                                                       choicesBuild: _choices,
                                                       choiceColor: _choices1,
@@ -965,7 +971,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                           listen: true)
                                       .highestSellingProducts,
                                   scrollController: widget.scrollController,
-                                  select: 'highestSelling',
+                                  select: 'navratna',
                                   sort: sort,
                                   count: count,
                                   build: _defaultChoiceIndex1,
@@ -1200,34 +1206,77 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 tapNotication = !tapNotication;
                                               });
                                             },
-                                            child: AnimatedContainer(
-                                              duration:
-                                                  Duration(milliseconds: 600),
-                                              margin:
-                                                  EdgeInsets.only(right: 6.0),
-                                              height: ScreenUtil().setHeight(
-                                                  searchSelected ? 0 : 25),
-                                              width: ScreenUtil().setWidth(
-                                                  searchSelected ? 0 : 25),
-                                              child: Provider.of<Notif>(context,
-                                                              listen: true)
-                                                          .notifications
-                                                          .length >
-                                                      0
-                                                  ? Provider.of<Notif>(context,
-                                                              listen: true)
-                                                          .checkForDelete()
-                                                      ? SvgPicture.asset(
+                                            child: Container(
+                                              width: 50.0,
+                                              child: Center(
+                                                child: AnimatedContainer(
+                                                  duration: Duration(
+                                                      milliseconds: 600),
+                                                  margin: EdgeInsets.only(
+                                                      right: 6.0),
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  height: ScreenUtil()
+                                                      .setHeight(searchSelected
+                                                          ? 0
+                                                          : 50),
+                                                  width: ScreenUtil().setWidth(
+                                                      searchSelected ? 0 : 50),
+                                                  color: Colors.transparent,
+                                                  child: Provider.of<Notif>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .notifications
+                                                              .length >
+                                                          0
+                                                      ? Provider.of<Notif>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .checkForDelete()
+                                                          ? SvgPicture.asset(
+                                                              'assets/icons/notificationIcon.svg',
+                                                              color:
+                                                                  Colors.black,
+                                                              height: ScreenUtil()
+                                                                  .setHeight(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                              width: ScreenUtil()
+                                                                  .setWidth(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                            )
+                                                          : Image.asset(
+                                                              'assets/images/notificationPulse.png',
+                                                              height: ScreenUtil()
+                                                                  .setHeight(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                              width: ScreenUtil()
+                                                                  .setWidth(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                            )
+                                                      : SvgPicture.asset(
                                                           'assets/icons/notificationIcon.svg',
+                                                          height: ScreenUtil()
+                                                              .setHeight(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
+                                                          width: ScreenUtil()
+                                                              .setWidth(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
                                                           color: Colors.black,
-                                                        )
-                                                      : Image.asset(
-                                                          'assets/images/notificationPulse.png',
-                                                        )
-                                                  : SvgPicture.asset(
-                                                      'assets/icons/notificationIcon.svg',
-                                                      color: Colors.black,
-                                                    ),
+                                                        ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -1465,17 +1514,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                           90),
                                                               // color: Colors.amber,
                                                               child: Image(
+                                                                // suggestion[
+                                                                //         index]
+                                                                //     .image,
                                                                 image:
-                                                                    AdvancedNetworkImage(
+                                                                    CachedNetworkImageProvider(
                                                                   suggestion[
                                                                           index]
                                                                       .image,
-                                                                  useDiskCache:
-                                                                      true,
-                                                                  cacheRule: CacheRule(
-                                                                      maxAge: const Duration(
-                                                                          days:
-                                                                              3)),
                                                                 ),
                                                                 fit:
                                                                     BoxFit.fill,
@@ -2072,17 +2118,19 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                     ),
                                   ),
                                   Positioned(
-                                    top: ScreenUtil().setHeight(20 + 22 + 10),
-                                    left: ScreenUtil().setWidth(345),
-                                    child: GestureDetector(
-                                      onTap: () {
+                                    top: ScreenUtil().setHeight(20 + 22 + 0),
+                                    left: ScreenUtil().setWidth(335),
+                                    child: IconButton(
+                                      onPressed: () {
                                         setState(() {
                                           tapNotication = false;
                                         });
                                       },
-                                      child: Icon(Icons.clear,
-                                          size: ScreenUtil().setSp(30,
-                                              allowFontScalingSelf: true)),
+                                      icon: Icon(
+                                        Icons.clear,
+                                        size: ScreenUtil().setSp(30,
+                                            allowFontScalingSelf: true),
+                                      ),
                                     ),
                                     // ),
                                   ),

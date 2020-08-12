@@ -8,14 +8,17 @@ import '../widgets/snackbar.dart';
 
 class SortPage extends StatefulWidget {
   final ScrollController scrollController;
+  final String select;
 
-  const SortPage({Key key, this.scrollController}) : super(key: key);
+  const SortPage({Key key, this.select, this.scrollController})
+      : super(key: key);
   @override
   _SortPageState createState() => _SortPageState();
 }
 
 class _SortPageState extends State<SortPage> {
   int _selectedTab;
+  int _prevSelectedTab;
   bool isLoading = false;
   bool _check = false;
   var sortChoices = [
@@ -49,67 +52,148 @@ class _SortPageState extends State<SortPage> {
       setState(() {
         isLoading = true;
       });
-    var value = index == null ? null : sortChoicesServer[index].toString();
+
+    var value =
+        index == null ? 'styleNumber' : sortChoicesServer[index].toString();
     await Provider.of<Pagination>(context, listen: false).setCount(value);
     if (checked) {
       await Provider.of<Pagination>(context, listen: false).setSort(1);
     } else {
       await Provider.of<Pagination>(context, listen: false).setSort(-1);
     }
+    // print(Provider.of<Pagination>(context, listen: false).count);
+    // print(Provider.of<Pagination>(context, listen: false).sort);
     Provider.of<Pagination>(context, listen: false).pageStart();
 
     var futures = <Future>[
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'all',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count == null
-              ? 'styleNumber'
-              : Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'featured',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count == null
-              ? 'styleNumber'
-              : Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'isNew',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count == null
-              ? 'styleNumber'
-              : Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'highestSelling',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count == null
-              ? 'styleNumber'
-              : Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
-      Provider.of<Pagination>(context, listen: false).getProducts(
-          addition: false,
-          page: 1,
-          context: context,
-          select: 'fancyDiamond',
-          sortby: Provider.of<Pagination>(context, listen: false).count == null
-              ? 'styleNumber'
-              : Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort),
+      // Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'all',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count == null
+      //         ? 'styleNumber'
+      //         : Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort),
+      // Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'featured',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count == null
+      //         ? 'styleNumber'
+      //         : Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort),
+      // Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'isnew',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count == null
+      //         ? 'styleNumber'
+      //         : Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort),
+      // Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'navratna',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count == null
+      //         ? 'styleNumber'
+      //         : Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort),
+      // Provider.of<Pagination>(context, listen: false).getProducts(
+      //     addition: false,
+      //     page: 1,
+      //     context: context,
+      //     select: 'fancyDiamond',
+      //     sortby: Provider.of<Pagination>(context, listen: false).count == null
+      //         ? 'styleNumber'
+      //         : Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort),
       Provider.of<Pagination>(context, listen: false).getFav(context)
     ];
     try {
+      // await Future.wait([]);
+      await Provider.of<Pagination>(context, listen: false).getProducts(
+          addition: false,
+          page: 1,
+          context: context,
+          select: 'featured',
+          sortby: Provider.of<Pagination>(context, listen: false).count,
+          sort: Provider.of<Pagination>(context, listen: false).sort);
+      // ]);
+      // await Provider.of<Pagination>(context, listen: false)
+      //     .getProducts(
+      //         page: 1,
+      //         addition: false,
+      //         select: 'all',
+      //         context: context,
+      //         sortby:
+      //             Provider.of<Pagination>(context, listen: false).count == null
+      //                 ? 'styleNumber'
+      //                 : Provider.of<Pagination>(context, listen: false).count,
+      //         sort: Provider.of<Pagination>(context, listen: false).sort)
+      //     .then((value) {
+      //   Provider.of<Pagination>(context, listen: false)
+      //       .getProducts(
+      //           page: 1,
+      //           addition: false,
+      //           select: 'featured',
+      //           context: context,
+      //           sortby: Provider.of<Pagination>(context, listen: false).count ==
+      //                   null
+      //               ? 'styleNumber'
+      //               : Provider.of<Pagination>(context, listen: false).count,
+      //           sort: Provider.of<Pagination>(context, listen: false).sort)
+      //       .then((value) {
+      //     Provider.of<Pagination>(context, listen: false)
+      //         .getProducts(
+      //             page: 1,
+      //             addition: false,
+      //             select: 'isNew',
+      //             context: context,
+      //             sortby: Provider.of<Pagination>(context, listen: false)
+      //                         .count ==
+      //                     null
+      //                 ? 'styleNumber'
+      //                 : Provider.of<Pagination>(context, listen: false).count,
+      //             sort: Provider.of<Pagination>(context, listen: false).sort)
+      //         .then((value) {
+      //       Provider.of<Pagination>(context, listen: false)
+      //           .getProducts(
+      //               page: 1,
+      //               addition: false,
+      //               select: 'navratna',
+      //               context: context,
+      //               sortby: Provider.of<Pagination>(context, listen: false)
+      //                           .count ==
+      //                       null
+      //                   ? 'styleNumber'
+      //                   : Provider.of<Pagination>(context, listen: false).count,
+      //               sort: Provider.of<Pagination>(context, listen: false).sort)
+      //           .then((value) {
+      //         Provider.of<Pagination>(context, listen: false).getProducts(
+      //             addition: false,
+      //             page: 1,
+      //             context: context,
+      //             select: 'fancyDiamond',
+      //             sortby: Provider.of<Pagination>(context, listen: false)
+      //                         .count ==
+      //                     null
+      //                 ? 'styleNumber'
+      //                 : Provider.of<Pagination>(context, listen: false).count,
+      //             sort: Provider.of<Pagination>(context, listen: false).sort);
+      //       });
+      //     });
+      //   });
+      // });
+
+      // await Provider.of<Pagination>(context, listen: false).getFav(context);
       await Future.wait(futures);
+      // print("DC");
       widget.scrollController
-          .animateTo(0, duration: new Duration(seconds: 1), curve: Curves.ease);
+          .animateTo(0, duration: Duration(seconds: 1), curve: Curves.ease);
     } catch (err) {
       dataSelect(
           context: context,
@@ -186,7 +270,11 @@ class _SortPageState extends State<SortPage> {
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    _selectedTab = index;
+                                    if (_selectedTab == index) {
+                                      _selectedTab = null;
+                                    } else {
+                                      _selectedTab = index;
+                                    }
                                   });
                                   // widget.valueChangeDQ(index);
                                 },
@@ -290,7 +378,7 @@ class _SortPageState extends State<SortPage> {
                             children: <Widget>[
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
                                   Text(
                                     'Low to High',
@@ -365,10 +453,24 @@ class _SortPageState extends State<SortPage> {
                                               isLoading = true;
                                             });
                                           await sortIt(_selectedTab, _check);
+                                          // await Future.wait([
+                                          //   Provider.of<Pagination>(context,
+                                          //           listen: false)
+                                          //       .getFav(context)
+                                          // ]);
+                                          // print("object");
                                           if (mounted)
                                             setState(() {
                                               isLoading = false;
                                             });
+                                        } else {
+                                          await sortIt(_selectedTab, _check);
+                                          // await Future.wait([
+                                          //   Provider.of<Pagination>(context,
+                                          //           listen: false)
+                                          //       .getFav(context)
+                                          // ]);
+                                          // print("object1");
                                         }
                                       } catch (err) {
                                         dataSelect(

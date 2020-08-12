@@ -9,8 +9,9 @@ import 'package:Flutter/providers/search.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -1902,27 +1903,32 @@ class _CartScreenState extends State<CartScreen> {
                                                               .setWidth(4),
                                                         ),
                                                         Image(
+                                                          image:
+                                                              CachedNetworkImageProvider(
+                                                            product
+                                                                .imageUrl[Provider
+                                                                    .of<
+                                                                            Cart>(
+                                                                        context,
+                                                                        listen:
+                                                                            true)
+                                                                .cart[index]
+                                                                .color
+                                                                .toLowerCase()],
+                                                          ),
                                                           height: ScreenUtil()
                                                               .setHeight(79),
                                                           width: ScreenUtil()
                                                               .setWidth(76),
-                                                          image: AdvancedNetworkImage(
-                                                              product
-                                                                  .imageUrl[Provider.of<
-                                                                          Cart>(
-                                                                      context,
-                                                                      listen:
-                                                                          true)
-                                                                  .cart[index]
-                                                                  .color
-                                                                  .toLowerCase()],
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3))),
+                                                          // image: AdvancedNetworkImage(
+
+                                                          //     useDiskCache:
+                                                          //         true,
+                                                          //     cacheRule: CacheRule(
+                                                          //         maxAge:
+                                                          //             const Duration(
+                                                          //                 days:
+                                                          //                     3))),
                                                           fit: BoxFit.fill,
                                                         ),
                                                         SizedBox(
@@ -3068,10 +3074,12 @@ class _CartScreenState extends State<CartScreen> {
                                         child: AnimatedContainer(
                                           duration: Duration(milliseconds: 600),
                                           margin: EdgeInsets.only(right: 6.0),
+                                          alignment: Alignment.centerRight,
                                           height: ScreenUtil().setHeight(
-                                              searchSelected ? 0 : 25),
+                                              searchSelected ? 0 : 50),
                                           width: ScreenUtil().setWidth(
-                                              searchSelected ? 0 : 25),
+                                              searchSelected ? 0 : 50),
+                                          color: Colors.transparent,
                                           child: Provider.of<Notif>(context,
                                                           listen: true)
                                                       .notifications
@@ -3083,12 +3091,38 @@ class _CartScreenState extends State<CartScreen> {
                                                   ? SvgPicture.asset(
                                                       'assets/icons/notificationIcon.svg',
                                                       color: Colors.black,
+                                                      height: ScreenUtil()
+                                                          .setHeight(
+                                                              searchSelected
+                                                                  ? 0
+                                                                  : 25),
+                                                      width: ScreenUtil()
+                                                          .setWidth(
+                                                              searchSelected
+                                                                  ? 0
+                                                                  : 25),
                                                     )
                                                   : Image.asset(
                                                       'assets/images/notificationPulse.png',
+                                                      height: ScreenUtil()
+                                                          .setHeight(
+                                                              searchSelected
+                                                                  ? 0
+                                                                  : 25),
+                                                      width: ScreenUtil()
+                                                          .setWidth(
+                                                              searchSelected
+                                                                  ? 0
+                                                                  : 25),
                                                     )
                                               : SvgPicture.asset(
                                                   'assets/icons/notificationIcon.svg',
+                                                  height: ScreenUtil()
+                                                      .setHeight(searchSelected
+                                                          ? 0
+                                                          : 25),
+                                                  width: ScreenUtil().setWidth(
+                                                      searchSelected ? 0 : 25),
                                                   color: Colors.black,
                                                 ),
                                         ),
@@ -3308,17 +3342,12 @@ class _CartScreenState extends State<CartScreen> {
                                                               .setWidth(90),
                                                           // color: Colors.amber,
                                                           child: Image(
+                                                            // suggestion[index]
+                                                            //     .image,
                                                             image:
-                                                                AdvancedNetworkImage(
+                                                                CachedNetworkImageProvider(
                                                               suggestion[index]
                                                                   .image,
-                                                              useDiskCache:
-                                                                  true,
-                                                              cacheRule: CacheRule(
-                                                                  maxAge:
-                                                                      const Duration(
-                                                                          days:
-                                                                              3)),
                                                             ),
                                                             fit: BoxFit.fill,
                                                           ),
@@ -3836,17 +3865,19 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: ScreenUtil().setHeight(20 + 22 + 10),
-                                  left: ScreenUtil().setWidth(345),
-                                  child: GestureDetector(
-                                    onTap: () {
+                                  top: ScreenUtil().setHeight(20 + 22 + 0),
+                                  left: ScreenUtil().setWidth(335),
+                                  child: IconButton(
+                                    onPressed: () {
                                       setState(() {
                                         tapNotication = false;
                                       });
                                     },
-                                    child: Icon(Icons.clear,
-                                        size: ScreenUtil().setSp(30,
-                                            allowFontScalingSelf: true)),
+                                    icon: Icon(
+                                      Icons.clear,
+                                      size: ScreenUtil().setSp(30,
+                                          allowFontScalingSelf: true),
+                                    ),
                                   ),
                                   // ),
                                 ),

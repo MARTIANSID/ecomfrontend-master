@@ -33,7 +33,7 @@ class Searchh with ChangeNotifier {
       await Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
-    final url = 'https://alexa.gemstory.in/product/search?query=$query';
+    final url = 'https://echo.gemstory.in/product/search?query=$query';
     try {
       if (Provider.of<Auth>(context, listen: false).isAuth == false) {
         Navigator.popAndPushNamed(context, '/');

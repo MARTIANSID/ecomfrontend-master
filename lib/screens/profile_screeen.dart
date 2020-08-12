@@ -6,9 +6,10 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/profileImage.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -521,22 +522,28 @@ class _UserPageState extends State<UserPage>
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
                                                 fit: BoxFit.fill,
-                                                image: AdvancedNetworkImage(
+                                                image:
+                                                    CachedNetworkImageProvider(
                                                   Provider.of<UserInfo>(context,
                                                           listen: true)
                                                       .profileImage,
-                                                  useDiskCache: true,
-                                                  cacheRule: CacheRule(
-                                                    maxAge:
-                                                        const Duration(days: 3),
-                                                  ),
                                                 ),
+                                                // image: AdvancedNetworkImage(
+                                                //   Provider.of<UserInfo>(context,
+                                                //           listen: true)
+                                                //       .profileImage,
+                                                //   useDiskCache: true,
+                                                //   cacheRule: CacheRule(
+                                                //     maxAge:
+                                                //         const Duration(days: 3),
+                                                //   ),
                                               ),
                                             ),
                                           ),
                                   ),
                                 ),
                               ),
+                              // ),
                               SizedBox(
                                 width: ScreenUtil().setWidth(11),
                               ),

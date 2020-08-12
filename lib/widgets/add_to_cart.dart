@@ -2,8 +2,9 @@ import 'dart:ui';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -208,26 +209,30 @@ class AddToCartTState extends State<AddToCart> {
                                 // color: Colors.amber,
                                 child: widget.product.imageUrl
                                         .containsKey(colorKey)
-                                    ? Image(
+                                    ? Image.network(
+                                        widget.product.imageUrl[colorKey],
                                         height: ScreenUtil().setHeight(135),
                                         width: ScreenUtil().setWidth(130),
-                                        image: AdvancedNetworkImage(
-                                          widget.product.imageUrl[colorKey],
-                                          useDiskCache: true,
-                                          cacheRule: CacheRule(
-                                              maxAge: const Duration(days: 3)),
-                                        ),
+                                        // image: AdvancedNetworkImage(
+                                        //   widget.product.imageUrl[colorKey],
+                                        //   useDiskCache: true,
+                                        //   cacheRule: CacheRule(
+                                        //       maxAge: const Duration(days: 3)),
+                                        // ),
                                         fit: BoxFit.cover,
                                       )
                                     : Image(
+                                        image: CachedNetworkImageProvider(
+                                          widget.product.imageUrl['yellow'],
+                                        ),
                                         height: ScreenUtil().setHeight(135),
                                         width: ScreenUtil().setWidth(130),
-                                        image: AdvancedNetworkImage(
-                                          widget.product.imageUrl['yellow'],
-                                          useDiskCache: true,
-                                          cacheRule: CacheRule(
-                                              maxAge: const Duration(days: 3)),
-                                        ),
+                                        // image: AdvancedNetworkImage(
+                                        //   widget.product.imageUrl['yellow'],
+                                        //   useDiskCache: true,
+                                        //   cacheRule: CacheRule(
+                                        //       maxAge: const Duration(days: 3)),
+                                        // ),
                                         fit: BoxFit.cover,
                                       ),
                               ),

@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
+// import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
@@ -299,16 +300,12 @@ class _ProfileImageState extends State<ProfileImage> {
         child: pv.PhotoViewGallery(
           pageOptions: <PhotoViewGalleryPageOptions>[
             PhotoViewGalleryPageOptions(
+              maxScale: PhotoViewComputedScale.contained * 5.0,
+              minScale: PhotoViewComputedScale.contained * 0.5,
               imageProvider: isLoadingimage
-                  ? AdvancedNetworkImage(
-                      '',
-                      useDiskCache: true,
-                      cacheRule: CacheRule(maxAge: const Duration(days: 3)),
-                    )
-                  : AdvancedNetworkImage(
+                  ? CachedNetworkImageProvider('')
+                  : CachedNetworkImageProvider(
                       Provider.of<UserInfo>(context, listen: true).profileImage,
-                      useDiskCache: true,
-                      cacheRule: CacheRule(maxAge: const Duration(days: 3)),
                     ),
               heroAttributes: PhotoViewHeroAttributes(tag: "tag2"),
             ),

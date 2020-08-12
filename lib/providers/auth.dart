@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './http_exception.dart';
 
 class Auth with ChangeNotifier {
-  static const uurl = 'https://alexa.gemstory.in/';
+  static const uurl = 'https://echo.gemstory.in/';
 
   Future<bool> checkIfRegistered(String number) async {
     try {
@@ -81,9 +81,13 @@ class Auth with ChangeNotifier {
       final responseBody = json.decode(response.body);
       // print(
       // 'PP resetPasswordRequest body details message:${responseBody['details']}');
-      if (responseBody['error'] == true)
+      if (responseBody['error'] == true) {
+        if (responseBody['details']['name'] ==
+            'waitabit! - Devloper Defined Error!') {
+          return true;
+        }
         throw HttpException(responseBody['details']['message']);
-      else
+      } else
         return true;
     } on PlatformException {
       throw 'Something went wrong, I\'m unable to connect to our servers. Try again!';
@@ -144,7 +148,6 @@ class Auth with ChangeNotifier {
       var status = await OneSignal.shared.getPermissionSubscriptionState();
 
       var playerId = status.subscriptionStatus.userId;
-      print(playerId);
 
       final response = await http.post(
         '$uurl$urlSegment',
@@ -238,17 +241,13 @@ class Auth with ChangeNotifier {
 
   Future<bool> tryAutoLogin(context) async {
     try {
-      print('in auto login again!!');
       final prefs = await SharedPreferences.getInstance();
-      print(prefs.getString('userData'));
 
       // print(
       // 'PP in tryAutologinmethod result: ${prefs.containsKey('userData')}');
       if (!prefs.containsKey('userData')) {
-        print('Returning False from autologin');
         return false;
       }
-      print('after return false');
 
       final extractedUserData =
           json.decode(prefs.getString('userData')) as Map<String, Object>;
@@ -328,7 +327,6 @@ class Auth with ChangeNotifier {
     }
 
     final int timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-    print(timeToExpiry.toString() + 'TIMEFOREXPIRY');
 
     _authTimer = Timer(Duration(seconds: timeToExpiry - 2), () async {
       final prefs = await SharedPreferences.getInstance();
@@ -341,10 +339,9 @@ class Auth with ChangeNotifier {
             json.decode(prefs.getString('userData')) as Map<String, Object>;
         String number = extractedUserData['number'];
         String password = extractedUserData['password'];
-        print('started!!!!');
+
         await authenticate(number, password, 'user/login');
       } else {
-        print('started logout!!!');
         logout();
       }
     }
@@ -386,7 +383,7 @@ class Auth with ChangeNotifier {
 
   Future<void> sendPlayerId({context, playerId}) async {
     try {
-      final response = await http.post("${uurl}/user/playerid",
+      final response = await http.post("$uurl/user/playerid",
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -395,7 +392,6 @@ class Auth with ChangeNotifier {
           body: json.encode({"notifid": playerId}));
 
       final responseData = json.decode(response.body);
-      print(responseData);
       if (responseData['error']) {
         throw HttpException(responseData['details']['message']);
       }
