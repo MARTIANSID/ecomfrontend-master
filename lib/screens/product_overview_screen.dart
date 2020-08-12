@@ -10,6 +10,7 @@ import 'package:Flutter/screens/splash_screen.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:Flutter/widgets/sortPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
@@ -103,42 +104,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
   Future<void> getProduct() async {
     try {
       await Provider.of<Pagination>(context, listen: false).getSortData();
-      await Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'all',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort);
-      await Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'featured',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort);
-      await Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'isnew',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort);
-      await Provider.of<Pagination>(context, listen: false).getProducts(
-          page: 1,
-          addition: false,
-          select: 'navratna',
-          context: context,
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort);
-      await Provider.of<Pagination>(context, listen: false).getProducts(
-          addition: false,
-          page: 1,
-          context: context,
-          select: 'fancyDiamond',
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort);
       var futures = <Future>[
+        Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'featured',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort),
         Provider.of<Pagination>(context, listen: false).getFav(context),
         Provider.of<Options>(context, listen: false).getStringValuesSF(),
         Provider.of<Notif>(context, listen: false)
@@ -193,11 +166,39 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
         if (mounted)
           setState(() {
             isLoading = false;
-
             isInit = false;
-
             super.didChangeDependencies();
           });
+      }
+      if (context != null) {
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'all',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'isnew',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            page: 1,
+            addition: false,
+            select: 'navratna',
+            context: context,
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'fancyDiamond',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
       }
     }
   }
@@ -701,7 +702,122 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                       scrollController: widget
                                                           .scrollController,
                                                     ),
-                                                  );
+                                                  ).then((value) async {
+                                                    // await Future.wait([
+                                                    //   Provider.of<Pagination>(
+                                                    //           context,
+                                                    //           listen: false)
+                                                    //       .getProducts(
+                                                    //           addition: false,
+                                                    //           page: 1,
+                                                    //           context: context,
+                                                    //           select:
+                                                    //               'featured',
+                                                    //           sortby: Provider.of<
+                                                    //                       Pagination>(
+                                                    //                   context,
+                                                    //                   listen:
+                                                    //                       false)
+                                                    //               .count,
+                                                    //           sort: Provider.of<
+                                                    //                       Pagination>(
+                                                    //                   context,
+                                                    //                   listen:
+                                                    //                       false)
+                                                    //               .sort)
+                                                    // ]);
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select: 'all',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort)
+                                                    ]);
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select: 'isnew',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort)
+                                                    ]);
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select:
+                                                                  'fancyDiamond',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort),
+                                                    ]);
+
+                                                    await Future.wait([
+                                                      Provider.of<Pagination>(
+                                                              context,
+                                                              listen: false)
+                                                          .getProducts(
+                                                              addition: false,
+                                                              page: 1,
+                                                              context: context,
+                                                              select:
+                                                                  'navratna',
+                                                              sortby: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .count,
+                                                              sort: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .sort)
+                                                    ]);
+                                                  });
                                                 },
                                                 child: Padding(
                                                   padding: EdgeInsets.only(
@@ -1090,34 +1206,77 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                 tapNotication = !tapNotication;
                                               });
                                             },
-                                            child: AnimatedContainer(
-                                              duration:
-                                                  Duration(milliseconds: 600),
-                                              margin:
-                                                  EdgeInsets.only(right: 6.0),
-                                              height: ScreenUtil().setHeight(
-                                                  searchSelected ? 0 : 25),
-                                              width: ScreenUtil().setWidth(
-                                                  searchSelected ? 0 : 25),
-                                              child: Provider.of<Notif>(context,
-                                                              listen: true)
-                                                          .notifications
-                                                          .length >
-                                                      0
-                                                  ? Provider.of<Notif>(context,
-                                                              listen: true)
-                                                          .checkForDelete()
-                                                      ? SvgPicture.asset(
+                                            child: Container(
+                                              width: 50.0,
+                                              child: Center(
+                                                child: AnimatedContainer(
+                                                  duration: Duration(
+                                                      milliseconds: 600),
+                                                  margin: EdgeInsets.only(
+                                                      right: 6.0),
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  height: ScreenUtil()
+                                                      .setHeight(searchSelected
+                                                          ? 0
+                                                          : 50),
+                                                  width: ScreenUtil().setWidth(
+                                                      searchSelected ? 0 : 50),
+                                                  color: Colors.transparent,
+                                                  child: Provider.of<Notif>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .notifications
+                                                              .length >
+                                                          0
+                                                      ? Provider.of<Notif>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .checkForDelete()
+                                                          ? SvgPicture.asset(
+                                                              'assets/icons/notificationIcon.svg',
+                                                              color:
+                                                                  Colors.black,
+                                                              height: ScreenUtil()
+                                                                  .setHeight(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                              width: ScreenUtil()
+                                                                  .setWidth(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                            )
+                                                          : Image.asset(
+                                                              'assets/images/notificationPulse.png',
+                                                              height: ScreenUtil()
+                                                                  .setHeight(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                              width: ScreenUtil()
+                                                                  .setWidth(
+                                                                      searchSelected
+                                                                          ? 0
+                                                                          : 25),
+                                                            )
+                                                      : SvgPicture.asset(
                                                           'assets/icons/notificationIcon.svg',
+                                                          height: ScreenUtil()
+                                                              .setHeight(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
+                                                          width: ScreenUtil()
+                                                              .setWidth(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
                                                           color: Colors.black,
-                                                        )
-                                                      : Image.asset(
-                                                          'assets/images/notificationPulse.png',
-                                                        )
-                                                  : SvgPicture.asset(
-                                                      'assets/icons/notificationIcon.svg',
-                                                      color: Colors.black,
-                                                    ),
+                                                        ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -1354,23 +1513,16 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                                       .setWidth(
                                                                           90),
                                                               // color: Colors.amber,
-                                                              child:
-                                                                  Image.network(
-                                                                suggestion[
-                                                                        index]
-                                                                    .image,
-                                                                // image:
-                                                                //     AdvancedNetworkImage(
-                                                                //   suggestion[
-                                                                //           index]
-                                                                //       .image,
-                                                                //   useDiskCache:
-                                                                //       true,
-                                                                //   cacheRule: CacheRule(
-                                                                //       maxAge: const Duration(
-                                                                //           days:
-                                                                //               3)),
-                                                                // ),
+                                                              child: Image(
+                                                                // suggestion[
+                                                                //         index]
+                                                                //     .image,
+                                                                image:
+                                                                    CachedNetworkImageProvider(
+                                                                  suggestion[
+                                                                          index]
+                                                                      .image,
+                                                                ),
                                                                 fit:
                                                                     BoxFit.fill,
                                                               ),
@@ -1966,17 +2118,19 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                     ),
                                   ),
                                   Positioned(
-                                    top: ScreenUtil().setHeight(20 + 22 + 10),
-                                    left: ScreenUtil().setWidth(345),
-                                    child: GestureDetector(
-                                      onTap: () {
+                                    top: ScreenUtil().setHeight(20 + 22 + 0),
+                                    left: ScreenUtil().setWidth(335),
+                                    child: IconButton(
+                                      onPressed: () {
                                         setState(() {
                                           tapNotication = false;
                                         });
                                       },
-                                      child: Icon(Icons.clear,
-                                          size: ScreenUtil().setSp(30,
-                                              allowFontScalingSelf: true)),
+                                      icon: Icon(
+                                        Icons.clear,
+                                        size: ScreenUtil().setSp(30,
+                                            allowFontScalingSelf: true),
+                                      ),
                                     ),
                                     // ),
                                   ),

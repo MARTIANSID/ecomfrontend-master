@@ -9,6 +9,7 @@ import 'package:Flutter/screens/photo_detail_screen.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/optionsDialog.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
@@ -417,13 +418,15 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 ),
                                               );
                                             },
-                                            child: Image.network(
-                                              widget.product.imageUrl[
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .color[index]
-                                                      .toLowerCase()],
+                                            child: Image(
+                                              image: CachedNetworkImageProvider(
+                                                widget.product.imageUrl[
+                                                    Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .color[index]
+                                                        .toLowerCase()],
+                                              ),
                                               height:
                                                   ScreenUtil().setHeight(290),
                                               width: ScreenUtil().setWidth(290),
@@ -460,8 +463,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                           ),
                                         );
                                       },
-                                      child: Image.network(
-                                        widget.product.imageUrl['yellow'],
+                                      child: Image(
+                                        image: CachedNetworkImageProvider(
+                                          widget.product.imageUrl['yellow'],
+                                        ),
                                         height: ScreenUtil().setHeight(290),
                                         width: ScreenUtil().setWidth(290),
                                         // image: AdvancedNetworkImage(
@@ -1513,43 +1518,66 @@ class _ProductDetailState extends State<ProductDetail> {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: () async {
-                                      await Provider.of<Notif>(context,
-                                              listen: false)
-                                          .getNotification(context: context);
+                                      onTap: () async {
+                                        await Provider.of<Notif>(context,
+                                                listen: false)
+                                            .getNotification(context: context);
 
-                                      setState(() {
-                                        tapNotication = !tapNotication;
-                                      });
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 600),
-                                      margin: EdgeInsets.only(right: 6.0),
-                                      height: ScreenUtil()
-                                          .setHeight(searchSelected ? 0 : 25),
-                                      width: ScreenUtil()
-                                          .setWidth(searchSelected ? 0 : 25),
-                                      child: Provider.of<Notif>(context,
-                                                      listen: true)
-                                                  .notifications
-                                                  .length >
-                                              0
-                                          ? Provider.of<Notif>(context,
-                                                      listen: true)
-                                                  .checkForDelete()
-                                              ? SvgPicture.asset(
-                                                  'assets/icons/notificationIcon.svg',
-                                                  color: Colors.black,
-                                                )
-                                              : Image.asset(
-                                                  'assets/images/notificationPulse.png',
-                                                )
-                                          : SvgPicture.asset(
-                                              'assets/icons/notificationIcon.svg',
-                                              color: Colors.black,
-                                            ),
-                                    ),
-                                  ),
+                                        setState(() {
+                                          tapNotication = !tapNotication;
+                                        });
+                                      },
+                                      child: AnimatedContainer(
+                                        duration: Duration(milliseconds: 600),
+                                        margin: EdgeInsets.only(right: 6.0),
+                                        alignment: Alignment.centerRight,
+                                        height: ScreenUtil()
+                                            .setHeight(searchSelected ? 0 : 50),
+                                        width: ScreenUtil()
+                                            .setWidth(searchSelected ? 0 : 50),
+                                        color: Colors.transparent,
+                                        child: Provider.of<Notif>(context,
+                                                        listen: true)
+                                                    .notifications
+                                                    .length >
+                                                0
+                                            ? Provider.of<Notif>(context,
+                                                        listen: true)
+                                                    .checkForDelete()
+                                                ? SvgPicture.asset(
+                                                    'assets/icons/notificationIcon.svg',
+                                                    color: Colors.black,
+                                                    height: ScreenUtil()
+                                                        .setHeight(
+                                                            searchSelected
+                                                                ? 0
+                                                                : 25),
+                                                    width: ScreenUtil()
+                                                        .setWidth(searchSelected
+                                                            ? 0
+                                                            : 25),
+                                                  )
+                                                : Image.asset(
+                                                    'assets/images/notificationPulse.png',
+                                                    height: ScreenUtil()
+                                                        .setHeight(
+                                                            searchSelected
+                                                                ? 0
+                                                                : 25),
+                                                    width: ScreenUtil()
+                                                        .setWidth(searchSelected
+                                                            ? 0
+                                                            : 25),
+                                                  )
+                                            : SvgPicture.asset(
+                                                'assets/icons/notificationIcon.svg',
+                                                height: ScreenUtil().setHeight(
+                                                    searchSelected ? 0 : 25),
+                                                width: ScreenUtil().setWidth(
+                                                    searchSelected ? 0 : 25),
+                                                color: Colors.black,
+                                              ),
+                                      )),
                                 ],
                               ),
                             ),
@@ -1773,8 +1801,12 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       width: ScreenUtil()
                                                           .setWidth(90),
                                                       // color: Colors.amber,
-                                                      child: Image.network(
-                                                        suggestion[index].image,
+                                                      child: Image(
+                                                        image:
+                                                            CachedNetworkImageProvider(
+                                                          suggestion[index]
+                                                              .image,
+                                                        ),
                                                         // image:
                                                         //     AdvancedNetworkImage(
                                                         //   suggestion[index]
@@ -2278,17 +2310,19 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                             ),
                             Positioned(
-                              top: ScreenUtil().setHeight(20 + 22 + 10),
-                              left: ScreenUtil().setWidth(345),
-                              child: GestureDetector(
-                                onTap: () {
+                              top: ScreenUtil().setHeight(20 + 22 + 0),
+                              left: ScreenUtil().setWidth(335),
+                              child: IconButton(
+                                onPressed: () {
                                   setState(() {
                                     tapNotication = false;
                                   });
                                 },
-                                child: Icon(Icons.clear,
-                                    size: ScreenUtil()
-                                        .setSp(30, allowFontScalingSelf: true)),
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: ScreenUtil()
+                                      .setSp(30, allowFontScalingSelf: true),
+                                ),
                               ),
                               // ),
                             ),

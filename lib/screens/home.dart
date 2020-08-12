@@ -128,9 +128,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           controller.reverse();
           // controller.animateTo(0.0);
         });
-      }
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
+      } else if (_hideButtonController.position.pixels > 250.0 &&
+          _hideButtonController.position.userScrollDirection ==
+              ScrollDirection.reverse) {
         if (_isVisible)
           setState(() {
             _isVisible = false;
@@ -139,8 +139,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             controller.forward(from: 0.0);
             // controller.animateTo(1);
           });
-      }
-      if (_hideButtonController.position.userScrollDirection ==
+      } else if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.forward) {
         if (!_isVisible)
           setState(() {

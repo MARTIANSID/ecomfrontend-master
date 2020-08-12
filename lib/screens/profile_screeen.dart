@@ -6,6 +6,7 @@ import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/profileImage.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
@@ -521,7 +522,8 @@ class _UserPageState extends State<UserPage>
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
                                                 fit: BoxFit.fill,
-                                                image: NetworkImage(
+                                                image:
+                                                    CachedNetworkImageProvider(
                                                   Provider.of<UserInfo>(context,
                                                           listen: true)
                                                       .profileImage,

@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './http_exception.dart';
 
 class Auth with ChangeNotifier {
-  static const uurl = 'https://alexa.gemstory.in/';
+  static const uurl = 'https://echo.gemstory.in/';
 
   Future<bool> checkIfRegistered(String number) async {
     try {
@@ -383,7 +383,7 @@ class Auth with ChangeNotifier {
 
   Future<void> sendPlayerId({context, playerId}) async {
     try {
-      final response = await http.post("${uurl}/user/playerid",
+      final response = await http.post("$uurl/user/playerid",
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token,

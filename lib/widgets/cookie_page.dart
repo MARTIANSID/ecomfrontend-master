@@ -5,6 +5,7 @@ import 'package:Flutter/screens/completeSignUp.dart';
 import 'package:Flutter/screens/product_detail.dart';
 import 'package:Flutter/widgets/add_to_cart.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
@@ -583,7 +584,8 @@ class _CookiePageState extends State<CookiePage>
                                                 Container(
                                                     // color: Colors.amber,
                                                     height: ScreenUtil().setHeight(
-                                                        !Provider.of<Pagination>(context,
+                                                        !Provider.of<Pagination>(
+                                                                    context,
                                                                     listen:
                                                                         false)
                                                                 .isVerified
@@ -602,10 +604,13 @@ class _CookiePageState extends State<CookiePage>
                                                     // color: Colors.amber,
                                                     child: widget.products[i].imageUrl
                                                             .containsKey(colorKey)
-                                                        ? Image.network(
-                                                            widget.products[i]
-                                                                    .imageUrl[
-                                                                colorKey],
+                                                        ? Image(
+                                                            image:
+                                                                CachedNetworkImageProvider(
+                                                              widget.products[i]
+                                                                      .imageUrl[
+                                                                  colorKey],
+                                                            ),
                                                             // color: Colors.amber,
                                                             // image:
                                                             //     AdvancedNetworkImage(
@@ -622,10 +627,13 @@ class _CookiePageState extends State<CookiePage>
                                                             // ),
                                                             fit: BoxFit.fill,
                                                           )
-                                                        : Image.network(
-                                                            widget.products[i]
-                                                                    .imageUrl[
-                                                                'yellow'],
+                                                        : Image(
+                                                            image:
+                                                                CachedNetworkImageProvider(
+                                                              widget.products[i]
+                                                                      .imageUrl[
+                                                                  'yellow'],
+                                                            ),
                                                             // image:
                                                             //     AdvancedNetworkImage(
                                                             //   widget.products[i]

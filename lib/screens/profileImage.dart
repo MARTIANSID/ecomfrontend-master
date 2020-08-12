@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
@@ -302,8 +303,8 @@ class _ProfileImageState extends State<ProfileImage> {
               maxScale: PhotoViewComputedScale.contained * 5.0,
               minScale: PhotoViewComputedScale.contained * 0.5,
               imageProvider: isLoadingimage
-                  ? NetworkImage('')
-                  : NetworkImage(
+                  ? CachedNetworkImageProvider('')
+                  : CachedNetworkImageProvider(
                       Provider.of<UserInfo>(context, listen: true).profileImage,
                     ),
               heroAttributes: PhotoViewHeroAttributes(tag: "tag2"),

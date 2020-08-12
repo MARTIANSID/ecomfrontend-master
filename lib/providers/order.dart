@@ -42,7 +42,7 @@ class Order {
 //   String datePlaced;
 // }
 
-final uurl = "https://alexa.gemstory.in/";
+final uurl = "https://echo.gemstory.in/";
 
 class Orders with ChangeNotifier {
   List<dynamic> completedOrders = [];

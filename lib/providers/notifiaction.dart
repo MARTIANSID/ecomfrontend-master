@@ -30,7 +30,7 @@ class Noti {
 }
 
 class Notif with ChangeNotifier {
-  final uurl = "https://alexa.gemstory.in/";
+  final uurl = "https://echo.gemstory.in/";
   List<dynamic> notifications = [];
 
   Future<void> readNNotification({context, id}) async {

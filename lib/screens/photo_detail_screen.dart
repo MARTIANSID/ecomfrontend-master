@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:photo_view/photo_view.dart';
@@ -24,10 +25,10 @@ class PhotoDetailScreen extends StatelessWidget {
               maxScale: PhotoViewComputedScale.contained * 5.0,
               minScale: PhotoViewComputedScale.contained * 0.5,
               imageProvider: product.imageUrl.containsKey(colorKey)
-                  ? NetworkImage(
+                  ? CachedNetworkImageProvider(
                       product.imageUrl[colorKey],
                     )
-                  : NetworkImage(
+                  : CachedNetworkImageProvider(
                       product.imageUrl['yellow'],
                     ),
               //     product.imageUrl[colorKey],

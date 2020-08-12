@@ -113,8 +113,8 @@ class Pagination with ChangeNotifier {
     notifyListeners();
   }
 
-  final uurl = "https://alexa.gemstory.in/";
-  final req = "https://alexa.gemstory.in/user/requestprice";
+  final uurl = "https://echo.gemstory.in/";
+  final req = "https://echo.gemstory.in/user/requestprice";
 
   Future<void> requestPrice({context}) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -163,7 +163,7 @@ class Pagination with ChangeNotifier {
       page = 1,
       select = 'all',
       addition = false}) async {
-    final url = 'https://alexa.gemstory.in/product/paginated?select=' +
+    final url = 'https://echo.gemstory.in/product/paginated?select=' +
         select.toString() +
         '&sortby=' +
         sortby.toString() +
@@ -196,7 +196,13 @@ class Pagination with ChangeNotifier {
       );
 
       final extractedData = json.decode(response.body);
-      print(select + extractedData.toString());
+      // print("Select: " +
+      //     extractedData["select"].toString() +
+      //     "  Total Products: " +
+      //     extractedData["totalProducts"].toString() +
+      //     "  Products in this request: " +
+      //     extractedData["prodsInThisReq"].toString());
+      // print(select + extractedData.toString());
       if (extractedData['error'] != false) {
         throw HttpException(extractedData['details']['message']);
       }
@@ -338,8 +344,8 @@ class Pagination with ChangeNotifier {
                     designDimensions: prod['designDimensions']),
               )
               .toList();
-          print('all');
-          print(allProducts.length);
+          // print('all');
+          // print(allProducts.length);
           notifyListeners();
         } else if (select == 'featured') {
           // featuredProducts = [];
@@ -359,8 +365,8 @@ class Pagination with ChangeNotifier {
                     designDimensions: prod['designDimensions']),
               )
               .toList();
-          print(featuredProducts.length);
-          print('feat');
+          // print(featuredProducts.length);
+          // print('feat');
 
           notifyListeners();
         } else if (select == 'navratna') {
@@ -381,8 +387,8 @@ class Pagination with ChangeNotifier {
                     designDimensions: prod['designDimensions']),
               )
               .toList();
-          print('heigh');
-          print(highestSellingProducts.length);
+          // print('heigh');
+          // print(highestSellingProducts.length);
           notifyListeners();
         } else if (select == 'fancyDiamond') {
           // fancyDiamond = [];
@@ -402,8 +408,8 @@ class Pagination with ChangeNotifier {
                     designDimensions: prod['designDimensions']),
               )
               .toList();
-          print('fanc');
-          print(fancyDiamond.length);
+          // print('fanc');
+          // print(fancyDiamond.length);
           notifyListeners();
         } else {
           // newProducts = [];
@@ -423,8 +429,8 @@ class Pagination with ChangeNotifier {
                     designDimensions: prod['designDimensions']),
               )
               .toList();
-          print('new');
-          print(newProducts.length);
+          // print('new');
+          // print(newProducts.length);
           notifyListeners();
         }
       }
@@ -440,7 +446,7 @@ class Pagination with ChangeNotifier {
   }
 
   Future<void> getFav(context) async {
-    final url = 'https://alexa.gemstory.in/user/favourite/';
+    final url = 'https://echo.gemstory.in/user/favourite/';
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');

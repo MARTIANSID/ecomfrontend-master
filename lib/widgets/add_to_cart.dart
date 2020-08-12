@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/widgets/snackbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
@@ -220,8 +221,10 @@ class AddToCartTState extends State<AddToCart> {
                                         // ),
                                         fit: BoxFit.cover,
                                       )
-                                    : Image.network(
-                                        widget.product.imageUrl['yellow'],
+                                    : Image(
+                                        image: CachedNetworkImageProvider(
+                                          widget.product.imageUrl['yellow'],
+                                        ),
                                         height: ScreenUtil().setHeight(135),
                                         width: ScreenUtil().setWidth(130),
                                         // image: AdvancedNetworkImage(

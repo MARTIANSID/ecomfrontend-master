@@ -22,7 +22,7 @@ class TestimonyClass {
 class Testimony with ChangeNotifier {
   TestimonyClass userTestimony;
 
-  final String url = 'https://api.nakoda.daxy.in/testimony/';
+  final String url = 'https://echo.gemstory.in/testimony/';
 
   Future<void> getTestimony({context}) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
