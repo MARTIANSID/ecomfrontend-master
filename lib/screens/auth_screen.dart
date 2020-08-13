@@ -777,7 +777,11 @@ class _LoginScreenState extends State<LoginScreen>
               MaterialPageRoute(builder: (context) => Home()),
             );
           } catch (error) {
-            _showDilog('Oops!', '$error');
+            if (error.toString().contains("Brute")) {
+              _showDilog('Auth Failed!', 'Your password is incorrect');
+            } else {
+              _showDilog('Something Went Wrong!', '$error');
+            }
           } finally {
             setState(() {
               _isLoading = false;

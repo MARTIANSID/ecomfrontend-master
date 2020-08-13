@@ -237,7 +237,108 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                         showDialog(
                                           context: context,
                                           child: SortPage(),
-                                        );
+                                        ).then((value) async {
+                                          // await Future.wait([
+                                          //   Provider.of<Pagination>(
+                                          //           context,
+                                          //           listen: false)
+                                          //       .getProducts(
+                                          //           addition: false,
+                                          //           page: 1,
+                                          //           context: context,
+                                          //           select:
+                                          //               'featured',
+                                          //           sortby: Provider.of<
+                                          //                       Pagination>(
+                                          //                   context,
+                                          //                   listen:
+                                          //                       false)
+                                          //               .count,
+                                          //           sort: Provider.of<
+                                          //                       Pagination>(
+                                          //                   context,
+                                          //                   listen:
+                                          //                       false)
+                                          //               .sort)
+                                          // ]);
+                                          await Future.wait([
+                                            Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .getProducts(
+                                                    addition: false,
+                                                    page: 1,
+                                                    context: context,
+                                                    select: 'all',
+                                                    sortby:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .count,
+                                                    sort:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .sort)
+                                          ]);
+                                          await Future.wait([
+                                            Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .getProducts(
+                                                    addition: false,
+                                                    page: 1,
+                                                    context: context,
+                                                    select: 'isnew',
+                                                    sortby:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .count,
+                                                    sort:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .sort)
+                                          ]);
+                                          await Future.wait([
+                                            Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .getProducts(
+                                                    addition: false,
+                                                    page: 1,
+                                                    context: context,
+                                                    select: 'fancyDiamond',
+                                                    sortby:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .count,
+                                                    sort:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .sort),
+                                          ]);
+
+                                          await Future.wait([
+                                            Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .getProducts(
+                                                    addition: false,
+                                                    page: 1,
+                                                    context: context,
+                                                    select: 'navratna',
+                                                    sortby:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .count,
+                                                    sort:
+                                                        Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .sort)
+                                          ]);
+                                        });
                                       },
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 8.0),

@@ -160,6 +160,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     });
   }
 
+  // @override
+  // void didChangeDependencies() async {
+  //   super.didChangeDependencies();
+
+  // }
+
   void loade(isLoading) {
     if (mounted)
       setState(() {
@@ -259,7 +265,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         //   });
         // });
         // if (value2) {
-        await dataSelectConfirmMessage1(
+        await dataSelectConfirmMessageExit(
           context: globalKey.currentContext,
           titleText: 'Alert!',
           contentText: "Are you sure you want to exit the app?",

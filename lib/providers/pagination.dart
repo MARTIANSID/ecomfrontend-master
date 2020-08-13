@@ -211,22 +211,19 @@ class Pagination with ChangeNotifier {
       build = extractedData["productOptions"]["build"];
       color = extractedData["productOptions"]["color"];
       cert = extractedData["productOptions"]["certification"];
-      if (isPriced) goldPrice = extractedData['prices']['goldToday'];
       isVerified = extractedData['user']['verified'];
-      if (isPriced)
+      if (isPriced) {
+        goldPrice = extractedData['prices']['goldToday'];
         diamondPrices =
             Map<dynamic, dynamic>.from(extractedData['prices']['diamond']);
-
-      diamondQuality = extractedData["productOptions"]["diamondQuality"];
-      if (isPriced)
         buildPrices =
             Map<dynamic, dynamic>.from(extractedData['prices']['labour']);
-      if (isPriced)
         certPrices = Map<dynamic, dynamic>.from(
             extractedData['prices']['certification']);
-      if (isPriced) certPrices.putIfAbsent('NONE', () => 0);
-      if (isPriced) comm = extractedData['prices']['comission'];
-
+        certPrices.putIfAbsent('NONE', () => 0);
+        comm = extractedData['prices']['comission'];
+      }
+      diamondQuality = extractedData["productOptions"]["diamondQuality"];
       if (addition) {
         extractedData['products'].forEach((prod) {
           if (select == 'all')

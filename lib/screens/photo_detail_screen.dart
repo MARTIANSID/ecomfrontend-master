@@ -24,13 +24,15 @@ class PhotoDetailScreen extends StatelessWidget {
             PhotoViewGalleryPageOptions(
               maxScale: PhotoViewComputedScale.contained * 5.0,
               minScale: PhotoViewComputedScale.contained * 0.5,
-              imageProvider: product.imageUrl.containsKey(colorKey)
-                  ? CachedNetworkImageProvider(
-                      product.imageUrl[colorKey],
-                    )
-                  : CachedNetworkImageProvider(
-                      product.imageUrl['yellow'],
-                    ),
+              // imageProvider: product.imageUrl.containsKey(colorKey)
+              //     ?
+              imageProvider: CachedNetworkImageProvider(
+                colorKey,
+                // product.imageUrl[colorKey],
+              ),
+              // : CachedNetworkImageProvider(
+              //     product.imageUrl['yellow'],
+              //   ),
               //     product.imageUrl[colorKey],
               //     useDiskCache: true,
               //     cacheRule: CacheRule(maxAge: const Duration(days: 3)),

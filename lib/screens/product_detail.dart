@@ -26,6 +26,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../providers/notifiaction.dart';
 import 'completeSignUp.dart';
 import 'product_overview_screen.dart';
+import 'package:http/http.dart' as https;
 
 class ProductDetail extends StatefulWidget {
   final colorKey;
@@ -96,6 +97,52 @@ class _ProductDetailState extends State<ProductDetail> {
   int page = 0;
 
   bool fff = true;
+
+  List<String> imgURL = [];
+
+  bool isLoading = false;
+
+  @override
+  initState() {
+    super.initState();
+    // setState(() {
+    //   isLoading = true;
+    // });
+    // widget.product.imageUrl.forEach((key, value) async {
+    //   if (value != "") {
+    //     final response = await https.get(value);
+    //     if (value.toString().contains("echo.gemstory.in") &&
+    //         response.statusCode == 200) {
+    //       setState(() {
+    //         imgURL.add(value);
+    //       });
+    //     }
+    //   }
+    //   print("key: " + key);
+    //   print("value: " + value);
+    // });
+  }
+
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    setState(() {
+      isLoading = true;
+    });
+    widget.product.imageUrl.forEach((key, value) async {
+      if (value != "") {
+        // final response = await https.get(value);
+        if (value.toString().contains("echo.gemstory.in")) {
+          setState(() {
+            imgURL.add(value);
+          });
+        }
+      }
+    });
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   Future<void> getSearch(query) async {
     try {
@@ -263,144 +310,203 @@ class _ProductDetailState extends State<ProductDetail> {
       key: globalKey,
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
-      body: GestureDetector(
-        onPanStart: (details) {
-          // print("object1");
-          setState(() {
-            hideButton = true;
-          });
-        },
-        onPanEnd: (details) {
-          // print("object2");
-          Timer(Duration(seconds: 3), () {
-            if (mounted)
-              setState(
-                () {
-                  hideButton = false;
-                },
-              );
-          });
-        },
-        child: Container(
-          color: Colors.white,
-          child: Stack(
-            children: <Widget>[
-              // Positioned(
-              //   left: 0,
-              //   bottom: 0,
-              //   // top: 0,
-              //   child: Stack(
-              //     children: <Widget>[
-              //       Opacity(
-              //         opacity: 0.20,
-              //         child: Container(
-              //           decoration: BoxDecoration(
-              //               gradient: LinearGradient(
-              //             colors: [
-              //               Color(0xFF0F1533),
-              //               Color(0xFF5DB4D8),
-              //             ],
-              //             begin: Alignment.topCenter,
-              //             end: Alignment.bottomCenter,
-              //           )),
-              //           height: ScreenUtil().setHeight(483),
-              //           width: ScreenUtil().setWidth(65),
-              //         ),
-              //       ),
-              //       Container(
-              //         height: ScreenUtil().setHeight(483),
-              //         width: ScreenUtil().setWidth(65),
-              //         child: Column(
-              //           mainAxisAlignment: MainAxisAlignment.end,
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: <Widget>[
-              //             RotatedBox(
-              //               quarterTurns: 1,
-              //               child: Text(
-              //                 'ADDITIONAL DETAILS',
-              //                 style: TextStyle(
-              //                   color: Colors.black,
-              //                   fontFamily: 'Gilroy Light',
-              //                   fontSize: ScreenUtil()
-              //                       .setSp(18, allowFontScalingSelf: true),
-              //                   letterSpacing: 0.035,
-              //                 ),
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: ScreenUtil().setHeight(135),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: ScreenUtil().setWidth(412),
-                  height: ScreenUtil().setHeight(775),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: ScreenUtil().setHeight(440),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : GestureDetector(
+              onPanStart: (details) {
+                // print("object1");
+                setState(() {
+                  hideButton = true;
+                });
+              },
+              onPanEnd: (details) {
+                // print("object2");
+                Timer(Duration(seconds: 3), () {
+                  if (mounted)
+                    setState(
+                      () {
+                        hideButton = false;
+                      },
+                    );
+                });
+              },
+              child: Container(
+                color: Colors.white,
+                child: Stack(
+                  children: <Widget>[
+                    // Positioned(
+                    //   left: 0,
+                    //   bottom: 0,
+                    //   // top: 0,
+                    //   child: Stack(
+                    //     children: <Widget>[
+                    //       Opacity(
+                    //         opacity: 0.20,
+                    //         child: Container(
+                    //           decoration: BoxDecoration(
+                    //               gradient: LinearGradient(
+                    //             colors: [
+                    //               Color(0xFF0F1533),
+                    //               Color(0xFF5DB4D8),
+                    //             ],
+                    //             begin: Alignment.topCenter,
+                    //             end: Alignment.bottomCenter,
+                    //           )),
+                    //           height: ScreenUtil().setHeight(483),
+                    //           width: ScreenUtil().setWidth(65),
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         height: ScreenUtil().setHeight(483),
+                    //         width: ScreenUtil().setWidth(65),
+                    //         child: Column(
+                    //           mainAxisAlignment: MainAxisAlignment.end,
+                    //           crossAxisAlignment: CrossAxisAlignment.center,
+                    //           children: <Widget>[
+                    //             RotatedBox(
+                    //               quarterTurns: 1,
+                    //               child: Text(
+                    //                 'ADDITIONAL DETAILS',
+                    //                 style: TextStyle(
+                    //                   color: Colors.black,
+                    //                   fontFamily: 'Gilroy Light',
+                    //                   fontSize: ScreenUtil()
+                    //                       .setSp(18, allowFontScalingSelf: true),
+                    //                   letterSpacing: 0.035,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             SizedBox(
+                    //               height: ScreenUtil().setHeight(135),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
                         width: ScreenUtil().setWidth(412),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.elliptical(650, 300),
-                            bottomRight: Radius.elliptical(650, 300),
-                          ),
-                          gradient: isColourSetLinear
-                              ? LinearGradient(
-                                  colors: [
-                                    Color(0xFF34BDDD).withOpacity(0.1),
-                                    Color(0xFF367DC8).withOpacity(0.1),
-                                  ],
-                                )
-                              : isColourSetRadial
-                                  ? RadialGradient(
-                                      colors: [
-                                        Color(0xFF2B3E50),
-                                        Color(0xFF010101),
-                                      ],
-                                    )
-                                  : LinearGradient(
-                                      colors: [
-                                        Colors.white,
-                                        Colors.white,
-                                      ],
-                                    ),
-                        ),
+                        height: ScreenUtil().setHeight(775),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(
-                              height: ScreenUtil().setHeight(22 + 17 + 28 + 40),
-                            ),
-                            widget.product.imageUrl.containsKey(widget.colorKey)
-                                ? Container(
-                                    height: ScreenUtil().setHeight(290),
-                                    width: ScreenUtil().setWidth(286),
-                                    child: PageView.builder(
-                                      // allowImplicitScrolling: true,
-                                      onPageChanged: (value) {
-                                        setState(() {
-                                          page = value;
-                                        });
-                                      },
-                                      itemCount: Provider.of<Pagination>(
-                                              context,
-                                              listen: false)
-                                          .color
-                                          .length,
-                                      itemBuilder: (context, index) {
-                                        return Hero(
+                            Container(
+                              height: ScreenUtil().setHeight(440),
+                              width: ScreenUtil().setWidth(412),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.elliptical(650, 300),
+                                  bottomRight: Radius.elliptical(650, 300),
+                                ),
+                                gradient: isColourSetLinear
+                                    ? LinearGradient(
+                                        colors: [
+                                          Color(0xFF34BDDD).withOpacity(0.1),
+                                          Color(0xFF367DC8).withOpacity(0.1),
+                                        ],
+                                      )
+                                    : isColourSetRadial
+                                        ? RadialGradient(
+                                            colors: [
+                                              Color(0xFF2B3E50),
+                                              Color(0xFF010101),
+                                            ],
+                                          )
+                                        : LinearGradient(
+                                            colors: [
+                                              Colors.white,
+                                              Colors.white,
+                                            ],
+                                          ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: ScreenUtil()
+                                        .setHeight(22 + 17 + 28 + 40),
+                                  ),
+                                  widget.product.imageUrl
+                                          .containsKey(widget.colorKey)
+                                      ? Container(
+                                          height: ScreenUtil().setHeight(290),
+                                          width: ScreenUtil().setWidth(286),
+                                          child: PageView.builder(
+                                            // allowImplicitScrolling: true,
+                                            onPageChanged: (value) {
+                                              setState(() {
+                                                page = value;
+                                              });
+                                            },
+                                            // itemCount: Provider.of<Pagination>(
+                                            //         context,
+                                            //         listen: false)
+                                            //     .color
+                                            //     .length,
+                                            itemCount: imgURL.length,
+                                            itemBuilder: (context, index) {
+                                              return Hero(
+                                                tag: 'tag1',
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => PhotoDetailScreen(
+                                                            imgURL[index],
+                                                            // Provider.of<Pagination>(
+                                                            //         context,
+                                                            //         listen: false)
+                                                            //     .color[index]
+                                                            //     .toLowerCase(),
+                                                            widget.product),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Image(
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      imgURL[index],
+                                                      // widget.product.imageUrl[
+                                                      //     Provider.of<Pagination>(
+                                                      //             context,
+                                                      //             listen: false)
+                                                      //         .color[index]
+                                                      //         .toLowerCase()],
+                                                    ),
+                                                    height: ScreenUtil()
+                                                        .setHeight(290),
+                                                    width: ScreenUtil()
+                                                        .setWidth(290),
+                                                    // image: AdvancedNetworkImage(
+                                                    //   widget.product.imageUrl[
+                                                    //       Provider.of<Pagination>(
+                                                    //               context,
+                                                    //               listen: false)
+                                                    //           .color[index]
+                                                    //           .toLowerCase()],
+                                                    //   useDiskCache: true,
+                                                    //   cacheRule: CacheRule(
+                                                    //       maxAge: const Duration(
+                                                    //           days: 3)),
+                                                    // ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : Hero(
                                           tag: 'tag1',
                                           child: GestureDetector(
                                             onTap: () {
@@ -409,1582 +515,1596 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       PhotoDetailScreen(
-                                                          Provider.of<Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .color[index]
-                                                              .toLowerCase(),
+                                                          widget.colorKey,
                                                           widget.product),
                                                 ),
                                               );
                                             },
                                             child: Image(
                                               image: CachedNetworkImageProvider(
-                                                widget.product.imageUrl[
-                                                    Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .color[index]
-                                                        .toLowerCase()],
+                                                widget
+                                                    .product.imageUrl['yellow'],
                                               ),
                                               height:
                                                   ScreenUtil().setHeight(290),
                                               width: ScreenUtil().setWidth(290),
                                               // image: AdvancedNetworkImage(
-                                              //   widget.product.imageUrl[
-                                              //       Provider.of<Pagination>(
-                                              //               context,
-                                              //               listen: false)
-                                              //           .color[index]
-                                              //           .toLowerCase()],
+                                              //   widget.product.imageUrl['yellow'],
                                               //   useDiskCache: true,
                                               //   cacheRule: CacheRule(
-                                              //       maxAge: const Duration(
-                                              //           days: 3)),
+                                              //       maxAge: const Duration(days: 3)),
                                               // ),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : Hero(
-                                    tag: 'tag1',
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PhotoDetailScreen(
-                                                    widget.colorKey,
-                                                    widget.product),
-                                          ),
-                                        );
-                                      },
-                                      child: Image(
-                                        image: CachedNetworkImageProvider(
-                                          widget.product.imageUrl['yellow'],
                                         ),
-                                        height: ScreenUtil().setHeight(290),
-                                        width: ScreenUtil().setWidth(290),
-                                        // image: AdvancedNetworkImage(
-                                        //   widget.product.imageUrl['yellow'],
-                                        //   useDiskCache: true,
-                                        //   cacheRule: CacheRule(
-                                        //       maxAge: const Duration(days: 3)),
-                                        // ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                            SizedBox(
-                              height: ScreenUtil().setHeight(10),
-                            ),
-                            Container(
-                              height: ScreenUtil().setHeight(20),
-                              width: ScreenUtil().setWidth(100),
-                              // padding: EdgeInsets.all(20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List<Widget>.generate(
-                                  Provider.of<Pagination>(context,
-                                          listen: false)
-                                      .color
-                                      .length,
-                                  _buildDot,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: ScreenUtil().setHeight(17),
-                      ),
-                      Container(
-                        width: ScreenUtil().setWidth(411),
-                        // height: ScreenUtil().setHeight(300),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              width: ScreenUtil().setWidth(54),
-                            ),
-                            Container(
-                              width: ScreenUtil().setWidth(330),
-                              // height: ScreenUtil().setHeight(300),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width: ScreenUtil().setWidth(330),
-                                    height: ScreenUtil().setHeight(44),
-                                    // margin: EdgeInsets.only(bottom: 35.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          '${widget.product.styleNumber}',
-                                          style: TextStyle(
-                                            fontFamily: 'Gilroy Medium',
-                                            fontSize: ScreenUtil().setSp(36,
-                                                allowFontScalingSelf: true),
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 6.0),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    isColourSetLinear =
-                                                        !isColourSetLinear;
-                                                    isColourSetRadial = false;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  height: ScreenUtil()
-                                                      .setHeight(20),
-                                                  width:
-                                                      ScreenUtil().setWidth(20),
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    gradient: isColourSetLinear
-                                                        ? LinearGradient(
-                                                            colors: [
-                                                              Color(0xFF34BDDD),
-                                                              Color(0xFF367DC8),
-                                                            ],
-                                                          )
-                                                        : LinearGradient(
-                                                            colors: [
-                                                              Color(0xFF858585),
-                                                              Color(0xFF858585),
-                                                            ],
-                                                          ),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(
-                                                        isColourSetLinear
-                                                            ? 3.0
-                                                            : 0.0),
-                                                    child: Container(
-                                                      // height: ScreenUtil()
-                                                      //     .setHeight(16),
-                                                      // width:
-                                                      //     ScreenUtil().setWidth(16),
-                                                      decoration: BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color:
-                                                              Color(0xFFEAF2FA)
-                                                          // gradient: LinearGradient(
-                                                          //   colors: [
-                                                          //     Color(0xFF34BDDD)
-                                                          //         .withOpacity(0.1),
-                                                          //     Color(0xFF367DC8)
-                                                          //         .withOpacity(0.1),
-                                                          //   ],
-                                                          // ),
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  isColourSetRadial =
-                                                      !isColourSetRadial;
-                                                  isColourSetLinear = false;
-                                                });
-                                              },
-                                              child: Container(
-                                                height:
-                                                    ScreenUtil().setHeight(20),
-                                                width:
-                                                    ScreenUtil().setWidth(20),
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  gradient: isColourSetRadial
-                                                      ? LinearGradient(
-                                                          colors: [
-                                                            Color(0xFF34BDDD),
-                                                            Color(0xFF367DC8),
-                                                          ],
-                                                        )
-                                                      : LinearGradient(
-                                                          colors: [
-                                                            Color(0xFF858585),
-                                                            Color(0xFF858585),
-                                                          ],
-                                                        ),
-                                                ),
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(
-                                                      isColourSetRadial
-                                                          ? 3.0
-                                                          : 0.0),
-                                                  child: Container(
-                                                    // height:
-                                                    //     ScreenUtil().setHeight(16),
-                                                    // width:
-                                                    //     ScreenUtil().setWidth(16),
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      // border: Border.all(
-                                                      //   color: Color(0xFF858585),
-                                                      //   width: 1.0,
-                                                      // ),
-                                                      gradient: RadialGradient(
-                                                        colors: [
-                                                          Color(0xFF2B3E50),
-                                                          Color(0xFF010101),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: ScreenUtil().setHeight(15),
-                                  ),
-                                  Container(
-                                    // width: ScreenUtil().setWidth(93),
-                                    height: ScreenUtil().setHeight(35),
-                                    margin: EdgeInsets.only(left: 9.0),
-                                    child: ShaderMask(
-                                      shaderCallback: (bounds) =>
-                                          LinearGradient(
-                                        colors: [
-                                          Color(0xFF34B0D9),
-                                          Color(0xFF3685CB),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ).createShader(
-                                        Rect.fromLTWH(
-                                            0, 0, bounds.width, bounds.height),
-                                      ),
-                                      // child: widget.product.prices.containsKey(
-                                      //             widget.diamondKey) &&
-                                      child: Provider.of<Pagination>(context,
-                                                          listen: false)
-                                                      .isPriced ==
-                                                  true &&
-                                              Provider.of<Pagination>(context,
-                                                          listen: false)
-                                                      .isVerified ==
-                                                  true
-                                          ? Text(
-                                              // '50000',
-                                              '${int.parse(widget.product.prices[Provider.of<Pagination>(context, listen: false).diamondQuality[_defaultChoiceIndex4]]) + Provider.of<Pagination>(context, listen: false).certPrices[Provider.of<Pagination>(context, listen: false).cert[_defaultChoiceIndex3]] + Provider.of<Pagination>(context, listen: false).buildPrices[Provider.of<Pagination>(context, listen: false).build[_defaultChoiceIndex1]]} ₹',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Medium',
-                                                color: Colors.white,
-                                                fontSize: ScreenUtil().setSp(29,
-                                                    allowFontScalingSelf: true),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            )
-                                          : Text(
-                                              'No Prices Set',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Medium',
-                                                color: Colors.white,
-                                                fontSize: ScreenUtil().setSp(29,
-                                                    allowFontScalingSelf: true),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                    ),
-                                  ),
                                   SizedBox(
                                     height: ScreenUtil().setHeight(10),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 9.0),
-                                    width: ScreenUtil().setWidth(285),
-                                    height: ScreenUtil().setHeight(97),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 3.0),
-                                              child: Text(
-                                                'Gold Weight'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 3.0),
-                                              child: Text(
-                                                'Diamond Weight'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 3.0),
-                                              child: Text(
-                                                'Diamond Count'.toUpperCase(),
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                'DESIGN DIMENSIONS',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 3.0),
-                                              child: Text(
-                                                '${widget.product.goldWeight}' +
-                                                    ' gms',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 3.0),
-                                              child: Text(
-                                                '${widget.product.diamondWeight}' +
-                                                    ' ct',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 3.0),
-                                              child: Text(
-                                                '${widget.product.diamondCount}' +
-                                                    ' pieces',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                '${widget.product.designDimensions}',
-                                                style: TextStyle(
-                                                  fontFamily: 'Gilroy Light',
-                                                  color: Colors.black,
-                                                  fontSize: ScreenUtil().setSp(
-                                                      14,
-                                                      allowFontScalingSelf:
-                                                          true),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: ScreenUtil().setHeight(17),
-                                  ),
-                                  Container(
-                                    height: ScreenUtil().setHeight(94),
+                                    height: ScreenUtil().setHeight(20),
+                                    width: ScreenUtil().setWidth(100),
+                                    // padding: EdgeInsets.all(20),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
+                                      children: List<Widget>.generate(
+                                        imgURL.length,
+                                        _buildDot,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(17),
+                            ),
+                            Container(
+                              width: ScreenUtil().setWidth(411),
+                              // height: ScreenUtil().setHeight(300),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(54),
+                                  ),
+                                  Container(
+                                    width: ScreenUtil().setWidth(330),
+                                    // height: ScreenUtil().setHeight(300),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        // SizedBox(
-                                        //   width: ScreenUtil().setWidth(15),
-                                        // ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              width: ScreenUtil().setWidth(240),
-                                              height: ScreenUtil().setWidth(40),
-                                              // padding: EdgeInsets.all(20.0),
-                                              child: Material(
-                                                type: MaterialType.transparency,
-                                                elevation: 6.0,
-                                                color: Colors.transparent,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: InkWell(
-                                                  splashColor: Colors.cyan[100]
-                                                      .withOpacity(0.5),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  onTap: () async {
-                                                    if (Provider.of<Pagination>(
+                                        Container(
+                                          width: ScreenUtil().setWidth(330),
+                                          height: ScreenUtil().setHeight(44),
+                                          // margin: EdgeInsets.only(bottom: 35.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(
+                                                '${widget.product.styleNumber}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy Medium',
+                                                  fontSize: ScreenUtil().setSp(
+                                                      36,
+                                                      allowFontScalingSelf:
+                                                          true),
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 6.0),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isColourSetLinear =
+                                                              !isColourSetLinear;
+                                                          isColourSetRadial =
+                                                              false;
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        height: ScreenUtil()
+                                                            .setHeight(20),
+                                                        width: ScreenUtil()
+                                                            .setWidth(20),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          gradient: isColourSetLinear
+                                                              ? LinearGradient(
+                                                                  colors: [
+                                                                    Color(
+                                                                        0xFF34BDDD),
+                                                                    Color(
+                                                                        0xFF367DC8),
+                                                                  ],
+                                                                )
+                                                              : LinearGradient(
+                                                                  colors: [
+                                                                    Color(
+                                                                        0xFF858585),
+                                                                    Color(
+                                                                        0xFF858585),
+                                                                  ],
+                                                                ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: EdgeInsets.all(
+                                                              isColourSetLinear
+                                                                  ? 3.0
+                                                                  : 0.0),
+                                                          child: Container(
+                                                            // height: ScreenUtil()
+                                                            //     .setHeight(16),
+                                                            // width:
+                                                            //     ScreenUtil().setWidth(16),
+                                                            decoration: BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Color(
+                                                                    0xFFEAF2FA)
+                                                                // gradient: LinearGradient(
+                                                                //   colors: [
+                                                                //     Color(0xFF34BDDD)
+                                                                //         .withOpacity(0.1),
+                                                                //     Color(0xFF367DC8)
+                                                                //         .withOpacity(0.1),
+                                                                //   ],
+                                                                // ),
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isColourSetRadial =
+                                                            !isColourSetRadial;
+                                                        isColourSetLinear =
+                                                            false;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: ScreenUtil()
+                                                          .setHeight(20),
+                                                      width: ScreenUtil()
+                                                          .setWidth(20),
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        gradient:
+                                                            isColourSetRadial
+                                                                ? LinearGradient(
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xFF34BDDD),
+                                                                      Color(
+                                                                          0xFF367DC8),
+                                                                    ],
+                                                                  )
+                                                                : LinearGradient(
+                                                                    colors: [
+                                                                      Color(
+                                                                          0xFF858585),
+                                                                      Color(
+                                                                          0xFF858585),
+                                                                    ],
+                                                                  ),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(
+                                                            isColourSetRadial
+                                                                ? 3.0
+                                                                : 0.0),
+                                                        child: Container(
+                                                          // height:
+                                                          //     ScreenUtil().setHeight(16),
+                                                          // width:
+                                                          //     ScreenUtil().setWidth(16),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            // border: Border.all(
+                                                            //   color: Color(0xFF858585),
+                                                            //   width: 1.0,
+                                                            // ),
+                                                            gradient:
+                                                                RadialGradient(
+                                                              colors: [
+                                                                Color(
+                                                                    0xFF2B3E50),
+                                                                Color(
+                                                                    0xFF010101),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: ScreenUtil().setHeight(15),
+                                        ),
+                                        Container(
+                                          // width: ScreenUtil().setWidth(93),
+                                          height: ScreenUtil().setHeight(35),
+                                          margin: EdgeInsets.only(left: 9.0),
+                                          child: ShaderMask(
+                                            shaderCallback: (bounds) =>
+                                                LinearGradient(
+                                              colors: [
+                                                Color(0xFF34B0D9),
+                                                Color(0xFF3685CB),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ).createShader(
+                                              Rect.fromLTWH(0, 0, bounds.width,
+                                                  bounds.height),
+                                            ),
+                                            // child: widget.product.prices.containsKey(
+                                            //             widget.diamondKey) &&
+                                            child: Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isPriced ==
+                                                        true &&
+                                                    Provider.of<Pagination>(
                                                                 context,
                                                                 listen: false)
                                                             .isVerified ==
-                                                        false) {
-                                                      var date = await Provider
-                                                              .of<UserInfo>(
-                                                                  context,
-                                                                  listen: false)
-                                                          .getDate(context);
-                                                      if (date != null) {
-                                                        int d = DateTime.now()
-                                                            .difference(
-                                                                DateTime.parse(
-                                                                    date))
-                                                            .inDays;
-                                                        if (d < 1) {
-                                                          fff = false;
-                                                          dataSelect(
-                                                              context: context,
-                                                              titleText:
-                                                                  'Alert!',
-                                                              buttonText:
-                                                                  'Okay',
-                                                              contentText:
-                                                                  'Request has already been noted!',
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              gif:
-                                                                  "assets/images/identi.gif");
-                                                        }
-                                                      }
-                                                    }
-                                                    if (fff) {
-                                                      !Provider.of<Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .isVerified
-                                                          ? dataSelect(
-                                                              context: context,
-                                                              titleText:
-                                                                  'Important!',
-                                                              contentText:
-                                                                  "To get complete access of the app, you need to first verify yourself!",
-                                                              buttonText:
-                                                                  'Complete SignUp',
-                                                              onPressed:
-                                                                  () async {
-                                                                Navigator.pop(
-                                                                    context);
-                                                                String date = await Provider.of<
-                                                                            UserInfo>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getDate(
-                                                                        context);
-                                                                if (date !=
-                                                                    null) {
-                                                                  int d = DateTime
-                                                                          .now()
-                                                                      .difference(
-                                                                          DateTime.parse(
-                                                                              date))
-                                                                      .inDays;
-                                                                  if (d >= 1) {
-                                                                    Navigator
-                                                                        .push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                CompleteSignUp(),
-                                                                      ),
-                                                                    );
-                                                                  } else {
-                                                                    dataSelect(
-                                                                        context:
-                                                                            context,
-                                                                        titleText:
-                                                                            'Alert!',
-                                                                        contentText:
-                                                                            'Request has already been noted!',
-                                                                        buttonText:
-                                                                            'Okay',
-                                                                        gif:
-                                                                            "assets/images/identi.gif",
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        });
-                                                                  }
-                                                                } else {
-                                                                  Navigator
-                                                                      .push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              CompleteSignUp(),
-                                                                    ),
-                                                                  );
-                                                                }
-                                                              },
-                                                              gif:
-                                                                  "assets/images/alert.gif")
-                                                          : showDialog(
-                                                              context: context,
-                                                              child: AddToCart(
-                                                                globalKey:
-                                                                    globalKey,
-                                                                product: widget
-                                                                    .product,
-                                                                updateCart:
-                                                                    false,
-                                                                choicesBuild: Provider.of<
-                                                                            Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .build,
-                                                                choiceColor: Provider.of<
-                                                                            Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .color,
-                                                                choiceCertification: Provider.of<
-                                                                            Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .cert,
-                                                                choiceDiamondQuality: Provider.of<
-                                                                            Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .diamondQuality,
-                                                                defValue:
-                                                                    _defaultChoiceIndex1,
-                                                                defValue1:
-                                                                    _defaultChoiceIndex2,
-                                                                defValue2:
-                                                                    _defaultChoiceIndex3,
-                                                                defValue3:
-                                                                    _defaultChoiceIndex4,
-                                                                valueChangeBuild:
-                                                                    widget
-                                                                        .valueChangeBuild,
-                                                                valueChangeColor:
-                                                                    widget
-                                                                        .valueChangeColor,
-                                                                valueChangeCerti:
-                                                                    widget
-                                                                        .valueChangeCerti,
-                                                                valueChangeDQ:
-                                                                    widget
-                                                                        .valueChangeDQ,
-                                                              ),
-                                                            );
-                                                    }
-                                                  },
-                                                  child: Center(
+                                                        true
+                                                ? Text(
+                                                    // '50000',
+                                                    '${int.parse(widget.product.prices[Provider.of<Pagination>(context, listen: false).diamondQuality[_defaultChoiceIndex4]]) + Provider.of<Pagination>(context, listen: false).certPrices[Provider.of<Pagination>(context, listen: false).cert[_defaultChoiceIndex3]] + Provider.of<Pagination>(context, listen: false).buildPrices[Provider.of<Pagination>(context, listen: false).build[_defaultChoiceIndex1]]} ₹',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Gilroy Medium',
+                                                      color: Colors.white,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          29,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    'No Prices Set',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Gilroy Medium',
+                                                      color: Colors.white,
+                                                      fontSize: ScreenUtil().setSp(
+                                                          29,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: ScreenUtil().setHeight(10),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 9.0),
+                                          width: ScreenUtil().setWidth(285),
+                                          height: ScreenUtil().setHeight(97),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 3.0),
                                                     child: Text(
-                                                      'ADD TO CART',
+                                                      'Gold Weight'
+                                                          .toUpperCase(),
                                                       style: TextStyle(
                                                         fontFamily:
-                                                            'Gilroy Bold',
-                                                        color: Colors.white,
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
                                                         fontSize: ScreenUtil()
-                                                            .setSp(18,
+                                                            .setSp(14,
                                                                 allowFontScalingSelf:
                                                                     true),
-                                                        fontWeight:
-                                                            FontWeight.w500,
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/vector17.png'),
-                                                fit: BoxFit.contain,
-                                              )),
-                                            ),
-                                            SizedBox(
-                                              height: ScreenUtil().setHeight(7),
-                                            ),
-                                            Container(
-                                              width: ScreenUtil().setWidth(239),
-                                              height:
-                                                  ScreenUtil().setHeight(30),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: TextStyle(
-                                                    fontFamily: 'Gilroy Medium',
-                                                    fontSize: ScreenUtil().setSp(
-                                                        12,
-                                                        allowFontScalingSelf:
-                                                            true),
-                                                    color: Color(0xFF8C8888),
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text:
-                                                          'To know more about this design or contact Team Gemstory, ',
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 3.0),
+                                                    child: Text(
+                                                      'Diamond Weight'
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
                                                     ),
-                                                    TextSpan(
-                                                        text: 'Click here',
-                                                        recognizer:
-                                                            TapGestureRecognizer()
-                                                              ..onTap =
-                                                                  () async {
-                                                                bool value2 =
-                                                                    false;
-                                                                await dataSelectConfirmMessage(
-                                                                  context: globalKey
-                                                                      .currentContext,
-                                                                  titleText:
-                                                                      'Alert!',
-                                                                  contentText:
-                                                                      "Are you sure, You want to open Whatsapp?",
-                                                                  gif:
-                                                                      'assets/images/whatsappGIF.gif',
-                                                                ).then(
-                                                                    (value) async {
-                                                                  // if (value) {
-                                                                  value2 =
-                                                                      value;
-                                                                  // }
-                                                                });
-                                                                if (value2 !=
-                                                                        null &&
-                                                                    value2) {
-                                                                  if (await canLaunch(
-                                                                      "https://wa.me/919004801229")) {
-                                                                    await launch(
-                                                                        "https://wa.me/919004801229");
-                                                                  } else {
-                                                                    throw 'Could not launch https://wa.me/919004801229';
-                                                                  }
-                                                                }
-                                                              },
-                                                        style: TextStyle(
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline,
-                                                        )),
-                                                  ],
-                                                ),
-                                                textAlign: TextAlign.center,
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 3.0),
+                                                    child: Text(
+                                                      'Diamond Count'
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      'DESIGN DIMENSIONS',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: ScreenUtil().setHeight(92 + 22),
-                right: ScreenUtil().setWidth(26),
-                child: hideButton
-                    ? GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            child: OptionsDialog(
-                              choicesBuild: Provider.of<Pagination>(context,
-                                      listen: false)
-                                  .build,
-                              choiceColor: Provider.of<Pagination>(context,
-                                      listen: false)
-                                  .color,
-                              choiceCertification: Provider.of<Pagination>(
-                                      context,
-                                      listen: false)
-                                  .cert,
-                              choiceDiamondQuality: Provider.of<Pagination>(
-                                      context,
-                                      listen: false)
-                                  .diamondQuality,
-                              defValue: _defaultChoiceIndex1,
-                              defValue1: _defaultChoiceIndex2,
-                              defValue2: _defaultChoiceIndex3,
-                              defValue3: _defaultChoiceIndex4,
-                              valueChangeBuild: _onValueChange,
-                              valueChangeColor: _onValueChangeColor,
-                              valueChangeCerti: _onValueChangeCerti,
-                              valueChangeDQ: _onValueChangeDQ,
-                            ),
-                          );
-                        },
-                        child: SvgPicture.asset(
-                          'assets/icons/optionsIcon.svg',
-                          width: ScreenUtil().setWidth(29),
-                          height: ScreenUtil().setHeight(29),
-                          color: isColourSetLinear ||
-                                  (!isColourSetLinear && !isColourSetRadial)
-                              ? Color(0xFFB8B8B8)
-                              : Colors.white,
-                        ),
-                      )
-                    : FadeOut(
-                        child: SvgPicture.asset(
-                          'assets/icons/optionsIcon.svg',
-                          width: ScreenUtil().setWidth(29),
-                          height: ScreenUtil().setHeight(29),
-                          color: isColourSetLinear ||
-                                  (!isColourSetLinear && !isColourSetRadial)
-                              ? Color(0xFFB8B8B8)
-                              : Colors.white,
-                        ),
-                      ),
-              ),
-              // Positioned(
-              //   top: ScreenUtil().setHeight(92 + 22),
-              //   right: ScreenUtil().setWidth(26),
-              //   child: hideButton
-              //       ? GestureDetector(
-              //           onTap: () {
-              //             Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                 builder: (context) => PhotoDetailScreen(
-              //                     widget.colorKey, widget.product),
-              //               ),
-              //             );
-              //           },
-              //           child: SvgPicture.asset(
-              //             'assets/icons/zoomIcon.svg',
-              //             width: ScreenUtil().setWidth(29),
-              //             height: ScreenUtil().setHeight(29),
-              //             color: isColourSetLinear ||
-              //                     (!isColourSetLinear && !isColourSetRadial)
-              //                 ? Color(0xFFB8B8B8)
-              //                 : Colors.white,
-              //           ),
-              //         )
-              //       : FadeOut(
-              //           child: SvgPicture.asset(
-              //             'assets/icons/zoomIcon.svg',
-              //             width: ScreenUtil().setWidth(29),
-              //             height: ScreenUtil().setHeight(29),
-              //             color: isColourSetLinear ||
-              //                     (!isColourSetLinear && !isColourSetRadial)
-              //                 ? Color(0xFFB8B8B8)
-              //                 : Colors.white,
-              //           ),
-              //         ),
-              // ),
-              Positioned(
-                top: ScreenUtil().setHeight(383),
-                right: ScreenUtil().setWidth(26),
-                child: Container(
-                  height: ScreenUtil().setHeight(43),
-                  width: ScreenUtil().setWidth(43),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF34B0D9),
-                        Color(0xFF3685CB),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: GestureDetector(
-                      child: Icon(
-                        widget.product.isFavourite
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        size:
-                            ScreenUtil().setSp(30, allowFontScalingSelf: true),
-                        color: Colors.white,
-                      ),
-                      onTap: () async {
-                        try {
-                          if (mounted) setState(() {});
-                          if (widget.product.isFavourite) {
-                            showFloatingFlushbar(
-                                context,
-                                'Product removed from Favourites list',
-                                widget.product.styleNumber,
-                                '❤');
-                            await Provider.of<Pagination>(context,
-                                    listen: false)
-                                .toogleFavourite(
-                                    styleNumber: widget.product.styleNumber,
-                                    context: context);
-                          } else {
-                            await Provider.of<Pagination>(context,
-                                    listen: false)
-                                .toogleFavourite(
-                                    styleNumber: widget.product.styleNumber,
-                                    context: context,
-                                    product: widget.product);
-                            showFloatingFlushbar(
-                                context,
-                                'Product added to the Favourites list',
-                                widget.product.styleNumber,
-                                '❤');
-                          }
-                          if (mounted) setState(() {});
-                        } catch (err) {
-                          if (mounted) setState(() {});
-                        }
-                        // child: Icon(
-                        //   widget.product.isFavourite
-                        //       ? Icons.favorite
-                        //       : Icons.favorite_border,
-                        //   size: 30.0,
-                        //   color: Colors.white,
-                        // ),
-                      }),
-                ),
-              ),
-              !searchSelected
-                  ? SizedBox(
-                      height: 0.0,
-                      width: 0.0,
-                    )
-                  : Container(
-                      height: ScreenUtil().setHeight(775),
-                      width: ScreenUtil().setWidth(411),
-                      color: Colors.transparent,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          height: ScreenUtil().setHeight(775),
-                          width: ScreenUtil().setWidth(411),
-                        ),
-                      ),
-                    ),
-              Container(
-                width: ScreenUtil().setWidth(412),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                      sigmaX: searchSelected ? 5 : 0,
-                      sigmaY: searchSelected ? 5 : 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: ScreenUtil().setHeight(22),
-                      ),
-                      Container(
-                        width: ScreenUtil().setWidth(360),
-                        height: ScreenUtil().setHeight(45),
-                        margin: EdgeInsets.fromLTRB(
-                            26, 20, 0, searchSelected ? 0 : 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            AnimatedContainer(
-                              duration: Duration(milliseconds: 600),
-                              curve: Curves.easeInOut,
-                              padding: EdgeInsets.only(left: 10.0),
-                              width: ScreenUtil()
-                                  .setWidth(searchSelected ? 305 : 360),
-                              height: ScreenUtil().setHeight(45),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: isColourSetLinear || isColourSetRadial
-                                    ? Colors.white
-                                    : Color(0xFFF4F4F4),
-                              ),
-                              child: Stack(
-                                alignment: Alignment.centerRight,
-                                children: <Widget>[
-                                  AnimatedContainer(
-                                    duration: Duration(milliseconds: 600),
-                                    width: ScreenUtil()
-                                        .setWidth(searchSelected ? 305 : 360),
-                                    height: ScreenUtil().setHeight(40),
-                                    padding: EdgeInsets.only(bottom: 2),
-                                    child: TextField(
-                                      controller: textEditingController,
-                                      onTap: () async {
-                                        setState(() {
-                                          searchSelected = true;
-                                        });
-                                        Timer(Duration(milliseconds: 700), () {
-                                          setState(() {
-                                            searchSelectedDoneButton = true;
-                                          });
-                                        });
-                                      },
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          // isLoadingSearch = true;
-                                          searchValue = value.toUpperCase();
-                                        });
-                                        // setState(() {
-
-                                        //   // info=styleNumber[].split(value);
-                                        // print(styleNumber[1].split(searchValue));
-                                        // });
-                                        try {
-                                          await getSearch(
-                                              searchValue.toUpperCase());
-                                        } catch (err) {
-                                          dataSelect(
-                                              context: context,
-                                              titleText: 'Alert!',
-                                              buttonText: 'Okay',
-                                              contentText: err.toString(),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              gif: "assets/images/alert.gif");
-                                        }
-                                        // await getSearch(
-                                        //     searchValue.toUpperCase());
-                                        // setState(() {
-                                        //   isLoadingSearch = false;
-                                        // });
-                                        // getSearchResult(value.toUpperCase());
-                                      },
-                                      decoration: InputDecoration(
-                                        // contentPadding: EdgeInsets.all(15.0),
-                                        // suffixIcon: searchSelected
-                                        //     ? GestureDetector(
-                                        //         onTap: () {
-                                        //           textEditingController.clear();
-                                        //           setState(() {
-                                        //             searchValue = "";
-                                        //           });
-                                        //         },
-                                        //         child: Icon(Icons.clear),
-                                        //       )
-                                        //     : SizedBox(
-                                        //         height: 0.0,
-                                        //         width: 0.0,
-                                        //       ),
-                                        hintText: 'SEARCH GEMSTORY',
-                                        hintStyle: TextStyle(
-                                          fontFamily: 'Gilroy Medium',
-                                          color: Color(0xFF595959),
-                                          fontSize: ScreenUtil().setSp(14,
-                                              allowFontScalingSelf: true),
-                                        ),
-                                        border: InputBorder.none,
-                                      ),
-                                      textAlign: searchSelected
-                                          ? TextAlign.start
-                                          : TextAlign.center,
-                                      style: TextStyle(
-                                          fontFamily: 'Gilroy Regular',
-                                          fontSize: ScreenUtil().setSp(16,
-                                              allowFontScalingSelf: true)),
-                                    ),
-                                  ),
-                                  // Positioned(
-                                  //   top: 10.0,
-                                  //   left: 10.0,
-                                  //   child: GestureDetector(
-                                  //     onTap: () {
-                                  //       Navigator.of(context).pop();
-                                  //     },
-                                  //     child: AnimatedContainer(
-                                  //       // margin: EdgeInsets.only(left: 10.0),
-                                  //       duration: Duration(milliseconds: 600),
-                                  //       // margin: EdgeInsets.only(right: 6.0),
-                                  //       height: ScreenUtil()
-                                  //           .setHeight(searchSelected ? 0 : 18),
-                                  //       width: ScreenUtil()
-                                  //           .setWidth(searchSelected ? 0 : 19),
-                                  //       child: Image.asset(
-                                  //         'assets/images/backButton.png',
-                                  //         color: Colors.black,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  AnimatedContainer(
-                                    duration: Duration(milliseconds: 600),
-                                    margin: EdgeInsets.only(right: 6.0),
-                                    height: ScreenUtil()
-                                        .setHeight(searchSelected ? 27 : 0),
-                                    width: ScreenUtil()
-                                        .setWidth(searchSelected ? 27 : 0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        textEditingController.clear();
-                                        setState(() {
-                                          searchValue = "";
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.clear,
-                                        color: Colors.black,
-                                        size: searchSelected
-                                            ? ScreenUtil().setSp(25,
-                                                allowFontScalingSelf: true)
-                                            : 0,
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                      onTap: () async {
-                                        await Provider.of<Notif>(context,
-                                                listen: false)
-                                            .getNotification(context: context);
-
-                                        setState(() {
-                                          tapNotication = !tapNotication;
-                                        });
-                                      },
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 600),
-                                        margin: EdgeInsets.only(right: 6.0),
-                                        alignment: Alignment.centerRight,
-                                        height: ScreenUtil()
-                                            .setHeight(searchSelected ? 0 : 50),
-                                        width: ScreenUtil()
-                                            .setWidth(searchSelected ? 0 : 50),
-                                        color: Colors.transparent,
-                                        child: Provider.of<Notif>(context,
-                                                        listen: true)
-                                                    .notifications
-                                                    .length >
-                                                0
-                                            ? Provider.of<Notif>(context,
-                                                        listen: true)
-                                                    .checkForDelete()
-                                                ? SvgPicture.asset(
-                                                    'assets/icons/notificationIcon.svg',
-                                                    color: Colors.black,
-                                                    height: ScreenUtil()
-                                                        .setHeight(
-                                                            searchSelected
-                                                                ? 0
-                                                                : 25),
-                                                    width: ScreenUtil()
-                                                        .setWidth(searchSelected
-                                                            ? 0
-                                                            : 25),
-                                                  )
-                                                : Image.asset(
-                                                    'assets/images/notificationPulse.png',
-                                                    height: ScreenUtil()
-                                                        .setHeight(
-                                                            searchSelected
-                                                                ? 0
-                                                                : 25),
-                                                    width: ScreenUtil()
-                                                        .setWidth(searchSelected
-                                                            ? 0
-                                                            : 25),
-                                                  )
-                                            : SvgPicture.asset(
-                                                'assets/icons/notificationIcon.svg',
-                                                height: ScreenUtil().setHeight(
-                                                    searchSelected ? 0 : 25),
-                                                width: ScreenUtil().setWidth(
-                                                    searchSelected ? 0 : 25),
-                                                color: Colors.black,
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 3.0),
+                                                    child: Text(
+                                                      widget.product.goldWeight
+                                                                      .toString() ==
+                                                                  "" ||
+                                                              widget.product
+                                                                      .goldWeight
+                                                                      .toString() ==
+                                                                  null
+                                                          ? "----"
+                                                          : '${widget.product.goldWeight}' +
+                                                              ' gms',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 3.0),
+                                                    child: Text(
+                                                      widget.product.diamondWeight
+                                                                      .toString() ==
+                                                                  "" ||
+                                                              widget.product
+                                                                      .diamondWeight
+                                                                      .toString() ==
+                                                                  null
+                                                          ? "----"
+                                                          : '${widget.product.diamondWeight}' +
+                                                              ' ct',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 3.0),
+                                                    child: Text(
+                                                      widget.product.diamondCount
+                                                                      .toString() ==
+                                                                  "" ||
+                                                              widget.product
+                                                                      .diamondCount
+                                                                      .toString() ==
+                                                                  null
+                                                          ? "----"
+                                                          : '${widget.product.diamondCount}' +
+                                                              ' pieces',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      widget.product.designDimensions
+                                                                      .toString() ==
+                                                                  "" ||
+                                                              widget.product
+                                                                      .designDimensions
+                                                                      .toString() ==
+                                                                  null
+                                                          ? "----"
+                                                          : '${widget.product.designDimensions}',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'Gilroy Light',
+                                                        color: Colors.black,
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(14,
+                                                                allowFontScalingSelf:
+                                                                    true),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                      )),
-                                ],
-                              ),
-                            ),
-                            searchSelectedDoneButton
-                                ? SizedBox(
-                                    width: ScreenUtil().setWidth(10),
-                                  )
-                                : SizedBox(
-                                    width: 0,
-                                  ),
-                            searchSelectedDoneButton
-                                ? Container(
-                                    height: ScreenUtil().setHeight(22),
-                                    width: ScreenUtil().setWidth(45),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        FocusScopeNode currentFocus =
-                                            FocusScope.of(context);
-                                        currentFocus.unfocus();
-                                        textEditingController.clear();
-                                        setState(() {
-                                          searchValue = "";
-                                          searchSelected = false;
-                                          searchSelectedDoneButton = false;
-                                        });
-                                      },
-                                      child: Text(
-                                        'Done',
-                                        style: TextStyle(
-                                          fontFamily: 'Gilroy Bold',
-                                          color: searchSelected
-                                              ? isColourSetLinear ||
-                                                      (!isColourSetLinear &&
-                                                          !isColourSetRadial)
-                                                  ? Colors.black
-                                                  : Colors.white
-                                              : Colors.black,
-                                          fontSize: ScreenUtil().setSp(16,
-                                              allowFontScalingSelf: true),
-                                          fontWeight: FontWeight.w500,
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                : SizedBox(
-                                    width: 0,
-                                  ),
-                          ],
-                        ),
-                      ),
-                      !searchSelected
-                          ? SizedBox(
-                              height: 0.0,
-                              width: 0.0,
-                            )
-                          : Divider(
-                              color: Colors.grey[300],
-                              endIndent: 70.0,
-                              indent: 70.0,
-                            ),
-                      searchValue.isEmpty
-                          ? SizedBox(
-                              height: 0.0,
-                              width: 0.0,
-                            )
-                          : isLoadingSearch
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : Container(
-                                  height: ScreenUtil().setHeight(600.0),
-                                  width: ScreenUtil().setHeight(360),
-                                  margin: EdgeInsets.fromLTRB(25, 0, 26, 20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: suggestion.length > 0
-                                      ? ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          physics: BouncingScrollPhysics(),
-                                          itemCount: Provider.of<Searchh>(
-                                                  context,
-                                                  listen: false)
-                                              .searchResult
-                                              .length,
-                                          itemBuilder: (context, index) {
-                                            info = suggestion[index]
-                                                .styleNumber
-                                                .split(searchValue);
-                                            // print(info);
-                                            return GestureDetector(
-                                              onTap: () async {
-                                                try {
-                                                  await Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .getProductDetail(
-                                                          context: context,
-                                                          styleNumber:
-                                                              suggestion[index]
-                                                                  .styleNumber);
-                                                  FocusScopeNode currentFocus =
-                                                      FocusScope.of(context);
-                                                  currentFocus.unfocus();
-                                                  textEditingController.clear();
-                                                  setState(() {
-                                                    searchValue = "";
-                                                    searchSelected = false;
-                                                    searchSelectedDoneButton =
-                                                        false;
-                                                  });
-                                                  // print(Provider.of<Pagination>(
-                                                  //         context,
-                                                  //         listen: false)
-                                                  //     .diamondQuality[widget
-                                                  //         .defaultIndex4]
-                                                  //     .toString() +
-                                                  // "DC");
-                                                  // print(Provider.of<Pagination>(
-                                                  //         context,
-                                                  //         listen: false)
-                                                  //     .certPrices[Provider
-                                                  //             .of<Pagination>(
-                                                  //                 context,
-                                                  //                 listen:
-                                                  //                     false)
-                                                  //         .cert[widget.defaultIndex3]]
-                                                  //     .toString() +
-                                                  // "DC");
-                                                  // print(widget.defaultIndex1
-                                                  //     .toString() +
-                                                  // "DC");
-                                                  // print(widget.defaultIndex2
-                                                  //     .toString() +
-                                                  // "DC");
-                                                  // print(widget.defaultIndex3
-                                                  //     .toString() +
-                                                  // "DC");
-                                                  // print(widget.defaultIndex4
-                                                  //     .toString() +
-                                                  // "DC");
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ProductDetail(
-                                                        select: 'all',
-                                                        colorKey: 'yellow',
-                                                        diamondKey: Provider.of<
-                                                                        Pagination>(
+                                        SizedBox(
+                                          height: ScreenUtil().setHeight(17),
+                                        ),
+                                        Container(
+                                          height: ScreenUtil().setHeight(94),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              // SizedBox(
+                                              //   width: ScreenUtil().setWidth(15),
+                                              // ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Container(
+                                                    width: ScreenUtil()
+                                                        .setWidth(240),
+                                                    height: ScreenUtil()
+                                                        .setWidth(40),
+                                                    // padding: EdgeInsets.all(20.0),
+                                                    child: Material(
+                                                      type: MaterialType
+                                                          .transparency,
+                                                      elevation: 6.0,
+                                                      color: Colors.transparent,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: InkWell(
+                                                        splashColor: Colors
+                                                            .cyan[100]
+                                                            .withOpacity(0.5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        onTap: () async {
+                                                          if (Provider.of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .isVerified ==
+                                                              false) {
+                                                            var date = await Provider.of<
+                                                                        UserInfo>(
                                                                     context,
-                                                                    listen: false)
-                                                                .diamondQuality[
-                                                            widget
-                                                                .defaultIndex4],
-                                                        certPrice: Provider.of<
-                                                                    Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .certPrices[Provider
-                                                                    .of<Pagination>(
+                                                                    listen:
+                                                                        false)
+                                                                .getDate(
+                                                                    context);
+                                                            if (date != null) {
+                                                              int d = DateTime
+                                                                      .now()
+                                                                  .difference(
+                                                                      DateTime.parse(
+                                                                          date))
+                                                                  .inDays;
+                                                              if (d < 1) {
+                                                                fff = false;
+                                                                dataSelect(
+                                                                    context:
+                                                                        context,
+                                                                    titleText:
+                                                                        'Alert!',
+                                                                    buttonText:
+                                                                        'Okay',
+                                                                    contentText:
+                                                                        'Request has already been noted!',
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    gif:
+                                                                        "assets/images/identi.gif");
+                                                              }
+                                                            }
+                                                          }
+                                                          if (fff) {
+                                                            !Provider.of<Pagination>(
                                                                         context,
                                                                         listen:
                                                                             false)
-                                                                .cert[
-                                                            widget
-                                                                .defaultIndex3]],
-                                                        product: Provider.of<
-                                                                    Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .productDetailsForSearch[0],
-                                                        defaultIndex1: widget
-                                                            .defaultIndex1,
-                                                        defaultIndex2: widget
-                                                            .defaultIndex2,
-                                                        defaultIndex3: widget
-                                                            .defaultIndex3,
-                                                        defaultIndex4: widget
-                                                            .defaultIndex4,
-                                                        valueChangeBuild: widget
-                                                            .valueChangeBuild,
-                                                        valueChangeColor: widget
-                                                            .valueChangeColor,
-                                                        valueChangeCerti: widget
-                                                            .valueChangeCerti,
-                                                        valueChangeDQ: widget
-                                                            .valueChangeDQ,
-                                                      ),
-                                                    ),
-                                                  );
-                                                } catch (err) {
-                                                  dataSelect(
-                                                      context: context,
-                                                      titleText: 'Alert!',
-                                                      buttonText: 'Okay',
-                                                      contentText:
-                                                          err.toString(),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      gif:
-                                                          "assets/images/alert.gif");
-                                                }
-                                              },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                padding: const EdgeInsets.only(
-                                                    left: 20.0, right: 20.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Container(
-                                                      height: ScreenUtil()
-                                                          .setHeight(90),
-                                                      width: ScreenUtil()
-                                                          .setWidth(90),
-                                                      // color: Colors.amber,
-                                                      child: Image(
-                                                        image:
-                                                            CachedNetworkImageProvider(
-                                                          suggestion[index]
-                                                              .image,
+                                                                    .isVerified
+                                                                ? dataSelect(
+                                                                    context:
+                                                                        context,
+                                                                    titleText:
+                                                                        'Important!',
+                                                                    contentText:
+                                                                        "To get complete access of the app, you need to first verify yourself!",
+                                                                    buttonText:
+                                                                        'Complete SignUp',
+                                                                    onPressed:
+                                                                        () async {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      String
+                                                                          date =
+                                                                          await Provider.of<UserInfo>(context, listen: false)
+                                                                              .getDate(context);
+                                                                      if (date !=
+                                                                          null) {
+                                                                        int d = DateTime.now()
+                                                                            .difference(DateTime.parse(date))
+                                                                            .inDays;
+                                                                        if (d >=
+                                                                            1) {
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            MaterialPageRoute(
+                                                                              builder: (context) => CompleteSignUp(),
+                                                                            ),
+                                                                          );
+                                                                        } else {
+                                                                          dataSelect(
+                                                                              context: context,
+                                                                              titleText: 'Alert!',
+                                                                              contentText: 'Request has already been noted!',
+                                                                              buttonText: 'Okay',
+                                                                              gif: "assets/images/identi.gif",
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              });
+                                                                        }
+                                                                      } else {
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                CompleteSignUp(),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    gif:
+                                                                        "assets/images/alert.gif")
+                                                                : showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    child:
+                                                                        AddToCart(
+                                                                      globalKey:
+                                                                          globalKey,
+                                                                      product:
+                                                                          widget
+                                                                              .product,
+                                                                      updateCart:
+                                                                          false,
+                                                                      choicesBuild: Provider.of<Pagination>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .build,
+                                                                      choiceColor: Provider.of<Pagination>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .color,
+                                                                      choiceCertification: Provider.of<Pagination>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .cert,
+                                                                      choiceDiamondQuality: Provider.of<Pagination>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .diamondQuality,
+                                                                      defValue:
+                                                                          _defaultChoiceIndex1,
+                                                                      defValue1:
+                                                                          _defaultChoiceIndex2,
+                                                                      defValue2:
+                                                                          _defaultChoiceIndex3,
+                                                                      defValue3:
+                                                                          _defaultChoiceIndex4,
+                                                                      valueChangeBuild:
+                                                                          widget
+                                                                              .valueChangeBuild,
+                                                                      valueChangeColor:
+                                                                          widget
+                                                                              .valueChangeColor,
+                                                                      valueChangeCerti:
+                                                                          widget
+                                                                              .valueChangeCerti,
+                                                                      valueChangeDQ:
+                                                                          widget
+                                                                              .valueChangeDQ,
+                                                                    ),
+                                                                  );
+                                                          }
+                                                        },
+                                                        child: Center(
+                                                          child: Text(
+                                                            'ADD TO CART',
+                                                            style: TextStyle(
+                                                              fontFamily:
+                                                                  'Gilroy Bold',
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(18,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
                                                         ),
-                                                        // image:
-                                                        //     AdvancedNetworkImage(
-                                                        //   suggestion[index]
-                                                        //       .image,
-                                                        //   useDiskCache: true,
-                                                        //   cacheRule: CacheRule(
-                                                        //       maxAge:
-                                                        //           const Duration(
-                                                        //               days: 3)),
-                                                        // ),
-                                                        fit: BoxFit.fill,
                                                       ),
                                                     ),
-                                                    RichText(
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'assets/images/vector17.png'),
+                                                      fit: BoxFit.contain,
+                                                    )),
+                                                  ),
+                                                  SizedBox(
+                                                    height: ScreenUtil()
+                                                        .setHeight(7),
+                                                  ),
+                                                  Container(
+                                                    width: ScreenUtil()
+                                                        .setWidth(239),
+                                                    height: ScreenUtil()
+                                                        .setHeight(30),
+                                                    child: RichText(
                                                       text: TextSpan(
                                                         style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
                                                           fontFamily:
                                                               'Gilroy Medium',
                                                           fontSize: ScreenUtil()
-                                                              .setSp(21,
+                                                              .setSp(12,
                                                                   allowFontScalingSelf:
                                                                       true),
+                                                          color:
+                                                              Color(0xFF8C8888),
                                                         ),
                                                         children: [
                                                           TextSpan(
-                                                            text: info[0],
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              // fontWeight: FontWeight.bold,
-                                                              fontFamily:
-                                                                  'Gilroy Medium',
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(21,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                            ),
+                                                            text:
+                                                                'To know more about this design or contact Team Gemstory, ',
                                                           ),
                                                           TextSpan(
-                                                            text: searchValue,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Gilroy Medium',
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(21,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: info[1],
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              // fontWeight: FontWeight.bold,
-                                                              fontFamily:
-                                                                  'Gilroy Medium',
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(21,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                            ),
-                                                          ),
+                                                              text:
+                                                                  'Click here',
+                                                              recognizer:
+                                                                  TapGestureRecognizer()
+                                                                    ..onTap =
+                                                                        () async {
+                                                                      bool
+                                                                          value2 =
+                                                                          false;
+                                                                      await dataSelectConfirmMessage(
+                                                                        context:
+                                                                            globalKey.currentContext,
+                                                                        titleText:
+                                                                            'Alert!',
+                                                                        contentText:
+                                                                            "Are you sure, You want to open Whatsapp?",
+                                                                        gif:
+                                                                            'assets/images/whatsappGIF.gif',
+                                                                      ).then(
+                                                                          (value) async {
+                                                                        // if (value) {
+                                                                        value2 =
+                                                                            value;
+                                                                        // }
+                                                                      });
+                                                                      if (value2 !=
+                                                                              null &&
+                                                                          value2) {
+                                                                        if (await canLaunch(
+                                                                            "https://wa.me/919004801229")) {
+                                                                          await launch(
+                                                                              "https://wa.me/919004801229");
+                                                                        } else {
+                                                                          throw 'Could not launch https://wa.me/919004801229';
+                                                                        }
+                                                                      }
+                                                                    },
+                                                              style: TextStyle(
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline,
+                                                              )),
                                                         ],
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            );
-                                          },
-                                        )
-                                      : Center(
-                                          child: Text(
-                                            'No Products Found',
+                                            ],
                                           ),
                                         ),
-                                )
-                    ],
-                  ),
-                ),
-              ),
-              !tapNotication
-                  ? SizedBox(
-                      height: 0.0,
-                      width: 0.0,
-                    )
-                  : Container(
-                      color: Colors.transparent,
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: ScreenUtil().setHeight(92 + 22),
+                      right: ScreenUtil().setWidth(26),
+                      child: hideButton
+                          ? GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  child: OptionsDialog(
+                                    choicesBuild: Provider.of<Pagination>(
+                                            context,
+                                            listen: false)
+                                        .build,
+                                    choiceColor: Provider.of<Pagination>(
+                                            context,
+                                            listen: false)
+                                        .color,
+                                    choiceCertification:
+                                        Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .cert,
+                                    choiceDiamondQuality:
+                                        Provider.of<Pagination>(context,
+                                                listen: false)
+                                            .diamondQuality,
+                                    defValue: _defaultChoiceIndex1,
+                                    defValue1: _defaultChoiceIndex2,
+                                    defValue2: _defaultChoiceIndex3,
+                                    defValue3: _defaultChoiceIndex4,
+                                    valueChangeBuild: _onValueChange,
+                                    valueChangeColor: _onValueChangeColor,
+                                    valueChangeCerti: _onValueChangeCerti,
+                                    valueChangeDQ: _onValueChangeDQ,
+                                  ),
+                                );
+                              },
+                              child: SvgPicture.asset(
+                                'assets/icons/optionsIcon.svg',
+                                width: ScreenUtil().setWidth(29),
+                                height: ScreenUtil().setHeight(29),
+                                color: isColourSetLinear ||
+                                        (!isColourSetLinear &&
+                                            !isColourSetRadial)
+                                    ? Color(0xFFB8B8B8)
+                                    : Colors.white,
+                              ),
+                            )
+                          : FadeOut(
+                              child: SvgPicture.asset(
+                                'assets/icons/optionsIcon.svg',
+                                width: ScreenUtil().setWidth(29),
+                                height: ScreenUtil().setHeight(29),
+                                color: isColourSetLinear ||
+                                        (!isColourSetLinear &&
+                                            !isColourSetRadial)
+                                    ? Color(0xFFB8B8B8)
+                                    : Colors.white,
+                              ),
+                            ),
+                    ),
+                    // Positioned(
+                    //   top: ScreenUtil().setHeight(92 + 22),
+                    //   right: ScreenUtil().setWidth(26),
+                    //   child: hideButton
+                    //       ? GestureDetector(
+                    //           onTap: () {
+                    //             Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                 builder: (context) => PhotoDetailScreen(
+                    //                     widget.colorKey, widget.product),
+                    //               ),
+                    //             );
+                    //           },
+                    //           child: SvgPicture.asset(
+                    //             'assets/icons/zoomIcon.svg',
+                    //             width: ScreenUtil().setWidth(29),
+                    //             height: ScreenUtil().setHeight(29),
+                    //             color: isColourSetLinear ||
+                    //                     (!isColourSetLinear && !isColourSetRadial)
+                    //                 ? Color(0xFFB8B8B8)
+                    //                 : Colors.white,
+                    //           ),
+                    //         )
+                    //       : FadeOut(
+                    //           child: SvgPicture.asset(
+                    //             'assets/icons/zoomIcon.svg',
+                    //             width: ScreenUtil().setWidth(29),
+                    //             height: ScreenUtil().setHeight(29),
+                    //             color: isColourSetLinear ||
+                    //                     (!isColourSetLinear && !isColourSetRadial)
+                    //                 ? Color(0xFFB8B8B8)
+                    //                 : Colors.white,
+                    //           ),
+                    //         ),
+                    // ),
+                    Positioned(
+                      top: ScreenUtil().setHeight(383),
+                      right: ScreenUtil().setWidth(26),
                       child: Container(
-                        height: ScreenUtil().setHeight(775),
-                        width: ScreenUtil().setWidth(411),
+                        height: ScreenUtil().setHeight(43),
+                        width: ScreenUtil().setWidth(43),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Color(0xFF34B0D9).withOpacity(0.2),
-                              Color(0xFF3685CB).withOpacity(0.2),
+                              Color(0xFF34B0D9),
+                              Color(0xFF3685CB),
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
                         child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              tapNotication = false;
-                            });
-                          },
-                          child: Container(
-                            height: ScreenUtil().setHeight(775),
-                            width: ScreenUtil().setWidth(411),
-                          ),
-                        ),
+                            child: Icon(
+                              widget.product.isFavourite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              size: ScreenUtil()
+                                  .setSp(30, allowFontScalingSelf: true),
+                              color: Colors.white,
+                            ),
+                            onTap: () async {
+                              try {
+                                if (mounted) setState(() {});
+                                if (widget.product.isFavourite) {
+                                  showFloatingFlushbar(
+                                      context,
+                                      'Product removed from Favourites list',
+                                      widget.product.styleNumber,
+                                      '❤');
+                                  await Provider.of<Pagination>(context,
+                                          listen: false)
+                                      .toogleFavourite(
+                                          styleNumber:
+                                              widget.product.styleNumber,
+                                          context: context);
+                                } else {
+                                  await Provider.of<Pagination>(context,
+                                          listen: false)
+                                      .toogleFavourite(
+                                          styleNumber:
+                                              widget.product.styleNumber,
+                                          context: context,
+                                          product: widget.product);
+                                  showFloatingFlushbar(
+                                      context,
+                                      'Product added to the Favourites list',
+                                      widget.product.styleNumber,
+                                      '❤');
+                                }
+                                if (mounted) setState(() {});
+                              } catch (err) {
+                                if (mounted) setState(() {});
+                              }
+                              // child: Icon(
+                              //   widget.product.isFavourite
+                              //       ? Icons.favorite
+                              //       : Icons.favorite_border,
+                              //   size: 30.0,
+                              //   color: Colors.white,
+                              // ),
+                            }),
                       ),
                     ),
-              !tapNotication
-                  ? SizedBox(
-                      height: 0.0,
-                      width: 0.0,
-                    )
-                  : Container(
-                      color: Colors.transparent,
-                      child: Container(
-                        height: ScreenUtil().setHeight(775),
-                        width: ScreenUtil().setWidth(411),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0xFF34B0D9).withOpacity(0.2),
-                              Color(0xFF3685CB).withOpacity(0.2),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              tapNotication = false;
-                            });
-                          },
-                          child: Container(
+                    !searchSelected
+                        ? SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                        : Container(
                             height: ScreenUtil().setHeight(775),
                             width: ScreenUtil().setWidth(411),
+                            color: Colors.transparent,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                height: ScreenUtil().setHeight(775),
+                                width: ScreenUtil().setWidth(411),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-              tapNotication
-                  ? Container(
-                      height: ScreenUtil().setHeight(775),
-                      width: ScreenUtil().setWidth(370),
-                      color: Colors.transparent,
-                      // decoration: BoxDecoration(
-                      //   gradient: LinearGradient(
-                      //     colors: [
-                      //       Color(0xFF34B0D9).withOpacity(0.2),
-                      //       Color(0xFF3685CB).withOpacity(0.2),
-                      //     ],
-                      //     begin: Alignment.topLeft,
-                      //     end: Alignment.bottomRight,
-                      //   ),
-                      // ),
+                    Container(
+                      width: ScreenUtil().setWidth(412),
                       child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Stack(
+                        filter: ImageFilter.blur(
+                            sigmaX: searchSelected ? 5 : 0,
+                            sigmaY: searchSelected ? 5 : 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Positioned(
-                              top: ScreenUtil().setHeight(327),
-                              left: ScreenUtil().setWidth(0.0),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(22),
+                            ),
+                            Container(
+                              width: ScreenUtil().setWidth(360),
+                              height: ScreenUtil().setHeight(45),
+                              margin: EdgeInsets.fromLTRB(
+                                  26, 20, 0, searchSelected ? 0 : 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  AnimatedContainer(
+                                    duration: Duration(milliseconds: 600),
+                                    curve: Curves.easeInOut,
+                                    padding: EdgeInsets.only(left: 10.0),
+                                    width: ScreenUtil()
+                                        .setWidth(searchSelected ? 305 : 360),
+                                    height: ScreenUtil().setHeight(45),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color:
+                                          isColourSetLinear || isColourSetRadial
+                                              ? Colors.white
+                                              : Color(0xFFF4F4F4),
+                                    ),
+                                    child: Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: <Widget>[
+                                        AnimatedContainer(
+                                          duration: Duration(milliseconds: 600),
+                                          width: ScreenUtil().setWidth(
+                                              searchSelected ? 305 : 360),
+                                          height: ScreenUtil().setHeight(40),
+                                          padding: EdgeInsets.only(bottom: 2),
+                                          child: TextField(
+                                            controller: textEditingController,
+                                            onTap: () async {
+                                              setState(() {
+                                                searchSelected = true;
+                                              });
+                                              Timer(Duration(milliseconds: 700),
+                                                  () {
+                                                setState(() {
+                                                  searchSelectedDoneButton =
+                                                      true;
+                                                });
+                                              });
+                                            },
+                                            onChanged: (value) async {
+                                              setState(() {
+                                                // isLoadingSearch = true;
+                                                searchValue =
+                                                    value.toUpperCase();
+                                              });
+                                              // setState(() {
+
+                                              //   // info=styleNumber[].split(value);
+                                              // print(styleNumber[1].split(searchValue));
+                                              // });
+                                              try {
+                                                await getSearch(
+                                                    searchValue.toUpperCase());
+                                              } catch (err) {
+                                                dataSelect(
+                                                    context: context,
+                                                    titleText: 'Alert!',
+                                                    buttonText: 'Okay',
+                                                    contentText: err.toString(),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    gif:
+                                                        "assets/images/alert.gif");
+                                              }
+                                              // await getSearch(
+                                              //     searchValue.toUpperCase());
+                                              // setState(() {
+                                              //   isLoadingSearch = false;
+                                              // });
+                                              // getSearchResult(value.toUpperCase());
+                                            },
+                                            decoration: InputDecoration(
+                                              // contentPadding: EdgeInsets.all(15.0),
+                                              // suffixIcon: searchSelected
+                                              //     ? GestureDetector(
+                                              //         onTap: () {
+                                              //           textEditingController.clear();
+                                              //           setState(() {
+                                              //             searchValue = "";
+                                              //           });
+                                              //         },
+                                              //         child: Icon(Icons.clear),
+                                              //       )
+                                              //     : SizedBox(
+                                              //         height: 0.0,
+                                              //         width: 0.0,
+                                              //       ),
+                                              hintText: 'SEARCH GEMSTORY',
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Gilroy Medium',
+                                                color: Color(0xFF595959),
+                                                fontSize: ScreenUtil().setSp(14,
+                                                    allowFontScalingSelf: true),
+                                              ),
+                                              border: InputBorder.none,
+                                            ),
+                                            textAlign: searchSelected
+                                                ? TextAlign.start
+                                                : TextAlign.center,
+                                            style: TextStyle(
+                                                fontFamily: 'Gilroy Regular',
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf:
+                                                        true)),
+                                          ),
+                                        ),
+                                        // Positioned(
+                                        //   top: 10.0,
+                                        //   left: 10.0,
+                                        //   child: GestureDetector(
+                                        //     onTap: () {
+                                        //       Navigator.of(context).pop();
+                                        //     },
+                                        //     child: AnimatedContainer(
+                                        //       // margin: EdgeInsets.only(left: 10.0),
+                                        //       duration: Duration(milliseconds: 600),
+                                        //       // margin: EdgeInsets.only(right: 6.0),
+                                        //       height: ScreenUtil()
+                                        //           .setHeight(searchSelected ? 0 : 18),
+                                        //       width: ScreenUtil()
+                                        //           .setWidth(searchSelected ? 0 : 19),
+                                        //       child: Image.asset(
+                                        //         'assets/images/backButton.png',
+                                        //         color: Colors.black,
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        AnimatedContainer(
+                                          duration: Duration(milliseconds: 600),
+                                          margin: EdgeInsets.only(right: 6.0),
+                                          height: ScreenUtil().setHeight(
+                                              searchSelected ? 27 : 0),
+                                          width: ScreenUtil().setWidth(
+                                              searchSelected ? 27 : 0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.clear,
+                                              color: Colors.black,
+                                              size: searchSelected
+                                                  ? ScreenUtil().setSp(25,
+                                                      allowFontScalingSelf:
+                                                          true)
+                                                  : 0,
+                                            ),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                            onTap: () async {
+                                              await Provider.of<Notif>(context,
+                                                      listen: false)
+                                                  .getNotification(
+                                                      context: context);
+
+                                              setState(() {
+                                                tapNotication = !tapNotication;
+                                              });
+                                            },
+                                            child: AnimatedContainer(
+                                              duration:
+                                                  Duration(milliseconds: 600),
+                                              margin:
+                                                  EdgeInsets.only(right: 6.0),
+                                              alignment: Alignment.centerRight,
+                                              height: ScreenUtil().setHeight(
+                                                  searchSelected ? 0 : 50),
+                                              width: ScreenUtil().setWidth(
+                                                  searchSelected ? 0 : 50),
+                                              color: Colors.transparent,
+                                              child: Provider.of<Notif>(context,
+                                                              listen: true)
+                                                          .notifications
+                                                          .length >
+                                                      0
+                                                  ? Provider.of<Notif>(context,
+                                                              listen: true)
+                                                          .checkForDelete()
+                                                      ? SvgPicture.asset(
+                                                          'assets/icons/notificationIcon.svg',
+                                                          color: Colors.black,
+                                                          height: ScreenUtil()
+                                                              .setHeight(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
+                                                          width: ScreenUtil()
+                                                              .setWidth(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/images/notificationPulse.png',
+                                                          height: ScreenUtil()
+                                                              .setHeight(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
+                                                          width: ScreenUtil()
+                                                              .setWidth(
+                                                                  searchSelected
+                                                                      ? 0
+                                                                      : 25),
+                                                        )
+                                                  : SvgPicture.asset(
+                                                      'assets/icons/notificationIcon.svg',
+                                                      height: ScreenUtil()
+                                                          .setHeight(
+                                                              searchSelected
+                                                                  ? 0
+                                                                  : 25),
+                                                      width: ScreenUtil()
+                                                          .setWidth(
+                                                              searchSelected
+                                                                  ? 0
+                                                                  : 25),
+                                                      color: Colors.black,
+                                                    ),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  searchSelectedDoneButton
+                                      ? SizedBox(
+                                          width: ScreenUtil().setWidth(10),
+                                        )
+                                      : SizedBox(
+                                          width: 0,
+                                        ),
+                                  searchSelectedDoneButton
+                                      ? Container(
+                                          height: ScreenUtil().setHeight(22),
+                                          width: ScreenUtil().setWidth(45),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              FocusScopeNode currentFocus =
+                                                  FocusScope.of(context);
+                                              currentFocus.unfocus();
+                                              textEditingController.clear();
+                                              setState(() {
+                                                searchValue = "";
+                                                searchSelected = false;
+                                                searchSelectedDoneButton =
+                                                    false;
+                                              });
+                                            },
+                                            child: Text(
+                                              'Done',
+                                              style: TextStyle(
+                                                fontFamily: 'Gilroy Bold',
+                                                color: searchSelected
+                                                    ? isColourSetLinear ||
+                                                            (!isColourSetLinear &&
+                                                                !isColourSetRadial)
+                                                        ? Colors.black
+                                                        : Colors.white
+                                                    : Colors.black,
+                                                fontSize: ScreenUtil().setSp(16,
+                                                    allowFontScalingSelf: true),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          width: 0,
+                                        ),
+                                ],
+                              ),
+                            ),
+                            !searchSelected
+                                ? SizedBox(
+                                    height: 0.0,
+                                    width: 0.0,
+                                  )
+                                : Divider(
+                                    color: Colors.grey[300],
+                                    endIndent: 70.0,
+                                    indent: 70.0,
+                                  ),
+                            searchValue.isEmpty
+                                ? SizedBox(
+                                    height: 0.0,
+                                    width: 0.0,
+                                  )
+                                : isLoadingSearch
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Container(
+                                        height: ScreenUtil().setHeight(600.0),
+                                        width: ScreenUtil().setHeight(360),
+                                        margin:
+                                            EdgeInsets.fromLTRB(25, 0, 26, 20),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: suggestion.length > 0
+                                            ? ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                physics:
+                                                    BouncingScrollPhysics(),
+                                                itemCount: Provider.of<Searchh>(
+                                                        context,
+                                                        listen: false)
+                                                    .searchResult
+                                                    .length,
+                                                itemBuilder: (context, index) {
+                                                  info = suggestion[index]
+                                                      .styleNumber
+                                                      .split(searchValue);
+                                                  // print(info);
+                                                  return GestureDetector(
+                                                    onTap: () async {
+                                                      try {
+                                                        await Provider.of<
+                                                                    Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .getProductDetail(
+                                                                context:
+                                                                    context,
+                                                                styleNumber:
+                                                                    suggestion[
+                                                                            index]
+                                                                        .styleNumber);
+                                                        FocusScopeNode
+                                                            currentFocus =
+                                                            FocusScope.of(
+                                                                context);
+                                                        currentFocus.unfocus();
+                                                        textEditingController
+                                                            .clear();
+                                                        setState(() {
+                                                          searchValue = "";
+                                                          searchSelected =
+                                                              false;
+                                                          searchSelectedDoneButton =
+                                                              false;
+                                                        });
+                                                        // print(Provider.of<Pagination>(
+                                                        //         context,
+                                                        //         listen: false)
+                                                        //     .diamondQuality[widget
+                                                        //         .defaultIndex4]
+                                                        //     .toString() +
+                                                        // "DC");
+                                                        // print(Provider.of<Pagination>(
+                                                        //         context,
+                                                        //         listen: false)
+                                                        //     .certPrices[Provider
+                                                        //             .of<Pagination>(
+                                                        //                 context,
+                                                        //                 listen:
+                                                        //                     false)
+                                                        //         .cert[widget.defaultIndex3]]
+                                                        //     .toString() +
+                                                        // "DC");
+                                                        // print(widget.defaultIndex1
+                                                        //     .toString() +
+                                                        // "DC");
+                                                        // print(widget.defaultIndex2
+                                                        //     .toString() +
+                                                        // "DC");
+                                                        // print(widget.defaultIndex3
+                                                        //     .toString() +
+                                                        // "DC");
+                                                        // print(widget.defaultIndex4
+                                                        //     .toString() +
+                                                        // "DC");
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetail(
+                                                              select: 'all',
+                                                              colorKey:
+                                                                  'yellow',
+                                                              diamondKey: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .diamondQuality[
+                                                                  widget
+                                                                      .defaultIndex4],
+                                                              certPrice: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .certPrices[Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .cert[widget.defaultIndex3]],
+                                                              product: Provider.of<
+                                                                          Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .productDetailsForSearch[0],
+                                                              defaultIndex1: widget
+                                                                  .defaultIndex1,
+                                                              defaultIndex2: widget
+                                                                  .defaultIndex2,
+                                                              defaultIndex3: widget
+                                                                  .defaultIndex3,
+                                                              defaultIndex4: widget
+                                                                  .defaultIndex4,
+                                                              valueChangeBuild:
+                                                                  widget
+                                                                      .valueChangeBuild,
+                                                              valueChangeColor:
+                                                                  widget
+                                                                      .valueChangeColor,
+                                                              valueChangeCerti:
+                                                                  widget
+                                                                      .valueChangeCerti,
+                                                              valueChangeDQ: widget
+                                                                  .valueChangeDQ,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      } catch (err) {
+                                                        dataSelect(
+                                                            context: context,
+                                                            titleText: 'Alert!',
+                                                            buttonText: 'Okay',
+                                                            contentText:
+                                                                err.toString(),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            gif:
+                                                                "assets/images/alert.gif");
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      color: Colors.transparent,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20.0,
+                                                              right: 20.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          Container(
+                                                            height: ScreenUtil()
+                                                                .setHeight(90),
+                                                            width: ScreenUtil()
+                                                                .setWidth(90),
+                                                            // color: Colors.amber,
+                                                            child: Image(
+                                                              image:
+                                                                  CachedNetworkImageProvider(
+                                                                suggestion[
+                                                                        index]
+                                                                    .image,
+                                                              ),
+                                                              // image:
+                                                              //     AdvancedNetworkImage(
+                                                              //   suggestion[index]
+                                                              //       .image,
+                                                              //   useDiskCache: true,
+                                                              //   cacheRule: CacheRule(
+                                                              //       maxAge:
+                                                              //           const Duration(
+                                                              //               days: 3)),
+                                                              // ),
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Gilroy Medium',
+                                                                fontSize: ScreenUtil()
+                                                                    .setSp(21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                              ),
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: info[0],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    // fontWeight: FontWeight.bold,
+                                                                    fontFamily:
+                                                                        'Gilroy Medium',
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      searchValue,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontFamily:
+                                                                        'Gilroy Medium',
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text: info[1],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    // fontWeight: FontWeight.bold,
+                                                                    fontFamily:
+                                                                        'Gilroy Medium',
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        21,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : Center(
+                                                child: Text(
+                                                  'No Products Found',
+                                                ),
+                                              ),
+                                      )
+                          ],
+                        ),
+                      ),
+                    ),
+                    !tapNotication
+                        ? SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                        : Container(
+                            color: Colors.transparent,
+                            child: Container(
+                              height: ScreenUtil().setHeight(775),
+                              width: ScreenUtil().setWidth(411),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9).withOpacity(0.2),
+                                    Color(0xFF3685CB).withOpacity(0.2),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -1994,417 +2114,500 @@ class _ProductDetailState extends State<ProductDetail> {
                                 child: Container(
                                   height: ScreenUtil().setHeight(775),
                                   width: ScreenUtil().setWidth(411),
-                                  color: Colors.transparent,
                                 ),
                               ),
                             ),
-                            FadeIn(
-                              child: CustomPaint(
-                                painter: CurvePainter(),
-                              ),
-                            ),
-                            Positioned(
-                              top: ScreenUtil().setHeight(82.7 + 22 + 8),
-                              left: ScreenUtil().setWidth(27),
-                              child: FadeIn(
-                                child: Container(
-                                  width: ScreenUtil().setWidth(341),
-                                  height: ScreenUtil().setHeight(300),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(26),
-                                      bottomRight: Radius.circular(26),
-                                      topLeft: Radius.circular(26),
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                  padding: EdgeInsets.all(25),
-                                  child: Provider.of<Notif>(context,
-                                                  listen: true)
-                                              .notifications
-                                              .length ==
-                                          0
-                                      ? Center(
-                                          child: ShaderMask(
-                                            shaderCallback: (bounds) =>
-                                                LinearGradient(
-                                              colors: [
-                                                Color(0xFF34BDDD),
-                                                Color(0xFF367DC8),
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ).createShader(Rect.fromLTWH(
-                                                    0,
-                                                    0,
-                                                    bounds.width,
-                                                    bounds.height)),
-                                            child: Text(
-                                              'No new notifications!',
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy Medium',
-                                                fontSize: ScreenUtil().setSp(20,
-                                                    allowFontScalingSelf: true),
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          physics: BouncingScrollPhysics(),
-                                          itemCount: Provider.of<Notif>(context,
-                                                  listen: true)
-                                              .notifications
-                                              .length,
-                                          itemBuilder: (context, index) {
-                                            return Container(
-                                              width: ScreenUtil()
-                                                  .setWidth(260 + 15 + 15),
-                                              child: Dismissible(
-                                                // dismissThresholds: {
-                                                //   DismissDirection
-                                                //       .startToEnd: 0.4
-                                                // },
-                                                key: UniqueKey(),
-                                                direction:
-                                                    DismissDirection.startToEnd,
-                                                background: Container(
-                                                  color: Colors.red,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(Icons.delete,
-                                                            color:
-                                                                Colors.white),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(5),
-                                                        ),
-                                                        Text(
-                                                          'Delete Notification',
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Gilroy Regular',
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-
-                                                // confirmDismiss: (DismissDirection
-                                                //     direction) async {
-
-                                                // },
-                                                onDismissed: (DismissDirection
-                                                    direction) async {
-                                                  await Provider.of<Notif>(
-                                                          context,
-                                                          listen: false)
-                                                      .deleteNotification(
-                                                          context: context,
-                                                          id: Provider.of<
-                                                                      Notif>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .notifications[
-                                                                  index]
-                                                              .id);
-                                                },
-                                                child: GestureDetector(
-                                                  onTap: () async {
-                                                    await Provider.of<Notif>(
-                                                            context,
-                                                            listen: false)
-                                                        .readNNotification(
-                                                            context: context,
-                                                            id: Provider.of<
-                                                                        Notif>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .notifications[
-                                                                    index]
-                                                                .id);
-                                                    // if (!Provider.of<
-                                                    //             Notif>(
-                                                    //         context,
-                                                    //         listen:
-                                                    //             false)
-                                                    //     .notifications[
-                                                    //         index]
-                                                    //     .read) {
-                                                    //   Provider.of<Auth>(
-                                                    //           context,
-                                                    //           listen:
-                                                    //               false)
-                                                    //       .restart(
-                                                    //           context:
-                                                    //               context);
-                                                    // }
-                                                    // print(Provider.of<
-                                                    //             Notif>(
-                                                    //         context,
-                                                    //         listen:
-                                                    //             false)
-                                                    //     .notifications[
-                                                    //         index]
-                                                    //     .read);
-                                                    // print(
-                                                    // 'reading trueeeeeeeeeeeee');
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 20),
-                                                    width: ScreenUtil()
-                                                        .setWidth(260),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        ShaderMask(
-                                                          shaderCallback:
-                                                              (bounds) =>
-                                                                  LinearGradient(
-                                                            colors: [
-                                                              Color(0xFF34BDDD),
-                                                              Color(0xFF367DC8),
-                                                            ],
-                                                            begin: Alignment
-                                                                .topLeft,
-                                                            end: Alignment
-                                                                .bottomRight,
-                                                          ).createShader(
-                                                            Rect.fromLTWH(
-                                                                0,
-                                                                0,
-                                                                bounds.width,
-                                                                bounds.height),
-                                                          ),
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            "assets/icons/ordersyet.svg",
-                                                            height: ScreenUtil()
-                                                                .setHeight(39),
-                                                            width: ScreenUtil()
-                                                                .setWidth(32),
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setWidth(23),
-                                                        ),
-                                                        Container(
-                                                          width: ScreenUtil()
-                                                              .setWidth(204),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: <Widget>[
-                                                              Align(
-                                                                alignment: Alignment
-                                                                    .centerRight,
-                                                                child: Text(
-                                                                  DateFormat('dd MMM, yyyy').add_jm().format(Provider.of<
-                                                                              Notif>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .notifications[
-                                                                          index]
-                                                                      .createdAt),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        "Gilroy Light",
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        12,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: ScreenUtil()
-                                                                    .setHeight(
-                                                                        7.0),
-                                                              ),
-                                                              Text(
-                                                                Provider.of<Notif>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .notifications[
-                                                                        index]
-                                                                    .title,
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Gilroy Light",
-                                                                    fontSize: ScreenUtil().setSp(
-                                                                        18,
-                                                                        allowFontScalingSelf:
-                                                                            true),
-                                                                    fontWeight: Provider.of<Notif>(context, listen: true)
-                                                                            .notifications[
-                                                                                index]
-                                                                            .read
-                                                                        ? FontWeight
-                                                                            .normal
-                                                                        : FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              SizedBox(
-                                                                height:
-                                                                    ScreenUtil()
-                                                                        .setHeight(
-                                                                            4),
-                                                              ),
-                                                              Text(
-                                                                Provider.of<Notif>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .notifications[
-                                                                        index]
-                                                                    .body,
-                                                                // "Your order has been processed",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      "Gilroy Light",
-                                                                  fontSize: ScreenUtil().setSp(
-                                                                      12,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
+                          ),
+                    !tapNotication
+                        ? SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                        : Container(
+                            color: Colors.transparent,
+                            child: Container(
+                              height: ScreenUtil().setHeight(775),
+                              width: ScreenUtil().setWidth(411),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9).withOpacity(0.2),
+                                    Color(0xFF3685CB).withOpacity(0.2),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              top: ScreenUtil().setHeight(20 + 22 + 0),
-                              left: ScreenUtil().setWidth(335),
-                              child: IconButton(
-                                onPressed: () {
+                              child: GestureDetector(
+                                onTap: () {
                                   setState(() {
                                     tapNotication = false;
                                   });
                                 },
-                                icon: Icon(
-                                  Icons.clear,
-                                  size: ScreenUtil()
-                                      .setSp(30, allowFontScalingSelf: true),
+                                child: Container(
+                                  height: ScreenUtil().setHeight(775),
+                                  width: ScreenUtil().setWidth(411),
                                 ),
                               ),
-                              // ),
                             ),
-                            Positioned(
-                              top: ScreenUtil().setHeight(425),
-                              left: ScreenUtil().setWidth(260),
-                              child: Provider.of<Notif>(context, listen: true)
-                                          .notifications
-                                          .length ==
-                                      0
-                                  ? SizedBox(
-                                      height: 0.0,
-                                    )
-                                  : Container(
-                                      width: ScreenUtil().setWidth(100),
-                                      height: ScreenUtil().setHeight(45),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                            blurRadius: 10,
-                                            color:
-                                                Colors.black.withOpacity(0.37),
-                                            offset: Offset(1, 3),
-                                          ),
-                                        ],
-                                        color: Colors.white,
-                                      ),
-                                      child: Material(
-                                        type: MaterialType.transparency,
-                                        elevation: 6.0,
+                          ),
+                    tapNotication
+                        ? Container(
+                            height: ScreenUtil().setHeight(775),
+                            width: ScreenUtil().setWidth(370),
+                            color: Colors.transparent,
+                            // decoration: BoxDecoration(
+                            //   gradient: LinearGradient(
+                            //     colors: [
+                            //       Color(0xFF34B0D9).withOpacity(0.2),
+                            //       Color(0xFF3685CB).withOpacity(0.2),
+                            //     ],
+                            //     begin: Alignment.topLeft,
+                            //     end: Alignment.bottomRight,
+                            //   ),
+                            // ),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(327),
+                                    left: ScreenUtil().setWidth(0.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          tapNotication = false;
+                                        });
+                                      },
+                                      child: Container(
+                                        height: ScreenUtil().setHeight(775),
+                                        width: ScreenUtil().setWidth(411),
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: InkWell(
-                                          splashColor:
-                                              Colors.cyan[100].withOpacity(0.8),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          onTap: () async {
+                                      ),
+                                    ),
+                                  ),
+                                  FadeIn(
+                                    child: CustomPaint(
+                                      painter: CurvePainter(),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(82.7 + 22 + 8),
+                                    left: ScreenUtil().setWidth(27),
+                                    child: FadeIn(
+                                      child: Container(
+                                        width: ScreenUtil().setWidth(341),
+                                        height: ScreenUtil().setHeight(300),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(26),
+                                            bottomRight: Radius.circular(26),
+                                            topLeft: Radius.circular(26),
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                        padding: EdgeInsets.all(25),
+                                        child:
                                             Provider.of<Notif>(context,
-                                                        listen: false)
-                                                    .checkForDelete()
-                                                ? await Provider.of<Notif>(
-                                                        context,
-                                                        listen: false)
-                                                    .deleteAll(context: context)
-                                                : await Provider.of<Notif>(
-                                                        context,
-                                                        listen: false)
-                                                    .readAll(context: context);
-                                          },
-                                          child: Center(
-                                            child: Text(
-                                              Provider.of<Notif>(context,
-                                                          listen: false)
-                                                      .checkForDelete()
-                                                  ? 'Delete All'
-                                                  : 'Read All',
-                                              style: TextStyle(
-                                                fontFamily: "Gilroy Medium",
-                                                fontSize: ScreenUtil().setSp(12,
-                                                    allowFontScalingSelf: true),
+                                                            listen: true)
+                                                        .notifications
+                                                        .length ==
+                                                    0
+                                                ? Center(
+                                                    child: ShaderMask(
+                                                      shaderCallback: (bounds) =>
+                                                          LinearGradient(
+                                                        colors: [
+                                                          Color(0xFF34BDDD),
+                                                          Color(0xFF367DC8),
+                                                        ],
+                                                        begin:
+                                                            Alignment.topLeft,
+                                                        end: Alignment
+                                                            .bottomRight,
+                                                      ).createShader(
+                                                              Rect.fromLTWH(
+                                                                  0,
+                                                                  0,
+                                                                  bounds.width,
+                                                                  bounds
+                                                                      .height)),
+                                                      child: Text(
+                                                        'No new notifications!',
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Gilroy Medium',
+                                                          fontSize: ScreenUtil()
+                                                              .setSp(20,
+                                                                  allowFontScalingSelf:
+                                                                      true),
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : ListView.builder(
+                                                    physics:
+                                                        BouncingScrollPhysics(),
+                                                    itemCount:
+                                                        Provider.of<Notif>(
+                                                                context,
+                                                                listen: true)
+                                                            .notifications
+                                                            .length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(
+                                                                260 + 15 + 15),
+                                                        child: Dismissible(
+                                                          // dismissThresholds: {
+                                                          //   DismissDirection
+                                                          //       .startToEnd: 0.4
+                                                          // },
+                                                          key: UniqueKey(),
+                                                          direction:
+                                                              DismissDirection
+                                                                  .startToEnd,
+                                                          background: Container(
+                                                            color: Colors.red,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(15),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .delete,
+                                                                      color: Colors
+                                                                          .white),
+                                                                  SizedBox(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            5),
+                                                                  ),
+                                                                  Text(
+                                                                    'Delete Notification',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'Gilroy Regular',
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          // confirmDismiss: (DismissDirection
+                                                          //     direction) async {
+
+                                                          // },
+                                                          onDismissed:
+                                                              (DismissDirection
+                                                                  direction) async {
+                                                            await Provider.of<
+                                                                        Notif>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .deleteNotification(
+                                                                    context:
+                                                                        context,
+                                                                    id: Provider.of<Notif>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .notifications[
+                                                                            index]
+                                                                        .id);
+                                                          },
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () async {
+                                                              await Provider.of<
+                                                                          Notif>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .readNNotification(
+                                                                      context:
+                                                                          context,
+                                                                      id: Provider.of<Notif>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .notifications[
+                                                                              index]
+                                                                          .id);
+                                                              // if (!Provider.of<
+                                                              //             Notif>(
+                                                              //         context,
+                                                              //         listen:
+                                                              //             false)
+                                                              //     .notifications[
+                                                              //         index]
+                                                              //     .read) {
+                                                              //   Provider.of<Auth>(
+                                                              //           context,
+                                                              //           listen:
+                                                              //               false)
+                                                              //       .restart(
+                                                              //           context:
+                                                              //               context);
+                                                              // }
+                                                              // print(Provider.of<
+                                                              //             Notif>(
+                                                              //         context,
+                                                              //         listen:
+                                                              //             false)
+                                                              //     .notifications[
+                                                              //         index]
+                                                              //     .read);
+                                                              // print(
+                                                              // 'reading trueeeeeeeeeeeee');
+                                                              setState(() {});
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          20),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          260),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: <
+                                                                    Widget>[
+                                                                  ShaderMask(
+                                                                    shaderCallback:
+                                                                        (bounds) =>
+                                                                            LinearGradient(
+                                                                      colors: [
+                                                                        Color(
+                                                                            0xFF34BDDD),
+                                                                        Color(
+                                                                            0xFF367DC8),
+                                                                      ],
+                                                                      begin: Alignment
+                                                                          .topLeft,
+                                                                      end: Alignment
+                                                                          .bottomRight,
+                                                                    ).createShader(
+                                                                      Rect.fromLTWH(
+                                                                          0,
+                                                                          0,
+                                                                          bounds
+                                                                              .width,
+                                                                          bounds
+                                                                              .height),
+                                                                    ),
+                                                                    child: SvgPicture
+                                                                        .asset(
+                                                                      "assets/icons/ordersyet.svg",
+                                                                      height: ScreenUtil()
+                                                                          .setHeight(
+                                                                              39),
+                                                                      width: ScreenUtil()
+                                                                          .setWidth(
+                                                                              32),
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            23),
+                                                                  ),
+                                                                  Container(
+                                                                    width: ScreenUtil()
+                                                                        .setWidth(
+                                                                            204),
+                                                                    child:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.centerRight,
+                                                                          child:
+                                                                              Text(
+                                                                            DateFormat('dd MMM, yyyy').add_jm().format(Provider.of<Notif>(context, listen: false).notifications[index].createdAt),
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontFamily: "Gilroy Light",
+                                                                              fontSize: ScreenUtil().setSp(12, allowFontScalingSelf: true),
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              ScreenUtil().setHeight(7.0),
+                                                                        ),
+                                                                        Text(
+                                                                          Provider.of<Notif>(context, listen: false)
+                                                                              .notifications[index]
+                                                                              .title,
+                                                                          style: TextStyle(
+                                                                              fontFamily: "Gilroy Light",
+                                                                              fontSize: ScreenUtil().setSp(18, allowFontScalingSelf: true),
+                                                                              fontWeight: Provider.of<Notif>(context, listen: true).notifications[index].read ? FontWeight.normal : FontWeight.bold),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              ScreenUtil().setHeight(4),
+                                                                        ),
+                                                                        Text(
+                                                                          Provider.of<Notif>(context, listen: false)
+                                                                              .notifications[index]
+                                                                              .body,
+                                                                          // "Your order has been processed",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                "Gilroy Light",
+                                                                            fontSize:
+                                                                                ScreenUtil().setSp(12, allowFontScalingSelf: true),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(20 + 22 + 0),
+                                    left: ScreenUtil().setWidth(335),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          tapNotication = false;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.clear,
+                                        size: ScreenUtil().setSp(30,
+                                            allowFontScalingSelf: true),
+                                      ),
+                                    ),
+                                    // ),
+                                  ),
+                                  Positioned(
+                                    top: ScreenUtil().setHeight(425),
+                                    left: ScreenUtil().setWidth(260),
+                                    child: Provider.of<Notif>(context,
+                                                    listen: true)
+                                                .notifications
+                                                .length ==
+                                            0
+                                        ? SizedBox(
+                                            height: 0.0,
+                                          )
+                                        : Container(
+                                            width: ScreenUtil().setWidth(100),
+                                            height: ScreenUtil().setHeight(45),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                  blurRadius: 10,
+                                                  color: Colors.black
+                                                      .withOpacity(0.37),
+                                                  offset: Offset(1, 3),
+                                                ),
+                                              ],
+                                              color: Colors.white,
+                                            ),
+                                            child: Material(
+                                              type: MaterialType.transparency,
+                                              elevation: 6.0,
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: InkWell(
+                                                splashColor: Colors.cyan[100]
+                                                    .withOpacity(0.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                onTap: () async {
+                                                  Provider.of<Notif>(context,
+                                                              listen: false)
+                                                          .checkForDelete()
+                                                      ? await Provider.of<
+                                                                  Notif>(
+                                                              context,
+                                                              listen: false)
+                                                          .deleteAll(
+                                                              context: context)
+                                                      : await Provider.of<
+                                                                  Notif>(
+                                                              context,
+                                                              listen: false)
+                                                          .readAll(
+                                                              context: context);
+                                                },
+                                                child: Center(
+                                                  child: Text(
+                                                    Provider.of<Notif>(context,
+                                                                listen: false)
+                                                            .checkForDelete()
+                                                        ? 'Delete All'
+                                                        : 'Read All',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          "Gilroy Medium",
+                                                      fontSize: ScreenUtil().setSp(
+                                                          12,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  : SizedBox(
-                      height: 0.0,
-                      width: 0.0,
-                    )
-            ],
-          ),
-        ),
-      ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0.0,
+                            width: 0.0,
+                          )
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

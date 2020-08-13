@@ -945,15 +945,19 @@ class _UserPageState extends State<UserPage>
                                         onTap: () async {
                                           if (Provider.of<Pagination>(context,
                                                   listen: false)
-                                              .isVerified)
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AccountInfo(),
-                                              ),
-                                            );
-                                          else {
+                                              .isVerified) {
+                                            if (Provider.of<UserInfo>(context,
+                                                        listen: false)
+                                                    .street !=
+                                                "-")
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AccountInfo(),
+                                                ),
+                                              );
+                                          } else {
                                             String date =
                                                 await Provider.of<UserInfo>(
                                                         context,

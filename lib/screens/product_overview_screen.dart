@@ -105,6 +105,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     try {
       await Provider.of<Pagination>(context, listen: false).getSortData();
       var futures = <Future>[
+        // Provider.of<UserInfo>(context, listen: false).getuser(context),
         Provider.of<Pagination>(context, listen: false).getProducts(
             page: 1,
             addition: false,
@@ -118,6 +119,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
             .getNotification(context: context),
       ];
       await Future.wait(futures);
+      await Provider.of<UserInfo>(context, listen: false).getuser(context);
+
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
       if (Provider.of<Auth>(context, listen: false).isLogin &&
           Provider.of<Auth>(context, listen: false).autoLogin == false)
@@ -171,6 +174,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
           });
       }
       if (context != null) {
+        await Provider.of<UserInfo>(context, listen: false).getuser(context);
         await Provider.of<Pagination>(context, listen: false).getProducts(
             page: 1,
             addition: false,
@@ -486,6 +490,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                     onPressed: completeSignUp,
                                                     gif:
                                                         "assets/images/alert.gif");
+                                              }
+                                              if (Provider.of<UserInfo>(context,
+                                                          listen: false)
+                                                      .street ==
+                                                  "-") {
+                                                setState(() {
+                                                  _tabController.index = 1;
+                                                });
                                               }
                                             },
                                             controller: _tabController,
@@ -898,8 +910,12 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                           Expanded(
                             child: TabBarView(
                               physics: Provider.of<Pagination>(context,
-                                          listen: false)
-                                      .isVerified
+                                              listen: false)
+                                          .isVerified &&
+                                      Provider.of<UserInfo>(context,
+                                                  listen: false)
+                                              .street !=
+                                          "-"
                                   ? ClampingScrollPhysics()
                                   : NeverScrollableScrollPhysics(),
                               controller: _tabController,

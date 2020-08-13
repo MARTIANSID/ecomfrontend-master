@@ -81,17 +81,45 @@ class UserInfo with ChangeNotifier {
       check = true;
       // print(responseData);
       if (Provider.of<Pagination>(context, listen: false).isVerified) {
-        street = responseData['user']['additionalDetails']['address']['street'];
-        city = responseData['user']['additionalDetails']['address']['city'];
-        state = responseData['user']['additionalDetails']['address']['state'];
-        verified = responseData['user']['verified'];
-        priced = responseData['user']['priced'];
-        gst = responseData['user']['additionalDetails']['gst'];
-        firm = responseData['user']['additionalDetails']['firm'];
-        pincode =
-            responseData['user']['additionalDetails']['address']['pincode'];
-        priced = responseData['user']['priced'];
-        email = responseData['user']['email'];
+        // if (responseData['user']['additionalDetails']['address']['street'] !=
+        //     "-") {
+        street = responseData['user']['additionalDetails']['address']
+                    ['street'] ==
+                null
+            ? "-"
+            : responseData['user']['additionalDetails']['address']['street'];
+        city =
+            responseData['user']['additionalDetails']['address']['city'] == null
+                ? "-"
+                : responseData['user']['additionalDetails']['address']['city'];
+        state = responseData['user']['additionalDetails']['address']['state'] ==
+                null
+            ? "-"
+            : responseData['user']['additionalDetails']['address']['state'];
+        verified = responseData['user']['verified'] == null
+            ? "-"
+            : responseData['user']['varified'];
+        priced = responseData['user']['priced'] == null
+            ? "-"
+            : responseData['user']['priced'];
+        gst = responseData['user']['additionalDetails']['gst'] == null
+            ? "-"
+            : responseData['user']['additionalDetails']["gst"];
+        firm = responseData['user']['additionalDetails']['firm'] == null
+            ? "-"
+            : responseData['user']['additionalDetails']['firm'];
+        pincode = responseData['user']['additionalDetails']['address']
+                    ['pincode'] ==
+                null
+            ? "-"
+            : responseData['user']['additionalDetails']['address']['pincode'];
+        priced = responseData['user']['priced'] == null
+            ? "-"
+            : responseData['user']['priced'];
+        email = responseData['user']['email'] == null
+            ? "-"
+            : responseData['user']['email'];
+        // }
       }
       noti = responseData['user']['notification'];
       fullname = responseData['user']['fullName'];

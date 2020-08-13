@@ -12,6 +12,7 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' show ImageFilter;
+import 'package:http/http.dart' as https;
 
 class CookiePage extends StatefulWidget {
   final select;
@@ -72,6 +73,7 @@ class _CookiePageState extends State<CookiePage>
   int colorr;
   bool isLoadingg = false;
   String colorKey;
+  String prevColorKey;
   String priceKey;
   int buildPrice;
   int certPrice;
@@ -151,7 +153,7 @@ class _CookiePageState extends State<CookiePage>
 
   createList() async {
     widget.scrollController.addListener(() async {
-      print(widget.scrollController.position.pixels);
+      // print(widget.scrollController.position.pixels);
 
       if (widget.scrollController.position.pixels > scroll ||
           widget.scrollController.position.pixels ==
@@ -345,7 +347,10 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.goldWeight.toString() + ' gms',
+                        product.goldWeight.toString() == "" ||
+                                product.goldWeight.toString() == null
+                            ? "----"
+                            : product.goldWeight.toString() + ' gms',
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),
@@ -355,7 +360,10 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.diamondWeight.toString() + ' ct',
+                        product.diamondWeight.toString() == "" ||
+                                product.diamondWeight.toString() == null
+                            ? "----"
+                            : product.diamondWeight.toString() + ' ct',
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),
@@ -365,7 +373,10 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.diamondCount.toString() + ' pieces',
+                        product.diamondCount.toString() == "" ||
+                                product.diamondCount.toString() == null
+                            ? "----"
+                            : product.diamondCount.toString() + ' pieces',
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),
@@ -375,7 +386,10 @@ class _CookiePageState extends State<CookiePage>
                         style: TextStyle(color: Colors.white),
                       )),
                       DataCell(Text(
-                        product.designDimensions.toString(),
+                        product.designDimensions.toString() == "" ||
+                                product.designDimensions.toString() == null
+                            ? "----"
+                            : product.designDimensions.toString(),
                         style: TextStyle(color: Colors.white),
                       )),
                     ]),
@@ -414,10 +428,17 @@ class _CookiePageState extends State<CookiePage>
         Provider.of<Options>(context, listen: false).diamondQuality == null
             ? 0
             : Provider.of<Options>(context, listen: false).diamondQuality;
-
-    colorKey =
-        (Provider.of<Pagination>(context, listen: false).color[widget.color])
-            .toLowerCase();
+    if (widget.color ==
+        Provider.of<Pagination>(context, listen: false).color.length) {
+      colorKey = 'angle';
+    } else {
+      colorKey =
+          (Provider.of<Pagination>(context, listen: false).color[widget.color])
+              .toLowerCase();
+    }
+    // prevColorKey =
+    //     (Provider.of<Pagination>(context, listen: false).color[widget.color])
+    //         .toLowerCase();
     // setState(() {
     // if (widget.select != 'fav') {
     if (Provider.of<Pagination>(context, listen: false).isPriced) {
@@ -443,279 +464,665 @@ class _CookiePageState extends State<CookiePage>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    child: ListView(
-                      controller: widget.scrollController,
-                      children: <Widget>[
-                        GridView.builder(
-                            scrollDirection: Axis.vertical,
-                            padding: EdgeInsets.only(left: 25, right: 21),
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: ScreenUtil().setWidth(411) /
-                                  (ScreenUtil().setHeight(775) / 2.07),
-                              crossAxisSpacing: 20.0,
-                              mainAxisSpacing: 20.0,
+                    child: widget.products.length == 0
+                        ? Center(
+                            child: Text(
+                              "New Products Coming Soon 💎",
+                              style: TextStyle(
+                                fontFamily: 'Gilory Regular',
+                                color: Color(0xFFA49797),
+                                fontSize: ScreenUtil()
+                                    .setSp(17, allowFontScalingSelf: true),
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            itemCount: widget.products.length,
-                            itemBuilder: (context, i) {
-                              // String text =
-                              //     "${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹";
-                              // if (widget.flag == 1) {
-                              //   characterCount =
-                              //       StepTween(begin: 0, end: text.length)
-                              //           .animate(CurvedAnimation(
-                              //               parent: controller,
-                              //               curve: Curves.easeIn));
-                              //   text =
-                              //       '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹'
-                              //           .substring(0, characterCount.value);
-                              //   Future.delayed(Duration(seconds: 0), () async {
-                              //     await controller.forward();
-                              //   });
-                              // }
-                              return Stack(
-                                // alignment: Alignment.bottomRight,
-                                children: <Widget>[
-                                  AnimatedContainer(
-                                    duration: Duration(seconds: 1),
-                                    width: ScreenUtil().setWidth(159),
-                                    height: ScreenUtil().setHeight(150),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      color: Colors.white,
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                          blurRadius: 10,
-                                          color: Colors.black.withOpacity(0.37),
-                                          offset: Offset(2, 5),
-                                        )
-                                      ],
-                                    ),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ProductDetail(
-                                              colorKey: colorKey,
-                                              diamondKey: priceKey,
-                                              certPrice: certPrice,
-                                              product: widget.products[i],
-                                              defaultIndex1:
-                                                  _defaultChoiceIndex1,
-                                              defaultIndex2:
-                                                  _defaultChoiceIndex2,
-                                              defaultIndex3:
-                                                  _defaultChoiceIndex3,
-                                              defaultIndex4:
-                                                  _defaultChoiceIndex4,
-                                              valueChangeBuild: _onValueChange,
-                                              valueChangeColor:
-                                                  _onValueChangeColor,
-                                              valueChangeCerti:
-                                                  _onValueChangeCerti,
-                                              valueChangeDQ: _onValueChangeDQ,
-                                              valueChangeBuild1:
-                                                  widget.valueChangeBuild,
-                                              valueChangeColor1:
-                                                  widget.valueChangeColor,
-                                              valueChangeCerti1:
-                                                  widget.valueChangeCerti,
-                                              valueChangeDQ1:
-                                                  widget.valueChangeDQ,
-                                              select: widget.select,
-                                            ),
+                          )
+                        : ListView(
+                            controller: widget.scrollController,
+                            children: <Widget>[
+                              GridView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  padding: EdgeInsets.only(left: 25, right: 21),
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: ScreenUtil()
+                                            .setWidth(411) /
+                                        (ScreenUtil().setHeight(775) / 2.07),
+                                    crossAxisSpacing: 20.0,
+                                    mainAxisSpacing: 20.0,
+                                  ),
+                                  itemCount: widget.products.length,
+                                  itemBuilder: (context, i) {
+                                    // bool valueOfImage = false;
+                                    // widget.products[i].imageUrl.forEach((k, v) async {
+                                    //   if (v.toString().contains("echo.gemstory.in")) {
+                                    //     // final response = await https.get(v);
+                                    //     // if (response.statusCode == 200) {
+                                    //     // if (mounted)
+                                    //     // setState(() {
+                                    //     valueOfImage = true;
+                                    //     // });
+                                    //     // }
+                                    //   }
+                                    // });
+
+                                    // print(
+                                    //     "Value Of Image: " + valueOfImage.toString());
+
+                                    // String text =
+                                    //     "${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹";
+                                    // if (widget.flag == 1) {
+                                    //   characterCount =
+                                    //       StepTween(begin: 0, end: text.length)
+                                    //           .animate(CurvedAnimation(
+                                    //               parent: controller,
+                                    //               curve: Curves.easeIn));
+                                    //   text =
+                                    //       '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹'
+                                    //           .substring(0, characterCount.value);
+                                    //   Future.delayed(Duration(seconds: 0), () async {
+                                    //     await controller.forward();
+                                    //   });
+                                    // }
+                                    return Stack(
+                                      // alignment: Alignment.bottomRight,
+                                      children: <Widget>[
+                                        AnimatedContainer(
+                                          duration: Duration(seconds: 1),
+                                          width: ScreenUtil().setWidth(159),
+                                          height: ScreenUtil().setHeight(150),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            color: Colors.white,
+                                            boxShadow: <BoxShadow>[
+                                              BoxShadow(
+                                                blurRadius: 10,
+                                                color: Colors.black
+                                                    .withOpacity(0.37),
+                                                offset: Offset(2, 5),
+                                              )
+                                            ],
                                           ),
-                                        );
-                                      },
-                                      onLongPress: () {
-                                        print("Contact");
-                                        setState(() {
-                                          pro = widget.products[i];
-                                          show = true;
-                                        });
-                                      },
-                                      onLongPressUp: () {
-                                        print("No Contact");
-                                        setState(() {
-                                          pro = [];
-                                          show = false;
-                                        });
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            width: ScreenUtil().setWidth(
-                                                !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? 151
-                                                    : 138),
-                                            height: ScreenUtil().setHeight(
-                                                !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? 135
-                                                    : 119),
-                                            margin: EdgeInsets.only(
-                                                top: !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? 8
-                                                    : 2,
-                                                left: !Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified
-                                                    ? 8
-                                                    : 19),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetail(
+                                                    colorKey: colorKey,
+                                                    diamondKey: priceKey,
+                                                    certPrice: certPrice,
+                                                    product: widget.products[i],
+                                                    defaultIndex1:
+                                                        _defaultChoiceIndex1,
+                                                    defaultIndex2:
+                                                        _defaultChoiceIndex2,
+                                                    defaultIndex3:
+                                                        _defaultChoiceIndex3,
+                                                    defaultIndex4:
+                                                        _defaultChoiceIndex4,
+                                                    valueChangeBuild:
+                                                        _onValueChange,
+                                                    valueChangeColor:
+                                                        _onValueChangeColor,
+                                                    valueChangeCerti:
+                                                        _onValueChangeCerti,
+                                                    valueChangeDQ:
+                                                        _onValueChangeDQ,
+                                                    valueChangeBuild1:
+                                                        widget.valueChangeBuild,
+                                                    valueChangeColor1:
+                                                        widget.valueChangeColor,
+                                                    valueChangeCerti1:
+                                                        widget.valueChangeCerti,
+                                                    valueChangeDQ1:
+                                                        widget.valueChangeDQ,
+                                                    select: widget.select,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            onLongPress: () {
+                                              print("Contact");
+                                              setState(() {
+                                                pro = widget.products[i];
+                                                show = true;
+                                              });
+                                            },
+                                            onLongPressUp: () {
+                                              print("No Contact");
+                                              setState(() {
+                                                pro = [];
+                                                show = false;
+                                              });
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Container(
-                                                    // color: Colors.amber,
-                                                    height: ScreenUtil().setHeight(
-                                                        !Provider.of<Pagination>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .isVerified
-                                                            ? 135
-                                                            : 119),
-                                                    width: ScreenUtil().setWidth(
-                                                        !Provider.of<Pagination>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .isVerified
-                                                            ? 130
-                                                            : 117),
-                                                    // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
-
-                                                    // color: Colors.amber,
-                                                    child: widget.products[i].imageUrl
-                                                            .containsKey(colorKey)
-                                                        ? Image(
-                                                            image:
-                                                                CachedNetworkImageProvider(
-                                                              widget.products[i]
-                                                                      .imageUrl[
-                                                                  colorKey],
-                                                            ),
-                                                            // color: Colors.amber,
-                                                            // image:
-                                                            //     AdvancedNetworkImage(
-                                                            //   widget.products[i]
-                                                            //           .imageUrl[
-                                                            //       colorKey],
-                                                            //   useDiskCache:
-                                                            //       true,
-                                                            //   cacheRule: CacheRule(
-                                                            //       maxAge:
-                                                            //           const Duration(
-                                                            //               days:
-                                                            //                   3)),
-                                                            // ),
-                                                            fit: BoxFit.fill,
-                                                          )
-                                                        : Image(
-                                                            image:
-                                                                CachedNetworkImageProvider(
-                                                              widget.products[i]
-                                                                      .imageUrl[
-                                                                  'yellow'],
-                                                            ),
-                                                            // image:
-                                                            //     AdvancedNetworkImage(
-                                                            //   widget.products[i]
-                                                            //           .imageUrl[
-                                                            //       'yellow'],
-                                                            //   useDiskCache:
-                                                            //       true,
-                                                            //   cacheRule: CacheRule(
-                                                            //       maxAge:
-                                                            //           const Duration(
-                                                            //               days:
-                                                            //                   3)),
-                                                            // ),
-                                                            fit: BoxFit.fill,
-                                                          )
-
-                                                    // ),
-                                                    ),
-                                                SizedBox(
-                                                  width:
-                                                      ScreenUtil().setWidth(4),
-                                                ),
-                                                Container(
-                                                  width:
-                                                      ScreenUtil().setWidth(14),
-                                                  child: Column(
+                                                  width: ScreenUtil().setWidth(
+                                                      !Provider.of<Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isVerified
+                                                          ? 151
+                                                          : 138),
+                                                  height: ScreenUtil().setHeight(
+                                                      !Provider.of<Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isVerified
+                                                          ? 135
+                                                          : 119),
+                                                  margin: EdgeInsets.only(
+                                                      top: !Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isVerified
+                                                          ? 8
+                                                          : 2,
+                                                      left: !Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isVerified
+                                                          ? 8
+                                                          : 19),
+                                                  child: Row(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: <Widget>[
-                                                      SizedBox(
-                                                        height: ScreenUtil()
-                                                            .setHeight(16),
-                                                      ),
-                                                      RotatedBox(
-                                                        quarterTurns: -1,
-                                                        child: Text(
-                                                          widget.products[i]
-                                                              .styleNumber,
-                                                          style: TextStyle(
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(14,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            fontFamily:
-                                                                'Gilroy Regular',
+                                                      Container(
+                                                          // color: Colors.amber,
+                                                          height: ScreenUtil().setHeight(
+                                                              !Provider.of<Pagination>(context, listen: false).isVerified
+                                                                  ? 135
+                                                                  : 119),
+                                                          width: ScreenUtil().setWidth(
+                                                              !Provider.of<Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .isVerified
+                                                                  ? 130
+                                                                  : 117),
+                                                          // child: widget.products[i].imageUrl.containsKey(colorKey)?widget.products[i].imageUrl[colorKey]:widget.products[i].imageUrl['yellow'],
+
+                                                          // color: Colors.amber,
+                                                          child: widget
+                                                                  .products[i]
+                                                                  .imageUrl[colorKey]
+                                                                  .toString()
+                                                                  .contains("echo.gemstory.in")
+                                                              // .containsKey(colorKey)
+                                                              ? Image(
+                                                                  image:
+                                                                      CachedNetworkImageProvider(
+                                                                    widget
+                                                                        .products[
+                                                                            i]
+                                                                        .imageUrl[colorKey],
+                                                                  ),
+                                                                  // color: Colors.amber,
+                                                                  // image:
+                                                                  //     AdvancedNetworkImage(
+                                                                  //   widget.products[i]
+                                                                  //           .imageUrl[
+                                                                  //       colorKey],
+                                                                  //   useDiskCache:
+                                                                  //       true,
+                                                                  //   cacheRule: CacheRule(
+                                                                  //       maxAge:
+                                                                  //           const Duration(
+                                                                  //               days:
+                                                                  //                   3)),
+                                                                  // ),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                )
+                                                              : Image(
+                                                                  image:
+                                                                      CachedNetworkImageProvider(
+                                                                    widget
+                                                                        .products[
+                                                                            i]
+                                                                        .imageUrl['yellow'],
+                                                                  ),
+                                                                  // image:
+                                                                  //     AdvancedNetworkImage(
+                                                                  //   widget.products[i]
+                                                                  //           .imageUrl[
+                                                                  //       'yellow'],
+                                                                  //   useDiskCache:
+                                                                  //       true,
+                                                                  //   cacheRule: CacheRule(
+                                                                  //       maxAge:
+                                                                  //           const Duration(
+                                                                  //               days:
+                                                                  //                   3)),
+                                                                  // ),
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                )
+
+                                                          // ),
                                                           ),
+                                                      SizedBox(
+                                                        width: ScreenUtil()
+                                                            .setWidth(4),
+                                                      ),
+                                                      Container(
+                                                        width: ScreenUtil()
+                                                            .setWidth(14),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            SizedBox(
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setHeight(
+                                                                          16),
+                                                            ),
+                                                            RotatedBox(
+                                                              quarterTurns: -1,
+                                                              child: Text(
+                                                                widget
+                                                                    .products[i]
+                                                                    .styleNumber,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      14,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                  fontFamily:
+                                                                      'Gilroy Regular',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
+                                                // Text(
+                                                //   "5000 ₹",
+                                                //   style: TextStyle(
+                                                //     fontSize: ScreenUtil().setSp(18,
+                                                //         allowFontScalingSelf: true),
+                                                //     fontFamily: 'Gilroy Regular',
+                                                //   ),
+                                                // ),
+                                                !Provider.of<Pagination>(
+                                                            context,
+                                                            listen: false)
+                                                        .isVerified
+                                                    ? SizedBox(
+                                                        height: 0.0,
+                                                      )
+                                                    : !Provider.of<Pagination>(
+                                                                context,
+                                                                listen: false)
+                                                            .isPriced
+                                                        ? GestureDetector(
+                                                            onTap: () async {
+                                                              String date = await Provider.of<
+                                                                          UserInfo>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .getPriceDate();
+                                                              if (date !=
+                                                                  null) {
+                                                                int d = DateTime
+                                                                        .now()
+                                                                    .difference(
+                                                                        DateTime.parse(
+                                                                            date))
+                                                                    .inDays;
+                                                                if (d >= 1) {
+                                                                  dataSelect(
+                                                                      context:
+                                                                          context,
+                                                                      titleText:
+                                                                          'Important!',
+                                                                      buttonText:
+                                                                          'Request Prices',
+                                                                      contentText:
+                                                                          "To see prices you must first request a quotation from Team Gemstory",
+                                                                      onPressed:
+                                                                          requestPrice,
+                                                                      gif:
+                                                                          "assets/images/alert.gif");
+                                                                } else {
+                                                                  dataSelect(
+                                                                      context:
+                                                                          context,
+                                                                      titleText:
+                                                                          'Alert!',
+                                                                      buttonText:
+                                                                          'Okay',
+                                                                      contentText:
+                                                                          "Request has already been noted!",
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      gif:
+                                                                          "assets/images/identi.gif");
+                                                                }
+                                                              } else {
+                                                                dataSelect(
+                                                                    context:
+                                                                        context,
+                                                                    titleText:
+                                                                        'Important!',
+                                                                    buttonText:
+                                                                        'Request Prices',
+                                                                    contentText:
+                                                                        "To see prices you must first request a quotation from Team Gemstory",
+                                                                    onPressed:
+                                                                        requestPrice,
+                                                                    gif:
+                                                                        "assets/images/alert.gif");
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setHeight(
+                                                                          20),
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setWidth(
+                                                                          110),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  'Request Prices',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontFamily:
+                                                                        'Gilroy Medium',
+                                                                    fontSize: ScreenUtil().setSp(
+                                                                        14,
+                                                                        allowFontScalingSelf:
+                                                                            true),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : widget.products[i]
+                                                                .prices
+                                                                .containsKey(
+                                                                    priceKey)
+                                                            // ? widget.flag == 1
+                                                            //     ? AnimatedBuilder(
+                                                            //         animation:
+                                                            //             characterCount,
+                                                            //         builder: (BuildContext
+                                                            //                 context,
+                                                            //             Widget
+                                                            //                 child) {
+                                                            //           String text = '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹'
+                                                            //               .substring(
+                                                            //                   0,
+                                                            //                   characterCount
+                                                            //                       .value);
+                                                            //           return Text(
+                                                            //             text,
+                                                            //             style:
+                                                            //                 TextStyle(
+                                                            //               fontSize: ScreenUtil().setSp(
+                                                            //                   18,
+                                                            //                   allowFontScalingSelf:
+                                                            //                       true),
+                                                            //               fontFamily:
+                                                            //                   'Gilroy Regular',
+                                                            //             ),
+                                                            //           );
+                                                            //         },
+                                                            //       )
+                                                            // :
+                                                            ? Text(
+                                                                '${int.parse(widget.products[i].prices[priceKey]) + certPrice + buildPrice} ₹',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      18,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                  fontFamily:
+                                                                      'Gilroy Regular',
+                                                                ),
+                                                              )
+                                                            : Text(
+                                                                'no price',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: ScreenUtil().setSp(
+                                                                      18,
+                                                                      allowFontScalingSelf:
+                                                                          true),
+                                                                  fontFamily:
+                                                                      'Gilroy Regular',
+                                                                ),
+                                                              ),
+                                                // Row(
+                                                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                //   // crossAxisAlignment: CrossAxisAlignment.center,
+                                                //   children: <Widget>[
+                                                //     IconButton(
+                                                //       icon: Icon(widget.products[i].isFavourite
+                                                //           ? Icons.favorite
+                                                //           : Icons.favorite_border),
+                                                //       color: kPrimaryColor,
+                                                //       onPressed: () async {
+                                                //         await Provider.of<Products>(context, listen: false)
+                                                //             .toogleFavourite(
+                                                //                 styleNumber: widget.products[i].styleNumber,
+                                                //                 context: context);
+                                                //         setState(() {});
+                                                //       },
+                                                //     ),
+                                                //     IconButton(
+                                                //       icon: Icon(Icons.shopping_cart),
+                                                //       color: kPrimaryColor,
+                                                //       onPressed: () async {
+                                                //         await Provider.of<Cart>(context, listen: false)
+                                                //             .addCart(widget.products[i], context);
+
+                                                //         showFloatingFlushbar(context,
+                                                //             'Product has been added to your favourites"❤"');
+                                                //       },
+                                                //     ),
+                                                //   ],
+                                                // ),
+                                                // SizedBox(
+                                                //   height: 20.0,
+                                                // ),
+                                                // Text(
+                                                //   '\$52.90',
+                                                //   style: TextStyle(
+                                                //     fontSize: 20.0,
+                                                //     fontFamily: 'Gilroy',
+                                                //   ),
+                                                // ),
                                               ],
                                             ),
                                           ),
-                                          // Text(
-                                          //   "5000 ₹",
-                                          //   style: TextStyle(
-                                          //     fontSize: ScreenUtil().setSp(18,
-                                          //         allowFontScalingSelf: true),
-                                          //     fontFamily: 'Gilroy Regular',
-                                          //   ),
-                                          // ),
-                                          !Provider.of<Pagination>(context,
-                                                      listen: false)
-                                                  .isVerified
-                                              ? SizedBox(
-                                                  height: 0.0,
-                                                )
-                                              : !Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .isPriced
-                                                  ? GestureDetector(
-                                                      onTap: () async {
-                                                        String date =
-                                                            await Provider.of<
-                                                                        UserInfo>(
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          right: 0,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            // crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                height:
+                                                    ScreenUtil().setHeight(29),
+                                                width:
+                                                    ScreenUtil().setWidth(29),
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF33D2E4),
+                                                      Color(0xFF34B0D9),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                child: Material(
+                                                  type:
+                                                      MaterialType.transparency,
+                                                  elevation: 6.0,
+                                                  color: Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: InkWell(
+                                                    splashColor: Colors.cyan[50]
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    onTap: () async {
+                                                      try {
+                                                        if (mounted)
+                                                          setState(() {});
+                                                        if (widget.products[i]
+                                                            .isFavourite) {
+                                                          showFloatingFlushbar(
+                                                              widget.globalKey
+                                                                  .currentContext,
+                                                              'Product removed from Favourites list',
+                                                              widget.products[i]
+                                                                  .styleNumber,
+                                                              '❤');
+                                                          await Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .toogleFavourite(
+                                                                  styleNumber: widget
+                                                                      .products[
+                                                                          i]
+                                                                      .styleNumber,
+                                                                  context:
+                                                                      context);
+                                                        } else {
+                                                          await Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .toogleFavourite(
+                                                                  styleNumber: widget
+                                                                      .products[
+                                                                          i]
+                                                                      .styleNumber,
+                                                                  context:
+                                                                      context,
+                                                                  product: widget
+                                                                      .products[i]);
+                                                          showFloatingFlushbar(
+                                                              widget.globalKey
+                                                                  .currentContext,
+                                                              'Product added to the Favourites list',
+                                                              widget.products[i]
+                                                                  .styleNumber,
+                                                              '❤');
+                                                        }
+                                                        if (mounted)
+                                                          setState(() {});
+                                                      } catch (err) {
+                                                        if (mounted)
+                                                          setState(() {});
+                                                      }
+                                                    },
+                                                    child: Icon(
+                                                      widget.products[i]
+                                                              .isFavourite
+                                                          ? Icons.favorite
+                                                          : Icons
+                                                              .favorite_border,
+                                                      color: Colors.white,
+                                                      size: ScreenUtil().setSp(
+                                                          16,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    ScreenUtil().setHeight(6.0),
+                                              ),
+                                              Container(
+                                                height:
+                                                    ScreenUtil().setHeight(29),
+                                                width:
+                                                    ScreenUtil().setWidth(29),
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0xFF34BEDD),
+                                                      Color(0xFF359DD3),
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                child: Material(
+                                                  type:
+                                                      MaterialType.transparency,
+                                                  elevation: 6.0,
+                                                  color: Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: InkWell(
+                                                    splashColor: Colors.cyan[50]
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    onTap: () async {
+                                                      if (Provider.of<Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isVerified ==
+                                                          false) {
+                                                        var date = await Provider
+                                                                .of<UserInfo>(
                                                                     context,
                                                                     listen:
                                                                         false)
-                                                                .getPriceDate();
+                                                            .getDate(context);
                                                         if (date != null) {
                                                           int d = DateTime.now()
                                                               .difference(
@@ -723,21 +1130,8 @@ class _CookiePageState extends State<CookiePage>
                                                                       .parse(
                                                                           date))
                                                               .inDays;
-                                                          if (d >= 1) {
-                                                            dataSelect(
-                                                                context:
-                                                                    context,
-                                                                titleText:
-                                                                    'Important!',
-                                                                buttonText:
-                                                                    'Request Prices',
-                                                                contentText:
-                                                                    "To see prices you must first request a quotation from Team Gemstory",
-                                                                onPressed:
-                                                                    requestPrice,
-                                                                gif:
-                                                                    "assets/images/alert.gif");
-                                                          } else {
+                                                          if (d < 1) {
+                                                            fff = false;
                                                             dataSelect(
                                                                 context:
                                                                     context,
@@ -746,7 +1140,7 @@ class _CookiePageState extends State<CookiePage>
                                                                 buttonText:
                                                                     'Okay',
                                                                 contentText:
-                                                                    "Request has already been noted!",
+                                                                    'Request has already been noted!',
                                                                 onPressed: () {
                                                                   Navigator.pop(
                                                                       context);
@@ -754,441 +1148,162 @@ class _CookiePageState extends State<CookiePage>
                                                                 gif:
                                                                     "assets/images/identi.gif");
                                                           }
-                                                        } else {
-                                                          dataSelect(
-                                                              context: context,
-                                                              titleText:
-                                                                  'Important!',
-                                                              buttonText:
-                                                                  'Request Prices',
-                                                              contentText:
-                                                                  "To see prices you must first request a quotation from Team Gemstory",
-                                                              onPressed:
-                                                                  requestPrice,
-                                                              gif:
-                                                                  "assets/images/alert.gif");
                                                         }
-                                                      },
-                                                      child: Container(
-                                                        height: ScreenUtil()
-                                                            .setHeight(20),
-                                                        width: ScreenUtil()
-                                                            .setWidth(110),
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Request Prices',
-                                                            style: TextStyle(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                              color:
-                                                                  Colors.black,
-                                                              fontFamily:
-                                                                  'Gilroy Medium',
-                                                              fontSize: ScreenUtil()
-                                                                  .setSp(14,
-                                                                      allowFontScalingSelf:
-                                                                          true),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : widget.products[i].prices
-                                                          .containsKey(priceKey)
-                                                      // ? widget.flag == 1
-                                                      //     ? AnimatedBuilder(
-                                                      //         animation:
-                                                      //             characterCount,
-                                                      //         builder: (BuildContext
-                                                      //                 context,
-                                                      //             Widget
-                                                      //                 child) {
-                                                      //           String text = '${int.parse(widget.products[i].prices[priceKey]) + certPrice} ₹'
-                                                      //               .substring(
-                                                      //                   0,
-                                                      //                   characterCount
-                                                      //                       .value);
-                                                      //           return Text(
-                                                      //             text,
-                                                      //             style:
-                                                      //                 TextStyle(
-                                                      //               fontSize: ScreenUtil().setSp(
-                                                      //                   18,
-                                                      //                   allowFontScalingSelf:
-                                                      //                       true),
-                                                      //               fontFamily:
-                                                      //                   'Gilroy Regular',
-                                                      //             ),
-                                                      //           );
-                                                      //         },
-                                                      //       )
-                                                      // :
-                                                      ? Text(
-                                                          '${int.parse(widget.products[i].prices[priceKey]) + certPrice + buildPrice} ₹',
-                                                          style: TextStyle(
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(18,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            fontFamily:
-                                                                'Gilroy Regular',
-                                                          ),
-                                                        )
-                                                      : Text(
-                                                          'no price',
-                                                          style: TextStyle(
-                                                            fontSize: ScreenUtil()
-                                                                .setSp(18,
-                                                                    allowFontScalingSelf:
-                                                                        true),
-                                                            fontFamily:
-                                                                'Gilroy Regular',
-                                                          ),
-                                                        ),
-                                          // Row(
-                                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          //   // crossAxisAlignment: CrossAxisAlignment.center,
-                                          //   children: <Widget>[
-                                          //     IconButton(
-                                          //       icon: Icon(widget.products[i].isFavourite
-                                          //           ? Icons.favorite
-                                          //           : Icons.favorite_border),
-                                          //       color: kPrimaryColor,
-                                          //       onPressed: () async {
-                                          //         await Provider.of<Products>(context, listen: false)
-                                          //             .toogleFavourite(
-                                          //                 styleNumber: widget.products[i].styleNumber,
-                                          //                 context: context);
-                                          //         setState(() {});
-                                          //       },
-                                          //     ),
-                                          //     IconButton(
-                                          //       icon: Icon(Icons.shopping_cart),
-                                          //       color: kPrimaryColor,
-                                          //       onPressed: () async {
-                                          //         await Provider.of<Cart>(context, listen: false)
-                                          //             .addCart(widget.products[i], context);
-
-                                          //         showFloatingFlushbar(context,
-                                          //             'Product has been added to your favourites"❤"');
-                                          //       },
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                          // SizedBox(
-                                          //   height: 20.0,
-                                          // ),
-                                          // Text(
-                                          //   '\$52.90',
-                                          //   style: TextStyle(
-                                          //     fontSize: 20.0,
-                                          //     fontFamily: 'Gilroy',
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      // crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          height: ScreenUtil().setHeight(29),
-                                          width: ScreenUtil().setWidth(29),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0xFF33D2E4),
-                                                Color(0xFF34B0D9),
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
-                                          child: Material(
-                                            type: MaterialType.transparency,
-                                            elevation: 6.0,
-                                            color: Colors.transparent,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: InkWell(
-                                              splashColor: Colors.cyan[50]
-                                                  .withOpacity(0.5),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              onTap: () async {
-                                                try {
-                                                  if (mounted) setState(() {});
-                                                  if (widget.products[i]
-                                                      .isFavourite) {
-                                                    showFloatingFlushbar(
-                                                        widget.globalKey
-                                                            .currentContext,
-                                                        'Product removed from Favourites list',
-                                                        widget.products[i]
-                                                            .styleNumber,
-                                                        '❤');
-                                                    await Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .toogleFavourite(
-                                                            styleNumber: widget
-                                                                .products[i]
-                                                                .styleNumber,
-                                                            context: context);
-                                                  } else {
-                                                    await Provider.of<
-                                                                Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .toogleFavourite(
-                                                            styleNumber: widget
-                                                                .products[i]
-                                                                .styleNumber,
-                                                            context: context,
-                                                            product: widget
-                                                                .products[i]);
-                                                    showFloatingFlushbar(
-                                                        widget.globalKey
-                                                            .currentContext,
-                                                        'Product added to the Favourites list',
-                                                        widget.products[i]
-                                                            .styleNumber,
-                                                        '❤');
-                                                  }
-                                                  if (mounted) setState(() {});
-                                                } catch (err) {
-                                                  if (mounted) setState(() {});
-                                                }
-                                              },
-                                              child: Icon(
-                                                widget.products[i].isFavourite
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_border,
-                                                color: Colors.white,
-                                                size: ScreenUtil().setSp(16,
-                                                    allowFontScalingSelf: true),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: ScreenUtil().setHeight(6.0),
-                                        ),
-                                        Container(
-                                          height: ScreenUtil().setHeight(29),
-                                          width: ScreenUtil().setWidth(29),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0xFF34BEDD),
-                                                Color(0xFF359DD3),
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
-                                          child: Material(
-                                            type: MaterialType.transparency,
-                                            elevation: 6.0,
-                                            color: Colors.transparent,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            child: InkWell(
-                                              splashColor: Colors.cyan[50]
-                                                  .withOpacity(0.5),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              onTap: () async {
-                                                if (Provider.of<Pagination>(
-                                                            context,
-                                                            listen: false)
-                                                        .isVerified ==
-                                                    false) {
-                                                  var date = await Provider.of<
-                                                              UserInfo>(context,
-                                                          listen: false)
-                                                      .getDate(context);
-                                                  if (date != null) {
-                                                    int d = DateTime.now()
-                                                        .difference(
-                                                            DateTime.parse(
-                                                                date))
-                                                        .inDays;
-                                                    if (d < 1) {
-                                                      fff = false;
-                                                      dataSelect(
-                                                          context: context,
-                                                          titleText: 'Alert!',
-                                                          buttonText: 'Okay',
-                                                          contentText:
-                                                              'Request has already been noted!',
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          gif:
-                                                              "assets/images/identi.gif");
-                                                    }
-                                                  }
-                                                }
-                                                if (fff) {
-                                                  !Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .isVerified
-                                                      ? dataSelect(
-                                                          context: context,
-                                                          titleText:
-                                                              'Important!',
-                                                          buttonText:
-                                                              'Complete SignUp',
-                                                          contentText:
-                                                              "To get complete access of the app, you need to first verify yourself!",
-                                                          onPressed: () async {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            String date =
-                                                                await Provider.of<
-                                                                            UserInfo>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .getDate(
-                                                                        context);
-                                                            if (date != null) {
-                                                              int d = DateTime
-                                                                      .now()
-                                                                  .difference(
-                                                                      DateTime.parse(
-                                                                          date))
-                                                                  .inDays;
-                                                              if (d >= 1) {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            CompleteSignUp(),
-                                                                  ),
-                                                                );
-                                                              } else {
-                                                                dataSelect(
-                                                                    context:
-                                                                        context,
-                                                                    titleText:
-                                                                        'Alert!',
-                                                                    buttonText:
-                                                                        'Okay',
-                                                                    contentText:
-                                                                        "Request has already been noted!",
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    gif:
-                                                                        "assets/images/identi.gif");
-                                                              }
-                                                            } else {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          CompleteSignUp(),
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                          gif:
-                                                              "assets/images/alert.gif")
-                                                      // )
-                                                      : showDialog(
-                                                          context: widget
-                                                              .globalKey
-                                                              .currentContext,
-                                                          child: AddToCart(
-                                                            globalKey: widget
-                                                                .globalKey,
-                                                            product: widget
-                                                                .products[i],
-                                                            updateCart: false,
-                                                            choicesBuild:
-                                                                Provider.of<Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .build,
-                                                            choiceColor: Provider.of<
-                                                                        Pagination>(
+                                                      }
+                                                      if (fff) {
+                                                        !Provider.of<Pagination>(
                                                                     context,
                                                                     listen:
                                                                         false)
-                                                                .color,
-                                                            choiceCertification:
-                                                                Provider.of<Pagination>(
+                                                                .isVerified
+                                                            ? dataSelect(
+                                                                context:
+                                                                    context,
+                                                                titleText:
+                                                                    'Important!',
+                                                                buttonText:
+                                                                    'Complete SignUp',
+                                                                contentText:
+                                                                    "To get complete access of the app, you need to first verify yourself!",
+                                                                onPressed:
+                                                                    () async {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  String date = await Provider.of<
+                                                                              UserInfo>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .getDate(
+                                                                          context);
+                                                                  if (date !=
+                                                                      null) {
+                                                                    int d = DateTime
+                                                                            .now()
+                                                                        .difference(
+                                                                            DateTime.parse(date))
+                                                                        .inDays;
+                                                                    if (d >=
+                                                                        1) {
+                                                                      Navigator
+                                                                          .push(
                                                                         context,
-                                                                        listen:
-                                                                            false)
-                                                                    .cert,
-                                                            choiceDiamondQuality:
-                                                                Provider.of<Pagination>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .diamondQuality,
-                                                            defValue:
-                                                                _defaultChoiceIndex1,
-                                                            defValue1:
-                                                                _defaultChoiceIndex2,
-                                                            defValue2:
-                                                                _defaultChoiceIndex3,
-                                                            defValue3:
-                                                                _defaultChoiceIndex4,
-                                                            valueChangeBuild:
-                                                                _onValueChange,
-                                                            valueChangeColor:
-                                                                _onValueChangeColor,
-                                                            valueChangeCerti:
-                                                                _onValueChangeCerti,
-                                                            valueChangeDQ:
-                                                                _onValueChangeDQ,
-                                                          ),
-                                                        );
-                                                }
-                                              },
-                                              child: Icon(
-                                                Icons.shopping_cart,
-                                                color: Colors.white,
-                                                size: ScreenUtil().setSp(16,
-                                                    allowFontScalingSelf: true),
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              CompleteSignUp(),
+                                                                        ),
+                                                                      );
+                                                                    } else {
+                                                                      dataSelect(
+                                                                          context:
+                                                                              context,
+                                                                          titleText:
+                                                                              'Alert!',
+                                                                          buttonText:
+                                                                              'Okay',
+                                                                          contentText:
+                                                                              "Request has already been noted!",
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          gif:
+                                                                              "assets/images/identi.gif");
+                                                                    }
+                                                                  } else {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                CompleteSignUp(),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                },
+                                                                gif:
+                                                                    "assets/images/alert.gif")
+                                                            // )
+                                                            : showDialog(
+                                                                context: widget
+                                                                    .globalKey
+                                                                    .currentContext,
+                                                                child:
+                                                                    AddToCart(
+                                                                  globalKey: widget
+                                                                      .globalKey,
+                                                                  product: widget
+                                                                      .products[i],
+                                                                  updateCart:
+                                                                      false,
+                                                                  choicesBuild: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .build,
+                                                                  choiceColor: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .color,
+                                                                  choiceCertification: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .cert,
+                                                                  choiceDiamondQuality: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .diamondQuality,
+                                                                  defValue:
+                                                                      _defaultChoiceIndex1,
+                                                                  defValue1:
+                                                                      _defaultChoiceIndex2,
+                                                                  defValue2:
+                                                                      _defaultChoiceIndex3,
+                                                                  defValue3:
+                                                                      _defaultChoiceIndex4,
+                                                                  valueChangeBuild:
+                                                                      _onValueChange,
+                                                                  valueChangeColor:
+                                                                      _onValueChangeColor,
+                                                                  valueChangeCerti:
+                                                                      _onValueChangeCerti,
+                                                                  valueChangeDQ:
+                                                                      _onValueChangeDQ,
+                                                                ),
+                                                              );
+                                                      }
+                                                    },
+                                                    child: Icon(
+                                                      Icons.shopping_cart,
+                                                      color: Colors.white,
+                                                      size: ScreenUtil().setSp(
+                                                          16,
+                                                          allowFontScalingSelf:
+                                                              true),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
-                        SizedBox(
-                          height: ScreenUtil().setHeight(93),
-                        ),
-                      ],
-                    ),
+                                    );
+                                  }),
+                              SizedBox(
+                                height: ScreenUtil().setHeight(93),
+                              ),
+                            ],
+                          ),
                   ),
                   if (isLoading)
                     CircularProgressIndicator(

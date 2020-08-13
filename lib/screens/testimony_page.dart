@@ -1,5 +1,6 @@
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/testimony.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_advanced_networkimage/provider.dart';
@@ -640,8 +641,9 @@ class _TestimonyPageState extends State<TestimonyPage> {
                 ],
               ),
             ),
-      floatingActionButton: !Provider.of<Pagination>(context).isPriced &&
-              !Provider.of<Pagination>(context).isVerified
+      floatingActionButton: Provider.of<UserInfo>(context).street != "-" ||
+              Provider.of<Pagination>(context).isPriced == false ||
+              Provider.of<Pagination>(context).isVerified == false
           ? SizedBox(
               height: 0.0,
               width: 0.0,

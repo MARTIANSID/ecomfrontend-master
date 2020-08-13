@@ -207,8 +207,9 @@ class AddToCartTState extends State<AddToCart> {
                                 //     borderRadius: BorderRadius.circular(20.0),
                                 //     color: Colors.white),
                                 // color: Colors.amber,
-                                child: widget.product.imageUrl
-                                        .containsKey(colorKey)
+                                child: widget.product.imageUrl[colorKey]
+                                        .toString()
+                                        .contains("echo.gemstory.in")
                                     ? Image.network(
                                         widget.product.imageUrl[colorKey],
                                         height: ScreenUtil().setHeight(135),
