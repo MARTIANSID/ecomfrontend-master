@@ -463,11 +463,19 @@ class _LoginScreenState extends State<LoginScreen>
         context: context,
         builder: (_) => AlertDialog(
           title: Text(title),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
           content: Text(content),
           actions: <Widget>[
             FlatButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Okay'),
+              child: Text(
+                'Try Again?',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
             ),
             FlatButton(
               onPressed: () => setState(() {
@@ -487,7 +495,12 @@ class _LoginScreenState extends State<LoginScreen>
                 _forgotPasswordMenu = false;
                 _screen = 0;
               }),
-              child: Text('Reset'),
+              child: Text(
+                'Change Number?',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
             )
           ],
         ),

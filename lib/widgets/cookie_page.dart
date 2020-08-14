@@ -496,6 +496,16 @@ class _CookiePageState extends State<CookiePage>
                                   ),
                                   itemCount: widget.products.length,
                                   itemBuilder: (context, i) {
+                                    var configuration =
+                                        createLocalImageConfiguration(context);
+                                    // if (widget.products[i].imageUrl[colorKey]
+                                    //     .toString()
+                                    //     .contains("echo.gemstory.in")) {
+                                    //   precacheImage(
+                                    //       NetworkImage(widget
+                                    //           .products[i].imageUrl[colorKey]),
+                                    //       context);
+                                    // }
                                     // bool valueOfImage = false;
                                     // widget.products[i].imageUrl.forEach((k, v) async {
                                     //   if (v.toString().contains("echo.gemstory.in")) {
@@ -670,7 +680,8 @@ class _CookiePageState extends State<CookiePage>
                                                                         .products[
                                                                             i]
                                                                         .imageUrl[colorKey],
-                                                                  ),
+                                                                  )..resolve(
+                                                                          configuration),
                                                                   // color: Colors.amber,
                                                                   // image:
                                                                   //     AdvancedNetworkImage(

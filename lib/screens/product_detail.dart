@@ -127,6 +127,7 @@ class _ProductDetailState extends State<ProductDetail> {
   didChangeDependencies() {
     super.didChangeDependencies();
     setState(() {
+      imgURL = [];
       isLoading = true;
     });
     widget.product.imageUrl.forEach((key, value) async {
@@ -139,6 +140,7 @@ class _ProductDetailState extends State<ProductDetail> {
         }
       }
     });
+    print(imgURL.length);
     setState(() {
       isLoading = false;
     });

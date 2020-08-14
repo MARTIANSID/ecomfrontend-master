@@ -324,7 +324,7 @@ class Pagination with ChangeNotifier {
         //     .toList();
 
         if (select == 'all') {
-          // allProducts = [];
+          allProducts = [];
           allProducts = extractedData['products']
               .map(
                 (prod) => Product(
@@ -345,7 +345,7 @@ class Pagination with ChangeNotifier {
           // print(allProducts.length);
           notifyListeners();
         } else if (select == 'featured') {
-          // featuredProducts = [];
+          featuredProducts = [];
           featuredProducts = extractedData['products']
               .map(
                 (prod) => Product(
@@ -367,7 +367,7 @@ class Pagination with ChangeNotifier {
 
           notifyListeners();
         } else if (select == 'navratna') {
-          // highestSellingProducts = [];
+          highestSellingProducts = [];
           highestSellingProducts = extractedData['products']
               .map(
                 (prod) => Product(
@@ -388,7 +388,7 @@ class Pagination with ChangeNotifier {
           // print(highestSellingProducts.length);
           notifyListeners();
         } else if (select == 'fancyDiamond') {
-          // fancyDiamond = [];
+          fancyDiamond = [];
           fancyDiamond = extractedData['products']
               .map(
                 (prod) => Product(
@@ -409,7 +409,7 @@ class Pagination with ChangeNotifier {
           // print(fancyDiamond.length);
           notifyListeners();
         } else {
-          // newProducts = [];
+          newProducts = [];
           newProducts = extractedData['products']
               .map(
                 (prod) => Product(

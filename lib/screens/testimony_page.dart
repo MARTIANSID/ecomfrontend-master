@@ -641,7 +641,7 @@ class _TestimonyPageState extends State<TestimonyPage> {
                 ],
               ),
             ),
-      floatingActionButton: Provider.of<UserInfo>(context).street != "-" ||
+      floatingActionButton: Provider.of<UserInfo>(context).street == "-" ||
               Provider.of<Pagination>(context).isPriced == false ||
               Provider.of<Pagination>(context).isVerified == false
           ? SizedBox(

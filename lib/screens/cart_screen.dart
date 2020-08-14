@@ -1905,16 +1905,29 @@ class _CartScreenState extends State<CartScreen> {
                                                         Image(
                                                           image:
                                                               CachedNetworkImageProvider(
-                                                            product
-                                                                .imageUrl[Provider
-                                                                    .of<
+                                                            product.imageUrl[Provider.of<Cart>(
+                                                                            context,
+                                                                            listen:
+                                                                                true)
+                                                                        .cart[
+                                                                            index]
+                                                                        .color
+                                                                        .toLowerCase()]
+                                                                    .toString()
+                                                                    .contains(
+                                                                        "echo.gemstory.in")
+                                                                ? product
+                                                                    .imageUrl[Provider.of<
                                                                             Cart>(
                                                                         context,
                                                                         listen:
                                                                             true)
-                                                                .cart[index]
-                                                                .color
-                                                                .toLowerCase()],
+                                                                    .cart[index]
+                                                                    .color
+                                                                    .toLowerCase()]
+                                                                : product
+                                                                        .imageUrl[
+                                                                    'yellow'],
                                                           ),
                                                           height: ScreenUtil()
                                                               .setHeight(79),

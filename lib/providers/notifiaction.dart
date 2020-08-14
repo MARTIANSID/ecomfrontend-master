@@ -152,7 +152,7 @@ class Notif with ChangeNotifier {
               read: i['read'],
               id: i['_id']))
           .toList();
-      notifications = list;
+      notifications = list.reversed.toList();
       // print(notifications);
 
       notifyListeners();
