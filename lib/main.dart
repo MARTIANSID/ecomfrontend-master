@@ -8,6 +8,7 @@ import 'package:Flutter/providers/testimony.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/screens/my_order.dart';
 import 'package:Flutter/screens/product_detail.dart';
+import 'package:Flutter/screens/product_overview_screen.dart';
 import 'package:Flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -196,6 +197,9 @@ class _MyAppState extends State<MyApp> {
       if (notification.payload.body
               .substring(notification.payload.body.length - 1) ==
           "!") {
+        setState(() {
+          screenChange = true;
+        });
         Phoenix.rebirth(context);
       }
     });
@@ -254,6 +258,13 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData(
             primaryColor: Colors.blue,
           ),
+          builder: (BuildContext context, Widget child) {
+            return MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaleFactor: 1.0, alwaysUse24HourFormat: false),
+              child: child,
+            );
+          },
           initialRoute: initScreen3 == 0 || initScreen3 == null ? "first" : "/",
           home: auth.isAuth
               ? Home()
@@ -507,6 +518,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     ];
     return MaterialApp(
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaleFactor: 1.0, alwaysUse24HourFormat: false),
+          child: child,
+        );
+      },
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Stack(

@@ -229,128 +229,153 @@ class _FavouriteScreenState extends State<FavouriteScreen>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Tooltip(
-                                    message: "Sort",
-                                    waitDuration: Duration(seconds: 4),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          child: SortPage(),
-                                        ).then((value) async {
-                                          // await Future.wait([
-                                          //   Provider.of<Pagination>(
-                                          //           context,
-                                          //           listen: false)
-                                          //       .getProducts(
-                                          //           addition: false,
-                                          //           page: 1,
-                                          //           context: context,
-                                          //           select:
-                                          //               'featured',
-                                          //           sortby: Provider.of<
-                                          //                       Pagination>(
-                                          //                   context,
-                                          //                   listen:
-                                          //                       false)
-                                          //               .count,
-                                          //           sort: Provider.of<
-                                          //                       Pagination>(
-                                          //                   context,
-                                          //                   listen:
-                                          //                       false)
-                                          //               .sort)
-                                          // ]);
-                                          await Future.wait([
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .getProducts(
-                                                    addition: false,
-                                                    page: 1,
-                                                    context: context,
-                                                    select: 'all',
-                                                    sortby:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .count,
-                                                    sort:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .sort)
-                                          ]);
-                                          await Future.wait([
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .getProducts(
-                                                    addition: false,
-                                                    page: 1,
-                                                    context: context,
-                                                    select: 'isnew',
-                                                    sortby:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .count,
-                                                    sort:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .sort)
-                                          ]);
-                                          await Future.wait([
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .getProducts(
-                                                    addition: false,
-                                                    page: 1,
-                                                    context: context,
-                                                    select: 'fancyDiamond',
-                                                    sortby:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .count,
-                                                    sort:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .sort),
-                                          ]);
-
-                                          await Future.wait([
-                                            Provider.of<Pagination>(context,
-                                                    listen: false)
-                                                .getProducts(
-                                                    addition: false,
-                                                    page: 1,
-                                                    context: context,
-                                                    select: 'navratna',
-                                                    sortby:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .count,
-                                                    sort:
-                                                        Provider.of<Pagination>(
-                                                                context,
-                                                                listen: false)
-                                                            .sort)
-                                          ]);
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 8.0),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/sortIcon.svg',
-                                          width: ScreenUtil().setWidth(24),
-                                          height: ScreenUtil().setHeight(24),
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  // Tooltip(
+                                  //   message: "Sort",
+                                  //   waitDuration: Duration(seconds: 4),
+                                  //   child: GestureDetector(
+                                  //     onTap: () {
+                                  //       showDialog(
+                                  //         context: context,
+                                  //         child: SortPage(),
+                                  //       ).then((value) async {
+                                  //         try {
+                                  //           await Future.delayed(
+                                  //               Duration(milliseconds: 200),
+                                  //               () async {
+                                  //             await Provider.of<Pagination>(
+                                  //                     context,
+                                  //                     listen: false)
+                                  //                 .getProducts(
+                                  //                     addition: false,
+                                  //                     page: 1,
+                                  //                     context: context,
+                                  //                     select: 'featured',
+                                  //                     sortby: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .count,
+                                  //                     sort: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .sort);
+                                  //           });
+                                  //           await Future.delayed(
+                                  //               Duration(milliseconds: 200),
+                                  //               () async {
+                                  //             await Provider.of<Pagination>(
+                                  //                     context,
+                                  //                     listen: false)
+                                  //                 .getProducts(
+                                  //                     addition: false,
+                                  //                     page: 1,
+                                  //                     context: context,
+                                  //                     select: 'all',
+                                  //                     sortby: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .count,
+                                  //                     sort: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .sort);
+                                  //           });
+                                  //           await Future.delayed(
+                                  //               Duration(milliseconds: 200),
+                                  //               () async {
+                                  //             await Provider.of<Pagination>(
+                                  //                     context,
+                                  //                     listen: false)
+                                  //                 .getProducts(
+                                  //                     addition: false,
+                                  //                     page: 1,
+                                  //                     context: context,
+                                  //                     select: 'isnew',
+                                  //                     sortby: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .count,
+                                  //                     sort: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .sort);
+                                  //           });
+                                  //           await Future.delayed(
+                                  //               Duration(milliseconds: 200),
+                                  //               () async {
+                                  //             await Provider.of<Pagination>(
+                                  //                     context,
+                                  //                     listen: false)
+                                  //                 .getProducts(
+                                  //                     addition: false,
+                                  //                     page: 1,
+                                  //                     context: context,
+                                  //                     select: 'navratna',
+                                  //                     sortby: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .count,
+                                  //                     sort: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .sort);
+                                  //           });
+                                  //           await Future.delayed(
+                                  //               Duration(milliseconds: 200),
+                                  //               () async {
+                                  //             await Provider.of<Pagination>(
+                                  //                     context,
+                                  //                     listen: false)
+                                  //                 .getProducts(
+                                  //                     addition: false,
+                                  //                     page: 1,
+                                  //                     context: context,
+                                  //                     select: 'fancyDiamond',
+                                  //                     sortby: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .count,
+                                  //                     sort: Provider.of<
+                                  //                                 Pagination>(
+                                  //                             context,
+                                  //                             listen: false)
+                                  //                         .sort);
+                                  //           });
+                                  //         } catch (err) {
+                                  //           // dataSelect(
+                                  //           //     context: context,
+                                  //           //     titleText: 'Alert!',
+                                  //           //     buttonText: 'Okay',
+                                  //           //     contentText:
+                                  //           //         err.toString(),
+                                  //           //     onPressed: () {
+                                  //           //       Navigator.pop(
+                                  //           //           context);
+                                  //           //     },
+                                  //           //     gif:
+                                  //           //         "assets/images/alert.gif");
+                                  //         }
+                                  //       });
+                                  //     },
+                                  //     child: Padding(
+                                  //       padding: EdgeInsets.only(right: 8.0),
+                                  //       child: SvgPicture.asset(
+                                  //         'assets/icons/sortIcon.svg',
+                                  //         width: ScreenUtil().setWidth(24),
+                                  //         height: ScreenUtil().setHeight(24),
+                                  //         color: Colors.black,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   Tooltip(
                                     message: "Options",
                                     waitDuration: Duration(seconds: 4),

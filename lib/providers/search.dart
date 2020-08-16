@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Flutter/constant/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -33,13 +34,13 @@ class Searchh with ChangeNotifier {
       await Provider.of<Auth>(context, listen: false)
           .authenticate(number, password, 'user/login');
     }
-    final url = 'https://echo.gemstory.in/product/search?query=$query';
+    // final url = 'https://echo.gemstory.in/';
     try {
       if (Provider.of<Auth>(context, listen: false).isAuth == false) {
         Navigator.popAndPushNamed(context, '/');
       }
       final response = await http.get(
-        url,
+        uurl + 'product/search?query=$query',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,

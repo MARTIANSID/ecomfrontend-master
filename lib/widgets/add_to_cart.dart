@@ -81,7 +81,10 @@ class AddToCartTState extends State<AddToCart> {
   void initState() {
     super.initState();
     _defaultChoiceIndex = widget.defValue;
-    _defaultChoiceIndex1 = widget.defValue1;
+    _defaultChoiceIndex1 = widget.defValue1 ==
+            Provider.of<Pagination>(context, listen: false).color.length
+        ? 0
+        : widget.defValue1;
     _defaultChoiceIndex2 = widget.defValue2;
     _defaultChoiceIndex3 = widget.defValue3;
   }
@@ -210,8 +213,10 @@ class AddToCartTState extends State<AddToCart> {
                                 child: widget.product.imageUrl[colorKey]
                                         .toString()
                                         .contains("echo.gemstory.in")
-                                    ? Image.network(
-                                        widget.product.imageUrl[colorKey],
+                                    ? Image(
+                                        image: CachedNetworkImageProvider(
+                                          widget.product.imageUrl[colorKey],
+                                        ),
                                         height: ScreenUtil().setHeight(135),
                                         width: ScreenUtil().setWidth(130),
                                         // image: AdvancedNetworkImage(

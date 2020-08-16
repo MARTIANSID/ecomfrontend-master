@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Flutter/constant/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -18,6 +19,7 @@ class ProductDetails {
   String color;
   String certificate;
   String diamondQuality;
+  Map<dynamic, dynamic> imageUrl;
   ProductDetails(
       {this.styleNumber,
       this.build,
@@ -25,6 +27,7 @@ class ProductDetails {
       this.color,
       this.diamondQuality,
       this.displayImage,
+      this.imageUrl,
       this.quantity});
 }
 
@@ -41,8 +44,6 @@ class Order {
 //   String orderNumber;
 //   String datePlaced;
 // }
-
-final uurl = "https://echo.gemstory.in/";
 
 class Orders with ChangeNotifier {
   List<dynamic> completedOrders = [];
@@ -64,7 +65,7 @@ class Orders with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        uurl + '/order',
+        uurl + 'order',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -81,6 +82,7 @@ class Orders with ChangeNotifier {
                   .map((i) => ProductDetails(
                       styleNumber: i['styleNumber'],
                       displayImage: i['displayImage'],
+                      imageUrl: Map<dynamic, dynamic>.from(i['images']),
                       quantity: i['options']['quantity'],
                       build: i['options']['build'],
                       certificate: i['options']["certificate"],
@@ -121,7 +123,7 @@ class Orders with ChangeNotifier {
     }
     try {
       final response = await http.post(
-        uurl + '/order',
+        uurl + 'order',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,

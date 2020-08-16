@@ -292,26 +292,31 @@ class _ProfileImageState extends State<ProfileImage> {
           ),
         ],
       ),
-      body: Container(
-        alignment: Alignment.center,
-        height: double.infinity,
-        width: double.infinity,
-        color: Colors.black,
-        child: pv.PhotoViewGallery(
-          pageOptions: <PhotoViewGalleryPageOptions>[
-            PhotoViewGalleryPageOptions(
-              maxScale: PhotoViewComputedScale.contained * 5.0,
-              minScale: PhotoViewComputedScale.contained * 0.5,
-              imageProvider: isLoadingimage
-                  ? CachedNetworkImageProvider('')
-                  : CachedNetworkImageProvider(
-                      Provider.of<UserInfo>(context, listen: true).profileImage,
-                    ),
-              heroAttributes: PhotoViewHeroAttributes(tag: "tag2"),
+      body: isLoadingimage
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              alignment: Alignment.center,
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.black,
+              child: pv.PhotoViewGallery(
+                pageOptions: <PhotoViewGalleryPageOptions>[
+                  PhotoViewGalleryPageOptions(
+                    maxScale: PhotoViewComputedScale.contained * 5.0,
+                    minScale: PhotoViewComputedScale.contained * 0.5,
+                    imageProvider: isLoadingimage
+                        ? CachedNetworkImageProvider('')
+                        : CachedNetworkImageProvider(
+                            Provider.of<UserInfo>(context, listen: true)
+                                .profileImage,
+                          ),
+                    heroAttributes: PhotoViewHeroAttributes(tag: "tag2"),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

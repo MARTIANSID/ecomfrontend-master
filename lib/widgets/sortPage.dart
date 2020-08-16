@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:Flutter/providers/pagination.dart';
+import 'package:Flutter/screens/product_overview_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,9 +19,12 @@ class SortPage extends StatefulWidget {
 
 class _SortPageState extends State<SortPage> {
   int _selectedTab;
-  int _prevSelectedTab;
+  int _selectedTab1;
   bool isLoading = false;
   bool _check = false;
+  bool _prevCheck = false;
+  bool changeInValue = false;
+  bool changeInValueCheck = false;
   var sortChoices = [
     'Diamond Weight',
     'Diamond Count',
@@ -45,15 +49,18 @@ class _SortPageState extends State<SortPage> {
     } else {
       _check = false;
     }
+    _prevCheck = _check;
+    _selectedTab1 = _selectedTab;
   }
 
   Future<void> sortIt(index, checked) async {
     if (mounted)
       setState(() {
         isLoading = true;
+        sortChange = !sortChange;
       });
 
-    var value =
+    String value =
         index == null ? 'styleNumber' : sortChoicesServer[index].toString();
     await Provider.of<Pagination>(context, listen: false).setCount(value);
     if (checked) {
@@ -114,14 +121,13 @@ class _SortPageState extends State<SortPage> {
       Provider.of<Pagination>(context, listen: false).getFav(context)
     ];
     try {
+      Provider.of<Pagination>(context, listen: false).allProducts = [];
+      Provider.of<Pagination>(context, listen: false).featuredProducts = [];
+      Provider.of<Pagination>(context, listen: false).newProducts = [];
+      Provider.of<Pagination>(context, listen: false).fancyDiamond = [];
+      Provider.of<Pagination>(context, listen: false).highestSellingProducts =
+          [];
       // await Future.wait([]);
-      await Provider.of<Pagination>(context, listen: false).getProducts(
-          addition: false,
-          page: 1,
-          context: context,
-          select: 'featured',
-          sortby: Provider.of<Pagination>(context, listen: false).count,
-          sort: Provider.of<Pagination>(context, listen: false).sort);
       // ]);
       // await Provider.of<Pagination>(context, listen: false)
       //     .getProducts(
@@ -190,20 +196,21 @@ class _SortPageState extends State<SortPage> {
       // });
 
       // await Provider.of<Pagination>(context, listen: false).getFav(context);
+
       await Future.wait(futures);
       // print("DC");
       widget.scrollController
           .animateTo(0, duration: Duration(seconds: 1), curve: Curves.ease);
     } catch (err) {
-      dataSelect(
-          context: context,
-          titleText: 'Alert!',
-          buttonText: 'Okay',
-          contentText: err.toString(),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          gif: "assets/images/alert.gif");
+      // dataSelect(
+      //     context: context,
+      //     titleText: 'Alert!',
+      //     buttonText: 'Okay',
+      //     contentText: err.toString(),
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //     gif: "assets/images/alert.gif");
     } finally {
       if (mounted)
         setState(() {
@@ -269,13 +276,30 @@ class _SortPageState extends State<SortPage> {
                                 (int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    if (_selectedTab == index) {
+                                  // setState(() {
+                                  if (_selectedTab == index) {
+                                    setState(() {
                                       _selectedTab = null;
-                                    } else {
+                                      // changeInValue = false;
+                                    });
+                                  } else {
+                                    setState(() {
                                       _selectedTab = index;
-                                    }
-                                  });
+                                      // changeInValue = true;
+                                    });
+                                  }
+                                  if (_selectedTab == _selectedTab1) {
+                                    setState(() {
+                                      changeInValue = false;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      changeInValue = true;
+                                    });
+                                  }
+                                  // });
+                                  print("Change In Value: " +
+                                      changeInValue.toString());
                                   // widget.valueChangeDQ(index);
                                 },
                                 child: Container(
@@ -396,8 +420,20 @@ class _SortPageState extends State<SortPage> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
+                                        // _prevCheck = _check;
                                         _check = !_check;
                                       });
+                                      if (_check == _prevCheck) {
+                                        setState(() {
+                                          changeInValueCheck = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          changeInValueCheck = true;
+                                        });
+                                      }
+                                      print("Change In Value: " +
+                                          changeInValueCheck.toString());
                                     },
                                     child: Image.asset(
                                       _check
@@ -438,56 +474,60 @@ class _SortPageState extends State<SortPage> {
                                         Colors.cyan[100].withOpacity(0.5),
                                     borderRadius: BorderRadius.circular(30),
                                     onTap: () async {
-                                      try {
-                                        Navigator.of(context).pop();
-                                        if (_selectedTab != null) {
-                                          showFloatingFlushbar(
-                                              context,
-                                              _selectedTab == null
-                                                  ? 'Sort-by changed Successfully'
-                                                  : "Now sorting by ${sortChoices[_selectedTab]}",
-                                              "${_check ? "Low to High" : "High to Low"}",
-                                              '');
-                                          if (mounted)
-                                            setState(() {
-                                              isLoading = true;
-                                            });
-                                          await sortIt(_selectedTab, _check);
-                                          // await Future.wait([
-                                          //   Provider.of<Pagination>(context,
-                                          //           listen: false)
-                                          //       .getFav(context)
-                                          // ]);
-                                          // print("object");
-                                          if (mounted)
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                        } else {
-                                          await sortIt(_selectedTab, _check);
-                                          // await Future.wait([
-                                          //   Provider.of<Pagination>(context,
-                                          //           listen: false)
-                                          //       .getFav(context)
-                                          // ]);
-                                          // print("object1");
+                                      if (changeInValue || changeInValueCheck) {
+                                        try {
+                                          Navigator.of(context).pop();
+                                          if (_selectedTab != null) {
+                                            showFloatingFlushbar(
+                                                context,
+                                                _selectedTab == null
+                                                    ? 'Sort-by changed Successfully'
+                                                    : "Now sorting by ${sortChoices[_selectedTab]}",
+                                                "${_check ? "Low to High" : "High to Low"}",
+                                                '');
+                                            if (mounted)
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                            await sortIt(_selectedTab, _check);
+                                            // await Future.wait([
+                                            //   Provider.of<Pagination>(context,
+                                            //           listen: false)
+                                            //       .getFav(context)
+                                            // ]);
+                                            // print("object");
+                                            if (mounted)
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                          } else {
+                                            await sortIt(_selectedTab, _check);
+                                            // await Future.wait([
+                                            //   Provider.of<Pagination>(context,
+                                            //           listen: false)
+                                            //       .getFav(context)
+                                            // ]);
+                                            // print("object1");
+                                          }
+                                        } catch (err) {
+                                          dataSelect(
+                                              context: context,
+                                              titleText: 'Alert!',
+                                              buttonText: 'Okay',
+                                              contentText: err.toString(),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              gif: "assets/images/alert.gif");
+                                        } finally {
+                                          // if (mounted)
+                                          //   setState(() {
+                                          //     // isLoading = true;
+                                          //   });
+                                          // Navigator.of(context).pop();
                                         }
-                                      } catch (err) {
-                                        dataSelect(
-                                            context: context,
-                                            titleText: 'Alert!',
-                                            buttonText: 'Okay',
-                                            contentText: err.toString(),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            gif: "assets/images/alert.gif");
-                                      } finally {
-                                        // if (mounted)
-                                        //   setState(() {
-                                        //     // isLoading = true;
-                                        //   });
-                                        // Navigator.of(context).pop();
+                                      } else {
+                                        Navigator.of(context).pop();
                                       }
                                     },
                                     child: Center(

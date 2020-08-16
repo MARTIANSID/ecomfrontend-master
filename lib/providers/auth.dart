@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:Flutter/constant/const.dart';
+import 'package:Flutter/screens/product_overview_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './http_exception.dart';
 
 class Auth with ChangeNotifier {
-  static const uurl = 'https://echo.gemstory.in/';
-
   Future<bool> checkIfRegistered(String number) async {
     try {
       final response = await http.get('${uurl}user/isregistered/$number');
@@ -378,7 +378,9 @@ class Auth with ChangeNotifier {
   }
 
   void restart({context}) {
+    screenChange = true;
     Phoenix.rebirth(context);
+    notifyListeners();
   }
 
   Future<void> sendPlayerId({context, playerId}) async {

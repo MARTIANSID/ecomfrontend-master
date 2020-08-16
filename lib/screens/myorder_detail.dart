@@ -1,4 +1,5 @@
 import 'package:Flutter/providers/order.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -351,8 +352,17 @@ class _MyOrderDetailPageState extends State<MyOrderDetailPage> {
                               children: <Widget>[
                                 // color: Colors.black,
                                 Image(
-                                  image: NetworkImage(
-                                    widget.products[index].displayImage,
+                                  image: CachedNetworkImageProvider(
+                                    widget
+                                            .products[index]
+                                            .imageUrl[widget
+                                                .products[index].color
+                                                .toLowerCase()]
+                                            .toString()
+                                            .contains("echo.gemstory.in")
+                                        ? widget.products[index].displayImage
+                                        : widget
+                                            .products[index].imageUrl["yellow"],
                                   ),
                                   fit: BoxFit.fill,
                                   height: ScreenUtil().setHeight(77.5),

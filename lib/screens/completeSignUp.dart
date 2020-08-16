@@ -159,11 +159,13 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                   });
                                 },
                                 validator: (value) {
-                                  if (value.length < 3) {
+                                  if (value.trim().length < 3) {
                                     return "Name Error";
-                                  } else if (value.isEmpty) {
+                                  } else if (value.trim().isEmpty) {
                                     return "Enter Your Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid Name";
                                   }
                                   return null;
@@ -191,11 +193,11 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                               child: RoundedInputField(
                                 hintText: "Email-id",
                                 validator: (value) {
-                                  if (!RegExp(
-                                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                                      .hasMatch(value)) {
+                                  if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                          .hasMatch(value.trim()) ==
+                                      false) {
                                     return "Enter Proper Email-ID";
-                                  } else if (value.isEmpty) {
+                                  } else if (value.trim().isEmpty) {
                                     return "Enter Email-ID";
                                   }
                                   return null;
@@ -217,7 +219,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 hintText: "Reference (Optional)",
                                 controller: referenceController,
                                 validator: (value) {
-                                  // if (value.isEmpty) {
+                                  // if (value.trim().isEmpty) {
                                   //   return "Enter Reference";
                                   // }
                                   return null;
@@ -257,9 +259,11 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 hintText: "Firm Name",
                                 controller: firmDetailController,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter Firm Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid Firm Name";
                                   }
                                   return null;
@@ -280,10 +284,10 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                               child: RoundedInputField(
                                 hintText: "GST (Optional)",
                                 validator: (value) {
-                                  if (value.isNotEmpty) {
+                                  if (value.trim().isNotEmpty) {
                                     if (!RegExp(
                                             r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')
-                                        .hasMatch(value)) {
+                                        .hasMatch(value.trim())) {
                                       return "Enter Correct GST Value";
                                     }
                                   }
@@ -307,7 +311,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 hintText: "Street",
                                 controller: streetNameController,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter Street Name";
                                   }
                                   return null;
@@ -329,9 +333,11 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                                 hintText: "City",
                                 controller: cityNameController,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter City Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid City Name";
                                   }
                                   return null;
@@ -351,9 +357,11 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                               child: RoundedInputField(
                                 hintText: "State",
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter State Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid State Name";
                                   }
                                   return null;
@@ -375,9 +383,9 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                               child: RoundedInputField(
                                 hintText: "Pincode",
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter Pincode";
-                                  } else if (value.length < 6) {
+                                  } else if (value.trim().length < 6) {
                                     return "Enter Proper Pincode";
                                   }
                                   return null;
@@ -440,15 +448,15 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                     await Provider.of<UserInfo>(context, listen: false)
                         .completeSignUp(
                       context: context,
-                      fullname: fullName,
-                      email: emailID,
-                      city: cityName,
-                      firm: firmDetail,
-                      gst: gstValue,
-                      pincode: pincode,
-                      reference: reference,
-                      state: stateName,
-                      street: streetName,
+                      fullname: fullName.trim(),
+                      email: emailID.trim(),
+                      city: cityName.trim(),
+                      firm: firmDetail.trim(),
+                      gst: gstValue.trim(),
+                      pincode: pincode.trim(),
+                      reference: reference.trim(),
+                      state: stateName.trim(),
+                      street: streetName.trim(),
                     );
                   } catch (err) {
                     dataSelect(

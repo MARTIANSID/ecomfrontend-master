@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Flutter/constant/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -22,7 +23,7 @@ class TestimonyClass {
 class Testimony with ChangeNotifier {
   TestimonyClass userTestimony;
 
-  final String url = 'https://echo.gemstory.in/testimony/';
+  // final String url = 'https://echo.gemstory.in/testimony/';
 
   Future<void> getTestimony({context}) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -44,7 +45,7 @@ class Testimony with ChangeNotifier {
         Navigator.popAndPushNamed(context, '/');
       }
       final response = await http.get(
-        url,
+        uurl + 'testimony/',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -91,7 +92,7 @@ class Testimony with ChangeNotifier {
       if (Provider.of<Auth>(context, listen: false).isAuth == false) {
         Navigator.popAndPushNamed(context, '/');
       }
-      final response = await http.post(url, headers: {
+      final response = await http.post(uurl + 'testimony/', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token,
       }, body: {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -44,6 +45,7 @@ class Pagination with ChangeNotifier {
   bool c = false;
   bool isVerified;
   bool isPriced;
+  // bool sortChange = false;
   String count = 'styleNumber';
   int sort = 1;
 
@@ -113,8 +115,8 @@ class Pagination with ChangeNotifier {
     notifyListeners();
   }
 
-  final uurl = "https://echo.gemstory.in/";
-  final req = "https://echo.gemstory.in/user/requestprice";
+  // final uurl = "https://echo.gemstory.in/";
+  // final req = "https://echo.gemstory.in/";
 
   Future<void> requestPrice({context}) async {
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
@@ -133,7 +135,7 @@ class Pagination with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        req,
+        uurl + 'user/requestprice',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -163,7 +165,7 @@ class Pagination with ChangeNotifier {
       page = 1,
       select = 'all',
       addition = false}) async {
-    final url = 'https://echo.gemstory.in/product/paginated?select=' +
+    final url = 'product/paginated?select=' +
         select.toString() +
         '&sortby=' +
         sortby.toString() +
@@ -188,7 +190,7 @@ class Pagination with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        url,
+        uurl + url,
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -443,7 +445,7 @@ class Pagination with ChangeNotifier {
   }
 
   Future<void> getFav(context) async {
-    final url = 'https://echo.gemstory.in/user/favourite/';
+    final url = 'user/favourite/';
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
@@ -461,7 +463,7 @@ class Pagination with ChangeNotifier {
 
     try {
       final response = await http.get(
-        url,
+        uurl + url,
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -632,7 +634,7 @@ class Pagination with ChangeNotifier {
     }
 
     try {
-      final response = await http.post(uurl + '/user/favourite/toggle',
+      final response = await http.post(uurl + 'user/favourite/toggle',
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token
@@ -849,7 +851,7 @@ class Pagination with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        uurl + '/product/single?styleNumber=$styleNumber',
+        uurl + 'product/single?styleNumber=$styleNumber',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token

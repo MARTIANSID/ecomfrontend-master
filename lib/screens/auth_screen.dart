@@ -511,7 +511,7 @@ class _LoginScreenState extends State<LoginScreen>
   Future<void> _forgotPassword() async {
     try {
       final a = await Provider.of<Auth>(context, listen: false)
-          .resetPasswordRequest(_phoneController.text);
+          .resetPasswordRequest(_phoneController.text.trim());
 
       a
           ? setState(() {
@@ -681,12 +681,14 @@ class _LoginScreenState extends State<LoginScreen>
           // print('PP In first If part');
           try {
             await Provider.of<Auth>(context, listen: false).userSignup(
-                _fnameController.text.substring(0, 1).toUpperCase() +
-                    _fnameController.text.substring(1).toLowerCase() +
+                (_fnameController.text.substring(0, 1).toUpperCase() +
+                            _fnameController.text.substring(1).toLowerCase())
+                        .trim() +
                     ' ' +
-                    _lnameController.text.substring(0, 1).toUpperCase() +
-                    _lnameController.text.substring(1).toLowerCase(),
-                _phoneController.text,
+                    (_lnameController.text.substring(0, 1).toUpperCase() +
+                            _lnameController.text.substring(1).toLowerCase())
+                        .trim(),
+                _phoneController.text.trim(),
                 _passwordController.text);
             Provider.of<Auth>(context, listen: false).changeLog();
 
@@ -706,7 +708,7 @@ class _LoginScreenState extends State<LoginScreen>
             _isRegistered = _forgotPasswordMenu
                 ? true
                 : await Provider.of<Auth>(context, listen: false)
-                    .checkIfRegistered(_phoneController.text);
+                    .checkIfRegistered(_phoneController.text.trim());
             if (mounted)
               setState(() {
                 _isLoading = false;
@@ -715,7 +717,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                 // }
                 if (_isRegistered) {
-                  phoneNumber = _phoneController.text;
+                  phoneNumber = _phoneController.text.trim();
                   _requirePassword = true;
                   enable = false;
 
@@ -747,7 +749,7 @@ class _LoginScreenState extends State<LoginScreen>
       } else {
         // print('PP in second else part: $_forgotPasswordMenu');
         // print(_phoneController.text);
-        phoneNumber = _phoneController.text;
+        phoneNumber = _phoneController.text.trim();
         // print(_fnameController.text);
         // print(_passwordController.text);
 
@@ -757,8 +759,8 @@ class _LoginScreenState extends State<LoginScreen>
         if (_forgotPasswordMenu) {
           try {
             await Provider.of<Auth>(context, listen: false).resetPassword(
-                _phoneController.text,
-                _fnameController.text,
+                _phoneController.text.trim(),
+                _fnameController.text.trim(),
                 _passwordController.text);
           } catch (error) {
             _showDilog('Oops!', '$error');
@@ -782,8 +784,8 @@ class _LoginScreenState extends State<LoginScreen>
           });
         } else {
           try {
-            await Provider.of<Auth>(context, listen: false)
-                .userLogin(_phoneController.text, _passwordController.text);
+            await Provider.of<Auth>(context, listen: false).userLogin(
+                _phoneController.text.trim(), _passwordController.text);
             Provider.of<Auth>(context, listen: false).changeLog();
             Navigator.pushReplacement(
               context,

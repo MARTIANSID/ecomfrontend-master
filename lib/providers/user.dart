@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -48,13 +49,18 @@ class UserInfo with ChangeNotifier {
   var pincode;
   var email;
   bool noti;
+  // Map<dynamic, dynamic> prices;
+  Map<dynamic, dynamic> buildPrices;
+  Map<dynamic, dynamic> certPrices;
+  Map<dynamic, dynamic> diamondPrices;
   String profileImage;
   bool check = false;
   var totalOrders;
 
-  final uurl = "https://echo.gemstory.in/";
+  // final uurl = "https://echo.gemstory.in/";
 
   Future<dynamic> getuser(context) async {
+    print("Hello User");
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
       Navigator.popAndPushNamed(context, '/');
@@ -70,7 +76,7 @@ class UserInfo with ChangeNotifier {
           .authenticate(number, password, 'user/login');
     }
     try {
-      final response = await http.get(uurl + '/user/details', headers: {
+      final response = await http.get(uurl + 'user/details', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token
       });
@@ -121,12 +127,18 @@ class UserInfo with ChangeNotifier {
             : responseData['user']['email'];
         // }
       }
+      diamondPrices =
+          Map<dynamic, dynamic>.from(responseData['user']['prices']['diamond']);
+      buildPrices =
+          Map<dynamic, dynamic>.from(responseData['user']['prices']['labour']);
+      certPrices = Map<dynamic, dynamic>.from(
+          responseData['user']['prices']['certification']);
       noti = responseData['user']['notification'];
       fullname = responseData['user']['fullName'];
       number = responseData['user']['number'];
       profileImage = responseData['user']['profileImage'];
       totalOrders = responseData['totalOrder'];
-
+      print(profileImage);
       return responseData;
     } on FormatException {
       throw "Oops Something Went Wrong!";
@@ -168,7 +180,7 @@ class UserInfo with ChangeNotifier {
         Navigator.popAndPushNamed(context, '/');
       }
       final response = await http.patch(
-        uurl + '/user',
+        uurl + 'user',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -231,7 +243,7 @@ class UserInfo with ChangeNotifier {
         Navigator.popAndPushNamed(context, '/');
       }
       final response = await http.post(
-        uurl + '/user/completesignup',
+        uurl + 'user/completesignup',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -295,7 +307,7 @@ class UserInfo with ChangeNotifier {
     var stream = http.ByteStream(DelegatingStream(image.openRead()));
     var length = await image.length();
 
-    var uri = Uri.parse(uurl + '/user/profileimage');
+    var uri = Uri.parse(uurl + 'user/profileimage');
     Map<String, String> headers = {
       "Authorization":
           "Bearer " + Provider.of<Auth>(context, listen: false).token
@@ -373,7 +385,7 @@ class UserInfo with ChangeNotifier {
 
   Future<void> deleteImage({context}) async {
     try {
-      final response = await http.delete(uurl + '/user/profileimage', headers: {
+      final response = await http.delete(uurl + 'user/profileimage', headers: {
         'Authorization':
             'Bearer ' + Provider.of<Auth>(context, listen: false).token,
       });

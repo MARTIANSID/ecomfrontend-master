@@ -22,8 +22,10 @@ import '../providers/auth.dart';
 import '../widgets/cookie_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../providers/notifiaction.dart';
-
 import 'completeSignUp.dart';
+
+bool sortChange = false;
+bool screenChange = true;
 
 class ProductOverViewScreen extends StatefulWidget {
   final ScrollController scrollController;
@@ -80,6 +82,8 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
 
   bool ff = true;
 
+  bool isLoadingSort = false;
+
   @override
   void initState() {
     super.initState();
@@ -119,6 +123,70 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
             .getNotification(context: context),
       ];
       await Future.wait(futures);
+      await Future.delayed(Duration(milliseconds: 100), () async {
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'all',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+      });
+      await Future.delayed(Duration(milliseconds: 100), () async {
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'isnew',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+      });
+      await Future.delayed(Duration(milliseconds: 100), () async {
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'navratna',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+      });
+      await Future.delayed(Duration(milliseconds: 100), () async {
+        await Provider.of<Pagination>(context, listen: false).getProducts(
+            addition: false,
+            page: 1,
+            context: context,
+            select: 'fancyDiamond',
+            sortby: Provider.of<Pagination>(context, listen: false).count,
+            sort: Provider.of<Pagination>(context, listen: false).sort);
+      });
+      // await Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'all',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort);
+      // await Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'isnew',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort);
+      // await Provider.of<Pagination>(context, listen: false).getProducts(
+      //     page: 1,
+      //     addition: false,
+      //     select: 'navratna',
+      //     context: context,
+      //     sortby: Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort);
+      // await Provider.of<Pagination>(context, listen: false).getProducts(
+      //     addition: false,
+      //     page: 1,
+      //     context: context,
+      //     select: 'fancyDiamond',
+      //     sortby: Provider.of<Pagination>(context, listen: false).count,
+      //     sort: Provider.of<Pagination>(context, listen: false).sort);
       await Provider.of<UserInfo>(context, listen: false).getuser(context);
 
       await Provider.of<Cart>(context, listen: false).getCart(context: context);
@@ -142,6 +210,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
     }
   }
 
+  @override
   void didChangeDependencies() async {
     if (isInit) {
       try {
@@ -173,37 +242,15 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
             super.didChangeDependencies();
           });
       }
-      if (context != null) {
-        await Provider.of<UserInfo>(context, listen: false).getuser(context);
-        await Provider.of<Pagination>(context, listen: false).getProducts(
-            page: 1,
-            addition: false,
-            select: 'all',
-            context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort);
-        await Provider.of<Pagination>(context, listen: false).getProducts(
-            page: 1,
-            addition: false,
-            select: 'isnew',
-            context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort);
-        await Provider.of<Pagination>(context, listen: false).getProducts(
-            page: 1,
-            addition: false,
-            select: 'navratna',
-            context: context,
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort);
-        await Provider.of<Pagination>(context, listen: false).getProducts(
-            addition: false,
-            page: 1,
-            context: context,
-            select: 'fancyDiamond',
-            sortby: Provider.of<Pagination>(context, listen: false).count,
-            sort: Provider.of<Pagination>(context, listen: false).sort);
-      }
+      // if (screenChange) {
+      //   if (context != null) {
+      //     // await Provider.of<UserInfo>(context, listen: false).getuser(context);
+
+      //   }
+      // }
+      setState(() {
+        screenChange = false;
+      });
     }
   }
 
@@ -715,120 +762,198 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                                           .scrollController,
                                                     ),
                                                   ).then((value) async {
-                                                    // await Future.wait([
-                                                    //   Provider.of<Pagination>(
-                                                    //           context,
-                                                    //           listen: false)
-                                                    //       .getProducts(
-                                                    //           addition: false,
-                                                    //           page: 1,
-                                                    //           context: context,
-                                                    //           select:
-                                                    //               'featured',
-                                                    //           sortby: Provider.of<
-                                                    //                       Pagination>(
-                                                    //                   context,
-                                                    //                   listen:
-                                                    //                       false)
-                                                    //               .count,
-                                                    //           sort: Provider.of<
-                                                    //                       Pagination>(
-                                                    //                   context,
-                                                    //                   listen:
-                                                    //                       false)
-                                                    //               .sort)
-                                                    // ]);
-                                                    await Future.wait([
-                                                      Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              addition: false,
-                                                              page: 1,
-                                                              context: context,
-                                                              select: 'all',
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
+                                                    // bool checkValue = false;
+                                                    setState(() {
+                                                      // checkValue = Provider.of<
+                                                      //             Pagination>(
+                                                      //         context,
+                                                      //         listen: false)
+                                                      //     .sortChange;
+                                                      isLoadingSort = true;
+                                                    });
+                                                    // print("CheckValue: " +
+                                                    //     checkValue.toString());
+                                                    try {
+                                                      print("Inside Try");
+                                                      if (sortChange) {
+                                                        print("Inside Logic");
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select:
+                                                                      'featured',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider.of<
+                                                                      Pagination>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select: 'all',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .sort)
-                                                    ]);
-                                                    await Future.wait([
-                                                      Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              addition: false,
-                                                              page: 1,
-                                                              context: context,
-                                                              select: 'isnew',
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select:
+                                                                      'isnew',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select:
+                                                                      'navratna',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .sort)
-                                                    ]);
-                                                    await Future.wait([
-                                                      Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              addition: false,
-                                                              page: 1,
-                                                              context: context,
-                                                              select:
-                                                                  'fancyDiamond',
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
                                                                       context,
-                                                                      listen:
-                                                                          false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .sort),
-                                                    ]);
-
-                                                    await Future.wait([
-                                                      Provider.of<Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              addition: false,
-                                                              page: 1,
-                                                              context: context,
-                                                              select:
-                                                                  'navratna',
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .sort)
-                                                    ]);
+                                                                  select:
+                                                                      'fancyDiamond',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        // Provider.of<Pagination>(
+                                                        //         context,
+                                                        //         listen: false)
+                                                        //     .changeSort();
+                                                      }
+                                                    } catch (err) {
+                                                      // dataSelect(
+                                                      //     context: context,
+                                                      //     titleText: 'Alert!',
+                                                      //     buttonText: 'Okay',
+                                                      //     contentText:
+                                                      //         err.toString(),
+                                                      //     onPressed: () {
+                                                      //       Navigator.pop(
+                                                      //           context);
+                                                      //     },
+                                                      //     gif:
+                                                      //         "assets/images/alert.gif");
+                                                    } finally {
+                                                      setState(() {
+                                                        sortChange = false;
+                                                        isLoadingSort = false;
+                                                      });
+                                                    }
                                                   });
                                                 },
                                                 child: Padding(
@@ -908,123 +1033,137 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen>
                                 ScreenUtil().setHeight(!widget.val ? 15 : 0),
                           ),
                           Expanded(
-                            child: TabBarView(
-                              physics: Provider.of<Pagination>(context,
-                                              listen: false)
-                                          .isVerified &&
-                                      Provider.of<UserInfo>(context,
-                                                  listen: false)
-                                              .street !=
-                                          "-"
-                                  ? ClampingScrollPhysics()
-                                  : NeverScrollableScrollPhysics(),
-                              controller: _tabController,
-                              children: [
-                                CookiePage(
-                                  globalKey: scaffoldKey,
-                                  products: Provider.of<Pagination>(context,
-                                          listen: true)
-                                      .allProducts,
-                                  scrollController: widget.scrollController,
-                                  select: 'all',
-                                  build: _defaultChoiceIndex1,
-                                  color: _defaultChoiceIndex2,
-                                  cert: _defaultChoiceIndex3,
-                                  diamond: _defaultChoiceIndex4,
-                                  characterCount: _characterCount,
-                                  controller: controller,
-                                  flag: flag,
-                                  valueChangeBuild: _onValueChange,
-                                  valueChangeColor: _onValueChangeColor,
-                                  valueChangeCerti: _onValueChangeCerti,
-                                  valueChangeDQ: _onValueChangeDQ,
-                                ),
-                                CookiePage(
-                                  globalKey: scaffoldKey,
-                                  products: Provider.of<Pagination>(context,
-                                          listen: true)
-                                      .featuredProducts,
-                                  scrollController: widget.scrollController,
-                                  select: 'featured',
-                                  sort: sort,
-                                  count: count,
-                                  build: _defaultChoiceIndex1,
-                                  color: _defaultChoiceIndex2,
-                                  cert: _defaultChoiceIndex3,
-                                  diamond: _defaultChoiceIndex4,
-                                  characterCount: _characterCount,
-                                  controller: controller,
-                                  flag: flag,
-                                  valueChangeBuild: _onValueChange,
-                                  valueChangeColor: _onValueChangeColor,
-                                  valueChangeCerti: _onValueChangeCerti,
-                                  valueChangeDQ: _onValueChangeDQ,
-                                ),
-                                CookiePage(
-                                  globalKey: scaffoldKey,
-                                  products: Provider.of<Pagination>(context,
-                                          listen: true)
-                                      .newProducts,
-                                  scrollController: widget.scrollController,
-                                  select: 'isnew',
-                                  sort: sort,
-                                  count: count,
-                                  build: _defaultChoiceIndex1,
-                                  color: _defaultChoiceIndex2,
-                                  cert: _defaultChoiceIndex3,
-                                  diamond: _defaultChoiceIndex4,
-                                  characterCount: _characterCount,
-                                  controller: controller,
-                                  flag: flag,
-                                  valueChangeBuild: _onValueChange,
-                                  valueChangeColor: _onValueChangeColor,
-                                  valueChangeCerti: _onValueChangeCerti,
-                                  valueChangeDQ: _onValueChangeDQ,
-                                ),
-                                CookiePage(
-                                  globalKey: scaffoldKey,
-                                  products: Provider.of<Pagination>(context,
-                                          listen: true)
-                                      .highestSellingProducts,
-                                  scrollController: widget.scrollController,
-                                  select: 'navratna',
-                                  sort: sort,
-                                  count: count,
-                                  build: _defaultChoiceIndex1,
-                                  color: _defaultChoiceIndex2,
-                                  cert: _defaultChoiceIndex3,
-                                  diamond: _defaultChoiceIndex4,
-                                  characterCount: _characterCount,
-                                  controller: controller,
-                                  flag: flag,
-                                  valueChangeBuild: _onValueChange,
-                                  valueChangeColor: _onValueChangeColor,
-                                  valueChangeCerti: _onValueChangeCerti,
-                                  valueChangeDQ: _onValueChangeDQ,
-                                ),
-                                CookiePage(
-                                  globalKey: scaffoldKey,
-                                  products: Provider.of<Pagination>(context,
-                                          listen: true)
-                                      .fancyDiamond,
-                                  scrollController: widget.scrollController,
-                                  select: 'fancyDiamond',
-                                  sort: sort,
-                                  count: count,
-                                  build: _defaultChoiceIndex1,
-                                  color: _defaultChoiceIndex2,
-                                  cert: _defaultChoiceIndex3,
-                                  diamond: _defaultChoiceIndex4,
-                                  characterCount: _characterCount,
-                                  controller: controller,
-                                  flag: flag,
-                                  valueChangeBuild: _onValueChange,
-                                  valueChangeColor: _onValueChangeColor,
-                                  valueChangeCerti: _onValueChangeCerti,
-                                  valueChangeDQ: _onValueChangeDQ,
-                                ),
-                              ],
-                            ),
+                            child: isLoadingSort
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : TabBarView(
+                                    physics: Provider.of<Pagination>(context,
+                                                    listen: false)
+                                                .isVerified &&
+                                            Provider.of<UserInfo>(context,
+                                                        listen: false)
+                                                    .street !=
+                                                "-"
+                                        ? ClampingScrollPhysics()
+                                        : NeverScrollableScrollPhysics(),
+                                    controller: _tabController,
+                                    children: [
+                                      CookiePage(
+                                        globalKey: scaffoldKey,
+                                        products: Provider.of<Pagination>(
+                                                context,
+                                                listen: true)
+                                            .allProducts,
+                                        scrollController:
+                                            widget.scrollController,
+                                        select: 'all',
+                                        build: _defaultChoiceIndex1,
+                                        color: _defaultChoiceIndex2,
+                                        cert: _defaultChoiceIndex3,
+                                        diamond: _defaultChoiceIndex4,
+                                        characterCount: _characterCount,
+                                        controller: controller,
+                                        flag: flag,
+                                        valueChangeBuild: _onValueChange,
+                                        valueChangeColor: _onValueChangeColor,
+                                        valueChangeCerti: _onValueChangeCerti,
+                                        valueChangeDQ: _onValueChangeDQ,
+                                      ),
+                                      CookiePage(
+                                        globalKey: scaffoldKey,
+                                        products: Provider.of<Pagination>(
+                                                context,
+                                                listen: true)
+                                            .featuredProducts,
+                                        scrollController:
+                                            widget.scrollController,
+                                        select: 'featured',
+                                        sort: sort,
+                                        count: count,
+                                        build: _defaultChoiceIndex1,
+                                        color: _defaultChoiceIndex2,
+                                        cert: _defaultChoiceIndex3,
+                                        diamond: _defaultChoiceIndex4,
+                                        characterCount: _characterCount,
+                                        controller: controller,
+                                        flag: flag,
+                                        valueChangeBuild: _onValueChange,
+                                        valueChangeColor: _onValueChangeColor,
+                                        valueChangeCerti: _onValueChangeCerti,
+                                        valueChangeDQ: _onValueChangeDQ,
+                                      ),
+                                      CookiePage(
+                                        globalKey: scaffoldKey,
+                                        products: Provider.of<Pagination>(
+                                                context,
+                                                listen: true)
+                                            .newProducts,
+                                        scrollController:
+                                            widget.scrollController,
+                                        select: 'isnew',
+                                        sort: sort,
+                                        count: count,
+                                        build: _defaultChoiceIndex1,
+                                        color: _defaultChoiceIndex2,
+                                        cert: _defaultChoiceIndex3,
+                                        diamond: _defaultChoiceIndex4,
+                                        characterCount: _characterCount,
+                                        controller: controller,
+                                        flag: flag,
+                                        valueChangeBuild: _onValueChange,
+                                        valueChangeColor: _onValueChangeColor,
+                                        valueChangeCerti: _onValueChangeCerti,
+                                        valueChangeDQ: _onValueChangeDQ,
+                                      ),
+                                      CookiePage(
+                                        globalKey: scaffoldKey,
+                                        products: Provider.of<Pagination>(
+                                                context,
+                                                listen: true)
+                                            .highestSellingProducts,
+                                        scrollController:
+                                            widget.scrollController,
+                                        select: 'navratna',
+                                        sort: sort,
+                                        count: count,
+                                        build: _defaultChoiceIndex1,
+                                        color: _defaultChoiceIndex2,
+                                        cert: _defaultChoiceIndex3,
+                                        diamond: _defaultChoiceIndex4,
+                                        characterCount: _characterCount,
+                                        controller: controller,
+                                        flag: flag,
+                                        valueChangeBuild: _onValueChange,
+                                        valueChangeColor: _onValueChangeColor,
+                                        valueChangeCerti: _onValueChangeCerti,
+                                        valueChangeDQ: _onValueChangeDQ,
+                                      ),
+                                      CookiePage(
+                                        globalKey: scaffoldKey,
+                                        products: Provider.of<Pagination>(
+                                                context,
+                                                listen: true)
+                                            .fancyDiamond,
+                                        scrollController:
+                                            widget.scrollController,
+                                        select: 'fancyDiamond',
+                                        sort: sort,
+                                        count: count,
+                                        build: _defaultChoiceIndex1,
+                                        color: _defaultChoiceIndex2,
+                                        cert: _defaultChoiceIndex3,
+                                        diamond: _defaultChoiceIndex4,
+                                        characterCount: _characterCount,
+                                        controller: controller,
+                                        flag: flag,
+                                        valueChangeBuild: _onValueChange,
+                                        valueChangeColor: _onValueChangeColor,
+                                        valueChangeCerti: _onValueChangeCerti,
+                                        valueChangeDQ: _onValueChangeDQ,
+                                      ),
+                                    ],
+                                  ),
                           ),
                         ],
                       ),

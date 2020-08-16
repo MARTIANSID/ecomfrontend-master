@@ -222,11 +222,13 @@ class _AccountInfoState extends State<AccountInfo> {
                                 controller: fullNameController,
                                 hintText: "Full Name",
                                 validator: (value) {
-                                  if (value.length < 3) {
+                                  if (value.trim().length < 3) {
                                     return "Name Error";
-                                  } else if (value.isEmpty) {
+                                  } else if (value.trim().isEmpty) {
                                     return "Enter Your Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid Full Name";
                                   }
                                   return null;
@@ -276,6 +278,16 @@ class _AccountInfoState extends State<AccountInfo> {
                                     // print(emailID);
                                   });
                                 },
+                                validator: (value) {
+                                  if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                          .hasMatch(value.trim()) ==
+                                      false) {
+                                    return "Enter Proper Email-ID";
+                                  } else if (value.trim().isEmpty) {
+                                    return "Enter Email-ID";
+                                  }
+                                  return null;
+                                },
                                 icon: Icons.mail_outline,
                                 proceed: !editFields,
                               ),
@@ -311,9 +323,11 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter Firm Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid Firm Name";
                                   }
                                   return null;
@@ -336,10 +350,10 @@ class _AccountInfoState extends State<AccountInfo> {
                                   });
                                 },
                                 validator: (value) {
-                                  if (value.isNotEmpty) {
-                                    if (!RegExp(
+                                  if (value.trim().isNotEmpty) {
+                                    if (RegExp(
                                             r'^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')
-                                        .hasMatch(value)) {
+                                        .hasMatch(value.trim())) {
                                       return "Enter Correct GST Value";
                                     }
                                   }
@@ -357,7 +371,7 @@ class _AccountInfoState extends State<AccountInfo> {
                                 controller: streetNameController,
                                 hintText: "Street",
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter Street Name";
                                   }
                                   return null;
@@ -380,9 +394,11 @@ class _AccountInfoState extends State<AccountInfo> {
                                 controller: cityNameController,
                                 hintText: "City",
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter City Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid City Name";
                                   }
                                   return null;
@@ -406,9 +422,11 @@ class _AccountInfoState extends State<AccountInfo> {
                                 controller: stateNameController,
                                 hintText: "State",
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter State Name";
-                                  } else if (value.contains(RegExp(r'[0-9]'))) {
+                                  } else if (value
+                                      .trim()
+                                      .contains(RegExp(r'[0-9]'))) {
                                     return "Enter Valid State Name";
                                   }
                                   return null;
@@ -435,9 +453,9 @@ class _AccountInfoState extends State<AccountInfo> {
                                 hintText: "Pincode",
                                 pincodeLimit: true,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value.trim().isEmpty) {
                                     return "Enter Pincode";
-                                  } else if (value.length < 6) {
+                                  } else if (value.trim().length < 6) {
                                     return "Enter Proper Pincode";
                                   }
                                   return null;
@@ -506,14 +524,14 @@ class _AccountInfoState extends State<AccountInfo> {
                         await Provider.of<UserInfo>(context, listen: false)
                             .patchuser(
                           context: context,
-                          fullname: fullName,
-                          city: cityName,
-                          firm: firmDetail,
-                          gst: gstValue,
-                          email: emailID,
-                          pincode: pincode,
-                          state: stateName,
-                          street: streetName,
+                          fullname: fullName.trim(),
+                          city: cityName.trim(),
+                          firm: firmDetail.trim(),
+                          gst: gstValue.trim(),
+                          email: emailID.trim(),
+                          pincode: pincode.trim(),
+                          state: stateName.trim(),
+                          street: streetName.trim(),
                         );
                         await Provider.of<UserInfo>(context, listen: false)
                             .getuser(context);

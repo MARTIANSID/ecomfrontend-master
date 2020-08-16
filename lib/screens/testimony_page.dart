@@ -811,7 +811,8 @@ class _TestimonyPageState extends State<TestimonyPage> {
                                                           context: context,
                                                           comment:
                                                               commentEditingController
-                                                                  .text,
+                                                                  .text
+                                                                  .trim(),
                                                           rating: rating);
                                                 } catch (err) {
                                                   flag = true;

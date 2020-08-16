@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Flutter/constant/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,7 @@ class Noti {
 }
 
 class Notif with ChangeNotifier {
-  final uurl = "https://echo.gemstory.in/";
+  // final uurl = "https://echo.gemstory.in/";
   List<dynamic> notifications = [];
 
   Future<void> readNNotification({context, id}) async {
@@ -51,7 +52,7 @@ class Notif with ChangeNotifier {
     int index = notifications.indexWhere((element) => element.id == id);
     if (notifications[index].read == false) {
       try {
-        final response = await http.post(uurl + '/notification/read', headers: {
+        final response = await http.post(uurl + 'notification/read', headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
         }, body: {
@@ -133,7 +134,7 @@ class Notif with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        uurl + '/notification',
+        uurl + 'notification',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -194,7 +195,7 @@ class Notif with ChangeNotifier {
     }
     try {
       final response = await http.post(
-        uurl + '/notification/delete/all',
+        uurl + 'notification/delete/all',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -233,7 +234,7 @@ class Notif with ChangeNotifier {
     }
     try {
       final response = await http.post(
-        uurl + '/notification/read/all',
+        uurl + 'notification/read/all',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,

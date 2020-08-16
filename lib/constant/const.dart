@@ -10,7 +10,12 @@ class MyFlutterApp {
   static const _kFontFam = 'MyFlutterApp';
   static const _kFontPkg = null;
 
-  static const IconData params = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData cog = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData gold_bar = IconData(0xe9e4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData params =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cog =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData gold_bar =
+      IconData(0xe9e4, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
+
+const String uurl = 'https://echo.gemstory.in/';

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Flutter/constant/const.dart';
 import 'package:Flutter/providers/http_exception.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +48,7 @@ class Cart with ChangeNotifier {
   bool check;
   int totalPrice;
   int totalQuantity;
-  var url = 'https://echo.gemstory.in/cart';
+  // var url = 'https://echo.gemstory.incart';
 
   Future<void> addCart(
       {context,
@@ -116,7 +117,7 @@ class Cart with ChangeNotifier {
       }
       try {
         final response = await http.post(
-          url,
+          uurl + 'cart',
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -224,7 +225,7 @@ class Cart with ChangeNotifier {
       }
       try {
         final response = await http.patch(
-          this.url,
+          uurl + 'cart',
           headers: {
             'Authorization':
                 'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -289,7 +290,7 @@ class Cart with ChangeNotifier {
   }
 
   Future<void> getCart({context}) async {
-    final url = 'https://echo.gemstory.in/cart';
+    // final url = 'https://echo.gemstory.in/';
 
     if (Provider.of<Auth>(context, listen: false).isAuth == false &&
         Provider.of<Auth>(context, listen: false).remeberMe == false) {
@@ -307,7 +308,7 @@ class Cart with ChangeNotifier {
     }
     try {
       final response = await http.get(
-        url,
+        uurl + 'cart',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -383,7 +384,7 @@ class Cart with ChangeNotifier {
       cart.removeWhere((element) => element.id == id);
       notifyListeners();
       final response = await http.patch(
-        this.url,
+        uurl + 'cart',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -484,7 +485,7 @@ class Cart with ChangeNotifier {
         notifyListeners();
       }
       final response = await http.patch(
-        this.url,
+        uurl + 'cart',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,
@@ -618,7 +619,7 @@ class Cart with ChangeNotifier {
       }
 
       final response = await http.patch(
-        this.url,
+        uurl + 'cart',
         headers: {
           'Authorization':
               'Bearer ' + Provider.of<Auth>(context, listen: false).token,

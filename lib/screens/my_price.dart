@@ -5,6 +5,7 @@ import 'package:Flutter/providers/cart.dart';
 import 'package:Flutter/providers/options.dart';
 import 'package:Flutter/providers/pagination.dart';
 import 'package:Flutter/providers/search.dart';
+import 'package:Flutter/providers/user.dart';
 import 'package:Flutter/widgets/snackbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -189,26 +190,77 @@ class _MyPriceState extends State<MyPrice> {
                         ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(24, 15, 25, 0),
-                          child: ShaderMask(
-                            shaderCallback: (bounds) => LinearGradient(
-                              colors: [
-                                Color(0xFF34B0D9),
-                                Color(0xFF3685CB),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ).createShader(
-                              Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                            ),
-                            child: Text(
-                              'PRICES',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Gilroy Bold',
-                                fontSize: ScreenUtil()
-                                    .setSp(20, allowFontScalingSelf: true),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [
+                                    Color(0xFF34B0D9),
+                                    Color(0xFF3685CB),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                      0, 0, bounds.width, bounds.height),
+                                ),
+                                child: Text(
+                                  'PRICES',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Gilroy Bold',
+                                    fontSize: ScreenUtil()
+                                        .setSp(20, allowFontScalingSelf: true),
+                                  ),
+                                ),
                               ),
-                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Gold Rate: ",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontFamily: 'Gilroy Medium',
+                                      fontSize: ScreenUtil().setSp(20,
+                                          allowFontScalingSelf: true),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(5),
+                                  ),
+                                  ShaderMask(
+                                    shaderCallback: (bounds) => LinearGradient(
+                                      colors: [
+                                        Color(0xFFF4C53B),
+                                        Color(0xFFF4C53B),
+                                        // Color(0xFFB97012),
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ).createShader(
+                                      Rect.fromLTWH(
+                                          0, 0, bounds.width, bounds.height),
+                                    ),
+                                    child: Text(
+                                      Provider.of<Pagination>(context,
+                                                  listen: true)
+                                              .goldPrice
+                                              .toString() +
+                                          ' ₹',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Gilroy Bold',
+                                        fontSize: ScreenUtil().setSp(20,
+                                            allowFontScalingSelf: true),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -256,7 +308,7 @@ class _MyPriceState extends State<MyPrice> {
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 itemCount:
-                                                    Provider.of<Pagination>(
+                                                    Provider.of<UserInfo>(
                                                             context,
                                                             listen: false)
                                                         .buildPrices
@@ -268,7 +320,7 @@ class _MyPriceState extends State<MyPrice> {
                                                     margin: EdgeInsets.only(
                                                         bottom: 5.0),
                                                     child: Text(
-                                                      Provider.of<Pagination>(
+                                                      Provider.of<UserInfo>(
                                                               context,
                                                               listen: false)
                                                           .buildPrices
@@ -304,12 +356,11 @@ class _MyPriceState extends State<MyPrice> {
                                             child: ListView.builder(
                                               physics:
                                                   NeverScrollableScrollPhysics(),
-                                              itemCount:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .buildPrices
-                                                      .length,
+                                              itemCount: Provider.of<UserInfo>(
+                                                      context,
+                                                      listen: false)
+                                                  .buildPrices
+                                                  .length,
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemBuilder: (context, index) {
@@ -317,7 +368,7 @@ class _MyPriceState extends State<MyPrice> {
                                                   margin: EdgeInsets.only(
                                                       bottom: 5.0),
                                                   child: Text(
-                                                    Provider.of<Pagination>(
+                                                    Provider.of<UserInfo>(
                                                                 context,
                                                                 listen: false)
                                                             .buildPrices
@@ -380,7 +431,7 @@ class _MyPriceState extends State<MyPrice> {
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 itemCount:
-                                                    Provider.of<Pagination>(
+                                                    Provider.of<UserInfo>(
                                                             context,
                                                             listen: false)
                                                         .diamondPrices
@@ -392,7 +443,7 @@ class _MyPriceState extends State<MyPrice> {
                                                     margin: EdgeInsets.only(
                                                         bottom: 5.0),
                                                     child: Text(
-                                                      Provider.of<Pagination>(
+                                                      Provider.of<UserInfo>(
                                                               context,
                                                               listen: false)
                                                           .diamondPrices
@@ -428,12 +479,11 @@ class _MyPriceState extends State<MyPrice> {
                                             child: ListView.builder(
                                               physics:
                                                   NeverScrollableScrollPhysics(),
-                                              itemCount:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .diamondPrices
-                                                      .length,
+                                              itemCount: Provider.of<UserInfo>(
+                                                      context,
+                                                      listen: false)
+                                                  .diamondPrices
+                                                  .length,
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemBuilder: (context, index) {
@@ -441,7 +491,7 @@ class _MyPriceState extends State<MyPrice> {
                                                   margin: EdgeInsets.only(
                                                       bottom: 5.0),
                                                   child: Text(
-                                                    Provider.of<Pagination>(
+                                                    Provider.of<UserInfo>(
                                                                 context,
                                                                 listen: false)
                                                             .diamondPrices
@@ -504,7 +554,7 @@ class _MyPriceState extends State<MyPrice> {
                                                 physics:
                                                     NeverScrollableScrollPhysics(),
                                                 itemCount:
-                                                    Provider.of<Pagination>(
+                                                    Provider.of<UserInfo>(
                                                             context,
                                                             listen: false)
                                                         .certPrices
@@ -512,7 +562,7 @@ class _MyPriceState extends State<MyPrice> {
                                                 shrinkWrap: true,
                                                 scrollDirection: Axis.vertical,
                                                 itemBuilder: (context, index) {
-                                                  if (Provider.of<Pagination>(
+                                                  if (Provider.of<UserInfo>(
                                                               context,
                                                               listen: false)
                                                           .certPrices
@@ -529,7 +579,7 @@ class _MyPriceState extends State<MyPrice> {
                                                       margin: EdgeInsets.only(
                                                           bottom: 5.0),
                                                       child: Text(
-                                                        Provider.of<Pagination>(
+                                                        Provider.of<UserInfo>(
                                                                 context,
                                                                 listen: false)
                                                             .certPrices
@@ -566,16 +616,15 @@ class _MyPriceState extends State<MyPrice> {
                                             child: ListView.builder(
                                               physics:
                                                   NeverScrollableScrollPhysics(),
-                                              itemCount:
-                                                  Provider.of<Pagination>(
-                                                          context,
-                                                          listen: false)
-                                                      .certPrices
-                                                      .length,
+                                              itemCount: Provider.of<UserInfo>(
+                                                      context,
+                                                      listen: false)
+                                                  .certPrices
+                                                  .length,
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemBuilder: (context, index) {
-                                                if (Provider.of<Pagination>(
+                                                if (Provider.of<UserInfo>(
                                                             context,
                                                             listen: false)
                                                         .certPrices
@@ -592,7 +641,7 @@ class _MyPriceState extends State<MyPrice> {
                                                     margin: EdgeInsets.only(
                                                         bottom: 5.0),
                                                     child: Text(
-                                                      Provider.of<Pagination>(
+                                                      Provider.of<UserInfo>(
                                                                   context,
                                                                   listen: false)
                                                               .certPrices
@@ -711,229 +760,179 @@ class _MyPriceState extends State<MyPrice> {
                                                                   value.toInt(),
                                                               context: context);
                                                       final futures = [
-                                                        // Provider.of<Pagination>(
-                                                        //         context,
-                                                        //         listen: false)
-                                                        //     .getProducts(
-                                                        //         page: 1,
-                                                        //         addition: false,
-                                                        //         select: 'all',
-                                                        //         context:
-                                                        //             context,
-                                                        //         sortby: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .count,
-                                                        //         sort: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .sort),
-                                                        // Provider.of<Pagination>(
-                                                        //         context,
-                                                        //         listen: false)
-                                                        //     .getProducts(
-                                                        //         page: 1,
-                                                        //         addition: false,
-                                                        //         select:
-                                                        //             'featured',
-                                                        //         context:
-                                                        //             context,
-                                                        //         sortby: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .count,
-                                                        //         sort: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .sort),
-                                                        // Provider.of<Pagination>(
-                                                        //         context,
-                                                        //         listen: false)
-                                                        //     .getProducts(
-                                                        //         page: 1,
-                                                        //         addition: false,
-                                                        //         select: 'isnew',
-                                                        //         context:
-                                                        //             context,
-                                                        //         sortby: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .count,
-                                                        //         sort: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .sort),
-                                                        // Provider.of<Pagination>(
-                                                        //         context,
-                                                        //         listen: false)
-                                                        //     .getProducts(
-                                                        //         page: 1,
-                                                        //         addition: false,
-                                                        //         select:
-                                                        //             'navratna',
-                                                        //         context:
-                                                        //             context,
-                                                        //         sortby: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .count,
-                                                        //         sort: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .sort),
-                                                        // Provider.of<Pagination>(
-                                                        //         context,
-                                                        //         listen: false)
-                                                        //     .getProducts(
-                                                        //         addition: false,
-                                                        //         page: 1,
-                                                        //         context:
-                                                        //             context,
-                                                        //         select:
-                                                        //             'fancyDiamond',
-                                                        //         sortby: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .count,
-                                                        //         sort: Provider.of<
-                                                        //                     Pagination>(
-                                                        //                 context,
-                                                        //                 listen:
-                                                        //                     false)
-                                                        //             .sort),
                                                         Provider.of<Pagination>(
                                                                 context,
                                                                 listen: false)
                                                             .getFav(context),
                                                       ];
-                                                      await Provider
-                                                              .of<
+                                                      try {
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select:
+                                                                      'featured',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider.of<
                                                                       Pagination>(
                                                                   context,
                                                                   listen: false)
-                                                          .getProducts(
-                                                              page: 1,
-                                                              addition: false,
-                                                              select:
-                                                                  'featured',
-                                                              context: context,
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select: 'all',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select:
+                                                                      'isnew',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .sort);
-                                                      await Provider.of<
-                                                                  Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              page: 1,
-                                                              addition: false,
-                                                              select: 'all',
-                                                              context: context,
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
+                                                                      context,
+                                                                  select:
+                                                                      'navratna',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                        await Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            () async {
+                                                          await Provider
+                                                                  .of<Pagination>(
                                                                       context,
                                                                       listen:
                                                                           false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
+                                                              .getProducts(
+                                                                  addition:
+                                                                      false,
+                                                                  page: 1,
+                                                                  context:
                                                                       context,
-                                                                      listen:
-                                                                          false)
-                                                                  .sort);
-                                                      await Provider.of<
-                                                                  Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              page: 1,
-                                                              addition: false,
-                                                              select: 'isnew',
-                                                              context: context,
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .sort);
-                                                      await Provider
-                                                              .of<
-                                                                      Pagination>(
-                                                                  context,
-                                                                  listen: false)
-                                                          .getProducts(
-                                                              page: 1,
-                                                              addition: false,
-                                                              select:
-                                                                  'navratna',
-                                                              context: context,
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .sort);
-                                                      await Provider.of<
-                                                                  Pagination>(
-                                                              context,
-                                                              listen: false)
-                                                          .getProducts(
-                                                              addition: false,
-                                                              page: 1,
-                                                              context: context,
-                                                              select:
-                                                                  'fancyDiamond',
-                                                              sortby: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .count,
-                                                              sort: Provider.of<
-                                                                          Pagination>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .sort);
+                                                                  select:
+                                                                      'fancyDiamond',
+                                                                  sortby: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .count,
+                                                                  sort: Provider.of<
+                                                                              Pagination>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .sort);
+                                                        });
+                                                      } catch (err) {
+                                                        // dataSelect(
+                                                        //     context: context,
+                                                        //     titleText: 'Alert!',
+                                                        //     buttonText: 'Okay',
+                                                        //     contentText:
+                                                        //         err.toString(),
+                                                        //     onPressed: () {
+                                                        //       Navigator.pop(
+                                                        //           context);
+                                                        //     },
+                                                        //     gif:
+                                                        //         "assets/images/alert.gif");
+                                                      }
                                                       await Future.wait(
                                                           futures);
                                                       dataSelect(
